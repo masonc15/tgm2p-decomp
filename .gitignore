@@ -1,0 +1,13 @@
+roms
+build/
+*.bin
+*.u[0-9]*
+*.nv
+ghidra/*.rep/
+ghidra/*.gpr
+tools/shc_probe/compilers/
+__pycache__/
+.venv/
+CLAUDE.md
+AGENTS.md
+AGENTS.override.md
