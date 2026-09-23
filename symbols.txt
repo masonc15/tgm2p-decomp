@@ -1,2 +1,9 @@
 # Addresses of symbols the C sources reference but don't define: <name> <address>
 # (C names; the linker script adds SHC's leading underscore.)
+
+# SHC runtime helpers, copied to RAM at boot
+_sftl           0x06030944  # variable left shift
+_sftra          0x06030a04  # variable arithmetic right shift
+
+# RAM
+eeprom_shadow   0x06060034
