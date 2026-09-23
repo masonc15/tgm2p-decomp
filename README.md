@@ -13,7 +13,7 @@ Per-file flags seen so far:
 | EEPROM driver, `0x2fdd8`–`0x304ec` | `-optimize=0` |
 | Playfield helpers (`0x188ac`, `0x8518`), ROM-header accessor (`0x1260`) | `-optimize=1 -speed` |
 
-MACL is saved as callee-saved, which is SHC's default (`-macsave=1`), so no flag is needed for that.
+MACL is saved as callee-saved, which is SHC's default (`-macsave=1`), so no flag is needed for that. Leaving the option off compiles byte-identically to `-macsave=1` on nuada, while `-macsave=0` changes `field_clear_flag`. The same kind of test shows `-division=cpu` is the default.
 
 ### Evidence
 
