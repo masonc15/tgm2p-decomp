@@ -73,4 +73,5 @@ The heavy work runs on nuada: `/drive2/tgm2p` holds the SHC compilers, wibo, `ro
 - `tools/shc_probe/shcc.sh` compiles one file with one SHC build under wibo and converts it with `rof2elf`.
 - `tools/ghidra/` holds the headless scripts: memory map setup, seeding functions from `tools/seeds.py`, and exporting per-function decompiled C.
 - `tools/mame_cov.lua`, `tools/run_cov.sh` and `tools/tracecov.c` capture MAME trace windows for execution coverage, streamed through a FIFO.
+- `tools/m2c_fn.py 0x188ac field_clear_flag` turns a ROM function into GNU-as SH-2 assembly and runs [m2c](https://github.com/matt-kempster/m2c)'s `sh2` target on it for a first-draft C. It comments out SHC's MACL save and restore, which m2c doesn't model, and `--asm` prints the assembly alone.
 - `refs/` (gitignored) holds reference material: the 1997 Hitachi SH C compiler manual (with a text dump), the SH-1/SH-2 programming manual, the SH7604 hardware manual, the SuperH assembler manual, and MAME's `psikyosh` driver source.
