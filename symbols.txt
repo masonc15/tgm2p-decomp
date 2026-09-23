@@ -1,0 +1,2 @@
+# Addresses of symbols the C sources reference but don't define: <name> <address>
+# (C names; the linker script adds SHC's leading underscore.)
