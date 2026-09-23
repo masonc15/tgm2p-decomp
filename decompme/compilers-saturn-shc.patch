@@ -1,0 +1,41 @@
+diff --git a/platforms/saturn/shc-v5.0r32-sh2/Dockerfile b/platforms/saturn/shc-v5.0r32-sh2/Dockerfile
+new file mode 100644
+index 0000000..6856f8e
+--- /dev/null
++++ b/platforms/saturn/shc-v5.0r32-sh2/Dockerfile
+@@ -0,0 +1,18 @@
++# NOTE: This file is generated automatically via template.py. Do not edit manually!
++
++
++FROM alpine:3.18 AS base
++
++RUN mkdir -p /compilers/saturn/shc-v5.0r32-sh2
++
++RUN wget -O shc-v5.0r32.tar.gz "https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r32.tar.gz"
++RUN tar xvzf shc-v5.0r32.tar.gz -C /compilers/saturn/shc-v5.0r32-sh2
++RUN wget -O /compilers/saturn/shc-v5.0r32-sh2/rof2elf.py "https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py"
++
++RUN chown -R root:root /compilers/saturn/shc-v5.0r32-sh2/
++RUN chmod +x /compilers/saturn/shc-v5.0r32-sh2/*
++
++
++FROM scratch AS release
++
++COPY --from=base /compilers /compilers
+diff --git a/values.yaml b/values.yaml
+index 9db493e..bb43d4a 100644
+--- a/values.yaml
++++ b/values.yaml
+@@ -582,6 +582,12 @@ compilers:
+     template: common/zip
+     package_dir: saturn-compilers-*/cygnus-2.7-96Q3-bin
+     file: https://github.com/sozud/saturn-compilers/archive/af27f4aa6566c1b0fa5332b488e63d6ffd28bd48.zip
++  - id: shc-v5.0r32-sh2
++    platform: saturn
++    template: common/default
++    files:
++      - https://github.com/decompme/compilers/releases/download/compilers/shc-v5.0r32.tar.gz
++      - https://gist.githubusercontent.com/Mc-muffin/c2d3f30e50c5c5749f994973441c503a/raw/18fbf1a19bd720d02774ed634b00b0508eaf474c/rof2elf.py
+ 
+   # SWITCH
+   - id: clang-3.9.1
