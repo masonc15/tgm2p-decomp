@@ -13,7 +13,7 @@ Per-file flags seen so far:
 | EEPROM driver, `0x2fdd8`–`0x304ec` | `-optimize=0` |
 | Playfield helpers (`0x188ac`, `0x8518`), ROM-header accessor (`0x1260`) | `-optimize=1 -speed` |
 
-MACL is saved as callee-saved, which is SHC's default (`-macsave=1`), so no flag is needed for that. Leaving the option off compiles byte-identically to `-macsave=1` on nuada, while `-macsave=0` changes `field_clear_flag`. The same kind of test shows `-division=cpu` is the default.
+MACL is saved as callee-saved, which is SHC's default (`-macsave=1`), so no flag is needed for that. Leaving the option off compiles byte-identically to `-macsave=1` on nuada, while `-macsave=0` changes `field_clear_flag`. The same kind of test shows `-division=cpu` is the default. One thing from the 1997 Hitachi manual worth knowing: `-speed` implies `-inline=20`, so small static helpers can get inlined without asking.
 
 ### Evidence
 
@@ -73,3 +73,4 @@ The heavy work runs on nuada: `/drive2/tgm2p` holds the SHC compilers, wibo, `ro
 - `tools/shc_probe/shcc.sh` compiles one file with one SHC build under wibo and converts it with `rof2elf`.
 - `tools/ghidra/` holds the headless scripts: memory map setup, seeding functions from `tools/seeds.py`, and exporting per-function decompiled C.
 - `tools/mame_cov.lua`, `tools/run_cov.sh` and `tools/tracecov.c` capture MAME trace windows for execution coverage, streamed through a FIFO.
+- `refs/` (gitignored) holds reference material: the 1997 Hitachi SH C compiler manual (with a text dump), the SH-1/SH-2 programming manual, the SH7604 hardware manual, the SuperH assembler manual, and MAME's `psikyosh` driver source.
