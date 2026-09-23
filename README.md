@@ -63,6 +63,14 @@ These are in `tools/shc_probe/cases/wip/`.
 - **`f_2f304` (79.6%).** It needs the rest of its source file for the unoptimized register phase.
 - **`f_26f64`/`f_26faa`, `0x60e8`, and the sprite helpers at `0x2e06c`.** Real structural progress, but not converged.
 
+## Building
+
+`make check` (on nuada, or `tools/nmake.sh check` from the Mac, which syncs the sources first) rebuilds the whole program ROM from source, then splits the result back into `2b.u21` and `1b.u22` and compares them against the original EPROM dumps by SHA-1. It also prints how much of the code is in C.
+
+`splits.txt` is the map. Each line gives a start address and what builds that stretch of ROM: `asm`, `c` (with its source file) or `bin`, and each segment runs to the next line's address. The vectors (`0x0`–`0x400`) and everything after the code (`0x313fc` onward, starting with what looks like the RAM-copy table) are included as binary. The code in between is disassembled by `tools/build.py split` into `asm/*.s`. Those files are generated, not committed, and hold real instructions with labels for branch targets and literal pools. Any halfword the assembler can't reproduce exactly, mostly data tables inside the code, falls back to a raw `.short`.
+
+To move a function into C, write the source with the usual `/* rom: ... flags: ... */` first-line header and get it to 100% with the probe. Then add a `c` line for its range to `splits.txt`, add any addresses it references to `symbols.txt`, and run `make split check`. The linker script asserts every segment starts at its ROM address, so a C unit that comes out a different size fails loudly rather than shifting everything after it. Breaking a matched file on purpose (a one-byte change in `src/eeprom.c`, or a wrong address in `symbols.txt`) makes the check fail, which is the point.
+
 ## Layout and tools
 
 The heavy work runs on nuada: `/drive2/tgm2p` holds the SHC compilers, wibo, `rof2elf`, Ghidra 12.1.4 and the Python venv, with the repo mirrored at `~/workspace/tgm2p-decomp` there.
