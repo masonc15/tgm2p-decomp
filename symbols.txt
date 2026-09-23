@@ -5,5 +5,9 @@
 _sftl           0x06030944  # variable left shift
 _sftra          0x06030a04  # variable arithmetic right shift
 
+# ROM header, read through the cache-through mirror
+rom_hdr_ptr     0x2004002c
+
 # RAM
 eeprom_shadow   0x06060034
+g_607926c       0x0607926c
