@@ -1,0 +1,50 @@
+diff --git a/src/objdump.py b/src/objdump.py
+index 95c0f31..b218e47 100644
+--- a/src/objdump.py
++++ b/src/objdump.py
+@@ -282,6 +282,24 @@ X86_SETTINGS: ArchSettings = ArchSettings(
+ )
+ 
+ 
++SH2_BRANCH_INSTRUCTIONS = {"bt", "bf", "bt.s", "bf.s", "bt/s", "bf/s", "bra", "bsr"}
++
++SH2_SETTINGS: ArchSettings = ArchSettings(
++    name="sh2",
++    # SuperH objdump puts literal-pool values after "!" and symbols in <...>.
++    re_comment=re.compile(r"(<.*>|!.*$)"),
++    re_includes_sp=re.compile(r"\br15\b"),
++    sp_ref_insns=["add"],
++    # r15 is the stack pointer and is left out on purpose.
++    re_reg=re.compile(r"\b(r[0-9]|r1[0-4]|mac[hl]|pr|gbr|vbr|sr)\b"),
++    re_sprel=re.compile(r"@\(-?(0x[0-9a-fA-F]+|[0-9]+),r15\)"),
++    reloc_str="R_SH_",
++    executable=["sh-elf-objdump"],
++    arguments=["-drz"],
++    branch_instructions=SH2_BRANCH_INSTRUCTIONS,
++)
++
++
+ def get_arch(o_file: str) -> ArchSettings:
+     # https://refspecs.linuxfoundation.org/elf/gabi4+/ch4.eheader.html
+     with open(o_file, "rb") as f:
+@@ -298,6 +316,8 @@ def get_arch(o_file: str) -> ArchSettings:
+         return PPC_SETTINGS
+     if arch == 40:
+         return ARM32_SETTINGS
++    if arch == 42:
++        return SH2_SETTINGS
+     raise Exception("Bad ELF")
+ 
+ 
+@@ -569,6 +589,11 @@ def process_reloc(
+     if prev == "<skipped>":
+         return None
+ 
++    if "R_SH_" in reloc_row:
++        # SuperH relocations patch literal-pool words, which objdump shows as
++        # junk instructions; name the symbol instead.
++        return ".long\t" + reloc_row.split()[-1]
++
+     before, imm, after = parse_relocated_line(prev)
+     repl = reloc_row.split()[-1]
+     # As part of ignoring branch targets, we ignore relocations for j
