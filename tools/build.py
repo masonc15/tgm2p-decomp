@@ -272,6 +272,17 @@ def compare(out: Path) -> bool:
     return ok
 
 
+def progress() -> None:
+    segs = read_splits()
+    code = [(a, b, k) for a, b, k, _ in segs if k in ("asm", "c")]
+    total = sum(b - a for a, b, _ in code)
+    done = sum(b - a for a, b, k in code if k == "c")
+    funcs = [f for f in fn.call_targets() if any(a <= f < b for a, b, _ in code)]
+    fdone = [f for f in funcs if any(a <= f < b for a, b, k in code if k == "c")]
+    print(f"progress: {done:#x}/{total:#x} code bytes in C ({100 * done / total:.2f}%), "
+          f"{len(fdone)}/{len(funcs)} called functions")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["split", "build", "check"])
@@ -280,6 +291,7 @@ def main() -> None:
         split()
         return
     ok = compare(build())
+    progress()
     if args.cmd == "check" and ok:
         r = subprocess.run([sys.executable, str(ROOT / "tools" / "interleave.py"), "split",
                             str(BUILD / "tgm2p.bin"), "--check"])
