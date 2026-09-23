@@ -11,3 +11,4 @@ rom_hdr_ptr     0x2004002c
 # RAM
 eeprom_shadow   0x06060034
 g_607926c       0x0607926c
+g_6079374       0x06079374

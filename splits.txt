@@ -4,6 +4,8 @@
 0x000400 asm
 0x001260 c    src/rom_header.c
 0x001278 asm
+0x0188ac c    src/field_clear.c
+0x018950 asm
 0x02fdd8 c    src/eeprom.c
 0x0304ec asm
 0x0313fc bin  data
