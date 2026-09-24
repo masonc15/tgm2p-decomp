@@ -44,15 +44,17 @@ index 04adb16..3384c4e 100644
      SHC_V50R10,
      SHC_V50R26,
 diff --git a/backend/coreapp/flags.py b/backend/coreapp/flags.py
-index 519ce37..432bcb3 100644
+index 519ce37..f73fb4c 100644
 --- a/backend/coreapp/flags.py
 +++ b/backend/coreapp/flags.py
-@@ -238,6 +238,21 @@ SHC_FLAGS = FlagClass(
+@@ -238,6 +238,23 @@ SHC_FLAGS = FlagClass(
      ],
      parent=COMMON_SHC_OLD_FLAGS,
  )
 +
-+# SH-2 has no FPU, so -fpu and -round have no effect there.
++# SH-2 has no FPU, so -fpu and -round have no effect there (shc-v5.0r32 emits
++# identical code with or without them). -aggressive=2 still matters: it turns
++# float/double division by a constant into a __muls/__muld by the reciprocal.
 +SHC_SH2_FLAGS = FlagClass(
 +    name="shc-sh2",
 +    flags=[
@@ -70,14 +72,14 @@ index 519ce37..432bcb3 100644
      name="gcc",
      flags=[
 diff --git a/frontend/src/lib/i18n/locales/en/compilers.json b/frontend/src/lib/i18n/locales/en/compilers.json
-index 5ff751d..b00308c 100644
+index 5ff751d..b9df346 100644
 --- a/frontend/src/lib/i18n/locales/en/compilers.json
 +++ b/frontend/src/lib/i18n/locales/en/compilers.json
 @@ -269,6 +269,7 @@
      "msc5.1": "Microsoft C Compiler 5.1",
  
      "cygnus-2.7-96Q3": "cygnus-2.7-96Q3 SOA-960904",
-+    "shc-v5.0r32-sh2": "SHC v5.0 (Release 32) (SH2)",
++    "shc-v5.0r32-sh2": "SHC v5.0 (Release 32)",
  
      "ndk-r8e-gcc-4.4.3": "Android NDK r8e (GCC 4.4.3)",
      "ndk-r8e-gcc-4.7": "Android NDK r8e (GCC 4.7)",
@@ -87,8 +89,8 @@ index 5ff751d..b00308c 100644
      "shc_inline": "Inline static functions",
 +    "shc_division": "Division code expansion",
 +    "shc_division.-division=cpu": "Division: CPU",
-+    "shc_division.-division=peripheral": "Division: on-chip divider unit",
-+    "shc_division.-division=nomask": "Division: on-chip divider unit (nomask)",
++    "shc_division.-division=peripheral": "Division: on-chip divider, interrupts masked",
++    "shc_division.-division=nomask": "Division: on-chip divider, interrupts not masked",
 +    "shc_macsave": "MACL/MACH save rules",
 +    "shc_macsave.-macsave=0": "Don't save MACL/MACH",
 +    "shc_macsave.-macsave=1": "Save MACL/MACH (callee-saved)",
