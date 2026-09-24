@@ -73,6 +73,8 @@ To move a function into C, write the source with the usual `/* rom: ... flags: .
 
 `make report` writes an `objdiff.json` and a progress report (`build/report.json`) with [objdiff](https://github.com/encounter/objdiff), the format [decomp.dev](https://decomp.dev) reads. Every asm file is a unit with a target only, labelled at each function start `fn.py` finds. Every C file is a unit whose target is rendered from the ROM, with the C object's function names and the literal-pool words written as their `symbols.txt` symbols, so objdiff pairs the functions and compares relocations as well as bytes. The same `objdiff.json` also opens in the objdiff GUI.
 
+CI (`.github/workflows/build.yml`) runs `make check` and `make report` on every push to `main` and uploads the report as the `tgm2p_report` artifact, which is what decomp.dev picks up. The ROM can't live in the repo, so the job runs inside a private container image, `ghcr.io/masonc15/tgm2p-build`, that holds the two program ROM halves plus the toolchain. `tools/ci/Dockerfile` builds it, with every download pinned by hash to the copies used on nuada. Pull requests from forks can't pull that image, so their builds are skipped. decomp.dev has no platform for arcade games yet; [decomp.dev#50](https://github.com/encounter/decomp.dev/pull/50) adds one, and the project can be registered once that's live.
+
 ## Layout and tools
 
 The heavy work runs on nuada: `/drive2/tgm2p` holds the SHC compilers, wibo, `rof2elf`, Ghidra 12.1.4 and the Python venv, with the repo mirrored at `~/workspace/tgm2p-decomp` there.
