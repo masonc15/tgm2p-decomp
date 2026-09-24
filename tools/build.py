@@ -19,9 +19,12 @@ usage: build.py split     regenerate asm/ and build/bin/ from build/prog.bin
        build.py build     assemble, compile, link, compare against the ROM
        build.py check     build, then split the image back into 2b.u21/1b.u22
                           and compare those against the original EPROM dumps
+       build.py report    build, then write objdiff.json and the target
+                          objects objdiff-cli needs for a progress report
 """
 import argparse
 import hashlib
+import json
 import re
 import subprocess
 import sys
@@ -36,6 +39,7 @@ ASM = ROOT / "asm"
 BUILD = ROOT / "build"
 OBJ = BUILD / "obj"
 BIN = BUILD / "bin"
+REPORT = BUILD / "report"
 SHCC = ROOT / "tools" / "shc_probe" / "shcc.sh"
 SHC_VERSION = "shc-v5.0r32"
 AS = ["sh-elf-as", "--isa=sh2", "--big"]
@@ -287,12 +291,96 @@ def progress() -> None:
           f"{len(fdone)}/{len(funcs)} called functions")
 
 
+# ---------------------------------------------------------------- report
+
+def named_pools(text: str) -> str:
+    """Write each aligned pool word that holds a symbols.txt address as that
+    symbol, so a ROM-rendered target carries the relocation a C object has."""
+    syms = {v: k for k, v in read_symbols().items()}
+    lines = text.splitlines()
+    out, i = [], 0
+    while i < len(lines):
+        m = TAG.search(lines[i])
+        if m and lines[i].lstrip().startswith(".short") and i + 1 < len(lines) \
+                and lines[i + 1].lstrip().startswith(".short"):
+            a = int(m[1], 16)
+            v = int.from_bytes(fn.ROM[a:a + 4], "big")
+            if a % 4 == 0 and v in syms:
+                out.append(f"\t.long\t_{syms[v]}\t/* {a:06x} */")
+                i += 2
+                continue
+        out.append(lines[i])
+        i += 1
+    return "\n".join(out) + "\n"
+
+
+def name_functions(text: str, names: dict) -> str:
+    """Put a global label (address -> name) on each function start that lacks one."""
+    have = set(re.findall(r"^(\S+):$", text, re.M))
+    out = []
+    for line in text.splitlines():
+        m = TAG.search(line)
+        name = names.get(int(m[1], 16)) if m else None
+        if name and name not in have:
+            out += [f"\t.global\t{name}", f"{name}:"]
+        out.append(line)
+    return "\n".join(out) + "\n"
+
+
+def c_functions(obj: Path, start: int) -> dict:
+    nm = subprocess.run(["sh-elf-nm", "--defined-only", str(obj)], capture_output=True, text=True, check=True)
+    return {start + int(a, 16): n for a, t, n in (l.split() for l in nm.stdout.splitlines()) if t in "Tt"}
+
+
+def report() -> None:
+    """Write objdiff.json for objdiff-cli: one unit per asm file (target only)
+    and one per C file, whose target is rendered from the ROM with the C
+    object's function names so objdiff can pair them."""
+    segs = read_splits()
+    starts = {f for _, _, _, members in fn.units() for f in members}
+    REPORT.mkdir(parents=True, exist_ok=True)
+    units = []
+    for a, b in asm_pieces(segs):
+        names = {f: f"func_{f:06x}" for f in starts | {a} if a <= f < b}
+        s = REPORT / f"{a:06x}.s"
+        s.write_text(name_functions((ASM / f"{a:06x}.s").read_text(), names))
+        units.append((a, {"name": f"asm/{a:06x}", "target_path": s.with_suffix(".o"),
+                          "metadata": {"complete": False}}))
+    for start, end, kind, arg in segs:
+        if kind != "c":
+            continue
+        src = ROOT / arg
+        base = OBJ / (src.stem + ".o")
+        s = REPORT / f"{src.stem}.s"
+        render_exact(start, end, set(), pool_targets(start, end), s)
+        s.write_text(name_functions(named_pools(s.read_text()), c_functions(base, start)))
+        units.append((start, {"name": arg.removesuffix(".c"), "target_path": s.with_suffix(".o"),
+                              "base_path": base, "metadata": {"complete": True, "source_path": arg}}))
+    for _, u in units:
+        subprocess.run([*AS, "-o", str(u["target_path"]), str(REPORT / (u["target_path"].stem + ".s"))],
+                       check=True)
+    config = {
+        "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
+        "custom_make": "make",
+        "build_target": False,
+        "build_base": False,
+        "units": [{k: str(v.relative_to(ROOT)) if isinstance(v, Path) else v for k, v in u.items()}
+                  for _, u in sorted(units, key=lambda x: x[0])],
+    }
+    (ROOT / "objdiff.json").write_text(json.dumps(config, indent=2) + "\n")
+    print(f"report: objdiff.json with {len(units)} units")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["split", "build", "check"])
+    ap.add_argument("cmd", choices=["split", "build", "check", "report"])
     args = ap.parse_args()
     if args.cmd == "split":
         split()
+        return
+    if args.cmd == "report":
+        build()
+        report()
         return
     ok = compare(build())
     progress()

@@ -71,6 +71,8 @@ These are in `tools/shc_probe/cases/wip/`.
 
 To move a function into C, write the source with the usual `/* rom: ... flags: ... */` first-line header and get it to 100% with the probe. Then add a `c` line for its range to `splits.txt`, add any addresses it references to `symbols.txt`, and run `make split check`. The linker script asserts every segment starts at its ROM address, so a C unit that comes out a different size fails loudly rather than shifting everything after it. Breaking a matched file on purpose (a one-byte change in `src/eeprom.c`, or a wrong address in `symbols.txt`) makes the check fail, which is the point.
 
+`make report` writes an `objdiff.json` and a progress report (`build/report.json`) with [objdiff](https://github.com/encounter/objdiff), the format [decomp.dev](https://decomp.dev) reads. Every asm file is a unit with a target only, labelled at each function start `fn.py` finds. Every C file is a unit whose target is rendered from the ROM, with the C object's function names and the literal-pool words written as their `symbols.txt` symbols, so objdiff pairs the functions and compares relocations as well as bytes. The same `objdiff.json` also opens in the objdiff GUI.
+
 ## Layout and tools
 
 The heavy work runs on nuada: `/drive2/tgm2p` holds the SHC compilers, wibo, `rof2elf`, Ghidra 12.1.4 and the Python venv, with the repo mirrored at `~/workspace/tgm2p-decomp` there.
