@@ -1,7 +1,11 @@
 Title: Add SHC v5.0 (Release 32) for Saturn
 
-Adds SHC v5.0 Release 32 to the Saturn platform for big-endian SH-2. It reuses the Dreamcast `shc-v5.0r32` package through `base_compiler` (the same way the IRIX IDO compilers reuse the N64 ones), so no compilers repo change is needed. The Dreamcast command line hard-codes `-cpu=sh4 -endian=little -fpu=single -macsave=0`, so this one has its own (`-cpu=sh2 -endian=big`). It also has a new `shc-sh2` flag class, which drops `-fpu`/`-round` (they have no effect on SH-2) and adds `-division` and `-macsave`. Leaving those unset gives the compiler defaults (`-division=cpu`, `-macsave=1`).
+Hi! I'm working on a matching decomp of [Tetris: The Absolute The Grand Master 2 PLUS](https://github.com/masonc15/tgm2p-decomp), a Psikyo SH-2 arcade game. It turns out it was built with Hitachi SHC v5.0, which decomp.me already has for Dreamcast. But those entries hard-code `-cpu=sh4 -endian=little -fpu=single -macsave=0`, so they can't produce SH-2 code.
 
-I'm using it for a [Tetris: The Absolute The Grand Master 2 PLUS decomp](https://github.com/masonc15/tgm2p-decomp) (Psikyo SH-2 arcade), which was built with SHC v5.0. I tested it with a local instance, and scratches for functions from the ROM match with a score of 0. One caveat is that rof2elf.py pads alignment gaps with 0x00 while this ROM has 0xFF, so a literal pool padding halfword can show up as a diff.
+This adds `shc-v5.0r32-sh2` to the Saturn platform. It reuses the Dreamcast `shc-v5.0r32` package through `base_compiler`, the same way the IRIX IDO compilers reuse the N64 ones, so nothing is needed in the compilers repo. It gets its own command line (`-cpu=sh2 -endian=big`) and a small `shc-sh2` flag class. That class drops `-fpu`/`-round`, which have no effect on SH-2, and adds `-division` and `-macsave`. Leaving those unset gives the compiler defaults, `-division=cpu` and `-macsave=1`, which I checked by compiling with and without them.
 
-Only r32 for now; the other SHC releases could be added the same way if anyone needs them.
+I tested it on a local instance, and scratches for two functions from the ROM compiled and scored 0. `ruff check`, `ruff format --check`, `mypy` and Biome pass too. One caveat is that rof2elf.py pads alignment gaps with 0x00 while this ROM has 0xFF, so a literal pool padding halfword can show up as a diff.
+
+I only added r32, since that's the release I matched against (r26 through r31 give identical output on this game). The other SHC releases could go in the same way if anyone needs them.
+
+Let me know if this approach makes sense. Thanks for taking a look!
