@@ -10,29 +10,14 @@ e.g.   scratch.py src/field_clear.c 0x188ac 0x18950 field_clear_flag "-optimize=
 import json, sys, urllib.error, urllib.request
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import fn, build
+import build
 
 BASE = "http://127.0.0.1:28080/api"  # nginx of /drive2/tgm2p/decomp.me-local
 src_path, start, end, name, flags = sys.argv[1], int(sys.argv[2], 16), int(sys.argv[3], 16), sys.argv[4], sys.argv[5]
 data = build.pool_targets(start, end)
 text, _ = build.render(start, end, set(), set(), data)
 asm = text.replace("\t.text\n", f"\t.text\n\t.global\t_{name}\n_{name}:\n", 1)
-# Name pool words that hold known symbol addresses, as a real target would.
-import re, struct
-syms = {v: k for k, v in build.read_symbols().items()}
-lines = asm.splitlines()
-out, i = [], 0
-while i < len(lines):
-    m = re.search(r"/\* ([0-9a-f]{6}) \*/", lines[i])
-    if m and lines[i].lstrip().startswith(".short") and i + 1 < len(lines) and lines[i + 1].lstrip().startswith(".short"):
-        a = int(m[1], 16)
-        v = struct.unpack(">I", fn.ROM[a:a + 4])[0]
-        if a % 4 == 0 and v in syms:
-            out.append(f"\t.long\t_{syms[v]}\t/* {a:06x} */")
-            i += 2
-            continue
-    out.append(lines[i]); i += 1
-asm = "\n".join(out) + "\n"
+asm = build.named_pools(asm)  # pool words holding known symbol addresses, as a real target would
 src = open(src_path).read()
 
 def call(method, url, body=None):
