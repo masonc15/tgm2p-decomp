@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  build:
+    # The build image is private (it holds the ROM), so forks can't pull it.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/masonc15/tgm2p-build:main
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Link the ROMs
+        run: ln -s /orig roms
+      - name: Rebuild and compare against the EPROMs
+        run: make check
+      - name: Generate progress report
+        run: make report
+      - name: Upload progress report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgm2p_report
+          path: build/report.json
+          if-no-files-found: error
