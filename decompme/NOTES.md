@@ -1,4 +1,4 @@
-# decomp.me patch notes (draft, not submitted)
+# decomp.me patch notes (submitted as [decomp.me#2115](https://github.com/decompme/decomp.me/pull/2115))
 
 decomp.me already hosts Hitachi SHC v5.0/v5.1, but only on the Dreamcast platform, and that command line hard-codes `-cpu=sh4 -endian=little -fpu=single -macsave=0`. `decomp.me-saturn-shc.patch` adds SHC v5.0 Release 32 to the existing `saturn` platform (SH-2, big-endian) under the ID `shc-v5.0r32-sh2`. IDs have to be globally unique because `backend/coreapp/compilers.py` keys `_compilers` by ID.
 
