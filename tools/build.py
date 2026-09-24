@@ -40,6 +40,7 @@ SHCC = ROOT / "tools" / "shc_probe" / "shcc.sh"
 SHC_VERSION = "shc-v5.0r32"
 AS = ["sh-elf-as", "--isa=sh2", "--big"]
 HEADER_FLAGS = re.compile(r"flags:\s*([^*\n]+?)\s*\*/")
+TAG = re.compile(r"/\* ([0-9a-f]{6}) \*/")  # the address render() puts on each line
 MAX_ASM_FILE = 0x2000  # cut long asm runs at the nearest group boundary
 
 
@@ -172,42 +173,45 @@ def split() -> None:
     # Only functions that start in an asm file can be referenced by name.
     in_asm = {f for f in funcs if any(a <= f < b for a, b in pieces)}
     data = pool_targets(lo, hi)
-    total_raw = 0
-    for a, b in pieces:
-        raw = set()
-        src = ASM / f"{a:06x}.s"
-        for _ in range(50):
-            text, by_pc = render(a, b, in_asm, in_asm, data, frozenset(raw))
-            src.write_text(text)
-            got, err = assemble_bytes(src, OBJ / f"{a:06x}.chk.o")
-            if got is None:
-                # Can't resolve cross-file names here; they are checked at link.
-                bad = set()
-                for m in re.finditer(r":(\d+): Error", err):
-                    line = src.read_text().splitlines()[int(m[1]) - 1]
-                    t = re.search(r"/\* ([0-9a-f]{6}) \*/", line)
-                    if t:
-                        bad.add(int(t[1], 16))
-                if not bad:
-                    sys.exit(f"{src}: assembler failed:\n{err}")
-                raw |= bad
-                continue
-            want = fn.ROM[a:b]
-            # Cross-file bsr/bra to func_ symbols assemble as 0 displacement
-            # before linking; only compare what the file decides by itself.
-            diff = {a + o for o in range(0, len(want), 2)
-                    if got[o:o + 2] != want[o:o + 2]
-                    and not re.match(r"\t(bsr|bra)\tfunc_", by_pc.get(a + o, ""))}
-            if len(got) != len(want):
-                diff.add(a + min(len(got), len(want)) // 2 * 2)
-            if not diff:
-                break
-            raw |= diff
-        else:
-            sys.exit(f"{src}: could not converge")
-        (OBJ / f"{a:06x}.chk.o").unlink(missing_ok=True)
-        total_raw += len(raw)
+    total_raw = sum(render_exact(a, b, in_asm, data, ASM / f"{a:06x}.s") for a, b in pieces)
     print(f"split: {len(pieces)} asm files, {total_raw} halfwords forced to .short")
+
+
+def render_exact(a, b, funcs, data, src: Path) -> int:
+    """Write [a, b) to src, forcing every line the assembler can't reproduce
+    exactly to its raw halfword. Returns how many halfwords were forced."""
+    raw = set()
+    for _ in range(50):
+        text, by_pc = render(a, b, funcs, funcs, data, frozenset(raw))
+        src.write_text(text)
+        got, err = assemble_bytes(src, OBJ / f"{a:06x}.chk.o")
+        if got is None:
+            # Can't resolve cross-file names here; they are checked at link.
+            bad = set()
+            for m in re.finditer(r":(\d+): Error", err):
+                line = src.read_text().splitlines()[int(m[1]) - 1]
+                t = TAG.search(line)
+                if t:
+                    bad.add(int(t[1], 16))
+            if not bad:
+                sys.exit(f"{src}: assembler failed:\n{err}")
+            raw |= bad
+            continue
+        want = fn.ROM[a:b]
+        # Cross-file bsr/bra to func_ symbols assemble as 0 displacement
+        # before linking; only compare what the file decides by itself.
+        diff = {a + o for o in range(0, len(want), 2)
+                if got[o:o + 2] != want[o:o + 2]
+                and not re.match(r"\t(bsr|bra)\tfunc_", by_pc.get(a + o, ""))}
+        if len(got) != len(want):
+            diff.add(a + min(len(got), len(want)) // 2 * 2)
+        if not diff:
+            break
+        raw |= diff
+    else:
+        sys.exit(f"{src}: could not converge")
+    (OBJ / f"{a:06x}.chk.o").unlink(missing_ok=True)
+    return len(raw)
 
 
 # ---------------------------------------------------------------- build
