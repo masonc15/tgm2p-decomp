@@ -1,5 +1,5 @@
 diff --git a/backend/coreapp/compilers.py b/backend/coreapp/compilers.py
-index 04adb16..3384c4e 100644
+index 04adb16..6d16042 100644
 --- a/backend/coreapp/compilers.py
 +++ b/backend/coreapp/compilers.py
 @@ -134,6 +134,13 @@ class SHCOldCompiler(Compiler):
@@ -16,11 +16,10 @@ index 04adb16..3384c4e 100644
  @dataclass(frozen=True)
  class GCCCompiler(Compiler):
      type: ClassVar[CompilerType] = CompilerType.GCC
-@@ -619,6 +626,18 @@ SHC_V51R08 = SHCCompiler(id="shc-v5.1r08", platform=DREAMCAST, cc=DREAMCAST_CC)
+@@ -619,6 +626,17 @@ SHC_V51R08 = SHCCompiler(id="shc-v5.1r08", platform=DREAMCAST, cc=DREAMCAST_CC)
  SHC_V51R11 = SHCCompiler(id="shc-v5.1r11", platform=DREAMCAST, cc=DREAMCAST_CC)
  SHC_V51R13 = SHCCompiler(id="shc-v5.1r13", platform=DREAMCAST, cc=DREAMCAST_CC)
  
-+# SH-2 big-endian; -division/-macsave are left to the scratch flags
 +SATURN_SHC_CC = (
 +    'cat "$INPUT" | unix2dos > dos_src.c && '
 +    "cp -r ${COMPILER_DIR}/bin/* . && "
@@ -35,7 +34,7 @@ index 04adb16..3384c4e 100644
  # PS2
  IOP_GCC281 = GCCPS2Compiler(
      id="iop-gcc2.8.1",
-@@ -1797,6 +1816,7 @@ _all_compilers: list[Compiler] = [
+@@ -1797,6 +1815,7 @@ _all_compilers: list[Compiler] = [
      MWCCPSP_3_0_1_219,
      # Saturn
      CYGNUS_2_7_96Q3,
@@ -44,17 +43,14 @@ index 04adb16..3384c4e 100644
      SHC_V50R10,
      SHC_V50R26,
 diff --git a/backend/coreapp/flags.py b/backend/coreapp/flags.py
-index 519ce37..f73fb4c 100644
+index 519ce37..8f38090 100644
 --- a/backend/coreapp/flags.py
 +++ b/backend/coreapp/flags.py
-@@ -238,6 +238,23 @@ SHC_FLAGS = FlagClass(
+@@ -238,6 +238,20 @@ SHC_FLAGS = FlagClass(
      ],
      parent=COMMON_SHC_OLD_FLAGS,
  )
 +
-+# SH-2 has no FPU, so -fpu and -round have no effect there (shc-v5.0r32 emits
-+# identical code with or without them). -aggressive=2 still matters: it turns
-+# float/double division by a constant into a __muls/__muld by the reciprocal.
 +SHC_SH2_FLAGS = FlagClass(
 +    name="shc-sh2",
 +    flags=[
