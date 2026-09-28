@@ -10,6 +10,7 @@ Per-file flags seen so far:
 
 | Source file (by ROM region) | Flags |
 |---|---|
+| Sound driver, `0x2e1b8`–`0x2fdd8` | `-optimize=0 -speed` |
 | EEPROM driver, `0x2fdd8`–`0x30880` | `-optimize=0` |
 | Everything else matched so far: the main loop, playfield helpers, the RNG, timer and interrupt setup, and assorted small routines | `-optimize=1 -speed` |
 
@@ -57,6 +58,7 @@ These are the rules to expect when decompiling the rest of the game.
 - **SHC's runtime library is at the end of that block.** The division routines start at ROM `0x30d40` (RAM `0x60305c0` is signed 32-bit division, `0x603076c` the remainder) and the variable shifts sit at RAM `0x6030944` (left) and `0x6030a04` (arithmetic right).
 - **Only a real in-file call proves two units share a file.** SHC calls a function it has already seen in the same file with `bsr` and everything else with `jsr` through the pool, so putting a caller and callee in one file when the ROM uses `jsr` breaks the caller. Two units that each match alone and also match together may or may not be one file.
 - **Source shapes that SHC keeps distinct.** A chained assignment (`a = b = c = 0`) stores in a different order from separate statements. `for (i = 0, p = arr; ...)`, `for (p = arr, i = 0; ...)` and a plain loop pick different registers. `if (k)` and `if (k != 0)` differ for a `short`. Declaring a prototype's parameters `short` rather than `int` changes how arguments are pushed. Even an argument the callee ignores matters: the effect spawners only match with the task allocator declared `f_17614(void)` rather than taking the field pointer. An assignment inside a call argument (`f(..., y = *p, ...)`) is evaluated right to left with the other arguments and spills `y`. A narrow array index sometimes shows up as the byte offset truncated after the multiply (`(unsigned char)(id * 72)`), which has to be written out.
+- **Unoptimized address reuse.** At `-optimize=0` SHC keeps a plain global's address in a register and reuses it in the next statement, but reloads a struct member's address on every access; a literal-address macro `*(T *)0x...` behaves like a member. The sound driver (`sound.c`) only matches with its state at `0x60b1860` declared as a struct. Labels, empty `do {} while (0)` blocks and pointer puns also force a reload, but with the wrong registers. Other `-optimize=0` shapes that differ: `((short *)p)[v]` gives `mov.w @(r0,rn)` where `*(short *)((int)p + v * 2)` gives `add` then `mov.w @r0`; `&&` and nested `if`s compile to the same code but place the literal pool differently; `!x` and `x == 0` pick different registers at a following loop label; the first-declared local gets the highest stack offset and unused locals still take frame space. `-speed` still matters there: without it `/4` becomes a runtime call.
 - **Inlining and tail calls follow node counts.** With `-speed`, small functions defined anywhere in the file get inlined, and a call in tail position becomes a `bra`/`jmp`. `f_11e98.c` needs three calls to an empty function after its last real call to stop both, so the original probably had statements that compile to nothing there.
 
 ### Near misses worth coming back to
@@ -64,7 +66,6 @@ These are the rules to expect when decompiling the rest of the game.
 These are in `tools/shc_probe/cases/wip/`.
 
 - **`f_23048` (72.9%).** The second half matches exactly. The prologue allocates its frame by pushing argument registers, which only six prologues in the whole ROM do.
-- **`f_2f304` (79.6%).** It needs the rest of its source file for the unoptimized register phase. That file runs from `0x2e1b8` to `0x2fdd8`, about 35 functions tied together by `bsr` calls. Its first function matches from a fresh file, which supports that start. The second (`g = v * 48 / 60`) loads the destination address before the multiply, and no form tried so far reproduces that.
 - **`f_26f64`/`f_26faa`, `0x60e8`, and the sprite helpers at `0x2e06c`.** Real structural progress, but not converged.
 - **The secret-code checker at `0x23828` (93.8%, `code_23828.c`) and a sprite draw at `0x2090c` (80.3%, `draw_2090c.c`).** Register choice only in the first. Its score moves with the file state, so it probably needs the effect functions before it in the same file.
 - **`0xef04`.** It does a 16.16 fixed-point multiply with `dmuls.l` and `xtrct`, which C can't express, so it probably came from an `#pragma inline_asm` helper.
