@@ -46,6 +46,7 @@ AS = ["sh-elf-as", "--isa=sh2", "--big"]
 HEADER_FLAGS = re.compile(r"flags:\s*([^*\n]+?)\s*\*/")
 TAG = re.compile(r"/\* ([0-9a-f]{6}) \*/")  # the address render() puts on each line
 MAX_ASM_FILE = 0x2000  # cut long asm runs at the nearest group boundary
+RAM_ROM_END = 0x313fc  # end of the block the boot code copies to RAM (table at 0x313fc)
 
 
 def read_splits():
@@ -227,7 +228,6 @@ def c_flags(src: Path) -> list:
 
 def build() -> Path:
     segs = read_splits()
-    syms = read_symbols()
     OBJ.mkdir(parents=True, exist_ok=True)
     objs = []  # (start, object)
     for start, end, kind, arg in segs:
@@ -250,20 +250,31 @@ def build() -> Path:
             subprocess.run([*AS, "-o", str(o), str(s)], check=True)
         objs.append((a, o))
     objs.sort()
+    syms = read_symbols()
 
-    ld = ["SECTIONS", "{", "\t.text 0x0 :", "\t{"]
-    for a, o in objs:
-        ld.append(f'\t\tASSERT(. == 0x{a:06x}, "{o.name} does not start at 0x{a:06x}");')
-        ld.append(f"\t\t{o}(.text)")
-    ld += [f'\t\tASSERT(. == 0x{ROM_SIZE:06x}, "image is not 0x{ROM_SIZE:x} bytes");', "\t}",
-           "\t/DISCARD/ : { *(.comment) }", "}"]
+    # The boot code runs from ROM; it copies RAM_ROM..RAM_ROM_END to RAM_BASE
+    # and jumps there, so that block is linked at its RAM address.
+    regions = [(".boot", 0, fn.RAM_ROM, 0), (".text", fn.RAM_ROM, RAM_ROM_END, fn.RAM_BASE),
+               (".rodata", RAM_ROM_END, ROM_SIZE, RAM_ROM_END)]
+    ld = ["SECTIONS", "{"]
+    for name, lo, hi, vma in regions:
+        ld += [f"\t{name} 0x{vma:08x} : AT(0x{lo:06x})", "\t{"]
+        for a, o in objs:
+            if lo <= a < hi:
+                at = vma + a - lo
+                ld.append(f'\t\tASSERT(ABSOLUTE(.) == 0x{at:08x}, "{o.name} does not start at 0x{a:06x}");')
+                ld.append(f"\t\t{o}(.text)")
+        at = vma + hi - lo
+        ld += [f'\t\tASSERT(ABSOLUTE(.) == 0x{at:08x}, "{name} does not end at 0x{hi:06x}");', "\t}"]
+    ld += ["\t/DISCARD/ : { *(.comment) }", "}"]
     ld += [f"_{name} = 0x{addr:08x};" for name, addr in sorted(syms.items())]
     script = BUILD / "rom.ld"
     script.write_text("\n".join(ld) + "\n")
     elf = BUILD / "tgm2p.elf"
     subprocess.run(["sh-elf-ld", "-T", str(script), "-o", str(elf)], check=True)
     out = BUILD / "tgm2p.bin"
-    subprocess.run(["sh-elf-objcopy", "-O", "binary", "-j", ".text", str(elf), str(out)], check=True)
+    subprocess.run(["sh-elf-objcopy", "-O", "binary", *(f"-j{r[0]}" for r in regions), str(elf), str(out)],
+                   check=True)
     return out
 
 
