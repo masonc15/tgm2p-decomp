@@ -10,8 +10,8 @@ Per-file flags seen so far:
 
 | Source file (by ROM region) | Flags |
 |---|---|
-| EEPROM driver, `0x2fdd8`–`0x304ec` | `-optimize=0` |
-| Playfield helpers (`0x188ac`, `0x8518`), ROM-header accessor (`0x1260`) | `-optimize=1 -speed` |
+| EEPROM driver, `0x2fdd8`–`0x30880` | `-optimize=0` |
+| Everything else matched so far: the main loop, playfield helpers, the RNG, timer and interrupt setup, and assorted small routines | `-optimize=1 -speed` |
 
 MACL is saved as callee-saved, which is SHC's default (`-macsave=1`), so no flag is needed for that. Leaving the option off compiles byte-identically to `-macsave=1` on nuada, while `-macsave=0` changes `field_clear_flag`. The same kind of test shows `-division=cpu` is the default. One thing from the 1997 Hitachi manual worth knowing: `-speed` implies `-inline=20`, so small static helpers can get inlined without asking.
 
@@ -32,10 +32,10 @@ Results under v5.0r32 (the full 11-version matrix is in `build/final_probe.txt` 
 | `0x1260` | `f_1260` (ROM-header field → global) | `-optimize=1 -speed` | 6/6 (100%) |
 | `0x126c` | `f_126c` (empty) | `-optimize=1 -speed` | 6/6 (100%) |
 | `0x188ac` | `field_clear_flag` | `-optimize=1 -speed` | 82/82 (100%) |
+| `0x8518` | `field_check_flag` | `-optimize=1 -speed` | 83/83 (100%) |
 | `0x85be` | `field_inc_398` | `-optimize=1 -speed` | 13/13 (100%) |
-| `0x8518` | `field_check_flag` | `-optimize=1 -speed` | 81/83 (97.6%) |
 
-That's ten functions at 100%: six unoptimized and four optimized. Be honest about the optimized four, though: `f_126c` is an empty function and `field_inc_398` is a single increment. The optimized evidence that really counts is `field_clear_flag`, a two-level unrolled loop, plus the small `f_1260`.
+That's eleven functions at 100%: six unoptimized and five optimized. The optimized evidence that really counts is `field_clear_flag` (a two-level unrolled loop) and `field_check_flag` (a nested loop with hoisted invariants); `f_126c` is empty and `field_inc_398` is a single increment. Everything in `src/` matches too, and `make check` is the real test for those. The table only lists the cases the version comparison runs on.
 
 Here's why the version is pinned. Six v5.0 and v5.1 releases fail each test:
 
@@ -52,16 +52,19 @@ These are the rules to expect when decompiling the rest of the game.
 - **Unoptimized register choice is stateful.** At `-optimize=0`, SHC rotates its temp registers (`r0`–`r3`) with a counter that carries across every earlier statement in the file. The same function body gets different registers depending on what came before it. Unoptimized code therefore has to be decompiled from the start of its source file. The EEPROM driver starts on a fresh file, which is why it matches with no preamble.
 - **Pool padding is `0xFF`.** Unwritten alignment gaps before a pool read as `0xFF` in the ROM (erased EPROM), while `rof2elf.py` zero-fills them. The probe uses `rof2elf_fillff.py` on nuada, which is the stock script with its one gap-fill byte changed.
 - **Cache-through addresses.** The code addresses hardware through the SH-2 cache-through mirror (`0x2xxxxxxx`): `0x23000004` is the EEPROM port MAME maps at `0x03000004`, `0x24000000` is sprite RAM (`0x04000000`), and `0x2004002c` reads the ROM header at `0x4002c`.
-- **Runtime helpers live in RAM.** SHC's variable-shift runtime routines sit in RAM (`0x6030944` for left shift, `0x6030a04` for right shift), copied there at boot.
+- **The game runs from RAM.** The boot code at `0x400` runs from ROM and copies ROM `0x780`–`0x313fc` to RAM at `0x06000000` (the table at `0x313fc` says so, and a RAM dump from MAME agrees), so every call and function pointer in the game names a RAM address: ROM offset + `0x5fff880`. The main loop's call to `0x6014390` is the function at ROM `0x14b10`. The linker script links that block at its RAM address, so a C file that takes the address of one of its own functions gets the same pool word the ROM has.
+- **SHC's runtime library is at the end of that block.** The division routines start at ROM `0x30d40` (RAM `0x60305c0` is signed 32-bit division) and the variable shifts sit at RAM `0x6030944` (left) and `0x6030a04` (arithmetic right).
 
 ### Near misses worth coming back to
 
 These are in `tools/shc_probe/cases/wip/`.
 
-- **`field_check_flag` (97.6%).** The only difference is the order of two hoisted loads in the prologue: the table pointer and the `0x2000` mask. Declaration order, `register` and every option tried leave it unchanged.
 - **`f_23048` (72.9%).** The second half matches exactly. The prologue allocates its frame by pushing argument registers, which only six prologues in the whole ROM do.
-- **`f_2f304` (79.6%).** It needs the rest of its source file for the unoptimized register phase.
+- **`f_2f304` (79.6%).** It needs the rest of its source file for the unoptimized register phase. That file runs from `0x2e1b8` to `0x2fdd8`, about 35 functions tied together by `bsr` calls. Its first function matches from a fresh file, which supports that start. The second (`g = v * 48 / 60`) loads the destination address before the multiply, and no form tried so far reproduces that.
 - **`f_26f64`/`f_26faa`, `0x60e8`, and the sprite helpers at `0x2e06c`.** Real structural progress, but not converged.
+- **The effect spawner at `0x230a8` (98.3%, `effect_230a8.c`).** This pair of functions is stamped out twelve times (`0x205f0`, `0x206e0`, `0x20b24`, `0x20f78` and `0x230a8`–`0x23738` in steps of `0xf0`), differing only in a sprite number, a graphics pointer and the address of the update function. The update half matches. In the spawner, only the two loads that sum the x offsets come out in the wrong order. decomp-permuter hangs on this function without compiling a single candidate.
+- **Text drawing at `0xe750` (96.3%, `text_e750.c`), the secret-code checker at `0x23828` (93.8%, `code_23828.c`) and a sprite draw at `0x2090c` (80.3%, `draw_2090c.c`).** Register choice only in the first two.
+- **`0xef04`.** It does a 16.16 fixed-point multiply with `dmuls.l` and `xtrct`, which C can't express, so it probably came from an `#pragma inline_asm` helper.
 
 ## Building
 
@@ -69,7 +72,7 @@ These are in `tools/shc_probe/cases/wip/`.
 
 `splits.txt` is the map. Each line gives a start address and what builds that stretch of ROM: `asm`, `c` (with its source file) or `bin`, and each segment runs to the next line's address. The vectors (`0x0`–`0x400`) and everything after the code (`0x313fc` onward, starting with what looks like the RAM-copy table) are included as binary. The code in between is disassembled by `tools/build.py split` into `asm/*.s`. Those files are generated, not committed, and hold real instructions with labels for branch targets and literal pools. Any halfword the assembler can't reproduce exactly, mostly data tables inside the code, falls back to a raw `.short`.
 
-To move a function into C, write the source with the usual `/* rom: ... flags: ... */` first-line header and get it to 100% with the probe. Then add a `c` line for its range to `splits.txt`, add any addresses it references to `symbols.txt`, and run `make split check`. The linker script asserts every segment starts at its ROM address, so a C unit that comes out a different size fails loudly rather than shifting everything after it. Breaking a matched file on purpose (a one-byte change in `src/eeprom.c`, or a wrong address in `symbols.txt`) makes the check fail, which is the point.
+To move a function into C, write the source with the usual `/* rom: ... flags: ... */` first-line header and get it to 100% with the probe. Then add a `c` line for its range to `splits.txt` and run `make split check`. The range has to be one that nothing outside it reaches into: no pc-relative load, branch or `bsr` may cross its edges, because SHC only uses `bsr` within a file and places literal pools after a run of functions. External names follow a convention the build resolves without any table: `f_2b4e8` is the function at ROM `0x2b4e8` (linked at its RAM address), `d_3afb4` is ROM data at `0x3afb4`, and `g_6060022` is whatever lives at `0x06060022`. Anything else goes in `symbols.txt`. The linker script asserts every segment starts at its ROM address, so a C unit that comes out a different size fails loudly rather than shifting everything after it. Breaking a matched file on purpose (a one-byte change in `src/eeprom.c`, or a wrong address in `symbols.txt`) makes the check fail, which is the point.
 
 `make report` writes an `objdiff.json` and a progress report (`build/report.json`) with [objdiff](https://github.com/encounter/objdiff), the format [decomp.dev](https://decomp.dev) reads. Every asm file is a unit with a target only, labelled at each function start `fn.py` finds. Every C file is a unit whose target is rendered from the ROM, with the C object's function names and the literal-pool words written as their `symbols.txt` symbols, so objdiff pairs the functions and compares relocations as well as bytes. The same `objdiff.json` also opens in the objdiff GUI.
 
@@ -81,12 +84,12 @@ The heavy work runs on nuada: `/drive2/tgm2p` holds the SHC compilers, wibo, `ro
 
 - `tools/interleave.py` joins the two EPROM halves into `build/prog.bin` and splits a rebuilt image back apart, checking SHA-1s.
 - `tools/fn.py` prints annotated listings with function extents and literal pools, and `--scan` classifies every call target.
-- `tools/nprobe.sh [probe.py args]` syncs `tools/` to nuada and runs the probe there, for example `tools/nprobe.sh --cases opt_188ac` or `tools/nprobe.sh --diff v5.0r32 --cases opt_8518` for a side-by-side listing.
+- `tools/nprobe.sh [probe.py args]` syncs `tools/` to nuada and runs the probe there, for example `tools/nprobe.sh --cases opt_188ac` or `tools/nprobe.sh --diff v5.0r32 --cases opt_8518` for a side-by-side listing. `--dir` points it at another directory of cases, which is handy for trying a few dozen generated variants of one function at once.
 - `tools/shc_probe/shcc.sh` compiles one file with one SHC build under wibo and converts it with `rof2elf`.
 - `tools/ghidra/` holds the headless scripts: memory map setup, seeding functions from `tools/seeds.py`, and exporting per-function decompiled C.
 - `tools/mame_cov.lua`, `tools/run_cov.sh` and `tools/tracecov.c` capture MAME trace windows for execution coverage, streamed through a FIFO.
 - `tools/m2c_fn.py 0x188ac field_clear_flag` turns a ROM function into GNU-as SH-2 assembly and runs [m2c](https://github.com/matt-kempster/m2c)'s `sh2` target on it for a first-draft C. It comments out SHC's MACL save and restore, which m2c doesn't model, and `--asm` prints the assembly alone.
-- `tools/perm_setup.py <case> [func]` turns a probe case into a [decomp-permuter](https://github.com/simonlindholm/decomp-permuter) directory under `/drive2/tgm2p/perm/`. The permuter keeps only the function it's permuting, so `compile.sh` splices the case's other functions back in around it. That preserves SHC's shared literal pools and its unoptimized register state. The permuter has no SuperH support upstream, so the checkout at `/drive2/tgm2p/decomp-permuter` carries `tools/permuter-sh2.patch`. Already-matched functions score 0 through this path, which is the sanity check.
+- `tools/perm_setup.py <case> [func] [--cases DIR]` turns a probe case into a [decomp-permuter](https://github.com/simonlindholm/decomp-permuter) directory under `/drive2/tgm2p/perm/`. The permuter keeps only the function it's permuting, so `compile.sh` splices the case's other functions back in around it. That preserves SHC's shared literal pools and its unoptimized register state. The permuter has no SuperH support upstream, so the checkout at `/drive2/tgm2p/decomp-permuter` carries `tools/permuter-sh2.patch`. Already-matched functions score 0 through this path, which is the sanity check.
 - `tools/scratch.py <src.c> <start> <end> <func> "<flags>"` creates and compiles a scratch on a private decomp.me instance (on nuada, at `/drive2/tgm2p/decomp.me-local`, with `decompme/decomp.me-saturn-shc.patch` applied). The target is rendered from the exact ROM bytes, with pool words that hold a `symbols.txt` address written as that symbol, so a matching source scores 0.
 - `refs/` (gitignored) holds reference material: the 1997 Hitachi SH C compiler manual (with a text dump), the SH-1/SH-2 programming manual, the SH7604 hardware manual, the SuperH assembler manual, and MAME's `psikyosh` driver source.
 - `decompme/` holds the patch that adds this compiler to decomp.me's Saturn platform, submitted as [decomp.me#2115](https://github.com/decompme/decomp.me/pull/2115), along with the PR text and `decompme/NOTES.md`. `compilers-saturn-shc.patch` is the unused two-PR fallback.
