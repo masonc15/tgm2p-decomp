@@ -39,7 +39,8 @@
 0x019d68 asm
 0x01a7c8 c    src/item_1a7c8.c
 0x01ade8 c    src/item_1ade8.c
-0x01b3d4 asm
+0x01b3d4 c    src/item_1b3d4.c
+0x01b6f8 asm
 0x0205f0 c    src/effect_205f0.c
 0x0206e0 c    src/effect_206e0.c
 0x0207d0 c    src/effect_207d0.c
