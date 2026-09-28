@@ -1,4 +1,6 @@
 /* rom: 0x8518 len: 0xc0 func: field_check_flag flags: -macsave=1 -optimize=1 -speed */
+/* Clears this field's entry in g_6079374 unless some inner cell has bit 13
+ * set and a b3 value equal to that entry. */
 struct cell {
 	unsigned short flags;
 	char b2;
@@ -21,14 +23,13 @@ void field_check_flag(struct field *f)
 {
 	short x, y;
 	struct cell *c;
-	unsigned short mask = 0x2000;
+	int mask = 0x2000;
 	char *tbl = g_6079374;
 
 	for (y = 1; y < f->height; y++) {
 		c = &f->cells[y * f->width + 1];
 		for (x = 1; x < f->width - 1; x++, c++)
-			if ((c->flags & mask) &&
-			    f->cells[y * f->width + x].b3 == tbl[f->b30e])
+			if ((c->flags & mask) && f->cells[y * f->width + x].b3 == g_6079374[f->b30e])
 				return;
 	}
 	tbl[f->b30e] = 0;
