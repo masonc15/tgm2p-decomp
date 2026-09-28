@@ -17,6 +17,11 @@ import capstone as cs
 
 ROOT = Path(__file__).resolve().parent.parent
 TEXT_END = 0x31000
+# Boot code copies ROM 0x780-0x313fc to RAM at 0x06000000 and runs it there, so
+# calls through literal pools name RAM addresses (see the table at 0x313fc).
+RAM_BASE = 0x06000000
+RAM_ROM = 0x780
+RAM_END = RAM_BASE + 0x313fc - RAM_ROM
 ROM = (ROOT / "build" / "prog.bin").read_bytes()
 MD = cs.Cs(cs.CS_ARCH_SH, cs.CS_MODE_SH2 | cs.CS_MODE_BIG_ENDIAN)
 MD.skipdata = True
@@ -100,6 +105,11 @@ def listing(start: int) -> None:
         print(f" {a:06x} {hw(a):04x}  .word")
 
 
+def rom_addr(v: int) -> int:
+    """ROM offset of a code address as the running program sees it."""
+    return v - RAM_BASE + RAM_ROM if RAM_BASE <= v < RAM_END else v
+
+
 def call_targets():
     seeds = set()
     for pc in range(0x400, 0x31000, 2):
@@ -107,16 +117,61 @@ def call_targets():
         if w >> 12 == 0xB:
             seeds.add(pc + 4 + sdisp(w & 0xFFF, 12) * 2)
     lit = {}
+    pointers = set()
     for pc in range(0x400, 0x31000, 2):
         w = hw(pc)
         if w >> 12 == 0xD:
             a = ((pc + 4) & ~3) + (w & 0xFF) * 4
-            lit[(w >> 8) & 0xF] = (struct.unpack(">I", ROM[a:a + 4])[0], pc)
+            v = struct.unpack(">I", ROM[a:a + 4])[0]
+            lit[(w >> 8) & 0xF] = (rom_addr(v), pc)
+            if RAM_BASE <= v < RAM_END:
+                pointers.add(rom_addr(v))
         elif w >> 12 == 0x4 and (w & 0xFF) == 0x0B:
             n = (w >> 8) & 0xF
             if n in lit and pc - lit[n][1] <= 16 and 0x400 <= lit[n][0] < 0x31000:
                 seeds.add(lit[n][0])
+    # Function pointers: RAM code addresses held in literal pools (often
+    # hoisted into registers far from the jsr) and in the data after the code.
+    for a in range(0x313fc, len(ROM) - 3, 4):
+        v = struct.unpack(">I", ROM[a:a + 4])[0]
+        if RAM_BASE <= v < RAM_END:
+            pointers.add(rom_addr(v))
+    seeds |= {p for p in pointers if 0x400 < p < 0x31000 and after_return(p)}
     return sorted(s for s in seeds if 0x400 <= s < 0x31000 and s % 2 == 0)
+
+
+def after_return(a: int) -> bool:
+    """Whether a could start a function: it follows a return's delay slot,
+    alignment padding, or a literal pool."""
+    back = hw(a - 4)
+    if back == 0x000B or (back >> 12 == 0x4 and back & 0xFF == 0x2B):  # rts / jmp @Rn
+        return True
+    if hw(a - 2) == 0x0009 and hw(a - 6) == 0x000B:  # padded after rts; slot
+        return True
+    return extent_pool_end(a)
+
+
+def extent_pool_end(a: int) -> bool:
+    """Whether a pc-relative load earlier in the ROM reads the word just before a."""
+    return a in _pool_ends()
+
+
+_POOL_ENDS = None
+
+
+def _pool_ends():
+    global _POOL_ENDS
+    if _POOL_ENDS is None:
+        ends = set()
+        for pc in range(0x400, 0x31000, 2):
+            w = hw(pc)
+            if w >> 12 == 0xD:
+                ends.add(((pc + 4) & ~3) + (w & 0xFF) * 4 + 4)
+            elif w >> 12 == 0x9:
+                t = pc + 4 + (w & 0xFF) * 2
+                ends.update((t + 2, t + 4 if t % 4 == 2 and hw(t + 2) in (0x0000, 0x0009, 0xFFFF) else t + 2))
+        _POOL_ENDS = ends
+    return _POOL_ENDS
 
 
 def units():
