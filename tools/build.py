@@ -322,10 +322,15 @@ def progress() -> None:
 
 # ---------------------------------------------------------------- report
 
-def named_pools(text: str) -> str:
+def named_pools(text: str, local: dict = None, section_rel=frozenset()) -> str:
     """Write each aligned pool word that holds a symbols.txt address as that
-    symbol, so a ROM-rendered target carries the relocation a C object has."""
+    symbol, so a ROM-rendered target carries the relocation a C object has.
+    local maps addresses of the unit's own functions to their names, for
+    pool words that take the address of a function in the same file; SHC
+    relocates some of those against .text rather than the symbol, and the
+    ROM addresses in section_rel get a local label so the target does too."""
     syms = {v: k for k, v in read_symbols().items()}
+    syms.update(local or {})
     lines = text.splitlines()
     out, i = [], 0
     while i < len(lines):
@@ -334,6 +339,10 @@ def named_pools(text: str) -> str:
                 and lines[i + 1].lstrip().startswith(".short"):
             a = int(m[1], 16)
             v = int.from_bytes(fn.ROM[a:a + 4], "big")
+            if a % 4 == 0 and a in section_rel and v in (local or {}):
+                out.append(f"\t.long\t.L{local[v]}\t/* {a:06x} */")  # section-relative, as SHC wrote it
+                i += 2
+                continue
             if a % 4 == 0 and v in syms:
                 out.append(f"\t.long\t_{syms[v]}\t/* {a:06x} */")
                 i += 2
@@ -351,9 +360,21 @@ def name_functions(text: str, names: dict) -> str:
         m = TAG.search(line)
         name = names.get(int(m[1], 16)) if m else None
         if name and name not in have:
-            out += [f"\t.global\t{name}", f"{name}:"]
+            out += [f"\t.global\t{name}", f"{name}:", f".L{name.removeprefix('_')}:"]
         out.append(line)
     return "\n".join(out) + "\n"
+
+
+def text_relocs(obj: Path) -> set:
+    """Offsets in obj's .text whose relocation is against the .text section."""
+    r = subprocess.run(["sh-elf-objdump", "-r", "-j", ".text", str(obj)], capture_output=True, text=True,
+                       check=True)
+    out = set()
+    for line in r.stdout.splitlines():
+        p = line.split()
+        if len(p) == 3 and p[2].split("+")[0] == ".text":
+            out.add(int(p[0], 16))
+    return out
 
 
 def c_functions(obj: Path, start: int) -> dict:
@@ -382,7 +403,12 @@ def report() -> None:
         base = OBJ / (src.stem + ".o")
         s = REPORT / f"{src.stem}.s"
         render_exact(start, end, set(), pool_targets(start, end), s)
-        s.write_text(name_functions(named_pools(s.read_text()), c_functions(base, start)))
+        funcs = c_functions(base, start)
+        # The copied block runs from RAM, so that's the address a pool holds.
+        local = {a + (fn.RAM_BASE - fn.RAM_ROM if fn.RAM_ROM <= a < RAM_ROM_END else 0): n.removeprefix("_")
+                 for a, n in funcs.items()}
+        section_rel = {start + o for o in text_relocs(base)}
+        s.write_text(name_functions(named_pools(s.read_text(), local, section_rel), funcs))
         units.append((start, {"name": arg.removesuffix(".c"), "target_path": s.with_suffix(".o"),
                               "base_path": base, "metadata": {"complete": True, "source_path": arg}}))
     for _, u in units:
