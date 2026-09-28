@@ -33,7 +33,8 @@
 0x020b24 c    src/effect_20b24.c
 0x020c14 asm
 0x020f78 c    src/effect_20f78.c
-0x021068 asm
+0x021068 c    src/effect_21068.c
+0x021170 asm
 0x02190c c    src/medal.c
 0x021bc8 c    src/f_21bc8.c
 0x021d94 asm
