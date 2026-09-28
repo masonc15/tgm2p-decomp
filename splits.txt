@@ -19,6 +19,8 @@
 0x0120c0 asm
 0x0188ac c    src/field_clear.c
 0x018950 asm
+0x018fec c    src/f_18fec.c
+0x019014 asm
 0x02fdd8 c    src/eeprom.c
 0x030880 asm
 0x0313fc bin  data
