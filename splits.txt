@@ -7,6 +7,8 @@
 0x001278 asm
 0x002f3c c    src/rand.c
 0x002f68 asm
+0x007f38 c    src/f_7f38.c
+0x007fa0 asm
 0x0188ac c    src/field_clear.c
 0x018950 asm
 0x02fdd8 c    src/eeprom.c
