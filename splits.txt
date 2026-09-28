@@ -77,6 +77,7 @@
 0x02190c c    src/medal.c
 0x021bc8 c    src/f_21bc8.c
 0x021d94 asm
+0x02261c c    src/task_2261c.c
 0x0230a8 c    src/effect_230a8.c
 0x023198 c    src/effect_23198.c
 0x023288 c    src/effect_23288.c
