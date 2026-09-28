@@ -58,7 +58,7 @@
 0x01eb1c c    src/f_1eb1c.c
 0x01ed78 c    src/f_1ed78.c
 0x01ef7c c    src/f_1ef7c.c
-0x01f5b4 asm
+0x01f5b4 c    src/f_1f5b4.c
 0x020018 c    src/f_20018.c
 0x020134 c    src/f_20134.c
 0x020250 asm
