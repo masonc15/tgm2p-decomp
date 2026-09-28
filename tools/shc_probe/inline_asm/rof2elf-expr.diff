@@ -1,0 +1,60 @@
+--- a/rof2elf_fillff.py
++++ b/rof2elf_fillff.py
+@@ -292,6 +292,7 @@
+ 
+         cur_unit = None
+         cur_section: int = None
++        pending_addends = []
+         for block in out.blocks:
+             # print(f"Parsing {block.type.name}")
+ 
+@@ -393,11 +394,31 @@
+                     rlen = struct.unpack(">B", f.read(1))[0]
+                     
+                     if rlen != 4:
+-                        raise ValueError("Relocation expression too big")
+-
+-                    rtype, rval, _ = struct.unpack(">BHB", f.read(1 + 2 + 1))
+-
+-                    rel = Sysrof.Reloc(rtype, addr, rval)
++                        # asmsh writes "sym + const" as an RPN expression
++                        # (03 04 <imm32> / 02 <idx16> / 00 <sec16>, 20 = add,
++                        # ff = end) and leaves 0 in the data word. Fold the
++                        # constant into the word, the way shc's own objects
++                        # carry it, and keep a plain symbol reloc.
++                        expr = f.read(rlen)
++                        k = 0; add = 0; term = None
++                        while k < len(expr):
++                            op = expr[k]
++                            if op == 0x03:
++                                n = expr[k + 1]
++                                add += int.from_bytes(expr[k + 2:k + 2 + n], "big"); k += 2 + n
++                            elif op in (0x00, 0x02):
++                                assert term is None, "two symbols in one expression"
++                                term = (op, int.from_bytes(expr[k + 1:k + 3], "big")); k += 3
++                            elif op in (0x20, 0xff):
++                                k += 1
++                            else:
++                                raise ValueError(f"Relocation operator {op:#x} not handled")
++                        assert term is not None
++                        pending_addends.append((cur_section, addr, add))
++                        rel = Sysrof.Reloc(term[0], addr, term[1])
++                    else:
++                        rtype, rval, _ = struct.unpack(">BHB", f.read(1 + 2 + 1))
++                        rel = Sysrof.Reloc(rtype, addr, rval)
+ 
+                     out.sections[cur_section].relocs.append(rel)
+ 
+@@ -446,6 +467,12 @@
+                     _ = struct.unpack(f">{calls}I", f.read(calls * 4))
+ 
+         out.src_lines.sort(key=lambda x: x.start)
++
++        for sec, addr, add in pending_addends:
++            c = bytearray(out.sections[sec].content)
++            v = (int.from_bytes(c[addr:addr + 4], "big") + add) & 0xFFFFFFFF
++            c[addr:addr + 4] = v.to_bytes(4, "big")
++            out.sections[sec].content = bytes(c)
+ 
+         return out
+ 
