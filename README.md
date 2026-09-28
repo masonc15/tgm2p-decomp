@@ -71,7 +71,9 @@ These are in `tools/shc_probe/cases/wip/`.
 - **`f_191a4` (91.4%, `playfield_1913c.c`).** Structure exact; `g_607c5d8`'s address and `v` swap `r11`/`r12`, and the tail call goes through `r3` instead of `r2`. About 60 variants failed; moving the unlink code into a `#pragma inline` helper fixes the allocation but adds a `mov r13,r5`.
 - **`f_26f64`/`f_26faa`, `0x60e8`, and the sprite helpers at `0x2e06c`.** Real structural progress, but not converged.
 - **The secret-code checker at `0x23828` (93.8%, `code_23828.c`) and a sprite draw at `0x2090c` (80.3%, `draw_2090c.c`).** Register choice only in the first. Its score moves with the file state, so it probably needs the effect functions before it in the same file.
-- **`0xef04`.** It does a 16.16 fixed-point multiply with `dmuls.l` and `xtrct`, which C can't express, so it probably came from an `#pragma inline_asm` helper.
+- **`0xef04` (94.1%, `vm_ef04.c`).** `f_ef04` does a 16.16 fixed-point multiply with `dmuls.l` and `xtrct`, which C can't express; a `#pragma inline_asm` helper reproduces it, but the unit then has to be built with `-code=asmcode` and asmsh, which `tools/build.py` can't do yet, and rof2elf rejects symbol+offset pool words on that path. `f_f06a` is stuck at 66.7% with two registers swapped.
+- **`0xe834` (`vm_e834.c`).** `f_e834`, `f_e854`, `f_e882` and `f_e8b8` store `r15` itself (`mov.l r15,@(r0,rN)`), the only four places in the ROM that do. SHC always copies `r15` to another register first, across about 50 C forms and every compiler release and relevant flag tried, so these were probably hand-written or inline assembly.
+- **`0xec0c` (`vm_ec0c.c`).** `f_ec0c` is about 52%; the small functions after it match. `char buf[2] = {0}` reproduces the ROM's copy from RAM `0x603343c`, an SHC initializer constant, so linking it would need that data placed there.
 
 ## Building
 
