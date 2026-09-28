@@ -28,7 +28,7 @@
 0x0185f0 c    src/draw_req_185f0.c
 0x018708 asm
 0x0188ac c    src/field_clear.c
-0x018950 asm
+0x018be0 asm
 0x018fec c    src/f_18fec.c
 0x019014 asm
 0x0205f0 c    src/effect_205f0.c
