@@ -64,6 +64,22 @@ def functions(text: str):
     return out
 
 
+LOCALS = re.compile(r"^(\s+)((?:(?:unsigned|signed|register|const|volatile|struct|union)\s+)*\w+)\s+"
+                    r"(\**\s*\w+(?:\s*,\s*\**\s*\w+)+)\s*;\s*$", re.M)
+
+
+def split_locals(src: str) -> str:
+    """Give each local its own declaration. pycparser shares one type node
+    between the names in `short x, y;`, and the permuter's randomizer then
+    fails every candidate with "nodes should only appear once in AST". Any
+    indented line is split, struct members included, which changes nothing
+    the compiler emits."""
+    def one(m):
+        names = [n.strip() for n in m[3].split(",")]
+        return "\n".join(f"{m[1]}{m[2]} {n};" for n in names)
+    return LOCALS.sub(one, src)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("case")
@@ -77,6 +93,7 @@ def main() -> None:
     # The permuter parses C with pycparser, which needs preprocessed input.
     src = subprocess.run(["cpp", "-P", "-nostdinc", "-undef"], input=raw_src,
                          capture_output=True, text=True, check=True).stdout
+    src = split_locals(src)
     func = args.func or hdr["func"] or args.case
     flags = (hdr["flags"] or "").strip()
     fns = functions(src)
