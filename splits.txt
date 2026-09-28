@@ -36,7 +36,8 @@
 0x0207d0 c    src/effect_207d0.c
 0x02090c asm
 0x020b24 c    src/effect_20b24.c
-0x020c14 asm
+0x020c14 c    src/effect_20c14.c
+0x020d60 asm
 0x020f78 c    src/effect_20f78.c
 0x021068 c    src/effect_21068.c
 0x021170 asm
