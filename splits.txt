@@ -17,7 +17,8 @@
 0x00e828 c    src/stubs_e828.c
 0x00e834 asm
 0x00e988 c    src/vm_e988.c
-0x00ead0 asm
+0x00ead0 c    src/vm_ead0.c
+0x00ec0c asm
 0x011e98 c    src/f_11e98.c
 0x011fe8 c    src/f_11fe8.c
 0x0120c0 asm
