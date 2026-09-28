@@ -347,6 +347,13 @@ def named_pools(text: str, local: dict = None, section_rel=frozenset()) -> str:
                 out.append(f"\t.long\t_{syms[v]}\t/* {a:06x} */")
                 i += 2
                 continue
+            # A narrowed load (a short or byte read of a long) points a few
+            # bytes into its symbol.
+            base = next((v - k for k in (1, 2, 3) if a % 4 == 0 and v - k in syms), None)
+            if base is not None:
+                out.append(f"\t.long\t_{syms[base]}+{v - base}\t/* {a:06x} */")
+                i += 2
+                continue
         out.append(lines[i])
         i += 1
     return "\n".join(out) + "\n"
