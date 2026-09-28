@@ -3,6 +3,7 @@
 
 # SHC runtime helpers, copied to RAM at boot
 _divls          0x060305c0  # signed 32-bit division
+_modls          0x0603076c  # signed 32-bit remainder
 _sftl           0x06030944  # variable left shift
 _sftra          0x06030a04  # variable arithmetic right shift
 

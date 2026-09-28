@@ -20,7 +20,8 @@
 0x011fe8 c    src/f_11fe8.c
 0x0120c0 asm
 0x0175c4 c    src/task.c
-0x0176e0 asm
+0x0176e0 c    src/effect_176e0.c
+0x018064 asm
 0x0188ac c    src/field_clear.c
 0x018950 asm
 0x018fec c    src/f_18fec.c
