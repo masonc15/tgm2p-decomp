@@ -54,7 +54,7 @@
 0x01dc76 bin  pad between source files
 0x01dc78 c    src/item_1dc78.c
 0x01e480 c    src/item_1e480.c
-0x01e5b4 asm
+0x01e5b4 c    src/item_1e5b4.c
 0x01eb1c c    src/f_1eb1c.c
 0x01ed78 c    src/f_1ed78.c
 0x01ef7c c    src/f_1ef7c.c
