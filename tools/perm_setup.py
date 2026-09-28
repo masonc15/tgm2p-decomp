@@ -11,7 +11,7 @@ target.o is the case compiled as-is with its .text bytes replaced by the ROM
 bytes, except for the words the object relocates, so pool addresses compare
 the same way probe.py compares them.
 
-usage: perm_setup.py <case> [func] [--dir DIR]
+usage: perm_setup.py <case> [func] [--dir DIR] [--cases CASEDIR]
 then:  python /drive2/tgm2p/decomp-permuter/permuter.py DIR -j 6 --stop-on-zero
 """
 import argparse
@@ -69,8 +69,10 @@ def main() -> None:
     ap.add_argument("case")
     ap.add_argument("func", nargs="?")
     ap.add_argument("--dir", type=Path)
+    ap.add_argument("--cases", type=Path, default=CASES, help="directory holding the case")
     args = ap.parse_args()
-    raw_src = (CASES / f"{args.case}.c").read_text()
+    case_src = args.cases / f"{args.case}.c"
+    raw_src = case_src.read_text()
     hdr = HEADER.search(raw_src)
     # The permuter parses C with pycparser, which needs preprocessed input.
     src = subprocess.run(["cpp", "-P", "-nostdinc", "-undef"], input=raw_src,
@@ -97,7 +99,7 @@ def main() -> None:
 
     # Build target.o: compile the case unchanged, then swap in ROM bytes.
     base = d / "base.o"
-    subprocess.run([str(SHCC), VERSION, str(base), str(CASES / f"{args.case}.c"), *flags.split()], check=True)
+    subprocess.run([str(SHCC), VERSION, str(base), str(case_src), *flags.split()], check=True)
     raw = bytearray(base.read_bytes())
     with base.open("rb") as f:
         e = ELFFile(f)
