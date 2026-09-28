@@ -41,7 +41,18 @@ def extent(start: int, limit: int = 0x2000):
     far = start
     pool = set()
     targets = set()
+    resume = None  # first address after a jump that doesn't end the function
+    after_jump = False
     while pc < start + limit:
+        if pc == resume:
+            after_jump = True
+        # A pool can sit mid-function after a bra, holding words that only
+        # earlier functions load, so skip anything any load reads there.
+        if pc in pool or (after_jump and (pc in all_pool() or (hw(pc) in (0x0009, 0xFFFF, 0x0000)
+                                                               and pc + 2 in all_pool()))):
+            pc += 2
+            continue
+        after_jump = False
         w = hw(pc)
         op = w >> 12
         if op == 0xD:  # mov.l @(disp,pc)
@@ -62,10 +73,12 @@ def extent(start: int, limit: int = 0x2000):
             if pc + 2 >= far:
                 pc += 4
                 break
+            resume = pc + 4
         elif w == 0x000B or (op == 0x4 and (w & 0xFF) == 0x2B):  # rts / jmp @Rn
             if pc + 2 >= far:
                 pc += 4
                 break
+            resume = pc + 4
         pc += 2
     code_end = pc
     end = code_end
@@ -76,6 +89,25 @@ def extent(start: int, limit: int = 0x2000):
     if end % 4 and hw(end) == 0x0009:
         end += 2
     return code_end, end, pool, targets
+
+
+_ALL_POOL = None
+
+
+def all_pool():
+    """Every address some pc-relative load in the code reads."""
+    global _ALL_POOL
+    if _ALL_POOL is None:
+        out = set()
+        for pc in range(0x400, TEXT_END, 2):
+            w = hw(pc)
+            if w >> 12 == 0xD or w & 0xFF00 == 0xC700:
+                a = ((pc + 4) & ~3) + (w & 0xFF) * 4
+                out.update((a, a + 2))
+            elif w >> 12 == 0x9:
+                out.add(pc + 4 + (w & 0xFF) * 2)
+        _ALL_POOL = out
+    return _ALL_POOL
 
 
 def shape(start: int, code_end: int) -> str:
