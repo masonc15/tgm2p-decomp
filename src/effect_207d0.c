@@ -1,0 +1,76 @@
+/* rom: 0x207d0 len: 0x13c func: f_207d0 flags: -macsave=1 -optimize=1 -speed */
+/* A playfield effect at a cell: the spawner places sprite 0xb4 on cell
+ * (x, y) of the field, and the update steps its animation, fast for ten
+ * ticks and then every other or every fourth tick, freeing the task after
+ * 16 frames. Matches from a fresh file. */
+struct frame { char pad[12]; };
+struct sprite {
+	struct frame *frames;      /* 0x18 */
+	short w4;                  /* 0x1c */
+	short y;                   /* 0x1e */
+	short x;                   /* 0x20 */
+};
+struct task {
+	char pad0[6];
+	short tick;                /* 0x06 */
+	short n;                   /* 0x08 */
+	char pad1[16 - 10];
+	void (*func)(struct task *); /* 0x10 */
+	struct field *owner;       /* 0x14 */
+	struct sprite spr;         /* 0x18 */
+};
+struct point { short x, y; };
+struct field {
+	char pad0[0xde];
+	unsigned char height;      /* 0x0de */
+	unsigned char width;       /* 0x0df */
+	char pad1[0x314 - 0xe0];
+	struct point shake;        /* 0x314 */
+};
+extern struct task *f_17614(void);
+extern void f_17638(struct task *);
+extern void f_1159c(struct frame *, int, int, int, int);
+extern unsigned short g_6060000;
+extern struct frame d_a80fc[];
+
+void f_2085a(struct task *t);
+
+void f_207d0(struct field *f, short y, short x)
+{
+	struct task *t;
+	struct sprite *s;
+
+	if ((t = f_17614()) != 0) {
+		t->func = f_2085a;
+		t->owner = f;
+		s = &t->spr;
+		t->tick = 0;
+		t->n = 0;
+		s->x = x * 8 + f->shake.x - (f->width / 2) * 8 - 4;
+		s->y = (f->height - y - 1) * 8 + f->shake.y - (f->height - 1) * 8 - 6;
+		s->frames = d_a80fc;
+		s->w4 = 0xb4;
+	}
+}
+
+void f_2085a(struct task *t)
+{
+	struct sprite *s = &t->spr;
+	int y, x;
+
+	y = s->y;
+	x = s->x;
+	f_1159c(&s->frames[t->n], y, x, s->w4, 124);
+	if (g_6060000 >= 40)
+		return;
+	t->tick++;
+	if (t->tick < 10)
+		t->n++;
+	else if (t->tick < 14) {
+		if (t->tick & 1)
+			t->n++;
+	} else if (t->tick & 2)
+		t->n++;
+	if (t->n >= 16)
+		f_17638(t);
+}
