@@ -22,6 +22,8 @@
 0x018950 asm
 0x018fec c    src/f_18fec.c
 0x019014 asm
+0x02190c c    src/medal.c
+0x021ad0 asm
 0x023f08 c    src/stubs_23f08.c
 0x023f10 asm
 0x02b430 c    src/frt.c
