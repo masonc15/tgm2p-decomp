@@ -21,6 +21,8 @@
 0x00ec0c asm
 0x00f0e8 c    src/vm_f0e8.c
 0x00f200 asm
+0x00f5cc c    src/vm_f5cc.c
+0x00f6f8 asm
 0x00fbdc c    src/vm_fbdc.c
 0x00fc8c asm
 0x011e98 c    src/f_11e98.c
