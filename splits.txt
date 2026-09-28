@@ -43,6 +43,8 @@
 0x01b6f8 c    src/item_1b6f8.c
 0x01ba20 c    src/item_1ba20.c
 0x01c200 asm
+0x01c708 c    src/item_1c708.c
+0x01d1bc asm
 0x0205f0 c    src/effect_205f0.c
 0x0206e0 c    src/effect_206e0.c
 0x0207d0 c    src/effect_207d0.c
