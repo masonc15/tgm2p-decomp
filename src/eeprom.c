@@ -1,4 +1,4 @@
-/* rom: 0x2fdd8 len: 0x714 func: eeprom_send_bit flags: -macsave=1 -optimize=0 */
+/* rom: 0x2fdd8 len: 0xaa8 func: eeprom_send_bit flags: -macsave=1 -optimize=0 */
 /* EEPROM (93C56) bit-bang routines. 0x23000004 is the cache-through mirror of
  * the PS5V2 I/O port at 0x03000004: bit 5 = DI, bit 6 = CLK, bit 7 = CS. */
 #define EEPROM_PORT (*(volatile unsigned char *)0x23000004)
@@ -208,4 +208,111 @@ void eeprom_write_all(void)                        /* 0x3036e */
 		EEPROM_PORT = 0x42;
 	}
 	eeprom_write_disable();
+}
+
+unsigned char eeprom_read(unsigned char addr)             /* 0x304ec */
+{
+	unsigned char i;
+	unsigned char j;
+	unsigned char a;
+	unsigned char data;
+
+	a = addr;
+	EEPROM_PORT = 0xa2;
+	for (i = 0; i < 3; i++)
+		;
+	EEPROM_PORT = 0xe2;
+	for (i = 0; i < 3; i++)
+		;
+	EEPROM_PORT = 0x82;
+	for (i = 0; i < 3; i++)
+		;
+	eeprom_send_bit(1);
+	eeprom_send_bit(0);
+	eeprom_send_bit(0);
+	for (i = 0; i < 8; i++) {
+		if ((a >> (7 - i)) & 1)
+			eeprom_send_bit(1);
+		else
+			eeprom_send_bit(0);
+	}
+	EEPROM_PORT = 0x82;
+	for (j = 0; j < 1; j++)
+		;
+	EEPROM_PORT = 0xc2;
+	for (j = 0; j < 1; j++)
+		;
+	data = 0;
+	for (i = 0; i < 8; i++) {
+		if (EEPROM_PORT & 0x10)
+			data |= 1 << (7 - i);
+		EEPROM_PORT = 0x82;
+		for (j = 0; j < 1; j++)
+			;
+		EEPROM_PORT = 0xc2;
+		for (j = 0; j < 1; j++)
+			;
+	}
+	EEPROM_PORT = 0x42;
+	return data;
+}
+
+void eeprom_read_block(unsigned char addr, unsigned char *dst, int n)     /* 0x3068c */
+{
+	int i;
+
+	for (i = 0; i < n; i++)
+		*dst++ = eeprom_read(addr + i);
+}
+
+void eeprom_write(unsigned char addr, unsigned char data)  /* 0x306d8 */
+{
+	int i;
+	unsigned char a;
+
+	a = addr;
+	eeprom_write_enable();
+	EEPROM_PORT = 0xa2;
+	for (i = 0; i < 3; i++)
+		;
+	EEPROM_PORT = 0xe2;
+	for (i = 0; i < 3; i++)
+		;
+	EEPROM_PORT = 0x82;
+	for (i = 0; i < 3; i++)
+		;
+	eeprom_send_bit(0);
+	eeprom_send_bit(1);
+	eeprom_send_bit(0);
+	for (i = 0; i < 8; i++) {
+		if ((a >> (7 - i)) & 1)
+			eeprom_send_bit(1);
+		else
+			eeprom_send_bit(0);
+	}
+	for (i = 0; i < 8; i++) {
+		if ((data >> (7 - i)) & 1)
+			eeprom_send_bit(1);
+		else
+			eeprom_send_bit(0);
+	}
+	EEPROM_PORT = 0x42;
+	for (i = 0; i < 3; i++)
+		;
+	EEPROM_PORT = 2;
+	for (i = 0; i < 3; i++)
+		;
+	EEPROM_PORT = 0xc2;
+	while (!(EEPROM_PORT & 0x10))
+		;
+	EEPROM_PORT = 0x42;
+	eeprom_write_disable();
+}
+
+void eeprom_write_block(unsigned char addr, unsigned char *src, int n)    /* 0x30844 */
+{
+	int i;
+
+	for (i = 0; i < n; i++)
+		eeprom_write(addr + i, src[i]);
 }
