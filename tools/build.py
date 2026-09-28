@@ -366,7 +366,7 @@ def report() -> None:
     and one per C file, whose target is rendered from the ROM with the C
     object's function names so objdiff can pair them."""
     segs = read_splits()
-    starts = {f for _, _, _, members in fn.units() for f in members}
+    starts = set(fn.call_targets())
     REPORT.mkdir(parents=True, exist_ok=True)
     units = []
     for a, b in asm_pieces(segs):
