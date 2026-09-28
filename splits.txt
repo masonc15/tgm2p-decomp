@@ -11,6 +11,8 @@
 0x007fa0 asm
 0x008518 c    src/field_check.c
 0x0085d8 asm
+0x009b90 c    src/main_loop.c
+0x009c0c asm
 0x0188ac c    src/field_clear.c
 0x018950 asm
 0x02fdd8 c    src/eeprom.c
