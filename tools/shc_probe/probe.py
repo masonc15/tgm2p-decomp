@@ -19,7 +19,7 @@ halfword by halfword against the ROM. The only bytes excused are:
 Everything else, including pool constants, pool placement and intra-function
 branches, has to match exactly. A length difference counts as mismatches.
 
-usage: probe.py [--versions v5.0r10,...] [--flags "..."]... [--cases a,b] [-j N] [-v]
+usage: probe.py [--versions v5.0r10,...] [--flags "..."]... [--cases a,b] [--dir DIR] [-j N] [-v]
 """
 import argparse
 import concurrent.futures as cf
@@ -171,12 +171,13 @@ def main() -> None:
     ap.add_argument("--versions", default=",".join(VERSIONS))
     ap.add_argument("--flags", action="append", help="flag set (repeatable); overrides per-case flags")
     ap.add_argument("--cases", default="", help="comma-separated case names; default all")
+    ap.add_argument("--dir", type=Path, default=CASES, help="directory holding the cases")
     ap.add_argument("-j", "--jobs", type=int, default=10)
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args()
     rom = args.rom.read_bytes()
     versions = args.versions.split(",")
-    cases = sorted(CASES.glob("*.c"))
+    cases = sorted(args.dir.glob("*.c"))
     if args.cases:
         wanted = set(args.cases.split(","))
         cases = [c for c in cases if c.stem in wanted]
@@ -227,7 +228,7 @@ def main() -> None:
         flags = sorted({f for p, v, f in lst if p == top})
         print(f"  {case}: {top:.1f}%  versions={','.join(winners)}  flags={' | '.join(flags)}")
         _, ver, fl, per = per_best[case]
-        base = int(HEADER.search((CASES / f"{case}.c").read_text())["rom"], 16)
+        base = int(HEADER.search((args.dir / f"{case}.c").read_text())["rom"], 16)
         for name, a, b, h, n, whole in per:
             tag = "" if whole else "  (extends past region; partial)"
             print(f"      {base + a:06x} {name:28s} {h}/{n} ({100.0 * h / max(1, n):.1f}%){tag}")
