@@ -1,9 +1,13 @@
 /* rom: 0x248a8 len: 0x9e4 func: f_248a8 flags: -macsave=1 -optimize=1 -speed */
-/* NOT FINAL, work in progress for 0x248a8-0x2528c (the object pool file,
- * followed by wip/objpool_2528c.c). funcscore: f_248a8, f_248f0, f_2491c 100%;
- * f_248fe 86.7% (pool load order); f_249c4 98.6% (loop-bottom temps);
- * f_24b68/f_24e9c are byte-identical twins in the ROM, ~76% aligned
- * (0.93 ignoring registers); f_251cc/f_2521e drafts. */
+/* NOT FINAL, 0x248a8-0x2528c. funcscore 98.7%: every function is 100%
+ * except f_251cc (61%, r4/r5/r7 permuted between k, s and the 0x24003800
+ * base; the code is otherwise identical). Fixes found this round: f_248fe
+ * needs `j = 0xe0;` as its own statement, f_249c4 drops the trailing
+ * `break;` of its last case, f_24b68/f_24e9c need `i = n = ...`, ternary
+ * sign extension, `x += o->x;` before masking, the struct copy written as
+ * `*(struct spr *)(...) = *(struct spr *)&g_6061932;`, and `n = i;
+ * f += n - 1; for (i = 0; ...)`, f_2521e is `register int i` with 8
+ * stores per iteration (SHC unrolls it by 2). */
 struct obj {
 	long p;                    /* 0x00 */
 	short x;                   /* 0x04 */
@@ -91,7 +95,8 @@ void f_248fe(void)
 {
 	int i, j;
 
-	for (i = 0, j = 0xe0; i < 8; i++, j++)
+	j = 0xe0;
+	for (i = 0; i < 8; i++, j++)
 		((char *)0x2405ff00)[j] = 0;
 }
 
@@ -170,7 +175,6 @@ void f_249c4(void)
 		case 9:
 			if (!(o->w2c & 0x8000))
 				f_24e9c(o);
-			break;
 		}
 	}
 }
@@ -191,8 +195,7 @@ void f_24b68(struct obj *o)
 	f = (struct part *)o->p;
 	for (k = 0; k < o->w16; k++)
 		f += (unsigned short)f->y >> 10;
-	n = (unsigned short)f->y >> 10;
-	i = n;
+	i = n = (unsigned short)f->y >> 10;
 	vis = (o->a14 == 63 && o->a15 == 63) ? 0 : 1;
 	f_248a8(o->b2a, n);
 	if (o->w30)
@@ -217,29 +220,24 @@ void f_24b68(struct obj *o)
 		}
 	}
 	n = i;
-	i = 0;
 	f += n - 1;
-	for (; i < n; i++, f--) {
+	for (i = 0; i < n; i++, f--) {
 		if ((f->x & 0x8000) && (o->b2f & (g_6060002 + 1)))
 			continue;
 		x = f->x;
-		if (x & 0x200)
-			x |= 0xfc00;
-		else
-			x &= 0x3ff;
+		x = (x & 0x200) ? (x | 0xfc00) : (x & 0x3ff);
 		y = f->y;
-		if (y & 0x200)
-			y |= 0xfc00;
-		else
-			y &= 0x3ff;
+		y = (y & 0x200) ? (y | 0xfc00) : (y & 0x3ff);
 		if (o->w22 & 0x8000)
 			x = -x - (((f->b4 + 1) & 15) << 4);
 		if (o->w22 & 0x80)
 			y = -y - (((f->b6 + 1) & 15) << 4);
 		if (vis) {
 		}
-		g_6061932.x = (x + o->x) & 0x3ff;
-		g_6061932.y = (y + o->y) & 0x3ff;
+		x += o->x;
+		y += o->y;
+		g_6061932.x = x & 0x3ff;
+		g_6061932.y = y & 0x3ff;
 		g_6061932.a4 = f->b4;
 		g_6061932.a5 = o->a14;
 		g_6061932.a6 = (f->b6 & 0xcf) | ((o->w18 << 4) & 0x30);
@@ -270,8 +268,7 @@ void f_24b68(struct obj *o)
 			g_6061932.a8 = o->w1a ? o->w1a : f->b8;
 		g_6061932.a9 = (o->b1c & 0x70) | (f->b9 & 0x8f);
 		g_6061932.aA = f->wA;
-		d = (struct spr *)(0x24000000 + (unsigned short)g_60618ec * 16);
-		*d = g_6061932;
+		*(struct spr *)(0x24000000 + (unsigned short)g_60618ec * 16) = *(struct spr *)&g_6061932;
 		g_60618ec++;
 	}
 }
@@ -292,8 +289,7 @@ void f_24e9c(struct obj *o)
 	f = (struct part *)o->p;
 	for (k = 0; k < o->w16; k++)
 		f += (unsigned short)f->y >> 10;
-	n = (unsigned short)f->y >> 10;
-	i = n;
+	i = n = (unsigned short)f->y >> 10;
 	vis = (o->a14 == 63 && o->a15 == 63) ? 0 : 1;
 	f_248a8(o->b2a, n);
 	if (o->w30)
@@ -318,29 +314,24 @@ void f_24e9c(struct obj *o)
 		}
 	}
 	n = i;
-	i = 0;
 	f += n - 1;
-	for (; i < n; i++, f--) {
+	for (i = 0; i < n; i++, f--) {
 		if ((f->x & 0x8000) && (o->b2f & (g_6060002 + 1)))
 			continue;
 		x = f->x;
-		if (x & 0x200)
-			x |= 0xfc00;
-		else
-			x &= 0x3ff;
+		x = (x & 0x200) ? (x | 0xfc00) : (x & 0x3ff);
 		y = f->y;
-		if (y & 0x200)
-			y |= 0xfc00;
-		else
-			y &= 0x3ff;
+		y = (y & 0x200) ? (y | 0xfc00) : (y & 0x3ff);
 		if (o->w22 & 0x8000)
 			x = -x - (((f->b4 + 1) & 15) << 4);
 		if (o->w22 & 0x80)
 			y = -y - (((f->b6 + 1) & 15) << 4);
 		if (vis) {
 		}
-		g_6061932.x = (x + o->x) & 0x3ff;
-		g_6061932.y = (y + o->y) & 0x3ff;
+		x += o->x;
+		y += o->y;
+		g_6061932.x = x & 0x3ff;
+		g_6061932.y = y & 0x3ff;
 		g_6061932.a4 = f->b4;
 		g_6061932.a5 = o->a14;
 		g_6061932.a6 = (f->b6 & 0xcf) | ((o->w18 << 4) & 0x30);
@@ -371,8 +362,7 @@ void f_24e9c(struct obj *o)
 			g_6061932.a8 = o->w1a ? o->w1a : f->b8;
 		g_6061932.a9 = (o->b1c & 0x70) | (f->b9 & 0x8f);
 		g_6061932.aA = f->wA;
-		d = (struct spr *)(0x24000000 + (unsigned short)g_60618ec * 16);
-		*d = g_6061932;
+		*(struct spr *)(0x24000000 + (unsigned short)g_60618ec * 16) = *(struct spr *)&g_6061932;
 		g_60618ec++;
 	}
 }
@@ -390,13 +380,23 @@ void f_251cc(void)
 		for (s = *l++; s; s = g_60611ec[s])
 			((short *)0x24003800)[k++] = s;
 	}
-	((short *)0x24003800)[k - 1] |= 0x4000;
+	((short *)0x24003800)[--k] |= 0x4000;
 }
 
 void f_2521e(void)
 {
-	int i;
+	register int i;
+	short *p;
 
-	for (i = 0; i < 0x80; i++)
-		g_60610ec[i] = 0;
+	p = g_60610ec;
+	for (i = 0; i < 0x80; i += 8) {
+		*p++ = 0;
+		*p++ = 0;
+		*p++ = 0;
+		*p++ = 0;
+		*p++ = 0;
+		*p++ = 0;
+		*p++ = 0;
+		*p++ = 0;
+	}
 }
