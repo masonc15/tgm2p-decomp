@@ -1,10 +1,4 @@
 /* rom: 0x2528c len: 0x350 func: f_2528c flags: -macsave=1 -optimize=1 -speed */
-/* NOT FINAL: probe.py 94.8% for 0x2528c-0x255dc. Every function except
- * f_252f8 is byte-exact with its pools (f_2528c, f_25380, f_253bc, f_25402,
- * f_2543c, f_25474, f_254f4, f_25570). f_252f8 has the ROM's instructions
- * (register-normalized 100%) but swaps r5/r6 between the free-list base and
- * its loop copy, so SHC hoists the pool load earlier. The swap is written
- * a = b ^ a, which is what gives the ROM's stack store and r14 use. */
 struct obj {
 	long p;                    /* 0x00 */
 	short x;                   /* 0x04 */
@@ -66,7 +60,7 @@ short f_2528c(void)
 void f_252f8(short i)
 {
 	struct obj *o;
-	int n;
+	register int n;
 
 	if (i < 0 || i >= 64)
 		return;
