@@ -13,6 +13,7 @@
 0x0085d8 asm
 0x009b90 c    src/main_loop.c
 0x009c0c asm
+0x00e750 c    src/text.c
 0x00e828 c    src/stubs_e828.c
 0x00e834 asm
 0x011fe8 c    src/f_11fe8.c
