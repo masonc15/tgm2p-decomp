@@ -45,7 +45,8 @@
 0x01c200 asm
 0x01c708 c    src/item_1c708.c
 0x01d1bc c    src/item_1d1bc.c
-0x01d640 asm
+0x01d640 c    src/item_1d640.c
+0x01dc76 asm
 0x0205f0 c    src/effect_205f0.c
 0x0206e0 c    src/effect_206e0.c
 0x0207d0 c    src/effect_207d0.c
