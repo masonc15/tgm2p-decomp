@@ -85,6 +85,8 @@ def score(data, relocs, ostart, rom):
             rv = fn.ROM[rp[0]:rp[0] + rp[1]]
             ov = data[op[0]:op[0] + op[1]]
             ok = op[0] in relocs or rv == ov
+        elif not ok and rom + i in fn.all_pool() and any(r0 <= ostart + i < r0 + 4 for r0 in relocs):
+            ok = True  # a pool word inside the function that the object relocates
         elif not ok and o >= 0 and r >> 12 == o >> 12 and r >> 12 in (0xA, 0xB):
             t = branch(r, rom + i)
             ok = not (rom <= t < code_end)  # a call or jump out of the function
