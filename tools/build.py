@@ -65,13 +65,31 @@ def read_splits():
     return out
 
 
+AUTO_SYMBOL = re.compile(r"_(f|d|g)_([0-9a-f]+)$")
+
+
 def read_symbols():
+    """symbols.txt, plus every f_/d_/g_ name the compiled C objects leave
+    undefined. Those names carry their address: f_<rom offset> is a function
+    (seen at its RAM address when it lies in the copied block), d_<address>
+    ROM data and g_<address> anything else, usually RAM."""
     syms = {}
     for line in (ROOT / "symbols.txt").read_text().splitlines():
         line = line.split("#", 1)[0].strip()
         if line:
             name, addr = line.split()[:2]
             syms[name] = int(addr, 16)
+    objs = [OBJ / (Path(arg).stem + ".o") for _, _, kind, arg in read_splits() if kind == "c"]
+    objs = [str(o) for o in objs if o.exists()]
+    if objs:
+        nm = subprocess.run(["sh-elf-nm", "--undefined-only", *objs], capture_output=True, text=True,
+                            check=True).stdout
+        for m in (AUTO_SYMBOL.match(l.split()[-1]) for l in nm.splitlines() if l.strip()):
+            if m and m[0][1:] not in syms:
+                a = int(m[2], 16)
+                if m[1] == "f" and fn.RAM_ROM <= a < RAM_ROM_END:
+                    a += fn.RAM_BASE - fn.RAM_ROM
+                syms[m[0][1:]] = a
     return syms
 
 
