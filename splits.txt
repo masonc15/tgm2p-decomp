@@ -51,7 +51,8 @@
 0x023f10 asm
 0x02b430 c    src/frt.c
 0x02b4e8 c    src/frame_2b4e8.c
-0x02bc64 asm
+0x02bc64 c    src/f_2bc64.c
+0x02be48 asm
 0x02fdd8 c    src/eeprom.c
 0x030880 asm
 0x0313fc bin  data
