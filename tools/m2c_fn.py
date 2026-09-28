@@ -29,7 +29,32 @@ def to_asm(start: int, name: str) -> str:
         elif i.mnemonic == "mov.w" and i.op_str.startswith("0x"):
             longs.setdefault(int(i.op_str.split(",")[0], 16), 2)
     out = [".text", ".align 2", f".global _{name}", f"_{name}:"]
+    # Drop a pool that sits mid-function after a jump: the words some load
+    # reads (possibly one in an earlier function) and the padding before them.
+    skip, after_jump = set(), False
+    for k, i in enumerate(ins):
+        a = i.address
+        if after_jump and a not in targets and (a in fn.all_pool() or (
+                fn.hw(a) in (0x0009, 0xFFFF, 0x0000) and a + 2 in fn.all_pool())):
+            skip.add(a)
+            continue
+        after_jump = k > 0 and ins[k - 1].mnemonic in ("bra", "rts", "jmp")
+    tail = set()  # delay slots of tail calls, emitted before the call
+    for k, i in enumerate(ins):
+        if i.mnemonic == "jmp" and k + 1 < len(ins):
+            tail.add(ins[k + 1].address)
+    ins_by_addr = {i.address: i for i in ins}
     for i in ins:
+        if i.address in skip or i.address in tail:
+            continue
+        if i.mnemonic == "jmp":
+            # A tail call: run its delay slot, call, and return. m2c would
+            # otherwise look for a jump table.
+            slot = ins_by_addr.get(i.address + 2)
+            if slot is not None:
+                out.append(f"\t{slot.mnemonic.replace('/s', '.s')}\t{slot.op_str.replace(' ', '')}")
+            out += [f"\tjsr\t{i.op_str.replace(' ', '')}", "\tnop", "\trts", "\tnop"]
+            continue
         if i.address in targets and i.address != start:
             out.append(LABEL.format(i.address) + ":")
         op = i.op_str.replace(" ", "")
