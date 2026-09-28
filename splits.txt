@@ -19,6 +19,8 @@
 0x011e98 c    src/f_11e98.c
 0x011fe8 c    src/f_11fe8.c
 0x0120c0 asm
+0x0175c4 c    src/task.c
+0x0176e0 asm
 0x0188ac c    src/field_clear.c
 0x018950 asm
 0x018fec c    src/f_18fec.c
