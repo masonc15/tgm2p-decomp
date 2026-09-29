@@ -23,6 +23,7 @@ usage: build.py split     regenerate asm/ and build/bin/ from build/prog.bin
                           objects objdiff-cli needs for a progress report
 """
 import argparse
+import functools
 import hashlib
 import json
 import re
@@ -322,15 +323,23 @@ def progress() -> None:
 
 # ---------------------------------------------------------------- report
 
-def named_pools(text: str, local: dict = None, section_rel=frozenset()) -> str:
+def named_pools(text: str, local: dict = None, section_rel=frozenset(), relocs: dict = None) -> str:
     """Write each aligned pool word that holds a symbols.txt address as that
     symbol, so a ROM-rendered target carries the relocation a C object has.
     local maps addresses of the unit's own functions to their names, for
     pool words that take the address of a function in the same file; SHC
     relocates some of those against .text rather than the symbol, and the
-    ROM addresses in section_rel get a local label so the target does too."""
+    ROM addresses in section_rel get a local label so the target does too.
+    relocs maps ROM addresses to the symbol the C object relocates that word
+    against; the word is written as that symbol plus whatever offset the ROM
+    value implies (a struct member or array element), if the offset is small.
+    When relocs is given, words the C object doesn't relocate stay constants."""
     syms = {v: k for k, v in read_symbols().items()}
+    for a, n in defined_functions().items():
+        syms.setdefault(a, n)
     syms.update(local or {})
+    by_name = {n: a for a, n in syms.items()}
+    by_name.update(read_symbols())
     lines = text.splitlines()
     out, i = [], 0
     while i < len(lines):
@@ -343,8 +352,19 @@ def named_pools(text: str, local: dict = None, section_rel=frozenset()) -> str:
                 out.append(f"\t.long\t.L{local[v]}\t/* {a:06x} */")  # section-relative, as SHC wrote it
                 i += 2
                 continue
+            if relocs is not None and a not in relocs:
+                # The C object keeps this word as a plain constant (a literal
+                # hardware address, say), so the target must too.
+                out.append(lines[i])
+                i += 1
+                continue
             if a % 4 == 0 and v in syms:
                 out.append(f"\t.long\t_{syms[v]}\t/* {a:06x} */")
+                i += 2
+                continue
+            name = (relocs or {}).get(a)
+            if a % 4 == 0 and name in by_name and 0 < v - by_name[name] < 0x1000:
+                out.append(f"\t.long\t_{name}+{v - by_name[name]}\t/* {a:06x} */")
                 i += 2
                 continue
             # A narrowed load (a short or byte read of a long) points a few
@@ -359,6 +379,22 @@ def named_pools(text: str, local: dict = None, section_rel=frozenset()) -> str:
     return "\n".join(out) + "\n"
 
 
+@functools.cache
+def defined_functions() -> dict:
+    """Pool-word address -> name of every function the C files define. Ones
+    with real names (field_clear_flag, ...) aren't in read_symbols, but other
+    units' pools point at them too."""
+    out = {}
+    for start, _, kind, arg in read_splits():
+        obj = OBJ / (Path(arg).stem + ".o") if kind == "c" else None
+        if obj and obj.exists():
+            for a, n in c_functions(obj, start).items():
+                if fn.RAM_ROM <= a < RAM_ROM_END:
+                    a += fn.RAM_BASE - fn.RAM_ROM
+                out[a] = n.removeprefix("_")
+    return out
+
+
 def name_functions(text: str, names: dict) -> str:
     """Put a global label (address -> name) on each function start that lacks one."""
     have = set(re.findall(r"^(\S+):$", text, re.M))
@@ -370,6 +406,19 @@ def name_functions(text: str, names: dict) -> str:
             out += [f"\t.global\t{name}", f"{name}:", f".L{name.removeprefix('_')}:"]
         out.append(line)
     return "\n".join(out) + "\n"
+
+
+def symbol_relocs(obj: Path) -> dict:
+    """Offset in obj's .text -> the symbol (without SHC's underscore) that
+    offset is relocated against, for relocations against named symbols."""
+    r = subprocess.run(["sh-elf-objdump", "-r", "-j", ".text", str(obj)], capture_output=True, text=True,
+                       check=True)
+    out = {}
+    for line in r.stdout.splitlines():
+        p = line.split()
+        if len(p) == 3 and p[1] == "R_SH_DIR32" and p[2].startswith("_"):
+            out[int(p[0], 16)] = p[2].split("+")[0][1:]
+    return out
 
 
 def text_relocs(obj: Path) -> set:
@@ -415,12 +464,15 @@ def report() -> None:
         local = {a + (fn.RAM_BASE - fn.RAM_ROM if fn.RAM_ROM <= a < RAM_ROM_END else 0): n.removeprefix("_")
                  for a, n in funcs.items()}
         section_rel = {start + o for o in text_relocs(base)}
-        s.write_text(name_functions(named_pools(s.read_text(), local, section_rel), funcs))
+        relocs = {start + o: n for o, n in symbol_relocs(base).items()}
+        s.write_text(name_functions(named_pools(s.read_text(), local, section_rel, relocs), funcs))
         units.append((start, {"name": arg.removesuffix(".c"), "target_path": s.with_suffix(".o"),
                               "base_path": base, "metadata": {"complete": True, "source_path": arg}}))
     for _, u in units:
-        subprocess.run([*AS, "-o", str(u["target_path"]), str(REPORT / (u["target_path"].stem + ".s"))],
-                       check=True)
+        # No end-of-section nop padding: a C object ending on a 2-byte
+        # boundary would otherwise lose its last function to an extra nop.
+        subprocess.run([*AS, "-no-pad-sections", "-o", str(u["target_path"]),
+                        str(REPORT / (u["target_path"].stem + ".s"))], check=True)
     config = {
         "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
         "custom_make": "make",
