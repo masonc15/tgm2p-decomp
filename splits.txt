@@ -28,7 +28,7 @@
 0x00fdd8 asm
 0x011518 c    src/f_11518.c
 0x01175c c    src/f_1175c.c
-0x01199c asm
+0x01199c c    src/f_1199c.c
 0x011e98 c    src/f_11e98.c
 0x011fe8 c    src/f_11fe8.c
 0x0120c0 asm
