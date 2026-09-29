@@ -97,6 +97,8 @@
 0x023f10 asm
 0x02528c c    src/objpool_2528c.c
 0x0255dc asm
+0x02635c c    src/board_2635c.c
+0x02657c asm
 0x02afc0 c    src/f_2afc0.c
 0x02b430 c    src/frt.c
 0x02b4e8 c    src/frame_2b4e8.c
