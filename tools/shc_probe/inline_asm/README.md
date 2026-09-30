@@ -6,6 +6,18 @@ file like `wip/vm_ef04.c` has to go C -> `.src` (shc) -> SYSROF `.obj` (asmsh,
 which ships in the same `shc-v5.0r32` tarball) -> ELF (rof2elf). Everything
 here was tried on nuada; the patch, `elffix.py` and the `symoff_c.c` test case are in this directory.
 
+## Status
+
+This is built in now. `tools/shc_probe/shcc.sh` sends any source containing
+`#pragma inline_asm` through shc `-code=asmcode` and asmsh, converts with
+`rof2elf_expr.py` (the stock `rof2elf_fillff.py` with `rof2elf-expr.diff`
+applied in memory, so neither nuada's toolchain nor the CI image changes),
+and types the functions with `elffix.py` (plain struct parsing, no
+pyelftools). Every other file keeps the direct shc path, so its output is
+unchanged. `src/board_28334.c` is the first linked file that uses it.
+
+The rest of this file is the original investigation.
+
 ## What blocks it today
 
 Yes, rof2elf's "Relocation expression too big" blocks it, but only for pool
