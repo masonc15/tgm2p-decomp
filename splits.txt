@@ -103,6 +103,8 @@
 0x0255dc asm
 0x02635c c    src/board_2635c.c
 0x02657c asm
+0x028334 c    src/board_28334.c
+0x029bf8 asm
 0x02afc0 c    src/f_2afc0.c
 0x02b430 c    src/frt.c
 0x02b4e8 c    src/frame_2b4e8.c
