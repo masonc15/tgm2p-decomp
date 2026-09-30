@@ -358,13 +358,16 @@ def named_pools(text: str, local: dict = None, section_rel=frozenset(), relocs: 
                 out.append(lines[i])
                 i += 1
                 continue
-            if a % 4 == 0 and v in syms:
-                out.append(f"\t.long\t_{syms[v]}\t/* {a:06x} */")
+            # The C object's own relocation wins: another unit may name the
+            # same address differently (g_6060038 vs g_6060034 + 4).
+            name = (relocs or {}).get(a)
+            if a % 4 == 0 and name in by_name and 0 <= v - by_name[name] < 0x1000:
+                off = v - by_name[name]
+                out.append(f"\t.long\t_{name}{f'+{off}' if off else ''}\t/* {a:06x} */")
                 i += 2
                 continue
-            name = (relocs or {}).get(a)
-            if a % 4 == 0 and name in by_name and 0 < v - by_name[name] < 0x1000:
-                out.append(f"\t.long\t_{name}+{v - by_name[name]}\t/* {a:06x} */")
+            if a % 4 == 0 and v in syms:
+                out.append(f"\t.long\t_{syms[v]}\t/* {a:06x} */")
                 i += 2
                 continue
             # A narrowed load (a short or byte read of a long) points a few
