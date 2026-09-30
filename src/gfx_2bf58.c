@@ -1,4 +1,4 @@
-/* rom: 0x2bf58 len: 0xa4c func: f_2bf58 flags: -macsave=1 -optimize=1 -speed */
+/* rom: 0x2bf58 len: 0x1364 func: f_2bf58 flags: -macsave=1 -optimize=1 -speed */
 struct frame {
 	short dx;                  /* 0 */
 	short dy;                  /* 2 */
@@ -40,6 +40,26 @@ struct obj {
 	char pad56[4];
 	long l60;                  /* 0x3c */
 };
+struct spr {
+	void *def;
+	short x;
+	char pad6[2];
+	short y;
+	char pad10[2];
+	short w12;
+	short w14;
+	short w16;
+	short w18;
+	unsigned char b20;
+	unsigned char b21;
+	short frame;
+	unsigned short w24;
+	unsigned short w26;
+	unsigned char b28;
+	char pad29;
+	short w30;
+};
+struct oh { struct spr s; };
 struct font_owner {
 	char pad[0xd4];
 	struct frame *font;        /* 0xd4 */
@@ -60,6 +80,7 @@ extern char g_60b13c4[8][60];
 extern void f_248a8(short id, unsigned short n);
 extern void f_2e18c(short a, long b);
 #define HDR (*(struct frame ***)0x2004002c)
+#define HDR2 (*(struct font_owner **)0x607926c)
 
 short f_2bf58(void *def, short x, short y)
 {
@@ -507,4 +528,396 @@ void f_2c878(struct obj *o, struct frame *f, int y, short x, short kind)
 			y += 10;
 		}
 	}
+}
+
+void f_2c9a4(struct obj *o, struct frame *f, int y, short x, short kind)
+{
+	long v;
+	 short neg;
+	short n, i; 
+	struct obj *p = o;
+	short n9;
+	char buf[10];
+
+	switch (kind & 0x7fff) {
+	case 7:
+		v = *(char *)o->def;
+		break;
+	case 8:
+		v = *(short *)o->def;
+		break;
+	case 9:
+		v = *(long *)o->def;
+		break;
+	}
+	neg = 0;
+	if (v < 0) {
+		v = ~v + 1;
+		neg = 1;
+	}
+	if (v > 100000000) {
+		buf[0] = 'w';
+		buf[1] = 'o';
+		buf[2] = 'l';
+		buf[3] = 'f';
+		buf[4] = 'r';
+		buf[5] = 'e';
+		buf[6] = 'v';
+		buf[7] = 'O';
+		n = 7;
+	} else {
+		 for (i = 0; i < 10;) {
+			buf[i++] = v % 10 + '0';
+			v /= 10;
+		} 
+		 for (n = 9; buf[n] == '0' && n > 0; n--)
+			; 
+		 if (neg)
+			buf[++n] = '-'; 
+	}
+	n9 = n * 9;
+	for (neg = n; neg >= 0; neg--) {
+		p->w30 = buf[neg];
+		p->w12 = x & 0x3ff;
+		 if (o->l60 & 16) {
+			if (n)
+				p->w14 = (y - n * 9) & 0x3ff;
+			else
+				p->w14 = y & 0x3ff;
+		} else
+			p->w14 = y & 0x3ff; 
+		if (kind & 0x8000) {
+			p->w30 = (unsigned short)(p->w30 + f->w10 + 0xffe0);
+			f_248a8(o->b42, (unsigned short)p->w14 >> 10);
+			f_2e18c(11, (long)p);
+			y += 6;
+		} else {
+			f_248a8(o->b42, (unsigned short)p->w14 >> 10);
+			f_2e18c(11, (long)p);
+			y += 9;
+		}
+	}
+}
+
+void f_2cb6e(struct obj *o, struct frame *f, short y, short x, short kind)
+{
+	struct obj *p;
+	char *s;
+	struct frame *font;
+	struct frame *dash;
+	struct frame *unk;
+	int c;
+	unsigned long v;
+
+	p = o;
+	if (0) p->w12 = (long)font;
+	s = o->def;
+	font = ((struct frame **)g_607926c)[53];
+	if (0) p->w12 = 15;
+	dash = &font[29];
+	unk = &font[30];
+
+	for (;;) {
+		if (kind == 3) {
+			c = *(short *)s;
+			s += 2;
+		} else {
+			c = *s++;
+		}
+		if ((short)c == -1)
+			return;
+		if (kind != 3 && !(short)c)
+			return;
+		switch ((short)c) {
+		case -3:
+			y += 15;
+			break;
+		case -2:
+			y = p->y;
+			x += o->w52;
+			break;
+		default:
+			p->w12 = x & 0x3ff;
+			p->w14 = y & 0x3ff;
+			switch ((unsigned short)kind) {
+			case 1:
+				p->w30 = c + 0x1800;
+				y += g_603585a[(unsigned char)c];
+				break;
+			case 0x1001:
+				p->w16 = font->b4;
+				if (0) p->w12 = kind;
+				p->w18 = (font->b6 & 0xcf) | (p->w18 & 0x30);
+				if ((short)c == ' ') {
+					y += 9;
+					continue;
+				}
+				if ((short)c == '-') {
+					p->w30 = dash->w10;
+					y += 9;
+				} else {
+					c -= 'A';
+					if ((short)c < 0 || (short)c > 25) {
+						p->w30 = unk->w10;
+						y += 9;
+					} else {
+						p->w30 = font[(short)c].w10;
+						y += g_6035824[(unsigned char)c];
+						if (*s - 'A' == 8)
+							y -= 2;
+					}
+				}
+				break;
+			case 3:
+				kind = kind;
+				v = (unsigned short)HDR[0]->w10 | ((HDR[0]->b9 & 15) << 16);
+				v += (short)c;
+				p->b28 = (p->b28 & 0xf0) | (unsigned char)((v >> 16) & 15);
+				p->w30 = v;
+				y += 15;
+				break;
+			case 0x8001:
+				p->w30 = (unsigned short)(f->w10 + c + 0xffe0);
+				p->b28 = (p->b28 & 0xf0) | f->b9;
+				if (0) p->w12 = y;
+				if (0) p->w12 = 50;
+				y += 6;
+				break;
+			}
+			f_248a8(o->b42, (unsigned short)p->w14 >> 10);
+			f_2e18c(11, (long)p);
+			if (0) p->w12 = (long)font;
+			kind = kind;
+			break;
+		}
+	}
+}
+
+/* The if (0) statements emit nothing; they only steer SHC's ranking of
+ * i, p, f, the zero constant and 0x7fff/0xf0/64 for r8-r14. */
+void f_2cd42(void)
+{
+	struct frame *f = HDR[1];
+	short i;
+	short *p;
+	struct obj *o;
+	struct spr *q;
+	register short kind;
+	short x, k;
+	short y;
+
+	for (i = g_606193e + 1, p = &g_606106c[i]; i < 64; i++, p++) {
+		o = &g_606006c[*p];
+		q = &((struct oh *)o)->s;
+		q->w16 = 0;
+		q->w18 = 0;
+		kind = o->w54;
+		x = q->x;
+		if (x > 0xf0 || (y = q->y) > 0x140)
+			continue;
+		if (0) q->w12 = i;
+		if (0) q->w12 = i;
+		q->w26 = q->w26 ? q->w26 : (unsigned short)g_6061940;
+		q->w18 = (q->w24 & 3) << 4;
+		switch (o->type) {
+		case 5:
+			f_2cb6e(o, f, y, x, kind);
+			break;
+		case 6:
+			k = kind & 0x7fff;
+			if (k == 4 || k == 5 || k == 6)
+				f_2c878(o, f, y, x, kind);
+			else
+				f_2c9a4(o, f, y, x, kind);
+			break;
+		}
+	}
+	if (0) *p = 0;
+	if (0) *p = 0;
+	if (0) f->dy = 0;
+	if (0) f->dx = i;
+	if (0) *p = 0x7fff;
+	if (0) *p = 0x7fff;
+	if (0) *p = 0xf0;
+	if (0) *p = 64;
+}
+
+#pragma inline(put_line)
+static short put_line(char *row, short x)
+{
+	return f_2bf58(row, x, (0x140 - f_2c0d0(row)) >> 1);
+}
+short f_2ce54(char *s, short x, short dx, short attr)
+{
+	short id = 0, line = 0, col = 0;
+
+	while (*s) {
+		g_60b13c4[line][col] = *s++;
+		if (g_60b13c4[line][col] == -1 || g_60b13c4[line][col] == 0) {
+			g_60b13c4[line][col] = 0;
+			id = put_line(g_60b13c4[line], x);
+			g_606006c[id].w24 = attr & 3;
+			g_606006c[id].flags = 0;
+			break;
+		}
+		if (g_60b13c4[line][col] == -2) {
+			g_60b13c4[line][col] = 0;
+			id = put_line(g_60b13c4[line], x);
+			g_606006c[id].w24 = attr & 3;
+			g_606006c[id].flags = 0;
+			line++;
+			col = 0;
+			x -= dx;
+		} else {
+			col++;
+		}
+	}
+	return id;
+}
+
+short f_2cf62(void *def, short x, short y)
+{
+	short i = g_606106c[g_606193e--];
+
+	g_606006c[i].def = def;
+	g_606006c[i].type = 5;
+	g_606006c[i].x = x;
+	g_606006c[i].y = y;
+	g_606006c[i].w52 = g_6061942;
+	g_606006c[i].w54 = 0x8001;
+	g_606006c[i].b42 = g_6061947;
+	g_606006c[i].w44 &= 0x7fff;
+	g_606006c[i].b28 = 0;
+	g_606006c[i].w26 = 0;
+	g_606006c[i].w24 = 3;
+	g_606006c[i].flags = 0;
+	g_606006c[i].b20 = 63;
+	g_606006c[i].b21 = 63;
+	return i;
+}
+
+short f_2cff4(void *def, short x, short y)
+{
+	short i = g_606106c[g_606193e--];
+
+	g_606006c[i].def = def;
+	g_606006c[i].type = 6;
+	g_606006c[i].x = x;
+	g_606006c[i].y = y;
+	g_606006c[i].w54 = 0x8004;
+	g_606006c[i].l60 = 0;
+	g_606006c[i].b42 = g_6061947;
+	g_606006c[i].w44 &= 0x7fff;
+	g_606006c[i].b28 = 0;
+	g_606006c[i].w26 = 0;
+	g_606006c[i].w24 = 3;
+	g_606006c[i].flags = 0;
+	g_606006c[i].b20 = 63;
+	g_606006c[i].b21 = 63;
+	return i;
+}
+
+short f_2d060(void *def, short x, short y)
+{
+	short i = g_606106c[g_606193e--];
+
+	g_606006c[i].def = def;
+	g_606006c[i].type = 6;
+	g_606006c[i].x = x;
+	g_606006c[i].y = y;
+	g_606006c[i].w54 = 0x8005;
+	g_606006c[i].l60 = 0;
+	g_606006c[i].b42 = g_6061947;
+	g_606006c[i].w44 &= 0x7fff;
+	g_606006c[i].b28 = 0;
+	g_606006c[i].w26 = 0;
+	g_606006c[i].w24 = 3;
+	g_606006c[i].flags = 0;
+	g_606006c[i].b20 = 63;
+	g_606006c[i].b21 = 63;
+	return i;
+}
+
+short f_2d0cc(void *def, short x, short y)
+{
+	short i = g_606106c[g_606193e--];
+
+	g_606006c[i].def = def;
+	g_606006c[i].type = 6;
+	g_606006c[i].x = x;
+	g_606006c[i].y = y;
+	g_606006c[i].w54 = 0x8006;
+	g_606006c[i].l60 = 0;
+	g_606006c[i].b42 = g_6061947;
+	g_606006c[i].w44 &= 0x7fff;
+	g_606006c[i].b28 = 0;
+	g_606006c[i].w26 = 0;
+	g_606006c[i].w24 = 3;
+	g_606006c[i].flags = 0;
+	g_606006c[i].b20 = 63;
+	g_606006c[i].b21 = 63;
+	return i;
+}
+
+short f_2d158(void *def, short x, short y)
+{
+	short i = g_606106c[g_606193e--];
+
+	g_606006c[i].def = def;
+	g_606006c[i].type = 6;
+	g_606006c[i].x = x;
+	g_606006c[i].y = y;
+	g_606006c[i].w54 = 0x8007;
+	g_606006c[i].l60 = 0;
+	g_606006c[i].b42 = g_6061947;
+	g_606006c[i].w44 &= 0x7fff;
+	g_606006c[i].b28 = 0;
+	g_606006c[i].w26 = 0;
+	g_606006c[i].w24 = 3;
+	g_606006c[i].flags = 0;
+	g_606006c[i].b20 = 63;
+	g_606006c[i].b21 = 63;
+	return i;
+}
+
+short f_2d1c4(void *def, short x, short y)
+{
+	short i = g_606106c[g_606193e--];
+
+	g_606006c[i].def = def;
+	g_606006c[i].type = 6;
+	g_606006c[i].x = x;
+	g_606006c[i].y = y;
+	g_606006c[i].w54 = 0x8008;
+	g_606006c[i].l60 = 0;
+	g_606006c[i].b42 = g_6061947;
+	g_606006c[i].w44 &= 0x7fff;
+	g_606006c[i].b28 = 0;
+	g_606006c[i].w26 = 0;
+	g_606006c[i].w24 = 3;
+	g_606006c[i].flags = 0;
+	g_606006c[i].b20 = 63;
+	g_606006c[i].b21 = 63;
+	return i;
+}
+
+short f_2d230(void *def, short x, short y)
+{
+	short i = g_606106c[g_606193e--];
+
+	g_606006c[i].def = def;
+	g_606006c[i].type = 6;
+	g_606006c[i].x = x;
+	g_606006c[i].y = y;
+	g_606006c[i].w54 = 0x8009;
+	g_606006c[i].l60 = 0;
+	g_606006c[i].b42 = g_6061947;
+	g_606006c[i].w44 &= 0x7fff;
+	g_606006c[i].b28 = 0;
+	g_606006c[i].w26 = 0;
+	g_606006c[i].w24 = 3;
+	g_606006c[i].flags = 0;
+	g_606006c[i].b20 = 63;
+	g_606006c[i].b21 = 63;
+	return i;
 }
