@@ -28,6 +28,8 @@
 0x0100a4 c    src/f_100a4.c
 0x0101b8 c    src/hud_101b8.c
 0x0103d0 asm
+0x010b28 c    src/hud_10b28.c
+0x010d94 asm
 0x011254 c    src/hud_11254.c
 0x011518 c    src/f_11518.c
 0x01175c c    src/f_1175c.c
