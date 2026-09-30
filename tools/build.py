@@ -352,6 +352,14 @@ def named_pools(text: str, local: dict = None, section_rel=frozenset(), relocs: 
                 out.append(f"\t.long\t.L{local[v]}\t/* {a:06x} */")  # section-relative, as SHC wrote it
                 i += 2
                 continue
+            if a % 4 == 0 and a in section_rel and local and 0 <= v - min(local) < 0x10000:
+                # Section-relative, pointing inside a function (a jump table or
+                # local data, as asmsh writes them): the unit's first label
+                # plus the offset assembles to the same .text relocation.
+                first = min(local)
+                out.append(f"\t.long\t.L{local[first]}+{v - first}\t/* {a:06x} */")
+                i += 2
+                continue
             if relocs is not None and a not in relocs:
                 # The C object keeps this word as a plain constant (a literal
                 # hardware address, say), so the target must too.
