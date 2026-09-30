@@ -37,6 +37,8 @@
 0x011fe8 c    src/f_11fe8.c
 0x0120c0 c    src/f_120c0.c
 0x012ad4 asm
+0x013484 c    src/rank_13484.c
+0x0138a8 asm
 0x01715c c    src/state_1715c.c
 0x0175c4 c    src/task.c
 0x0176e0 c    src/effect_176e0.c
