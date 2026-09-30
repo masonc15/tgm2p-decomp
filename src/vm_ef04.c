@@ -140,12 +140,15 @@ void f_f066(void)
 {
 }
 
-long f_f06a(unsigned long a)
+long f_f06a(register unsigned long a)
 {
-	struct e50 *p = (struct e50 *)((char *)g_60ad6a0 + (short)(g_606005c->x52 * 0xe50));
-	struct s68 *q = (struct s68 *)((char *)g_60ad228 + (short)(p->list[p->n] * 104));
-	short n = q->n;
+	struct e50 *p;
+	struct s68 *q;
+	short n;
 
+	p = (struct e50 *)((char *)g_60ad6a0 + (short)(g_606005c->x52 * 0xe50));
+	q = (struct s68 *)((char *)g_60ad228 + (short)(p->list[p->n] * 104));
+	n = q->n;
 	g_606005c->regs[a] = q->v[n];
 	return 1;
 }

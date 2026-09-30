@@ -22,6 +22,7 @@
 0x00e988 c    src/vm_e988.c
 0x00ead0 c    src/vm_ead0.c
 0x00ec0c asm
+0x00ef04 c    src/vm_ef04.c
 0x00f0e8 c    src/vm_f0e8.c
 0x00f200 asm
 0x00f5cc c    src/vm_f5cc.c
