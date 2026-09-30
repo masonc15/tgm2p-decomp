@@ -12,7 +12,7 @@ struct dip {
 #define IN3 (*(unsigned char *)0x23000003)
 extern unsigned char g_6064754, g_6064755, g_6064756, g_6064757;
 extern unsigned char g_6064758, g_6064759;
-extern unsigned char g_606475a[2];
+extern unsigned char g_606475a[2][2];
 extern unsigned char g_606475e[2];
 extern unsigned char g_6064760, g_6064761, g_6064762, g_6064763, g_6064764;
 extern unsigned char g_6064765, g_6064766;
@@ -23,6 +23,7 @@ extern int g_6065640;
 extern unsigned char g_607cf0c;
 extern volatile short g_606003e, g_6060040, g_6060042;
 extern struct dip g_6060034;
+extern short eeprom_shadow[];
 extern void f_2e6fc(int);
 
 void f_2d2bc(void)
@@ -45,14 +46,14 @@ void f_2d2e0(void)
 	unsigned char *p0, *p1;
 	char kk;
 	struct dip *d;
+	int v;
 
 	if (0) g_6064766 = g_6064765;
 	g_6064756 = (~IN2 >> 4) & 15;
 	g_6064757 = ~IN2 & 15;
 	a = ~IN0;
 	g_6064754 = a;
-	b = ~IN1;
-	g_6064755 = b;
+	g_6064755 = b = ~IN1;
 	c3 = IN3;
 	t2 = ~c3;
 	if (g_60b1631 == (~c3 & 0x10)) {
@@ -65,35 +66,37 @@ void f_2d2e0(void)
 			g_60b1632 = 0;
 		}
 	}
-	
+
 	t = 1;
 	if (~IN3 & 0x10)
 		g_60b1632++;
 	else
 		g_60b1632 = 0;
-	if (g_60b13bc != 0 && (g_6064754 & 1) == 0)
-		t = 0;
-	
+	if (g_60b13bc) {
+		if (!(g_6064754 & 1))
+			t = 0;
+	}
+
 	if (t) {
-		p1 = &g_606475a[2];
-		p0 = &g_606475a[0];
-		p1[0] = p0[0];
-		p1[1] = p0[1];
-		p0[0] = a;
-		p0[1] = b;
-		g_606475e[0] = ~p1[0] & p0[0];
-		g_606475e[1] = ~p1[1] & p0[1];
+		g_606475a[1][0]  = g_606475a[0][0];
+		g_606475a[1][1] = g_606475a[0][1];
+		g_606475a[0][0] = a;
+		g_606475a[0][1] = b;
+		g_606475e[0] = ~g_606475a[1][0] & g_606475a[0][0];
+		g_606475e[1] = ~g_606475a[1][1] & g_606475a[0][1];
 	}
-	
-	if (g_60b1630 != 0 && g_6060040 != 2) {
-		if (g_606003e == 1)
-			g_6064764++;
-		else
-			g_6064762++;
+
+	if (g_60b1630) {
+		if (eeprom_shadow[6] != 2) {
+			if (eeprom_shadow[5] == 1)
+				g_6064764++;
+			else
+				g_6064762++;
+		}
 	}
-	
+
 	t2 |= ~IN3;
-	if (g_6060040 != 2) {
+	if (eeprom_shadow[6] != 2) {
 		if (t2 & 1) {
 			*(char *)&g_60b161c = 1;
 		} else {
@@ -116,9 +119,11 @@ void f_2d2e0(void)
 		}
 	}
 	if (0) g_6064766 = 0;
+	/* dead store: steers SHC's register ranking */
+	if (0) g_6064760 = 1;
 	if (g_6064760) {
-		if (g_6060040 == 0) {
-			switch (g_6060042) {
+		if (eeprom_shadow[6] == 0) {
+			switch (eeprom_shadow[7]) {
 			case 0:
 				while (g_6064760 > 0) {
 					g_6064762 += 1;
@@ -174,28 +179,27 @@ void f_2d2e0(void)
 				}
 				break;
 			}
-		} else if (g_6060040 == 1) {
+		} else if (eeprom_shadow[6] == 1) {
 			while (g_6064760 > 0) {
 				g_6064762 += 1;
 				g_6064760 -= 1;
 			}
-		} else if (g_6060040 == 2) {
+		} else if (eeprom_shadow[6] == 2) {
 			g_6064760 = 0;
 		}
 	}
-	
+
 	if (g_6064761) {
-		d = &g_6060034;
-		if (d->w10 == 0) {
-			if (d->w12 == 2) {
+		if (eeprom_shadow[5] == 0) {
+			if (eeprom_shadow[6] == 2) {
 				g_6064761 = 0;
-			} else if (d->w12 == 1) {
+			} else if (eeprom_shadow[6] == 1) {
 				while (g_6064761 > 0) {
 					g_6064762 += 1;
 					g_6064761 -= 1;
 				}
 			} else {
-				switch (d->w16) {
+				switch (eeprom_shadow[8]) {
 				case 0:
 					while (g_6064761 > 0) {
 						g_6064762 += 1;
@@ -252,15 +256,15 @@ void f_2d2e0(void)
 					break;
 				}
 			}
-		} else if (d->w12 == 2) {
+		} else if (eeprom_shadow[6] == 2) {
 			g_6064761 = 0;
-		} else if (d->w12 == 1) {
+		} else if (eeprom_shadow[6] == 1) {
 			while (g_6064761 > 0) {
 				g_6064763 += 1;
 				g_6064761 -= 1;
 			}
 		} else {
-			switch (d->w14) {
+			switch (eeprom_shadow[7]) {
 			case 0:
 				while (g_6064761 > 0) {
 					g_6064763 += 1;
@@ -318,22 +322,27 @@ void f_2d2e0(void)
 			}
 		}
 	}
-	
-	
+
 	if (g_6064762 > 9)
 		g_6064762 = 9;
 	if (g_6064763 > 9)
 		g_6064763 = 9;
 	if (g_6064764 > 9)
 		g_6064764 = 9;
-	
-	 if (g_607cf0c != 0 && ((~g_60b1635 & t2) & 0x40) != 0 && (signed char)g_607cf0c != 0) {
+
+	if (0) g_60b1635 = 1;
+	v = (signed char)g_607cf0c;
+	if (v != 0) {
+	 if (((~g_60b1635 & t2) & 0x40) != 0) {
+	  if ((signed char)v != 0) {
 		if (g_60b13bc == 0)
 			g_60b13bc = 1;
 		else
 			g_60b13bc = 0;
+	  }
+	 }
 	}
- 
+
 	g_6064758 = a;
 	g_6064759 = b;
 	g_60b1635 = t2;

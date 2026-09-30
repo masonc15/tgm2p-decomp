@@ -119,7 +119,7 @@
 0x02bc64 c    src/f_2bc64.c
 0x02be48 asm
 0x02bf58 c    src/gfx_2bf58.c
-0x02d2bc asm
+0x02d2bc c    src/input_2d2bc.c
 0x02dbcc c    src/sprite_2dbcc.c
 0x02e06c c    src/sprite_2e06c.c
 0x02e1b8 c    src/sound.c
