@@ -34,12 +34,27 @@ FUNC_DEF = re.compile(r"^[A-Za-z_][^;{}]*?\b(\w+)\s*\([^;]*?\)\s*\{", re.M | re.
 VERSION = "shc-v5.0r32"
 INLINE_ASM = re.compile(r"^[ \t]*#[ \t]*pragma[ \t]+inline_asm[ \t]*\(([^)]*)\)[^\n]*$", re.M)
 
+# SHC under wibo occasionally never returns, which used to idle a permuter
+# worker for hours. timeout puts itself and shcc.sh in a new process group and
+# sends SIGTERM to the whole group, so a hung wibo dies with shcc.sh, whose
+# EXIT trap removes its work directory. timeout only escalates to SIGKILL while
+# shcc.sh is alive, though, so a wibo that ignored SIGTERM would outlive it;
+# the group kill afterwards catches that. The nonzero exit (124) makes the
+# permuter count the candidate as a compile failure and move on.
+# PERM_COMPILE_TIMEOUT overrides the limit, in seconds. Running timeout in the
+# background and waiting keeps its pid, which is also its process group id.
+# There's no exec at the end: exec would skip the trap that removes $T.
 COMPILE_SH = """#!/bin/bash
 # $1 = candidate .c, $3 = output .o (the permuter calls: compile.sh in.c -o out.o)
 D="$(dirname "$(realpath "$0")")"
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 python3 "$D/splice.py" "$1" > "$T/in.c"
-exec {shcc} {version} "$3" "$T/in.c" {flags}
+timeout "${{PERM_COMPILE_TIMEOUT:-120}}" {shcc} {version} "$3" "$T/in.c" {flags} &
+G=$!
+wait $G
+rc=$?
+kill -KILL -- "-$G" 2>/dev/null
+exit $rc
 """
 
 SPLICE_PY = """import re, sys
