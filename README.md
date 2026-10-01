@@ -85,6 +85,8 @@ The state-4 cleanup in `src/item_19d68.c` needs explicit `if/else` branches with
 
 In `src/effect_18064.c`, the piece-shaped draw loop uses an explicit table pointer and updates `p`, `i`, then `xx` in the `for` clause. Initializing `i` before `xx` preserves the loop-entry schedule. Writing the initial vertical adjustment as `y = y + 1` rather than `y++` fixes the final graphics-pointer/y register swap.
 
+In `src/piece_44d4.c`, a local pointer to the coordinate record preserves the shared base used to load x and y. Keeping the masked rule byte in an ordinary `unsigned char` local fixes the register allocation and stack-slot order; a cast alone does not. The doubled-piece path must adjust y before x to get the loop-counter initialization register right. The complete `0x44d4`–`0x50e0` span passes isolated ROM verification.
+
 ### Near misses worth coming back to
 
 These are historical drafts in `tools/shc_probe/cases/wip/`, not a current coverage inventory. Check `splits.txt` and the linked `src/` files before investigating one: some old drafts still score poorly even though a newer version is already linked.

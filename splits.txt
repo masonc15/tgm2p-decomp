@@ -8,6 +8,7 @@
 0x002f3c c    src/rand.c
 0x002f68 c    src/f_2f68.c
 0x003a02 asm
+0x0044d4 c    src/piece_44d4.c
 0x0050e0 c    src/f_50e0.c
 0x0051f4 c    src/f_51f4.c
 0x0052b6 asm
