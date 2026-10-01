@@ -16,7 +16,8 @@
 0x008518 c    src/field_check.c
 0x0085d8 asm
 0x009b90 c    src/main_loop.c
-0x009c0c asm
+0x009c0c c    src/f_9c0c.c
+0x00a226 asm
 0x00d28c c    src/f_d28c.c
 0x00d394 asm
 0x00e520 c    src/f_e520.c
