@@ -49,7 +49,8 @@ struct s13 { short v[13]; };
 struct s76 { long v[19]; };
 extern struct task *f_17614(void);
 extern void f_2e6fc(int);
-extern int f_2afca(int);
+/* Matches the linked RNG and the ROM's unsigned remainder helper. */
+extern unsigned long f_2beca(unsigned long);
 extern void f_2af5e(int, int, void *);
 extern void f_2261c(struct task *);
 extern unsigned long g_6064880;
@@ -96,8 +97,8 @@ void f_21d94(struct field *f)
 	if ((f->mode & 4) || ((f->mode & 0x1081) && (g_6064880 & 1)))
 		f_2e6fc(15);
 	for (k = 0; k < 10; k++) {
-		p = f_2afca(64) % 5;
-		q = f_2afca(64) % 5;
+		p = f_2beca(64) % 5;
+		q = f_2beca(64) % 5;
 		if (p != q) {
 			tmp = order.v[p];
 			order.v[p] = order.v[q];
