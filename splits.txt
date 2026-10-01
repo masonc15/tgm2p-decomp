@@ -62,7 +62,7 @@
 0x01913c asm
 0x0192e0 c    src/f_192e0.c
 0x019414 c    src/item_19414.c
-0x019d68 asm
+0x019d68 c    src/item_19d68.c
 0x01a7c8 c    src/item_1a7c8.c
 0x01ade8 c    src/item_1ade8.c
 0x01b3d4 c    src/item_1b3d4.c

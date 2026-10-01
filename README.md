@@ -81,13 +81,14 @@ These are the rules to expect when decompiling the rest of the game.
 
 The VM frame handlers at `0xe834` now match in `src/vm_e834.c` without inline assembly. An uninitialized local pointer supplies SHC's `r15` value directly, while `(void)&local` reserves the original stack slot. This reproduces the same compiler behavior seen in `src/f_19014.c`; it is undefined in portable C and must not be treated as a general stack-pointer API. A separate `short` numerator local fixes the last five register differences in `f_e8ee`. The complete span passes the original ROM hash checks.
 
+The state-4 cleanup in `src/item_19d68.c` needs explicit `if/else` branches with a `break` inside each. This fixes ten scratch-register differences; moving the final `break` outside the `else` also moves a store into the branch delay slot and changes the pool layout. The complete `0x19d68`–`0x1a7c8` span passes the original ROM hash checks.
+
 ### Near misses worth coming back to
 
 These are in `tools/shc_probe/cases/wip/`.
 
 - **The medal icon draw at `0x216d0` (99.3%, `medal_216d0.c`).** Code and registers match; only its first two pool words are swapped (the ROM has `d_3b55c` before `d_3b58c`). About 25 placements of the table pointer failed.
 - **`f_191a4` (91.4%, `playfield_1913c.c`).** Structure exact; `g_607c5d8`'s address and `v` swap `r11`/`r12`, and the tail call goes through `r3` instead of `r2`. About 60 variants failed; moving the unlink code into a `#pragma inline` helper fixes the allocation but adds a `mov r13,r5`.
-- **`f_19d68` (99.2%, `item_19d68.c`).** Ten instructions in one branch of state 4 swap `r1`/`r2`.
 - **The checksum test screen at `0x30880` (81.3%, `chk_30880.c`).** `f_30c2e` matches; `f_30880` differs only in register allocation in its ROM-sum loop, and `f_30a44` probably can't settle until it does. About 250 variants failed.
 - **The board clear at `0x278c0` (`board_278c0.c`), the board update at `0x27b50` (`board_27b50.c`) and the list shuffle at `0x21d94` (`shuffle_21d94.c`).** All held back by register allocation.
 - **`f_1c200` (99.4%, `item_1c200.c`).** Four instructions in case 2's random-column loop swap `r2`/`r3`.
