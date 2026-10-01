@@ -1,4 +1,8 @@
-/* rom: 0x2f68 len: 0xa9a func: f_2f68 flags: -macsave=1 -optimize=1 -speed */
+/* rom: 0x2f68 len: 0xd20 func: f_2f68 flags: -macsave=1 -optimize=1 -speed */
+/* c-prefix: only 0x2f68-0x3c88 is linked and counted as C. The marked
+ * f_3c88 draft below supplies compiler context for the shared literal pool;
+ * its instructions are discarded. tools/c_prefix.py verifies both the
+ * retained bytes and the literal at 0x3d14 against the ROM on every build. */
 struct player;
 struct slot {
 	char pad0[12];
@@ -294,8 +298,22 @@ struct field {
 	char pad0[0xde - 4];
 	unsigned char h;           /* 0xde, rows including the walls */
 	unsigned char w;           /* 0xdf, columns including the walls */
-	char pad1[0x35e - 0xe0];
+	char pad1[0x30c - 0xe0];
+	unsigned short mode;
+	unsigned char idx;
+	char pad2[0x322 - 0x30f];
+	unsigned short level;
+	char pad3[0x349 - 0x324];
+	unsigned char das;
+	char pad4[0x35e - 0x34a];
 	unsigned short flags;      /* 0x35e; low nibble is the piece type */
+	char pad5[0x362 - 0x360];
+	unsigned char rot;
+	char pad6;
+	union {
+		struct { short x; char pad[2]; long y; } p;
+		short pos[4];
+	} u;
 };
 struct hits {
 	char pad[0x370];
@@ -361,4 +379,179 @@ unsigned char f_35f0(struct field *f, short x, short y, unsigned char rot)
 		return 1;
 	if (0) g_6077608.a = 0x8000;
 	return 0;
+}
+
+/* Rotation test with wall kicks. Returns zero if the piece fits, possibly
+ * after kicking one column (two in big mode). The I piece and collisions
+ * in the centre column suppress kicks. */
+unsigned char f_3a02(struct field *f, short x, short y, unsigned char rot)
+{
+  unsigned short n;
+  unsigned short j;
+  unsigned short m;
+  unsigned short c;
+  struct cell *p;
+  unsigned short k;
+  unsigned short i;
+  k = (m = f->flags);
+  k &= 15;
+  if (m & 0x200)
+  {
+    y += 1;
+    x -= 2;
+    for (i = 0; i < 8; i++)
+    {
+      if ((y - i) < f->h)
+      {
+        f->cells = f->cells;
+        for (j = 0; j < 8; j++)
+        {
+          if (((x + j) >= 0) && ((x + j) <= (f->w - 1)))
+          {
+            c = f->cells[(((y - i) * f->w) + x) + j].v & 0xbfff;
+            if (d_363cc[k][i >> 1][rot][j >> 1] && c)
+            {
+              if (((k == 2) || (j == 2)) || (j == 3))
+                return 1;
+              for (n = 1; n < 2; n++)
+              {
+                if (!f_35f0(f, (x + (n * 2)) + 2, y - 1, rot))
+                {
+                  f->u.p.x += n * 2;
+                  return 0;
+                }
+              }
+              for (n = 1; n < 2; n++)
+              {
+                if (!f_35f0(f, (x - (n * 2)) + 2, y - 1, rot))
+                {
+                  f->u.p.x -= n * 2;
+                  return 0;
+                }
+              }
+              return 1;
+            }
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    for (i = 0; i < 4; i++)
+    {
+      if ((y - i) < f->h)
+      {
+        p = &f->cells[((y - i) * f->w) + x];
+        for (j = 0; j < 4; j++, p++)
+        {
+          if (((x + j) >= 0) && ((x + j) <= (f->w - 1)))
+          {
+            c = p->v & 0xbfff;
+            if (d_363cc[k][i][rot][j] && c)
+            {
+              if ((k != 2) && (j != 1))
+              {
+                if (!f_35f0(f, x + 1, y, rot))
+                {
+                  f->u.p.x += 1;
+                  return 0;
+                }
+                if (!f_35f0(f, x - 1, y, rot))
+                {
+                  f->u.p.x -= 1;
+                  return 0;
+                }
+              }
+              return 1;
+            }
+          }
+        }
+      }
+    }
+  }
+  return 0;
+}
+
+/* CONTEXT ONLY BELOW THIS LINE. Not linked, not counted as matched C.
+ * This nonmatching DAS draft makes SHC emit f_3a02's shared pool in its
+ * original position. Keep its source ordinary C; never patch instructions. */
+extern unsigned char g_606475e[];
+void f_3c88(struct field *f)
+{
+  unsigned char idx;
+  char rot;
+  short x;
+  short y;
+  unsigned char delay;
+  unsigned char dir;
+  idx = f->idx;
+  rot = f->rot;
+  x = f->u.pos[0];
+  y = f->u.pos[2];
+  if (f->mode & 0x80)
+    delay = 14;
+  else if (f->mode & 0x1000)
+  {
+    if (f->level >= 400)
+      delay = 6;
+    else if (f->level >= 300)
+      delay = 8;
+    else if (f->level >= 200)
+      delay = 9;
+    else
+      delay = 10;
+  }
+  else if (f->level >= 900)
+    delay = 6;
+  else if (f->level >= 500)
+    delay = 8;
+  else
+    delay = 14;
+  dir = 0;
+  if (g_606475a[idx] & 0x10)
+  {
+    if (g_606475e[idx] & 0x10)
+    {
+      f->das = 0;
+      dir = 0x10;
+    }
+    else if (f->das < delay)
+      f->das++;
+    else
+      dir = 0x10;
+  }
+  if (g_606475a[idx] & 0x20)
+  {
+    if (g_606475e[idx] & 0x20)
+    {
+      f->das = 0;
+      dir = 0x20;
+    }
+    else if (f->das < delay)
+      f->das++;
+    else
+      dir = 0x20;
+  }
+  if (dir & 0x10)
+  {
+    if (f->mode & 0x40)
+    {
+      if (!f_35f0(f, x - 2, y, rot))
+        x -= 2;
+    }
+    else if (!f_35f0(f, x - 1, y, rot))
+      x -= 1;
+  }
+  if (dir & 0x20)
+  {
+    if (f->mode & 0x40)
+    {
+      if (!f_35f0(f, x + 2, y, rot))
+        x += 2;
+    }
+    else if (!f_35f0(f, x + 1, y, rot))
+      x += 1;
+  }
+  f->u.p.x = x;
 }

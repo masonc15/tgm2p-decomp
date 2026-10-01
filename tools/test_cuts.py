@@ -20,6 +20,13 @@ class CoverageFilterTests(unittest.TestCase):
             cuts.main()
         return out.getvalue()
 
+    def test_prefix_counts_only_its_kept_range(self):
+        import build
+        with patch.object(build, 'read_splits', return_value=[
+                (self.lo, self.mid, 'c-prefix', 'context.c'),
+                (self.mid, self.hi, 'asm', None)]):
+            self.assertEqual(cuts.c_ranges(), [(self.lo, self.mid)])
+
     def test_single_c_segment_is_hidden(self):
         self.assertEqual(self.output([(self.lo, self.hi)]), "")
 
