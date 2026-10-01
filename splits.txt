@@ -43,7 +43,6 @@
 0x0120c0 c    src/f_120c0.c
 0x012ad4 asm
 0x013484 c    src/rank_13484.c
-0x0138a8 asm
 0x0149b4 c    src/rank_149b4.c
 0x014b10 asm
 0x01715c c    src/state_1715c.c

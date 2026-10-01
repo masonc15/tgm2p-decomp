@@ -1,6 +1,7 @@
-/* rom: 0x13484 len: 0x424 func: f_13484 flags: -macsave=1 -optimize=1 -speed */
-/* Ranking / rank-screen helpers: prefix of the 0x13484 unit (f_13484..f_13848);
- * f_138a8 onwards is still WIP. */
+/* rom: 0x13484 len: 0x1530 func: f_13484 flags: -macsave=1 -optimize=1 -speed */
+/* Rank-screen helpers, whole 0x13484-0x149b4 unit (f_13484 .. f_14758; f_1441a/f_14670 are statics called by bsr from f_1421c).
+ * Byte-exact; supersedes final_13484.c (which is only the 0x13484-0x138a8 prefix of this file).
+ * The "if (0)" / "while (0)" statements in f_138a8 emit no code but steer SHC's spill-slot and constant-register ranking. */
 struct field {
 	char pad0[0x300];
 	short w300;                /* 0x300 */
@@ -45,6 +46,9 @@ struct ent {
 	char wait;                 /* 0x11 */
 	char pad1[2];
 };
+struct w4 {
+	short w[4];
+};
 struct res {
 	unsigned char state;       /* 0x00 */
 	char pad0;
@@ -72,7 +76,35 @@ extern struct rank g_6079474[3];
 extern struct rank g_607948c[3];
 extern struct rank2 g_60794a4[3];
 extern unsigned long g_6079394[];
+extern struct res g_60794c0[];
+extern unsigned long g_60794bc;
+extern short g_607946c[3];
 extern void f_2f68(struct field *, int);
+extern void f_2e6fc(int);
+extern int f_3127c(char *, char *, int);
+extern char *d_3b230[];
+ extern long *d_3b2d8;
+extern char *d_3b2dc[];
+extern char g_6033744[];
+extern unsigned char g_606475a[];
+extern unsigned char g_606475e[];
+extern unsigned long g_6064880;
+extern void f_238fc(struct field *);
+struct frame { char pad[12]; };
+extern void f_11680(struct frame *, short, short, unsigned char , short, short, short, unsigned char );
+extern void f_1159c(struct frame *, short, short, unsigned char, short);
+extern void f_18708(unsigned long,  int ,  short );
+extern void f_122cc(unsigned long, int, int);
+extern void f_121fe(char *, short, short, char, short);
+extern void f_11254(long, short, int, char, short, short, long, char);
+extern struct frame d_a782c[], d_a7838[], d_a7844[], d_a788c[], d_a7850[];
+extern struct frame d_a7898[], d_a78a4[], d_a78b0[], d_a78bc[], d_a78c8[], d_a78d4[];
+extern struct frame *d_3b330[];
+extern struct frame *d_3b13c[];
+extern unsigned long g_6060008;
+void f_1441a(struct res *, unsigned char);
+void f_14670(struct res *, unsigned char);
+void f_14758(struct res *, unsigned char);
 
 short f_13484(struct field *f, struct rank *r, short n)
 {
@@ -197,4 +229,441 @@ int f_13848(struct field *f)
 	r->f = f;
 	r->mask = m;
 	return m;
+}
+
+int f_138a8(struct res *o, struct rank *tab, void *aux, short pos, short n, unsigned short kind)
+{
+	struct field *f;
+	struct field *p0;
+	struct field *p1;
+	short *a16;
+	struct rank2 *a8;
+	int m;
+	short i;
+	volatile short j;
+	short k;
+	short *s;
+	struct rank2 *q;
+
+	f = o->f;
+	a16 = aux;
+if (0) tab[0].v = 0;
+	a8 = aux;
+while (0) ((struct w4 *)a16)->w[0];
+	m = 0;
+	j = pos + n - 1;
+while (0) p1->w322;
+if (0) tab[0].v = (long)f;
+	i = n - 1;
+if (0) a16 = 0;
+while (0) ;
+if (0) tab[0].v = (long)p0;
+	p0 = &g_6064898[0];
+	p1 = &g_6064898[1];
+	for (; i >= 0; i--, j--) {
+		m |= 1 << j;
+		if (o->mask & (1 << j)) {
+			tab[i].name = *(long *)o->e[0].name;
+			switch (kind) {
+			case 0:
+				tab[i].v = (f->l354 & 0xfffff) | ((f->w38a & 31) << 27);
+				if (f->w322 == 999)
+					tab[i].v |= 0x4000000;
+				if (f->b339 & 0x20)
+					tab[i].v |= 0x2000000;
+				 a16[i] = 0;
+				for (k = 0; k < 6; k++)
+					a16[i] |= (3 & f->b33a[k]) << (k * 2);
+				
+				break;
+			case 1:
+				tab[i].v = (f->l330 & 0xfffff) | ((f->w38a & 31) << 27);
+				if (f->w322 == 300)
+					tab[i].v |= 0x4000000;
+				if (f->b339 & 0x20)
+					tab[i].v |= 0x2000000;
+				break;
+			case 2:
+				tab[i].v = (f->l350 & 0xfffff) | ((f->w38a & 31) << 27);
+				if (p0->w322 == 300 && p1->w322 == 300)
+					tab[i].v |= 0x4000000;
+				if (p0->b339 & 0x20)
+					tab[i].v |= 0x2000000;
+				a8[i].name = *(long *)o->e[1].name;
+				a8[i].a = p0->w322;
+				a8[i].b = p1->w322;
+				break;
+			}
+			goto done;
+		}
+if (0) tab[0].v = (long)p1;
+while (0) ;
+		if (i > 0) {
+			tab[i] = tab[i - 1];
+			switch (kind) {
+			case 0:
+				a16[i] = a16[i - 1];
+				break;
+			case 2:
+				*(struct w4 *)&a8[i] = *(struct w4 *)&a8[i - 1];
+while (0) p0->w322;
+for (;0;) ;
+				break;
+			}
+		}
+	}
+if (0) tab[0].v = 0; if (0) tab[0].v = 0; if (0) tab[0].v = 0; if (0) tab[0].v = 0;
+if (0) tab[0].v = 0x2000000;
+if (0) tab[0].v = 32;
+if (0) tab[0].v = 31;
+	  
+done:
+	return m;
+if (0) tab[0].v = (long)p1;
+}
+
+
+void f_13b9c(struct res *o)
+{
+	struct field *f;
+	unsigned short i;
+	struct rank *e;
+	unsigned long *best;
+
+	f = o->f;
+	o->mask = f_135d8(f, 0);
+	if (0) f->w300 = i;
+	if (o->mask & 0xe000)
+		g_60794bc |= f_138a8(o, &g_6065650.t[13], 0, 13, 3, 1);
+	if (o->mask & 0x1c00000)
+		f_138a8(o, g_6079474, 0, 22, 3, 1);
+	if (o->mask & 0x1c00)
+		g_60794bc |= f_138a8(o, &g_6065650.t[10], g_6065650.u, 10, 3, 0);
+	if (o->mask & 0x380000)
+		f_138a8(o, g_6079454, g_607946c, 19, 3, 0);
+	if (o->mask & 0x70000)
+		g_60794bc |= f_138a8(o, &g_6065650.t[16], g_6065650.s, 16, 3, 2);
+	if (o->mask & 0xe000000)
+		f_138a8(o, g_607948c, g_60794a4, 25, 3, 2);
+	e = g_6065650.t;
+	best = (unsigned long *)((char *)g_6079394 + (unsigned char)(f->id * 76));
+	for (i = 0; i < 10; best++, e++, i++) {
+		if (o->mask & (1 << i)) {
+			e->name = *(long *)o->e[0].name;
+			e->v = (*best & 0xfffff) | ((f->w38a & 31) << 27);
+			if (f->w322 == 999)
+				e->v |= 0x4000000;
+			if (f->b339 & 0x20)
+				e->v |= 0x2000000;
+			g_60794bc |= 1 << i;
+		}
+	}
+}
+
+void f_13f10(struct ent *o, struct field *f)
+{
+	o->f = f;
+	o->timer = 1800;
+	o->pos = 0;
+	o->cur = 0;
+	o->rep = 12;
+	o->wait = 30;
+	o->name[0] = o->name[1] = o->name[2] = o->name[3] = *d_3b230[39];
+	o->b4 = 0;
+}
+
+unsigned short f_13f50(struct ent *o)
+{
+	unsigned short done;
+	unsigned char id;
+	unsigned short hold;
+	unsigned short trig;
+	short k;
+
+	done = 0;
+	if (o->wait)
+		o->wait--;
+	hold = g_606475a[o->f->id];
+	trig = g_606475e[o->f->id];
+	switch (o->pos) {
+	case 0:
+	case 1:
+	case 2:
+		if (trig & 32) {
+			o->cur++;
+			o->cur %= 42;
+			if (o->pos == 0 && o->cur == 40)
+				o->cur = 41;
+			o->rep = 12;
+		}
+		if (trig & 16) {
+			if (o->cur-- == 0)
+				o->cur = 41;
+			if (o->pos == 0 && o->cur == 40)
+				o->cur = 39;
+			o->rep = 12;
+		}
+		if (hold & 0x30) {
+			if (o->rep-- == 0) {
+				if (hold & 32) {
+					o->cur++;
+					o->cur %= 42;
+					if (o->pos == 0 && o->cur == 40)
+						o->cur = 41;
+				} else {
+					if (o->cur-- == 0)
+						o->cur = 41;
+					if (o->pos == 0 && o->cur == 40)
+						o->cur = 39;
+				}
+				o->rep = 12;
+			}
+		}
+		if ((trig & 8) && o->wait == 0) {
+			f_2e6fc(13);
+			if (o->cur == 40) {
+				if (o->pos == 0)
+					break;
+				o->pos--;
+				o->name[o->pos] = ' ';
+				if (o->pos == 0)
+					o->cur = 0;
+			} else if (o->cur == 41) {
+				done = 1;
+				o->pos = 4;
+				o->cur = 39;
+			} else {
+				o->name[o->pos] = *d_3b230[o->cur];
+				o->pos++;
+				if (o->pos == 3)
+					o->cur = 41;
+			}
+		} else if (trig & 4) {
+			f_2e6fc(13);
+			if (o->pos == 0)
+				break;
+			if (--o->pos == 0)
+				o->cur = 0;
+			o->name[o->pos] = ' ';
+		}
+		break;
+	case 3:
+		if (trig & 32) {
+			if (o->cur++ == 41)
+				o->cur = 40;
+		}
+		if (trig & 16) {
+			if (o->cur-- == 40)
+				o->cur = 41;
+		}
+		if (trig & 8) {
+			f_2e6fc(13);
+			if (o->cur == 40) {
+				o->pos--;
+				o->name[o->pos] = ' ';
+			} else {
+				done = 1;
+				o->pos = 4;
+				o->cur = 39;
+			}
+		} else if (trig & 4) {
+			f_2e6fc(13);
+			o->pos--;
+			o->name[o->pos] = ' ';
+		}
+		break;
+	case 4:
+	default:
+		return 1;
+	}
+	o->timer--;
+	if (o->timer == 0) {
+		done = 1;
+		o->cur = 39;
+	}
+	if (done) {
+		for (k = 0; f_3127c(d_3b2dc[k], g_6033744, 3); k++) {
+			if (f_3127c(d_3b2dc[k], o->name, 3) == 0) {
+				 *(long *)o->name = *d_3b2d8;
+
+				break;
+			}
+		}
+		o->name[3] = 0;
+		f_2e6fc(9);
+	}
+	return done;
+}
+
+int f_1421c(struct field *f)
+{
+	struct res *st;
+	unsigned short d;
+
+	st = (struct res *)((signed char)(f->id * 60) + (char *)g_60794c0);
+	if ((g_6064880 & 1) && ((unsigned char *)0x0606475a)[f->id] == 14)
+		f->flags308 |= 0x80000;
+	if (f->mode & 0x660)
+		f->flags308 &= ~0x80000;
+	if (f->w304 != 1)
+		return;
+	if (!(f->flags308 & 0x80000) && st->mask == 0) {
+		f->flags308 &= ~0x100;
+		f_2f68(f, 7);
+		return 1;
+	}
+	st->b18 += 4;
+	if (st->b18 > 63)
+		st->b18 = 63;
+	switch (st->state) {
+	case 0:
+		st->state++;
+		st->w6 = 18;
+		st->b18 = 4;
+		f->flags308 |= 0x100;
+		if (st->f->mode & 4) {
+			f_13f10(&st->e[0], &g_6064898[0]);
+			f_13f10(&st->e[1], &g_6064898[1]);
+		} else {
+			f_13f10(&st->e[0], st->f);
+		}
+	case 1:
+		if (st->w6)
+			st->w6--;
+		if (st->f->mode & 4) {
+			if ( !st->w6 ) {
+				d = f_13f50(&st->e[0]);
+				d &= f_13f50(&st->e[1]);
+				if ( d ) {
+					st->state++;
+					st->w4 = 0xc0;
+					f_13b9c(st);
+				}
+			}
+			f_14758(st, 0);
+		} else {
+			if ( !st->w6 && f_13f50(&st->e[0]) ) {
+				st->state++;
+				st->w4 = 0xc0;
+				f_13b9c(st);
+			}
+			f_1441a(st, 0);
+		}
+		break;
+	case 2:
+		if (st->f->mode & 4)
+			f_14758(st, 0xff);
+		else
+			f_1441a(st, 0xff);
+		if (--st->w4 < 0) {
+			f->flags308 &= ~0x100;
+			f_2f68(f, 7);
+			if (f->flags308 & 0x80000)
+				f->w300 = 1440;
+			f_238fc(f);
+			return 1;
+		}
+		break;
+	}
+	return 0;
+}
+
+void f_1441a(struct res *st, unsigned char c)
+{
+	struct field *f;
+	int x;
+	char flash;
+	struct ent *e;
+
+	f = st->f;
+	if ((f->mode & 0x1083) && st->mask == 0) {
+		f_14670(st, c);
+		return;
+	}
+	x = st->f->id * 160;
+	f_11680((struct frame *)0xa782c, 42, x + 20, 0, 110, 63, st->b18, 0);
+	f_11680((struct frame *)0xa7838, 85, x + 20, 0, 110, 63, st->b18, 0);
+	if (f->mode & 2)
+		f_11680((struct frame *)0xa7844, 128, x + 20, 0, 110, 63, st->b18, 0);
+	else if (f->mode & 1)
+		f_11680((struct frame *)0xa788c, 128, x + 20, 0, 110, 63, st->b18, 0);
+	f_11680((struct frame *)0xa7850, 171, x + 20, 0, 110, 63, st->b18, 0);
+	if ( st->w6 == 0 ) {
+		f_1159c(d_3b330[st->b16], 62, x + 38, 0, 110);
+		f_1159c(d_3b330[st->b17], 105, x + 38, 0, 110);
+		if (f->mode & 2)
+			f_18708(f->l354, 148, x + 20);
+		else if (f->mode & 1)
+			f_122cc(f->l330, 148, x + 24);
+		if (g_6060008 & 3)
+			flash = 8;
+		else
+			flash = 0;
+		e = &st->e[0];
+		if (c == 0xff)
+			f_121fe(e->name, 183, x + 36, flash, 110);
+		else
+			f_121fe(e->name, 183, x + 36, 0, 110);
+		f_1159c(d_3b13c[*d_3b230[e->cur] - 32], 183, e->pos * 16 + x + 36, flash, 110);
+	}
+}
+
+void f_14670(struct res *st, unsigned char c)
+{
+	struct field *f;
+	int x;
+	char flash;
+	struct ent *e;
+
+	f = st->f;
+	x = f->id * 160;
+	f_11680((struct frame *)0xa7850, 105, x + 20, 0, 110, 63, st->b18, 0);
+	if ( !st->w6 ) {
+		if (g_6060008 & 3)
+			flash = 8;
+		else
+			flash = 0;
+		e = &st->e[0];
+		if (c == 0xff)
+			f_121fe(e->name, 117, x + 36, flash, 110);
+		else
+			f_121fe(e->name, 117, x + 36, 0, 110);
+		f_1159c(d_3b13c[*d_3b230[e->cur] - 32], 117, e->pos * 16 + x + 36, flash, 110);
+	}
+}
+
+void f_14758(struct res *st, unsigned char c)
+{
+	char flash;
+	struct ent *e;
+
+	f_11680((struct frame *)0xa7898, 43, 107, 0, 110, 63, st->b18, 0);
+	f_11680((struct frame *)0xa78a4, 80, 107, 0, 110, 63, st->b18, 0);
+	f_11680((struct frame *)0xa78b0, 117, 107, 0, 110, 63, st->b18, 0);
+	f_11680((struct frame *)0xa78bc, 154, 107, 0, 110, 63, st->b18, 0);
+	f_11680((struct frame *)0xa78c8, 172, 107, 0, 110, 63, st->b18, 0);
+	f_11680((struct frame *)0xa78d4, 190, 107, 0, 110, 63, st->b18, 0);
+	if (st->w6 != 0)
+		return;
+	f_1159c(d_3b330[st->b16], 56, 138, 0, 110);
+	f_1159c(d_3b330[st->b17], 93, 138, 0, 110);
+	f_18708(st->f->l350, 130, 121);
+	if (g_6060008 & 3)
+		flash = 8;
+	else
+		flash = 0;
+	e = &st->e[0];
+	if (c == 0xff || e->pos > 3)
+		f_121fe(e->name, 167, 124, flash, 110);
+	else
+		f_121fe(e->name, 167, 124, 0, 110);
+	f_1159c(d_3b13c[*d_3b230[e->cur] - 32], 167, e->pos * 16 + 124, flash, 110);
+	f_11254(e->f->w322, 169, 189, 0, 110, 3, 0, 2);
+	e = &st->e[1];
+	if (c == 0xff || e->pos > 3)
+		f_121fe(e->name, 185, 124, flash, 110);
+	else
+		f_121fe(e->name, 185, 124, 0, 110);
+	f_1159c(d_3b13c[*d_3b230[e->cur] - 32], 185, e->pos * 16 + 124, flash, 110);
+	f_11254(e->f->w322, 187, 189, 0, 110, 3, 0, 2);
 }
