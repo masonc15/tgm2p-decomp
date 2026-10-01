@@ -120,7 +120,6 @@
 0x02b430 c    src/frt.c
 0x02b4e8 c    src/frame_2b4e8.c
 0x02bc64 c    src/f_2bc64.c
-0x02be48 asm
 0x02bf58 c    src/gfx_2bf58.c
 0x02d2bc c    src/input_2d2bc.c
 0x02dbcc c    src/sprite_2dbcc.c
