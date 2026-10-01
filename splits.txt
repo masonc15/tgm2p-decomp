@@ -66,7 +66,8 @@
 0x018be0 c    src/f_18be0.c
 0x018fec c    src/f_18fec.c
 0x019014 c    src/f_19014.c
-0x01913c asm
+0x01913c c-prefix src/playfield_1913c.c
+0x0191a4 asm
 0x0192e0 c    src/f_192e0.c
 0x019414 c    src/item_19414.c
 0x019d68 c    src/item_19d68.c
