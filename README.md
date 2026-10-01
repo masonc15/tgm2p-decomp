@@ -83,6 +83,8 @@ The VM frame handlers at `0xe834` now match in `src/vm_e834.c` without inline as
 
 The state-4 cleanup in `src/item_19d68.c` needs explicit `if/else` branches with a `break` inside each. This fixes ten scratch-register differences; moving the final `break` outside the `else` also moves a store into the branch delay slot and changes the pool layout. The complete `0x19d68`–`0x1a7c8` span passes the original ROM hash checks.
 
+In `src/effect_18064.c`, the piece-shaped draw loop uses an explicit table pointer and updates `p`, `i`, then `xx` in the `for` clause. Initializing `i` before `xx` preserves the loop-entry schedule. Writing the initial vertical adjustment as `y = y + 1` rather than `y++` fixes the final graphics-pointer/y register swap.
+
 ### Near misses worth coming back to
 
 These are in `tools/shc_probe/cases/wip/`.
