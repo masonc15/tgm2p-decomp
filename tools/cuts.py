@@ -86,7 +86,9 @@ def main() -> None:
     for lo, hi, members in spans():
         if hi - lo > args.max or lo % 4:
             continue
-        in_c = any(a <= lo and hi <= b for a, b in done)
+        # read_splits() supplies disjoint ranges; adjacent C units also cover a span.
+        covered = sum(max(0, min(hi, b) - max(lo, a)) for a, b in done)
+        in_c = covered == hi - lo
         if in_c and not args.c:
             continue
         shapes = "".join("0" if fn.shape(m, fn.extent(m)[0]) == "O0" else "o" for m in members)
