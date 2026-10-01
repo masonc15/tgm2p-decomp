@@ -111,6 +111,8 @@
 0x0238a8 asm
 0x023f08 c    src/stubs_23f08.c
 0x023f10 asm
+0x0248a8 c    src/objfile_248a8.c
+0x0249c4 asm
 0x02528c c    src/objpool_2528c.c
 0x0255dc c    src/board_255dc.c
 0x025938 asm
