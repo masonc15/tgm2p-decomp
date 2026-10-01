@@ -1,6 +1,6 @@
 # Compiler runtime exceptions
 
-Colin approved explicit compiler-runtime assembly exceptions during the coverage work. The completion criterion is matching C for every non-exempt code byte, with the original ROMs still byte-identical. This replaces the literal 100% C requirement; it does not change how coverage is measured.
+Colin approved explicit compiler-runtime assembly exceptions during the coverage work. The completion criterion is matching C for every non-exempt code byte, with the original ROMs still byte-identical. This replaces the literal 100% C requirement; it does not change how coverage is measured. Colin explicitly reconfirmed these exceptions after the resumed goal again requested literal 100%. No other assembly is exempt.
 
 The existing report denominator stays **200,698 bytes**. Exempt assembly stays assembly and remains incomplete in the report. Do not wrap it in C, alter completeness flags, reclassify it as data, or remove it from the denominator.
 
