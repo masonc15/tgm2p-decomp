@@ -10,8 +10,8 @@
 0x003c88 asm
 0x0044d4 c    src/piece_44d4.c
 0x0050e0 c    src/f_50e0.c
-0x0051f4 c    src/f_51f4.c
-0x0052b6 asm
+0x0051f4 c-prefix src/f_51f4.c
+0x005390 asm
 0x007f38 c    src/f_7f38.c
 0x007fa0 asm
 0x008518 c    src/field_check.c
