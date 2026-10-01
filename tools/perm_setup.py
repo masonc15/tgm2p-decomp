@@ -32,6 +32,7 @@ from probe import CASES, HEADER, SHCC  # noqa: E402
 
 FUNC_DEF = re.compile(r"^[A-Za-z_][^;{}]*?\b(\w+)\s*\([^;]*?\)\s*\{", re.M | re.S)
 VERSION = "shc-v5.0r32"
+INLINE_ASM = re.compile(r"^[ \t]*#[ \t]*pragma[ \t]+inline_asm[ \t]*\(([^)]*)\)[^\n]*$", re.M)
 
 COMPILE_SH = """#!/bin/bash
 # $1 = candidate .c, $3 = output .o (the permuter calls: compile.sh in.c -o out.o)
@@ -205,10 +206,38 @@ def main() -> None:
     d = args.dir or Path("/drive2/tgm2p/perm") / func
     d.mkdir(parents=True, exist_ok=True)
 
+    # pycparser can't read #pragma inline_asm bodies (SH assembly), so base.c
+    # keeps only a parser-only prototype for those functions; head.c/tail.c carry the pragma
+    # and the body, which compile.sh splices back in, and shcc.sh then sees the
+    # pragma and builds through asmsh as it does for the case itself.
+    asm = set()
+    for m in INLINE_ASM.finditer(src):
+        asm.update(re.findall(r"\w+", m[1]))
+    if func in asm:
+        sys.exit(f"{func} is a #pragma inline_asm function")
+
+    def whole(name, a, b):
+        return (f"#pragma inline_asm({name})\n" if name in asm else "") + src[a:b]
+
+    edits = []  # (start, end, replacement) in src
+    for name, a, b in fns:
+        if name in asm:
+            # PERM_PRETEND: the parser sees the prototype, the compiler doesn't.
+            # (The permuter drops "static" from function prototypes, and a
+            # non-static one makes SHC emit the helper as a real function.)
+            proto = src[a:FUNC_DEF.match(src, a).end() - 1].rstrip() + ";"
+            edits.append((a, b, f"PERM_PRETEND({proto})"))
     _, fa, fb = fns[k]
-    (d / "base.c").write_text(src if args.no_lineswap else wrap_perm_macros(src, fa, fb, args.lineswap_max))
-    (d / "head.c").write_text("".join(src[a:b] + "\n\n" for _, a, b in fns[:k]))
-    (d / "tail.c").write_text("".join("\n\n" + src[a:b] for _, a, b in fns[k + 1:]) + "\n")
+    if not args.no_lineswap:
+        wrapped = wrap_perm_macros(src, fa, fb, args.lineswap_max)
+        edits.append((fa, fb, wrapped[fa:len(wrapped) - (len(src) - fb)]))
+    base_c = src
+    for a, b, rep in sorted(edits, reverse=True):
+        base_c = base_c[:a] + rep + base_c[b:]
+    base_c = INLINE_ASM.sub("", base_c)
+    (d / "base.c").write_text(base_c)
+    (d / "head.c").write_text("".join(whole(n, a, b) + "\n\n" for n, a, b in fns[:k]))
+    (d / "tail.c").write_text("".join("\n\n" + whole(n, a, b) for n, a, b in fns[k + 1:]) + "\n")
     # Only the permuted function survives as a definition, so splice before it.
     pat = r"^[A-Za-z_][^;{}]*?\b" + func + r"\s*\([^;]*?\)\s*\{"
     (d / "splice.py").write_text(SPLICE_PY.format(pat=pat))
