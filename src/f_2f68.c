@@ -1,4 +1,4 @@
-/* rom: 0x2f68 len: 0x688 func: f_2f68 flags: -macsave=1 -optimize=1 -speed */
+/* rom: 0x2f68 len: 0xa9a func: f_2f68 flags: -macsave=1 -optimize=1 -speed */
 struct player;
 struct slot {
 	char pad0[12];
@@ -278,4 +278,87 @@ void f_35a0(struct player *p)
 		p->b349++;
 	else
 		p->b349 = 0;
+}
+
+/* Collision test for the active piece: the field is a grid of 6-byte cells
+ * with walls stored as cells, and the piece shape is a 4x4 grid per rotation
+ * in d_363cc, indexed by the piece type in the low nibble of flags. Big mode
+ * (flag 0x200) doubles every shape cell. Overlaps are counted in g_6077608,
+ * split by whether the cell has bit 15 set, and any overlap is a collision. */
+struct cell {
+	unsigned short v;
+	char pad[4];
+};
+struct field {
+	struct cell *cells;
+	char pad0[0xde - 4];
+	unsigned char h;           /* 0xde, rows including the walls */
+	unsigned char w;           /* 0xdf, columns including the walls */
+	char pad1[0x35e - 0xe0];
+	unsigned short flags;      /* 0x35e; low nibble is the piece type */
+};
+struct hits {
+	char pad[0x370];
+	unsigned short a;          /* overlaps with plain cells */
+	unsigned short b;          /* overlaps with cells that have bit 15 set */
+};
+extern struct hits g_6077608;
+extern unsigned char d_363cc[16][4][4][4];   /* [type][row][rot][col] */
+
+unsigned char f_35f0(struct field *f, short x, short y, unsigned char rot)
+{
+	unsigned short i;
+	unsigned short c;
+	struct cell *p;
+	unsigned short k;
+	unsigned short j;
+
+	/* `g_6077608.b += 0` here and the dead store before the final return
+	 * emit nothing, but they set which constants SHC keeps in registers and
+	 * the order of the literal pool (0xbfff before 0x8000). */
+	g_6077608.b += 0;
+	k = f->flags;
+	g_6077608.b = 0;
+	g_6077608.a = 0;
+	k &= 15;
+	if (f->flags & 0x200) {
+		y += 1;
+		x -= 2;
+		for (i = 0; i < 8; i++) {
+			if ((y - i) < f->h) {
+				p = &f->cells[((y - i) * f->w) + x];
+				for (j = 0; j < 8; j++, p++) {
+					if ((x + j) >= 0) {
+						c = p->v & 0xbfff;
+						if (d_363cc[k][i >> 1][rot][j >> 1] && c) {
+							if (p->v & 0x8000)
+								g_6077608.b++;
+							else
+								g_6077608.a++;
+						}
+					}
+				}
+			}
+		}
+	} else {
+		for (i = 0; i < 4; i++) {
+			if ((y - i) < f->h) {
+				for (j = 0; j < 4; j++) {
+					if ((x + j) >= 0) {
+						c = f->cells[(((y - i) * f->w) + x) + j].v & 0xbfff;
+						if ((d_363cc[k][i][rot][j] != 0) && (c != 0)) {
+							if (f->cells[(((y - i) * f->w) + x) + j].v & 0x8000)
+								g_6077608.b++;
+							else
+								g_6077608.a++;
+						}
+					}
+				}
+			}
+		}
+	}
+	if (g_6077608.a + g_6077608.b)
+		return 1;
+	if (0) g_6077608.a = 0x8000;
+	return 0;
 }
