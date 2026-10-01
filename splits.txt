@@ -116,8 +116,8 @@
 0x023738 c    src/effect_23738.c
 0x023828 c    src/code_23828.c
 0x0238a8 asm
-0x023f08 c    src/task_23f08.c
-0x02443c asm
+0x023f08 c-prefix src/task_23f08.c
+0x02452e asm
 0x0248a8 c    src/objfile_248a8.c
 0x0249c4 asm
 0x02528c c    src/objpool_2528c.c

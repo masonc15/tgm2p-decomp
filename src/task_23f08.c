@@ -1,4 +1,6 @@
-/* rom: 0x23f08 len: 0x534 func: f_23f08 flags: -macsave=1 -optimize=1 -speed */
+/* rom: 0x23f08 len: 0x626 func: f_23f08 flags: -macsave=1 -optimize=1 -speed */
+/* c-prefix: f_23f08 through f_2443c (0x23f08-0x2452e) are linked. The rest
+ * of the 0x23f08-0x248a8 file is compiler context; see the marker below. */
 typedef void (*func)();
 struct task {
 	struct task *parent;       /* 0x00 */
@@ -300,3 +302,243 @@ long *f_2440a(struct task *t, long fn)
 	return 0;
 }
 
+short f_2443c(long fn, unsigned short flags, short a, short b, short c, short d, short e, short f)
+{
+	long *p;
+	short *w;
+	short i;
+
+	p = TOP(g_606005c);
+	for (i = 0; i < g_606005c->n; i++) {
+		w = (short *)(p - 3);
+		if (*p == fn
+		    && (!(flags & 1) || w[0] == a)
+		    && (!(flags & 2) || w[1] == b)
+		    && (!(flags & 4) || w[2] == c)
+		    && (!(flags & 8) || w[3] == d)
+		    && (!(flags & 16) || w[4] == e)
+		    && (!(flags & 32) || w[5] == f)) {
+			f_243be(g_606005c, p);
+			return i;
+		}
+		p -= 4;
+	}
+	return -1;
+}
+
+/* CONTEXT ONLY BELOW THIS LINE. Not linked, not counted as matched C.
+ * f_2452e is 82/86: the table load goes into p's register and is copied to
+ * t, where the ROM loads into t (r7) and copies to p (r6). The functions
+ * after it match only with it in the file; they supply the shared pool. */
+struct task *f_2452e(struct task *parent)
+{
+	struct task *t;
+	long *p;
+	unsigned int i;
+	short n;
+
+	n = g_6060068;
+	if (n >= 0xbf)
+		return 0;
+	p = (long *)g_607cf10[n];
+	t = (struct task *)p;
+	for (i = 0; i < 0x100; i += 4) {
+		*p++ = 0;
+		*p++ = 0;
+		*p++ = 0;
+		*p++ = 0;
+	}
+	if (parent) {
+		t->parent = parent;
+		t->next = parent->child;
+		if (parent->child)
+			parent->child->prev = t;
+		parent->child = t;
+	}
+	if (g_6060068 == 0) {
+		t->lnext = 0;
+		t->lprev = 0;
+		g_607d214 = t;
+		g_607d210 = t;
+	} else {
+		t->lprev = g_607d214;
+		t->lnext = 0;
+		g_607d214->lnext = t;
+		g_607d214 = t;
+	}
+	if (!g_60ad220)
+		g_60ad220 = 1;
+	t->id = g_60ad220++;
+	g_6060068++;
+	return t;
+}
+
+void f_245da(struct task *self)
+{
+	struct task *t, *parent, *child, *prev, *next, *q;
+
+	t = self;
+	parent = t->parent;
+	child = t->child;
+	prev = t->prev;
+	next = t->next;
+	if (child) {
+		if (prev)
+			prev->next = child;
+		else if (parent)
+			parent->child = child;
+		child->prev = prev;
+		for (q = child; ; q = q->next) {
+			q->parent = parent;
+			if (q->next == 0)
+				break;
+		}
+		if (next) {
+			q->next = next;
+			next->prev = q;
+		}
+	} else {
+		if (prev)
+			prev->next = next;
+		else if (parent)
+			parent->child = next;
+		if (next)
+			next->prev = prev;
+	}
+	if (t == g_607d210)
+		g_607d210 = t->lnext;
+	if (t == g_607d214)
+		g_607d214 = t->lprev;
+	self->id = 0;
+	if (t->lprev)
+		t->lprev->lnext = t->lnext;
+	if (t->lnext)
+		t->lnext->lprev = t->lprev;
+	g_607cf10[--g_6060068] = t;
+}
+
+struct task *f_2467e(struct desc *d, struct task *parent)
+{
+	struct task *saved, *t;
+
+	saved = g_606005c;
+	if (parent == (struct task *)-1)
+		parent = saved;
+	t = f_2452e(parent);
+	if (t == 0)
+		return 0;
+	g_606005c = t;
+	if (d->exit)
+		*(func *)((char *)t + 0x3fc) = d->exit;
+	else
+		*(func *)((char *)t + 0x3fc) = f_23f08;
+	if (d->main)
+		*(func *)((char *)t + 0x3f8) = d->main;
+	else
+		*(func *)((char *)t + 0x3f8) = f_23f08;
+	if (d->top)
+		*(func *)((char *)t + 0x3ec) = d->top;
+	else
+		*(func *)((char *)t + 0x3ec) = f_23f08;
+	t->n = 1;
+	if (d->init)
+		(*d->init)();
+	g_606005c = saved;
+	return t;
+}
+
+struct task *f_24724(func *d, struct task *parent)
+{
+	struct task *saved, *t;
+	func *p;
+	short i;
+
+	saved = g_606005c;
+	if (parent == (struct task *)-1)
+		parent = saved;
+	t = f_2452e(parent);
+	if (t == 0)
+		return 0;
+	g_606005c = t;
+	p = &t->exit;
+	for (i = 1; i < 16 && d[i]; i++) {
+		if (i < 4) {
+			*p = d[i];
+			p--;
+		} else {
+			if (i == 4)
+				p--;
+			*p = d[i];
+			p -= 4;
+		}
+	}
+	t->n = i - 4;
+	(*d[0])();
+	g_606005c = saved;
+	return t;
+}
+
+void f_247b0(struct task *t)
+{
+	struct task *saved;
+	func *f;
+
+	f = &t->exit;
+	saved = g_606005c;
+	g_606005c = t;
+	(**f)();
+	f_245da(t);
+	g_606005c = saved;
+	if (t == g_606005c)
+		g_60ad21e = 1;
+	(void)&saved;
+	(void)&f;
+}
+
+void f_247ee(void)
+{
+	struct task *t, *next;
+
+	if (g_6060068) {
+		for (t = g_607d210; t; t = next) {
+			next = t->lnext;
+			f_247b0(t);
+		}
+	}
+}
+
+void f_24828(long fn)
+{
+	struct task *t, *next;
+	long *p;
+	unsigned short i;
+
+	if (g_6060068) {
+		for (t = g_607d210; t; t = next) {
+			next = t->lnext;
+			p = TOP(t);
+			for (i = 0; i < t->n; i++) {
+				if (*p == fn) {
+					f_247b0(t);
+					break;
+				}
+				p -= 4;
+			}
+		}
+	}
+}
+
+void f_24886(short v)
+{
+	g_60ad21c = v;
+}
+
+void f_2488c(void)
+{
+	g_60ad21c = 0;
+}
+
+short f_24894(void)
+{
+	return g_60ad21c;
+}
