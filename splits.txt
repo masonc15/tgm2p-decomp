@@ -107,7 +107,8 @@
 0x023558 c    src/effect_23558.c
 0x023648 c    src/effect_23648.c
 0x023738 c    src/effect_23738.c
-0x023828 asm
+0x023828 c    src/code_23828.c
+0x0238a8 asm
 0x023f08 c    src/stubs_23f08.c
 0x023f10 asm
 0x02528c c    src/objpool_2528c.c
