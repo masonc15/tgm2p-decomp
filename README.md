@@ -79,6 +79,8 @@ These are the rules to expect when decompiling the rest of the game.
 - **Nested `if`s beat `&&` chains.** In `f_2d2e0` every `&&` chain had to be written as nested `if`s; the nesting is also what makes SHC test against a hoisted constant (`tst r12,r3`) instead of `tst #1,r0`. Loop syntax (`while`, `for`, `do`) and `+= 1` vs `++` made no difference there. Try a dead store (`if (0) g = 1;`) before adding a local when constants land in the wrong registers: a new local re-permutes them.
 - **Inlining and tail calls follow node counts.** With `-speed`, small functions defined anywhere in the file get inlined, and a call in tail position becomes a `bra`/`jmp`. `f_11e98.c` needs three calls to an empty function after its last real call to stop both, so the original probably had statements that compile to nothing there.
 
+The VM frame handlers at `0xe834` now match in `src/vm_e834.c` without inline assembly. An uninitialized local pointer supplies SHC's `r15` value directly, while `(void)&local` reserves the original stack slot. This reproduces the same compiler behavior seen in `src/f_19014.c`; it is undefined in portable C and must not be treated as a general stack-pointer API. A separate `short` numerator local fixes the last five register differences in `f_e8ee`. The complete span passes the original ROM hash checks.
+
 ### Near misses worth coming back to
 
 These are in `tools/shc_probe/cases/wip/`.
@@ -101,7 +103,6 @@ These are in `tools/shc_probe/cases/wip/`.
 - **`f_26f64`/`f_26faa` and `0x60e8`.** The `0x2657c`–`0x278ae` file they sit in is one unit of about 20 functions tied together by `bsr`, and its shared pool at `0x27812` changes the scheduling of the setters around it, so it has to be matched whole.
 - **The secret-code checker at `0x23828` (93.8%, `code_23828.c`) and a sprite draw at `0x2090c` (80.3%, `draw_2090c.c`).** Register choice only in the first. Its score moves with the file state, so it probably needs the effect functions before it in the same file.
 - **`0xef04` (94.1%, `vm_ef04.c`).** `f_ef04` does a 16.16 fixed-point multiply with `dmuls.l` and `xtrct`, which C can't express; a `#pragma inline_asm` helper reproduces it, but the unit then has to be built with `-code=asmcode` and asmsh, which the build now supports (`tools/shc_probe/inline_asm/`); what's left is `f_f06a`. `f_f06a` is stuck at 66.7% with two registers swapped.
-- **`0xe834` (`vm_e834.c`).** `f_e834`, `f_e854`, `f_e882` and `f_e8b8` store `r15` itself (`mov.l r15,@(r0,rN)`), the only four places in the ROM that do. SHC always copies `r15` to another register first, across about 50 C forms and every compiler release and relevant flag tried, so these were probably hand-written or inline assembly.
 - **`0xec0c` (`vm_ec0c.c`).** `f_ec0c` is about 52%; the small functions after it match. `char buf[2] = {0}` reproduces the ROM's copy from RAM `0x603343c`, an SHC initializer constant, so linking it would need that data placed there.
 
 ## Building
