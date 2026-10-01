@@ -7,9 +7,11 @@ declaration. SHC shares literal pools across a run of functions, and at
 compile.sh splices the other functions' bodies back in around the candidate:
 the ones before it in head.c, the ones after it in tail.c.
 
-target.o is the case compiled as-is with its .text bytes replaced by the ROM
-bytes, except for the words the object relocates, so pool addresses compare
-the same way probe.py compares them.
+target.o is assembled from the ROM with functions and relocations placed at
+their original addresses, using objdiff_case.build_target. Reusing a
+nonmatching compile's offsets would corrupt both code and literal values.
+The scorer disassembles only the requested function; the compiler still sees
+all surrounding C context.
 
 base.c wraps the function body in PERM_RANDOMIZE and its leading local
 declarations in PERM_LINESWAP (see wrap_perm_macros).
@@ -18,17 +20,17 @@ usage: perm_setup.py <case> [func] [--dir DIR] [--cases CASEDIR] [--no-lineswap]
 then:  python /drive2/tgm2p/decomp-permuter/permuter.py DIR -j 6 --stop-on-zero
 """
 import argparse
+import json
 import re
+import shlex
 import subprocess
 import sys
 from pathlib import Path
 
-from elftools.elf.elffile import ELFFile
-from elftools.elf.relocation import RelocationSection
-
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools" / "shc_probe"))
 from probe import CASES, HEADER, SHCC  # noqa: E402
+from objdiff_case import build_target  # noqa: E402
 
 FUNC_DEF = re.compile(r"^[A-Za-z_][^;{}]*?\b(\w+)\s*\([^;]*?\)\s*\{", re.M | re.S)
 VERSION = "shc-v5.0r32"
@@ -258,29 +260,19 @@ def main() -> None:
     (d / "splice.py").write_text(SPLICE_PY.format(pat=pat))
     (d / "compile.sh").write_text(COMPILE_SH.format(shcc=SHCC, version=VERSION, flags=flags))
     (d / "compile.sh").chmod(0o755)
-    (d / "settings.toml").write_text(f'func_name = "{func}"\ncompiler_type = "base"\n')
+    dump_command = shlex.join([sys.executable, str(ROOT / 'tools/perm_objdump.py'), '_' + func])
+    (d / "settings.toml").write_text(
+        f'func_name = "{func}"\ncompiler_type = "base"\n'
+        f'objdump_command = {json.dumps(dump_command)}\n')
 
-    # Build target.o: compile the case unchanged, then swap in ROM bytes.
     base = d / "base.o"
     subprocess.run([str(SHCC), VERSION, str(base), str(case_src), *flags.split()], check=True)
-    raw = bytearray(base.read_bytes())
-    with base.open("rb") as f:
-        e = ELFFile(f)
-        text = e.get_section_by_name(".text")
-        off, size = text["sh_offset"], text["sh_size"]
-        syms = e.get_section_by_name(".symtab")
-        hdr_fn = hdr["func"] or args.case
-        sym_off = next(s["st_value"] for s in syms.iter_symbols() if s.name == "_" + hdr_fn)
-        rom_start = int(hdr["rom"], 16) - sym_off
-        rom = bytearray((ROOT / "build" / "prog.bin").read_bytes()[rom_start:rom_start + size])
-        for s in e.iter_sections():
-            if isinstance(s, RelocationSection) and s.name.endswith(".text"):
-                for r in s.iter_relocations():
-                    o = r["r_offset"]
-                    rom[o:o + 4] = raw[off + o:off + o + 4]
-    raw[off:off + size] = rom
-    (d / "target.o").write_bytes(raw)
-    print(f"{d}: {func} ({len(fns[:k])} before, {len(fns) - k - 1} after), ROM {rom_start:#x}+{size:#x}, flags {flags}")
+    where = {hdr["func"] or args.case: int(hdr["rom"], 16)}
+    rom_start, rom_end, _, _, _, unresolved = build_target(base, d / "target.o", hdr, where)
+    if unresolved:
+        sys.exit(f"perm_setup: unresolved target symbols: {', '.join(unresolved)}")
+    print(f"{d}: {func} ({len(fns[:k])} before, {len(fns) - k - 1} after), "
+          f"ROM {rom_start:#x}-{rom_end:#x}, function-only scoring, flags {flags}")
 
 
 if __name__ == "__main__":

@@ -139,7 +139,7 @@ def load_base(path: Path):
 
 
 def build_target(base: Path, out: Path, hdr, where: dict):
-    data, funcs, relocs = load_base(base)
+    _, funcs, relocs = load_base(base)
     named = {}  # object offset -> (name, rom)
     for off, sym in funcs:
         n = sym.removeprefix("_")
@@ -154,7 +154,9 @@ def build_target(base: Path, out: Path, hdr, where: dict):
     r0 = rom0 - off0
     if r0 % 4:
         sys.exit(f"{base}: .text would start at ROM {r0:#x}, not 4-aligned; check the f_ names and --at")
-    r1 = r0 + len(data)
+    # The target ends at ROM boundaries, never at the length of a growing
+    # nonmatching candidate (which could pull in unrelated instructions).
+    r1 = r0
     if hdr and hdr["len"]:
         r1 = max(r1, int(hdr["rom"], 16) + int(hdr["len"], 16))
     for off, (_, rom) in named.items():
