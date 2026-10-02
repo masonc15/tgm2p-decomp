@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile contextual C, verify a prefix, retain only its unmodified bytes.
+"""Compile contextual C, verify a range, retain only its unmodified bytes.
 
 No bytes are sourced from the reference ROM: it is a comparison oracle only.
 This intentionally supports a conservative subset of control flow. Unsupported
@@ -16,32 +16,37 @@ class PrefixError(ValueError):
     pass
 
 
-def validate_prefix(compiled, rom, start, end, entries):
-    """Verify linked bytes and reachable cross-boundary literal dependencies.
+def validate_prefix(compiled, rom, start, end, entries, *, context_start=None):
+    """Verify an unchanged compiler span and its reachable dependencies.
 
-Addresses are ROM offsets; compiled[0] corresponds to start. entries maps all
-contextual function starts to names. The cut must be at a function boundary.
-Returns the external literal dependency manifest. No instruction is rewritten.
+Addresses are ROM offsets; compiled[0] corresponds to context_start. entries
+maps ALL contextual function starts. Only functions inside start:end are roots.
+Cuts must be function boundaries (or the end of the complete compiled object).
 """
+    context_start = start if context_start is None else context_start
     size = end - start
-    if start < 0 or start % 2 or end % 2 or size <= 0 or end > len(rom):
-        raise PrefixError('invalid prefix bounds')
-    if size > len(compiled):
-        raise PrefixError('compiled context shorter than prefix')
-    if start not in entries or (end not in entries and size != len(compiled)):
-        raise PrefixError('prefix must start/end at contextual function boundaries')
+    offset = start - context_start
+    label = 'prefix' if context_start == start else 'range'
+    if (context_start < 0 or context_start % 2 or offset < 0 or start % 2 or
+            end % 2 or size <= 0 or end > len(rom)):
+        raise PrefixError(f'invalid {label} bounds')
+    if offset + size > len(compiled):
+        raise PrefixError(f'compiled context shorter than {label}')
+    if start not in entries or (end not in entries and end != context_start + len(compiled)):
+        raise PrefixError(f'{label} must start/end at contextual function boundaries')
     for addr, name in entries.items():
         m = re.fullmatch(r'_?f_([0-9a-f]+)', name)
         if start <= addr < end and m and int(m[1], 16) != addr:
             raise PrefixError(f'kept function {name} is at the wrong address {addr:#x}')
-    if compiled[:size] != rom[start:end]:
-        first = next(i for i, (a, b) in enumerate(zip(compiled[:size], rom[start:end])) if a != b)
-        raise PrefixError(f'compiled prefix differs from ROM at {start + first:#x}')
+    kept = compiled[offset:offset + size]
+    if kept != rom[start:end]:
+        first = next(i for i, (a, b) in enumerate(zip(kept, rom[start:end])) if a != b)
+        raise PrefixError(f'compiled {label} differs from ROM at {start + first:#x}')
 
     def word(pc):
-        off = pc - start
-        if off < 0 or off + 2 > size:
-            raise PrefixError(f'instruction crosses prefix boundary at {pc:#x}')
+        off = pc - context_start
+        if pc < start or pc + 2 > end:
+            raise PrefixError(f'instruction crosses {label} boundary at {pc:#x}')
         return int.from_bytes(compiled[off:off + 2], 'big')
 
     def literal(w, pc):
@@ -76,8 +81,8 @@ Returns the external literal dependency manifest. No instruction is rewritten.
             raise PrefixError(f'PC-relative delay-slot instruction at {pc:#x} is unsupported')
         if pool:
             target, width = pool
-            if target + width > end:
-                off = target - start
+            if target < start or target + width > end:
+                off = target - context_start
                 if off < 0 or off + width > len(compiled) or target + width > len(rom):
                     raise PrefixError(f'literal outside compiled context at {pc:#x}')
                 value = compiled[off:off + width]
@@ -121,23 +126,26 @@ Returns the external literal dependency manifest. No instruction is rewritten.
     return [dependencies[pc] for pc in sorted(dependencies)]
 
 
-def compile_prefix(src, out, start, end, *, rom, shcc, version, flags, symbols, assembler):
+def compile_prefix(src, out, start, end, *, rom, shcc, version, flags, symbols, assembler,
+                   context_start=None):
     """Produce a relocation-free object with only verified compiler bytes.
 
 Full-context compilation/linking is deliberately repeated each build: a stale
 manifest or changed literal dependency must never bypass validation.
 """
     from elftools.elf.elffile import ELFFile
+    context_start = start if context_start is None else context_start
     src, out = Path(src), Path(out)
     context = out.with_suffix('.context.o')
     linked = out.with_suffix('.context.elf')
     script = out.with_suffix('.context.ld')
     binary = out.with_suffix('.context.bin')
-    prefix = out.with_suffix('.prefix.bin')
-    wrapper = out.with_suffix('.prefix.s')
+    kind = 'prefix' if context_start == start else 'range'
+    prefix = out.with_suffix(f'.{kind}.bin')
+    wrapper = out.with_suffix(f'.{kind}.s')
     ram_delta = 0x5fff880
-    if not 0x780 <= start < end <= 0x313fc:
-        raise PrefixError('c-prefix currently supports only the copied RAM code block')
+    if not 0x780 <= context_start <= start < end <= 0x313fc:
+        raise PrefixError('verified extraction supports only the copied RAM code block')
     subprocess.run([str(shcc), version, str(context), str(src), *flags], check=True)
     definitions = {}
     exports = []
@@ -152,10 +160,10 @@ manifest or changed literal dependency must never bypass validation.
             if symbol['st_shndx'] == 'SHN_UNDEF' and symbol.name:
                 unresolved.append(symbol.name)
             if symbol['st_shndx'] == text_index and symbol['st_info']['type'] == 'STT_FUNC':
-                addr = start + symbol['st_value']
+                addr = context_start + symbol['st_value']
                 definitions[addr] = symbol.name
                 if start <= addr < end:
-                    exports.append((symbol.name, symbol['st_value'], symbol['st_info']['bind']))
+                    exports.append((symbol.name, addr - start, symbol['st_info']['bind']))
     resolved = {}
     for name in unresolved:
         key = name[1:] if name.startswith('_') else name
@@ -170,13 +178,13 @@ manifest or changed literal dependency must never bypass validation.
             raise PrefixError(f'unresolved contextual symbol {name}')
         resolved[name] = addr
     script.write_text(
-        f'SECTIONS {{ .text 0x{start + ram_delta:x} : {{ *(.text) }} /DISCARD/ : {{ *(.comment) }} }}\n' +
+        f'SECTIONS {{ .text 0x{context_start + ram_delta:x} : {{ *(.text) }} /DISCARD/ : {{ *(.comment) }} }}\n' +
         '\n'.join(f'{name} = 0x{addr:x};' for name, addr in sorted(resolved.items())) + '\n')
     subprocess.run(['sh-elf-ld', '-T', str(script), '-o', str(linked), str(context)], check=True)
     subprocess.run(['sh-elf-objcopy', '-O', 'binary', '-j', '.text', str(linked), str(binary)], check=True)
     compiled = binary.read_bytes()
-    deps = validate_prefix(compiled, rom, start, end, definitions)
-    kept = compiled[:end - start]
+    deps = validate_prefix(compiled, rom, start, end, definitions, context_start=context_start)
+    kept = compiled[start - context_start:end - context_start]
     prefix.write_bytes(kept)
     # This generated wrapper only packages SHC output; it has no instructions
     # or ROM-derived .short data. Export no context-only functions.
@@ -190,11 +198,11 @@ manifest or changed literal dependency must never bypass validation.
     lines.append(f'.incbin "{prefix.resolve()}"')
     wrapper.write_text('\n'.join(lines) + '\n')
     subprocess.run([*assembler, '-no-pad-sections', '-o', str(out), str(wrapper)], check=True)
-    manifest = dict(source=str(src), start=start, end=end, kept_bytes=len(kept),
+    manifest = dict(source=str(src), context_start=context_start, start=start, end=end, kept_bytes=len(kept),
                     context_bytes=len(compiled), source_sha256=hashlib.sha256(src.read_bytes()).hexdigest(),
                     context_sha256=hashlib.sha256(compiled).hexdigest(),
                     prefix_sha256=hashlib.sha256(kept).hexdigest(),
                     functions=[name for name, _, _ in exports], literal_dependencies=deps)
-    out.with_suffix('.prefix.json').write_text(json.dumps(manifest, indent=2) + '\n')
-    print(f'c-prefix: {src.name} {start:#x}-{end:#x}: {len(kept)} verified C bytes; '
+    out.with_suffix(f'.{kind}.json').write_text(json.dumps(manifest, indent=2) + '\n')
+    print(f'c-{kind}: {src.name} {start:#x}-{end:#x}: {len(kept)} verified C bytes; '
           f'{len(compiled) - len(kept)} context-only bytes excluded; {len(deps)} external literal loads')

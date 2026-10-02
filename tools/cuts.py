@@ -73,7 +73,7 @@ def spans():
 
 def c_ranges():
     import build
-    return [(a, b) for a, b, kind, _ in build.read_splits() if kind in ("c", "c-prefix")]
+    return [(a, b) for a, b, kind, _ in build.read_splits() if kind in ("c", "c-prefix", "c-range")]
 
 
 def main() -> None:

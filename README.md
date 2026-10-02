@@ -133,7 +133,7 @@ To move a function into C, write the source with the usual `/* rom: ... flags: .
 
 CI (`.github/workflows/build.yml`) runs `make check` and `make report` on every push to `main` and uploads the report as the `tgm2p_report` artifact, which is what decomp.dev picks up. The ROM can't live in the repo, so the job runs inside a private container image, `ghcr.io/masonc15/tgm2p-build`, that holds the two program ROM halves plus the toolchain. `tools/ci/Dockerfile` builds it, with every download pinned by hash to the copies used on nuada. Pull requests from forks can't pull that image, so their builds are skipped. decomp.dev has no platform for arcade games yet; [decomp.dev#50](https://github.com/encounter/decomp.dev/pull/50) adds one, and the project can be registered once that's live.
 
-### Verified compiler prefixes
+### Verified compiler spans
 
 A `c-prefix` entry uses the same start/end boundaries as other segments, but compiles a larger contextual C source. `tools/c_prefix.py` links the complete compiler output at its real address, resolves its symbols, and compares the retained prefix byte for byte against the original ROM. It then follows control flow from the retained function entries and verifies the compiler-generated values of literal loads into the discarded tail. Unsupported indirect jumps, table-address generation, PC-relative delay-slot loads, and unverified control-flow exits fail the build rather than guessing.
 
@@ -141,7 +141,11 @@ Only the verified prefix is packaged into the final object. Its bytes come exclu
 
 `src/f_2f68.c` links through `f_3a02`, ending at `0x3c88`. Its marked DAS draft is compiler context only; the rotation routine's literal at `0x3d14` is checked but stays in the assembly segment. `src/draw_15f10.c` similarly retains only `0x15f10`–`0x15fae`. Together these prefixes add 804 linked C bytes without claiming either following draft as matched. Each retained object has a `build/obj/*.prefix.json` manifest recording its bounds, source/output hashes, exported functions, and literal dependencies. Objdiff labels these units “verified prefix” and measures only their retained spans.
 
-Run `python -m unittest discover -s tools -p 'test_*.py'` for the prefix rejection tests and coverage-filter tests. On nuada, set `PREFIX_COMPILE_TESTS=1` to also compile both real prefixes and test rejection of changed C, changed field layouts, and a corrupted compiler-emitted external literal. Prefix extraction is an incremental bridge, not a substitute for finishing the surrounding unit; replace it with an ordinary `c` segment once the whole unit matches.
+`c-range` uses the same checks for a span with preceding compiler context. Its source header must include exactly one `context-rom: 0x...` origin; the split still gives the retained start and end. The full object is linked at that origin before slicing, and retained symbols are rebased to the slice. Object filenames include the retained start so separate ranges of one source cannot overwrite each other. Neither leading nor trailing context is exported or counted; original assembly or separately matched C supplies those addresses.
+
+`src/gravity_3e2e.c` retains `0x3e2e`–`0x4044`: 534 exact bytes containing `f_3e2e` and `f_3f92`. Its 3,782 leading context bytes include an unmatched DAS variant and are excluded from this unit's coverage. The manifest is `build/obj/gravity_3e2e_003e2e.range.json`; objdiff measures only the retained range. The sound call resolves to ROM `0x2e6fc` / RAM `0x0602df7c`, not ROM `0x2df7c`. A regression test deliberately restores that incorrect address and requires extraction to fail, even though instruction-only matching can hide the relocation error.
+
+Run `python -m unittest discover -s tools -p 'test_*.py'` for the prefix/range rejection tests and coverage-filter tests. On nuada, set `PREFIX_COMPILE_TESTS=1` to also compile both real prefixes and test rejection of changed C, changed field layouts, and a corrupted compiler-emitted external literal. Verified extraction is an incremental bridge, not a substitute for finishing the surrounding unit; replace it with an ordinary `c` segment once the whole unit matches.
 
 ## Layout and tools
 

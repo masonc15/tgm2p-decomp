@@ -27,6 +27,19 @@ class CoverageFilterTests(unittest.TestCase):
                 (self.mid, self.hi, 'asm', None)]):
             self.assertEqual(cuts.c_ranges(), [(self.lo, self.mid)])
 
+    def test_range_counts_only_its_kept_span(self):
+        import build
+        with patch.object(build, 'read_splits', return_value=[
+                (self.lo, self.mid, 'asm', None),
+                (self.mid, self.hi, 'c-range', 'context.c')]):
+            self.assertEqual(cuts.c_ranges(), [(self.mid, self.hi)])
+
+    def test_multiple_ranges_of_one_source_have_distinct_objects(self):
+        import build
+        self.assertNotEqual(build.c_object(self.lo, 'c-range', 'context.c'),
+                            build.c_object(self.mid, 'c-range', 'context.c'))
+        self.assertEqual(build.c_object(self.lo, 'c-prefix', 'context.c').name, 'context.o')
+
     def test_single_c_segment_is_hidden(self):
         self.assertEqual(self.output([(self.lo, self.hi)]), "")
 

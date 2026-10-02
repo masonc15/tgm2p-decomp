@@ -1,4 +1,4 @@
-# ROM layout: <start> <asm|c|c-prefix|bin> [source or name]. Each segment runs to the
+# ROM layout: <start> <asm|c|c-prefix|c-range|bin> [source or name]. Each segment runs to the
 # next start. See tools/build.py.
 0x000000 bin  vectors
 0x000400 asm  boot code, runs from ROM
@@ -8,6 +8,8 @@
 0x002f3c c    src/rand.c
 0x002f68 c-prefix src/f_2f68.c
 0x003c88 asm
+0x003e2e c-range src/gravity_3e2e.c
+0x004044 asm
 0x0044d4 c    src/piece_44d4.c
 0x0050e0 c    src/f_50e0.c
 0x0051f4 c-prefix src/f_51f4.c
