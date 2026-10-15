@@ -22,11 +22,13 @@ uses heuristic names and groups and is kept separate from byte acceptance.
 
 ## Start or resume
 
-Run on Nuada from `/home/colin/workspace/tgm2p-decomp`:
+Run from `~/workspace/tgm2p-decomp` on nephele (or nuada as the fallback) after
+`. tools/env.sh`; [the workspace guide](WORKSPACE.md) covers hosts and setup.
+`make status` summarizes the queue below.
 
 ```sh
-/drive2/tgm2p/venv/bin/python tools/frontier.py
-/drive2/tgm2p/venv/bin/python tools/frontier.py --check
+$PY tools/frontier.py
+$PY tools/frontier.py --check
 ```
 
 Read the selected range's existing notes and scripts before designing another
@@ -34,14 +36,14 @@ experiment. Search by ROM address, function name, and compiler mechanism. A
 historical note can describe a blocker that later source has already resolved;
 reconcile it against today's splits first.
 
-For a canonical baseline, serialize the complete command with the import lock:
+For a canonical baseline, run `make split check report`. On nuada, serialize it
+with the dashboard's import lock:
 
 ```sh
 flock /home/colin/services/decomp-dev/import.lock make split check report
 ```
 
-The shell must have `sh-elf-*` and the established SHC dependencies available.
-The Makefile already selects the Nuada Python and objdiff installations. Do not
+The Makefile finds the host's toolchain, Python, and objdiff by itself. Do not
 run `make clean` against production to obtain a cold baseline; the isolated runner
 provides that without disrupting the dashboard or other work.
 
@@ -57,8 +59,9 @@ provides that without disrupting the dashboard or other work.
 | Large structural differences | Reconstruct control flow/ABI before tiny syntax mutations |
 
 Pin SHC v5.0r32 plus its actual executables, `wibo`, converter, source header flags,
-and full context. Existing broad version comparisons live outside the project at
-`/home/colin/workspace/tgm2p-toolchain-audit-20261005/`; those are historical
+and full context. Existing broad version comparisons are archived on nuada in
+`/drive2/tgm2p/history/stale-copies-20261015-b/full.tar.zst`
+(`tgm2p-toolchain-audit-20261005/`); those are historical
 measurements, not a substitute for checking the active binaries.
 
 ## Bounded two-agent trial
@@ -117,7 +120,7 @@ automatically enforce the compile budget; agents must follow it explicitly.
 4. Integrate only after those gates pass. Run two fresh whole-ROM replays:
 
 ```sh
-/drive2/tgm2p/venv/bin/python tools/cold_replay.py \
+$PY tools/cold_replay.py \
   --out research/cold-YYYY-MM-DD-unique-name
 ```
 
@@ -141,12 +144,12 @@ does not establish that all current inputs were freshly compiled.
 For changes to build/proof tooling, run:
 
 ```sh
-flock /home/colin/services/decomp-dev/import.lock \
-  env PREFIX_COMPILE_TESTS=1 PERM_SETUP_TESTS=1 /drive2/tgm2p/venv/bin/python \
+PREFIX_COMPILE_TESTS=1 PERM_SETUP_TESTS=1 $PY \
   -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-Both `PREFIX_COMPILE_TESTS=1` and `PERM_SETUP_TESTS=1` are essential on Nuada:
+On nuada, prefix it with `flock /home/colin/services/decomp-dev/import.lock`.
+Both `PREFIX_COMPILE_TESTS=1` and `PERM_SETUP_TESTS=1` are essential:
 without them, the suite skips real-compiler cases. Report executed tests and
 skips separately.
 
@@ -156,6 +159,11 @@ synthetic state, and known sampling misses mean it cannot promote exactness.
 
 ## Publish real gains
 
+Commit the accepted change and push it to `origin`. Nuada's import timer pulls
+`main` within 15 minutes, rebuilds under the import lock, and the services below
+publish a verified increase. Push evidence with `tools/sync_evidence.sh push`
+(nephele also does this hourly).
+
 Current services observed on 2026-10-10:
 
 - `decomp-dev-import.timer` runs canonical validation/import periodically.
@@ -164,8 +172,8 @@ Current services observed on 2026-10-10:
 - `tgm2p-progress-refresh.timer` refreshes the rendered dashboard.
 - The publisher is `/home/colin/services/tgm2p-progress/publish-on-change.py`.
 
-After an accepted increase, release the canonical lock and invoke the existing
-publication service if necessary:
+To publish sooner, on nuada after the pull, release the canonical lock and
+invoke the existing publication service:
 
 ```sh
 systemctl --user start tgm2p-progress-on-change.service
