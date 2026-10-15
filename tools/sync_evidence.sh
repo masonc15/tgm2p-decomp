@@ -14,8 +14,8 @@ case_opts=(--exclude=/wip/ --exclude=/eeprom_2fdd8.c --exclude='/opt_*.c')
 for path in research/ tools/shc_probe/cases/; do
     extra=(); [ "$path" = tools/shc_probe/cases/ ] && extra=("${case_opts[@]}")
     case $direction in
-        push) rsync "${opts[@]}" "${extra[@]}" "$path" "$remote/$path" ;;
-        pull) rsync "${opts[@]}" "${extra[@]}" "$remote/$path" "$path" ;;
+        push) rsync "${opts[@]}" ${extra[@]+"${extra[@]}"} "$path" "$remote/$path" ;;
+        pull) rsync "${opts[@]}" ${extra[@]+"${extra[@]}"} "$remote/$path" "$path" ;;
         *) echo "usage: tools/sync_evidence.sh push|pull [host]" >&2; exit 2 ;;
     esac
 done
