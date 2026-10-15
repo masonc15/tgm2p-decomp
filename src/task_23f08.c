@@ -1,6 +1,6 @@
-/* rom: 0x23f08 len: 0x626 func: f_23f08 flags: -macsave=1 -optimize=1 -speed */
-/* c-prefix: f_23f08 through f_2443c (0x23f08-0x2452e) are linked. The rest
- * of the 0x23f08-0x248a8 file is compiler context; see the marker below. */
+/* rom: 0x23f08 len: 0x626 func: f_23f08 context-rom: 0x23f08 flags: -macsave=1 -optimize=1 -speed */
+/* Complete native task context, 0x23f08-0x248a8. Each retained range and
+ * its external literal dependencies are verified independently. */
 typedef void (*func)();
 struct task {
 	struct task *parent;       /* 0x00 */
@@ -326,10 +326,8 @@ short f_2443c(long fn, unsigned short flags, short a, short b, short c, short d,
 	return -1;
 }
 
-/* CONTEXT ONLY BELOW THIS LINE. Not linked, not counted as matched C.
- * f_2452e is 82/86: the table load goes into p's register and is copied to
- * t, where the ROM loads into t (r7) and copies to p (r6). The functions
- * after it match only with it in the file; they supply the shared pool. */
+/* Load the task pointer first; the separate compound step preserves SHC
+ * allocation priorities for the clear pointer and the saved task pointer. */
 struct task *f_2452e(struct task *parent)
 {
 	struct task *t;
@@ -340,10 +338,11 @@ struct task *f_2452e(struct task *parent)
 	n = g_6060068;
 	if (n >= 0xbf)
 		return 0;
-	p = (long *)g_607cf10[n];
-	t = (struct task *)p;
+	t = g_607cf10[n];
+	p = (long *)t;
 	for (i = 0; i < 0x100; i += 4) {
-		*p++ = 0;
+		*p = 0;
+		p += 1;
 		*p++ = 0;
 		*p++ = 0;
 		*p++ = 0;
@@ -373,6 +372,7 @@ struct task *f_2452e(struct task *parent)
 	return t;
 }
 
+/* Verified middle range starts here and ends at 0x248a8. */
 void f_245da(struct task *self)
 {
 	struct task *t, *parent, *child, *prev, *next, *q;

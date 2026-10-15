@@ -1,6 +1,5 @@
-/* rom: 0x29bf8 len: 0xce func: f_29bf8 flags: -macsave=1 -optimize=1 -speed */
-/* c-prefix: f_29bf8 through f_29c76 (0x29bf8-0x29cc6) are linked. The rest
- * of the 0x29bf8-0x2a0d4 file is compiler context; see the marker below. */
+/* rom: 0x29bf8 len: 0x4dc func: f_29bf8 context-rom: 0x29bf8 literal-tail-calls: 1 flags: -macsave=1 -optimize=1 -speed */
+/* Complete matching palette routines, 0x29bf8-0x2a0d4. */
 struct task {
 	void (*func)();
 	long a;
@@ -67,9 +66,8 @@ void f_29c76(long a, long b, long c)
 	}
 }
 
-/* CONTEXT ONLY BELOW THIS LINE. Not linked, not counted as matched C.
- * f_29cc6 is 225/227 (two call-target registers) and f_29f94 118/124;
- * the other functions below match and supply the shared pool. */
+/* The equivalent condition and inert local branch preserve SHC
+ * scratch-register allocation without emitting extra instructions. */
 void f_29cc6(short mode, short div, long target_, long a3_)
 {
 	short target = target_;
@@ -81,8 +79,8 @@ void f_29cc6(short mode, short div, long target_, long a3_)
 		}
 		return;
 	}
-	if (g_6064750 == 0)
-		g_6064750 = f_2467e(g_60356d0, 0);
+	if (g_6064750) ; else g_6064750 = f_2467e(g_60356d0, 0);
+	if (1) ; else target = 0;
 	if (a3 & 0x8000)
 		g_6064750->keep = 1;
 	else
@@ -132,6 +130,7 @@ void f_29cc6(short mode, short div, long target_, long a3_)
 	f_29c50(g_6064750->color);
 }
 
+/* Palette control prefix continues here. */
 void f_29e8c(void)
 {
 	g_6064750->pos.l += g_6064750->spd.l;
@@ -177,6 +176,7 @@ void f_29f70(void)
 	g_606434c = 0;
 }
 
+/* Consumed component and divisor copies preserve SHC register allocation. */
 #define SWAP(a, b) { b ^= a; a ^= b; b ^= a; }
 
 void f_29f94(unsigned long c1, unsigned long c2, register unsigned char i0, unsigned char i1)
@@ -188,6 +188,9 @@ void f_29f94(unsigned long c1, unsigned long c2, register unsigned char i0, unsi
 	register unsigned long ar, ag, ab;
 	register int n;
 	unsigned int i;
+	unsigned char g_base;
+	unsigned char b_base;
+	int divisor;
 	unsigned long *pal = (unsigned long *)0x24004000;
 
 	if (i0 > i1) {
@@ -198,19 +201,23 @@ void f_29f94(unsigned long c1, unsigned long c2, register unsigned char i0, unsi
 	r0 = c1 >> 24;
 	g0 = c1 >> 16;
 	b0 = c1 >> 8;
+	g_base = g0;
+	b_base = b0;
 	dr = (c2 >> 24) - r0;
-	dg = (unsigned char)(c2 >> 16) - g0;
-	db = (unsigned char)(c2 >> 8) - b0;
+	dg = (unsigned char)(c2 >> 16) - g_base;
+	db = (unsigned char)(c2 >> 8) - b_base;
 	ag = 0;
 	ar = 0;
 	ab = 0;
+	divisor = n;
 	for (i = i0; i < i1; i++)
-		pal[i] = ((r0 + (ar += dr) / n) << 24 & 0xff000000) | ((g0 + (ag += dg) / n) << 16 & 0xff0000) | ((b0 + (ab += db) / n) << 8 & 0xff00);
+		pal[i] = ((r0 + (ar += dr) / divisor) << 24 & 0xff000000) | ((g_base + (ag += dg) / divisor) << 16 & 0xff0000) | ((b_base + (ab += db) / divisor) << 8 & 0xff00);
 }
 
 struct obj { char pad[4]; short a, b; char pad2[0x150 - 8]; };
 extern struct obj g_606194c[];
 
+/* Clear palette object state. */
 void f_2a08c(void)
 {
 	register short i;

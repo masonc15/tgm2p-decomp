@@ -1,0 +1,103 @@
+{
+  "rom_sha256": "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7",
+  "entries": [
+    {
+      "symbol": "_f_10942",
+      "start": 67906,
+      "end": 68392,
+      "sha256": "213b24be317e031470b67a362f06639c8c64c8e1e8ee38c3a25f877b6a2141c7",
+      "evidence": "Assembly body at 0x10942 has its own ABI frame, balanced restores/return paths and player-state logic; genuine retained startup_tail.c f_1c8c terminal call loads its exact address at ROM 0x1e04 from 0x1e60."
+    },
+    {
+      "symbol": "_f_2e6fc",
+      "start": 190204,
+      "end": 190588,
+      "sha256": "2e3cb4103fc932f26847a7b97d33d162bf07747fa55aa3c7f55585081c14a976",
+      "evidence": "Defined STB_GLOBAL/STT_FUNC _f_2e6fc at sound.o .text+0x544, retained whole-C base 0x2e1b8; source implements the sound queue and genuine f_7004/startup terminal calls pass a short sound code."
+    },
+    {
+      "symbol": "_f_17638",
+      "start": 95800,
+      "end": 95858,
+      "sha256": "1d36e0d453d419d27a4f7a58bcabccb5f8a615de10c2b379d2c3941f970f7a4f",
+      "evidence": "Defined STB_GLOBAL/STT_FUNC _task_free at task.o .text+0x74, retained whole-C base 0x175c4; task_free clears the task structure and genuine effect_209a4.c f_20a32 terminal call targets this exact entry. Reviewed _f_17638 address alias."
+    },
+    {
+      "symbol": "_f_31dc",
+      "start": 12764,
+      "end": 13052,
+      "sha256": "689b82129fccb74e5aa8b2074b8c90b62588c1e1e9f476d7d9dcf519c34608f9",
+      "evidence": "Defined STB_GLOBAL/STT_FUNC _f_31dc at f_2f68.o .text+0x274, retained verified prefix base 0x2f68; source sets player timers/mode state and genuine f_8430 terminal call passes player and flag."
+    },
+    {
+      "symbol": "_f_12fa8",
+      "start": 77736,
+      "end": 78312,
+      "sha256": "f8e235f4a0431a9c8adb5bf44daedd99d628647ae6ddc005fc530e9d0c0a28a6",
+      "evidence": "Assembly body at 0x12fa8 has its own ABI frame, calls, ranking/menu input logic and balanced exit paths; genuine retained rank_tail_149b4.c f_14bce terminal return f_12fa8(k) loads this exact entry at ROM 0x14cf0 from 0x14d4c. Unmatched ranktail C reconstruction provides semantic corroboration only, not exact-C credit."
+    },
+    {
+      "symbol": "_f_247b0",
+      "start": 149424,
+      "end": 149486,
+      "sha256": "6159e3939b4675a9edc7851a16d63e366177997b6a11441d5b06d3c579129196",
+      "evidence": "Defined STB_GLOBAL/STT_FUNC _f_247b0 at retained task_23f08_0245da.o .text+0x1d6, base0x245da; next export_f_247ee at+0x214. Independently reviewed62-byte ABI frame, task exit callback, verified245da cleanup call and balanced return. Genuine palette f_29e8c short r1 tails at29eb6/29ec4 load original ELF global-undefined zero-addend R_SH_DIR32 pool29f84 resolving06024030."
+    },
+    {
+      "symbol": "_f_29c50",
+      "start": 171088,
+      "end": 171126,
+      "sha256": "8fdffbc1653d8671a6d0701faae6dd65fd80208bc564f430c9da383487a76cf9",
+      "evidence": "Defined GLOBAL/FUNC at palette_29bf8.o +0x58, next f_29c76 at +0x7e; all38 compiled bytes equal ROM. Genuine void(long) task-queue leaf receives R4 color, balances frame. Original VM f4c6 ELF pool f5bc is unique zero-addend external-global R_SH_DIR32 resolving 060294d0."
+    },
+    {
+      "symbol": "_f_2c6fc",
+      "start": 182012,
+      "end": 182156,
+      "sha256": "373c26395176955536b69b1db5a23577793a996a8c756cab1d1064336678f141",
+      "evidence": "Defined GLOBAL/FUNC at gfx_2bf58.o +0x7a4, next f_2c78c at +0x834; all144 compiled bytes equal ROM. Genuine short(void*,short,short,short) sprite initialization preserves R14/R12 and frame. VM passes definition in R4, coordinates in R5/R6, mode2 in R7; low16 narrowing and ignored short result explicitly reviewed. Original VM f574 ELF pool f5c8 is unique zero-addend external-global R_SH_DIR32 resolving 0602bf7c."
+    },
+    {
+      "symbol": "_f_20250",
+      "start": 131664,
+      "end": 131760,
+      "sha256": "9710b20ce1abfa057df943b5876b3fec55abddd3ecb761622efada1452098570",
+      "evidence": "Defined GLOBAL/FUNC _f_20250 at original effect_20250.o .text+0, next f_202b0 at+0x60; all96 bytes match ROM. Independent fresh whole928-byte C compilation and complete ROM CFG review confirm void(void), private4-byte local, two calls and balanced entryPR/SP at202a8\u2013202ae, no incoming argument or callee-saved GPR/MAC use. ActualROM caller8b20 nearestR3 load8b70 reads pool8c54=0601fad0 before JMP8b72/PRrestore8b74. Retaining a caller still requires the existing unique external-zero-addend original R_SH_DIR32 proof; target review alone grants no caller credit."
+    },
+    {
+      "symbol": "_f_21d94",
+      "start": 138644,
+      "end": 140772,
+      "sha256": "921c61f68d6772de5ab26b6fc1a98c1bc61bec4896a2f3d25a7081c9a2d70886",
+      "evidence": "Verified retained field_81cc.c f8430 calls this entry at ROM84c4, with R14 field moved to R4 in slot84c6. Original compiler ELF has unique external zero-addend R_SH_DIR32 at pool8510, linked and ROM value06021614. Target21d94 begins by saving R14 and copying R4, saves R8-R13/PR/MACL and allocates its own frame; terminal225cc-225e2 releases the same frame and restores all saved registers before RTS. Genuine unmatched task source and retained task2261c corroborate field-list construction and task creation; the target remains ASM. Full evidence: tools/shc_probe/cases/session_flag_tail26/TARGET_REVIEW.md."
+    },
+    {
+      "symbol": "_f_1175c",
+      "start": 71516,
+      "end": 71592,
+      "sha256": "703807b4292f7c570f6c9d426ae0c1003310528c3f7121b410ab17b3413fc7bb",
+      "evidence": "Original f_1175c.o exports GLOBAL/STT_FUNC at .text+0, next f117a8 at+0x4c; retained whole-C base0x1175c. Body saves MACL, resets the real player record, returns at117a4 with MACL restored in delay117a6. Genuine exact f18ca loads1904=06010fdc at18d4, updates field flags and tails at18e2 with field R4 unchanged and R14 restored. Evidence: session_native_inventory36/WRAPPER_TARGET.json and pinned original source/object."
+    },
+    {
+      "symbol": "_f_7fa0",
+      "start": 32672,
+      "end": 33110,
+      "sha256": "1615fa607ef64e5a0d5c84008d9de7d9057524e1014c1b375f9ce2e5a00cec0a",
+      "evidence": "Reviewed ROM function 0x7fa0-0x8156 takes the field pointer from R4 into preserved R10, saves R8-R14 and PR plus one four-byte local, and routes every return path through the sole 0x8142-0x8154 epilogue that releases the frame, restores every saved register, and executes RTS. Exact f_60e8 has one global undefined zero-addend R_SH_DIR32 relocation for _f_7fa0 at ROM pool 0x61cc, resolving 0x06007820; both terminal jump sites use that authenticated pool word with the field pointer restored in R4."
+    },
+    {
+      "symbol": "_f_3036e",
+      "start": 197486,
+      "end": 197868,
+      "sha256": "d727629aa5ba39d0b59d0cca7763e72b331d1ca9201bcf46fba422329b24fa46",
+      "evidence": "Defined GLOBAL/FUNC _eeprom_write_all at retained whole-C eeprom.o .text+0x596, ROM 0x3036e; the next function _eeprom_read is at .text+0x714, so all 382 bytes in this reviewed span are compiler-verified C. The _f_3036e name is its exact-address alias. Genuine settings reset f_b36e computes the EEPROM checksum and terminally transfers to this void(void) writer through a unique external zero-addend R_SH_DIR32 relocation."
+    },
+    {
+      "symbol": "_f_2af5e",
+      "start": 175966,
+      "end": 176064,
+      "sha256": "6f519d9e5f98e59be9d1a05f70f76df8afc14a355fcdbff11c3b13ea79fa01c4",
+      "evidence": "Accepted gfxblend_2af5e original compiler GLOBAL/FUNC export at context+0x312, retained98bytes exactly match ROM. Leaf consumes low unsigned bytes R4/R5 and pointer R6, preserves SP/PR/R8-R14, returns RTS2af9c with final pointer store delay2af9e. Genuine text palette setup calls and tails to this entry with palette81/82,count1,data00067910; original external-global zero-addend DIR32 at poolE3DC resolves0602A7DE. Parent target review in research/2026-10-10-text-palette-integration/."
+    }
+  ]
+}

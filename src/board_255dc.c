@@ -1,6 +1,6 @@
-/* rom: 0x255dc len: 0x40e func: f_255dc flags: -macsave=1 -optimize=1 -speed */
-/* c-prefix: f_255dc through f_25938 (0x255dc-0x259ea) are linked. The rest of
- * the 0x255dc-0x2635c file is compiler context; see the marker below. */
+/* rom: 0x255dc len: 0x40e func: f_255dc context-rom: 0x255dc flags: -macsave=1 -optimize=1 -speed */
+/* Retained C: prefix 0x255dc-0x259ea; middle ranges 0x25f6e-0x26264
+ * and 0x2631a-0x2635c. f_259ea/f_26264 remain unlinked compiler context. */
 struct field {
 	short w0;
 	short w2;
@@ -73,7 +73,7 @@ struct qent {
 	long pad[3];
 };
 extern struct field g_60ad6a0[4];
-extern void (*f_f928(short))();
+extern long f_f928(int);
 extern char *g_606005c;
 extern short g_60b13b0, g_60b13b2, g_60b13ae;
 struct tsk {
@@ -216,7 +216,7 @@ void f_259bc(void)
 	g_6064350[g_606434c++].fn = (long)f_259ea;
 }
 
-/* CONTEXT ONLY BELOW THIS LINE. Not linked, not counted as matched C.
+/* CONTEXT ONLY until f_25f6e. Not linked, not counted as matched C.
  * f_259ea has temp-register swaps in two of its field blocks and f_26264
  * needs an unused word load; the functions after them supply the pool. */
 void f_259ea(void)
@@ -350,6 +350,7 @@ void f_259ea(void)
 	*(char *)0x2405ffff = f1;
 }
 
+/* Verified middle range 0x25f6e-0x26264 begins here. */
 short f_25f6e(void)
 {
 	int i;
@@ -475,6 +476,7 @@ short f_26264(short i, struct animent *ae)
 	return id;
 }
 
+/* Verified middle range 0x2631a-0x2635c begins here. */
 void f_2631a(short i, struct animent *ae, long dx, long dy)
 {
 	short id = f_26264(i, ae);

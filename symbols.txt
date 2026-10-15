@@ -6,9 +6,12 @@ _divls          0x060305c0  # signed 32-bit division
 _divlu          0x06030674  # unsigned 32-bit division
 _divws          0x0603071c  # signed 16-bit division
 _modls          0x0603076c  # signed 32-bit remainder
+_modws          0x06030b3c  # signed 16-bit remainder (context-only redraw helper)
 _modlu          0x06030834  # unsigned 32-bit remainder
 _sftl           0x06030944  # variable left shift
 _sftra          0x06030a04  # variable arithmetic right shift
+_slow_mvn       0x060308ec  # SHC block-copy helper
+_quick_mvn      0x060308ec  # SHC block-copy helper alias selected for 76-byte copies
 
 # ROM header, read through the cache-through mirror
 rom_hdr_ptr     0x2004002c

@@ -1,8 +1,13 @@
 /* rom: 0x2fdd8 len: 0xaa8 func: eeprom_send_bit flags: -macsave=1 -optimize=0 */
+/* C identifier-list EEPROM definitions receive promoted integer arguments.
+ * Callers use no-prototype declarations; the implementation stores byte addresses.
+ * Both sides are verified against the original machine code (checkpoint122). */
 /* EEPROM (93C56) bit-bang routines. 0x23000004 is the cache-through mirror of
  * the PS5V2 I/O port at 0x03000004: bit 5 = DI, bit 6 = CLK, bit 7 = CS. */
 #define EEPROM_PORT (*(volatile unsigned char *)0x23000004)
 
+void eeprom_read_block();
+void eeprom_write_block();
 extern short eeprom_shadow[];            /* 0x6060034 */
 
 void eeprom_send_bit(unsigned char bit)             /* 0x2fdd8 */
@@ -257,7 +262,10 @@ unsigned char eeprom_read(unsigned char addr)             /* 0x304ec */
 	return data;
 }
 
-void eeprom_read_block(unsigned char addr, unsigned char *dst, int n)     /* 0x3068c */
+void eeprom_read_block(addr, dst, n)
+unsigned char addr;
+unsigned char *dst;
+int n;     /* 0x3068c */
 {
 	int i;
 
@@ -309,7 +317,10 @@ void eeprom_write(unsigned char addr, unsigned char data)  /* 0x306d8 */
 	eeprom_write_disable();
 }
 
-void eeprom_write_block(unsigned char addr, unsigned char *src, int n)    /* 0x30844 */
+void eeprom_write_block(addr, src, n)
+unsigned char addr;
+unsigned char *src;
+int n;    /* 0x30844 */
 {
 	int i;
 

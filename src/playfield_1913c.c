@@ -1,6 +1,6 @@
-/* rom: 0x1913c len: 0x68 func: f_1913c flags: -macsave=1 -optimize=1 -speed */
-/* c-prefix: f_1913c and f_1919e (0x1913c-0x191a4) are linked; f_191a4 is
- * compiler context for the shared literal pool. */
+/* rom: 0x1913c len: 0x1a4 func: f_1913c flags: -macsave=1 -optimize=1 -speed */
+/* Complete 420-byte unit: allocator, deletion marker, and player-list update.
+ * Ordinary loop increments preserve the original SHC register allocation. */
 struct player {
 	char b0;
 	char b1;
@@ -51,9 +51,6 @@ void f_1919e(struct player *p)
 	p->b0 = 2;
 }
 
-/* CONTEXT ONLY BELOW THIS LINE. Not linked, not counted as matched C.
- * f_191a4 is 91.4%: the head-pointer address (want r11) and v (want r12)
- * swap registers, and the tail jmp uses r3 instead of r2. */
 void f_191a4(void)
 {
 	struct player *p;
@@ -84,15 +81,14 @@ void f_191a4(void)
 				p->next->prev = p->prev;
 			p->b0 = 0;
 			p->b1 = 0;
-			for (j = 0; j < 3; j++)
+			for (j = 0; j < 3; j = j + 1)
 				p->w[j] = 0;
-			for (j = 0; j < 4; j++)
+			for (j = 0; j < 4; j = j + 1)
 				p->c[j] = 0;
 			g_607c5d4++;
 			break;
 		}
 		p = p->next;
 	} while (p != 0);
-	if (g_607c5d8 != 0)
-		f_10228(g_607c5d8);
+	if (!g_607c5d8) ; else f_10228(g_607c5d8);
 }

@@ -161,7 +161,7 @@ void f_f924(void)
 {
 }
 
-long f_f928(short i)
+long f_f928(int i)
 {
-	return g_6033440[i];
+	return g_6033440[(short)i];
 }

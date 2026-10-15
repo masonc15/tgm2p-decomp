@@ -1,8 +1,6 @@
-/* rom: 0x51f4 len: 0x19c func: f_51f4 flags: -macsave=1 -optimize=1 -speed */
-/* c-prefix: f_51f4, f_5262 and f_52b6 (0x51f4-0x5390) are linked. f_5390 is
- * nonmatching compiler context for the literal pool it shares with f_52b6,
- * not coverage. f_52b6 only schedules its pool loads like the ROM with the
- * two predecessors compiled ahead of it in the same file. */
+/* rom: 0x51f4 len: 0x228 func: f_51f4 flags: -macsave=1 -optimize=1 -speed */
+/* Complete compiler unit through f_5390, including its shared literal pool.
+ * A local grid pointer preserves the original first-load scheduling in f_5390. */
 struct cell {
 	unsigned short v;
 	char b2;
@@ -90,16 +88,14 @@ long f_52b6(struct field *f, long rows)
 	return rows;
 }
 
-/* CONTEXT ONLY BELOW THIS LINE. Not linked, not counted as matched C.
- * This draft is 49/51: its first two literal loads are swapped. It makes SHC
- * emit the pool shared with f_52b6 at the ROM addresses. */
 void f_5390(struct player *pl, short idx, int add)
 {
 	struct field *f;
 	register unsigned short *s;
 	short x;
+	struct grid *g = &g_6077608;
 
-	s = &g_6077608.c[idx][1];
+	s = &g->c[idx][1];
 	f = pl->link;
 	for (x = 1; x < 11; x++)
 		f->rows[(unsigned char)(f->b388 + add)][x - 1] = *s++;

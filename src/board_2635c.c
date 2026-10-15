@@ -71,7 +71,7 @@ struct qent {
 	long pad[3];
 };
 extern struct field g_60ad6a0[4];
-extern void (*f_f928(short))();
+extern long f_f928(int);
 extern char *g_606005c;
 extern short g_60b13b0, g_60b13b2, g_60b13ae;
 struct tsk {

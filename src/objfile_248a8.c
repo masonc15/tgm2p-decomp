@@ -1,6 +1,5 @@
-/* rom: 0x248a8 len: 0x924 func: f_248a8 flags: -macsave=1 -optimize=1 -speed */
-/* c-prefix: f_248a8 through f_24e9c (0x248a8-0x251cc) are linked. f_251cc
- * and f_2521e are compiler context; see the marker below. */
+/* rom: 0x248a8 len: 0x924 func: f_248a8 context-rom: 0x248a8 flags: -macsave=1 -optimize=1 -speed */
+/* Retained C: 0x248a8-0x2528c, compiled as three adjacent ranges. */
 /* Notes from matching 0x248a8-0x2528c: f_248fe
  * needs `j = 0xe0;` as its own statement, f_249c4 drops the trailing
  * `break;` of its last case, f_24b68/f_24e9c need `i = n = ...`, ternary
@@ -36,6 +35,7 @@ struct obj {
 	short w38;                 /* 0x38 */
 	char pad3a[0x40 - 0x3a];
 };
+extern short g_24003800[]; /* Fixed hardware object-list address. */
 extern short g_60ad224;
 extern short g_606106c[];
 extern struct obj g_606006c[];
@@ -367,25 +367,28 @@ void f_24e9c(struct obj *o)
 	}
 }
 
-/* CONTEXT ONLY BELOW THIS LINE. Not linked, not counted as matched C.
- * f_251cc is 61%: r4/r5/r7 are permuted between k, s and the 0x24003800
- * base; the code is otherwise identical. f_2521e supplies the shared pool. */
+/* Consuming the first hardware-pointer assignment avoids a redundant copy.
+ * The second hardware slot uses its own address, as in the original ROM. */
 void f_251cc(void)
 {
 	short i, k, s;
 	short *l;
+	short *hw;
 
-	((short *)0x24003800)[0] = 0;
-	((short *)0x24003800)[1] = 1;
+	*(hw = g_24003800) = 0;
+	*((short *)0x24003802) = 1;
 	k = 2;
 	l = g_60610ec;
-	for (i = 0; i < 127; i++) {
-		for (s = *l++; s; s = g_60611ec[s])
-			((short *)0x24003800)[k++] = s;
+	for (i = 0; i < 127; i = i + 1) {
+		if ((s = *l++) != 0) do {
+			s = g_60611ec[hw[k] = s];
+			k = k + 1;
+		} while (s);
 	}
-	((short *)0x24003800)[--k] |= 0x4000;
+	hw[--k] |= 0x4000;
 }
 
+/* Verified middle range begins here. */
 void f_2521e(void)
 {
 	register int i;

@@ -4,7 +4,13 @@
 0x000400 asm  boot code, runs from ROM
 0x000780 asm  copied to RAM at 0x06000000 and run there
 0x001260 c    src/rom_header.c
-0x001278 asm
+0x001278 c-prefix src/startup_setup_1278.c
+0x0012e2 asm
+0x001896 c-range src/startup_reset_1896.c
+0x001914 c-range src/startup_dispatch_1914.c
+0x001c8c c-range src/startup_tail.c
+0x0020be asm
+0x002e4c c-range src/startup_input_2efc.c
 0x002f3c c    src/rand.c
 0x002f68 c-prefix src/f_2f68.c
 0x003c88 asm
@@ -12,17 +18,46 @@
 0x004044 asm
 0x0044d4 c    src/piece_44d4.c
 0x0050e0 c    src/f_50e0.c
-0x0051f4 c-prefix src/f_51f4.c
-0x005390 asm
+0x0051f4 c src/f_51f4.c
+0x00541c c-prefix src/f_541c.c
+0x0057d4 asm
+0x00601a c-range src/field_helpers_601a.c
+0x0061d0 asm
+0x007004 c-prefix src/field_7004.c
+0x007324 asm
+0x007956 c-range src/speed_7956.c
+0x007c08 asm
 0x007f38 c    src/f_7f38.c
 0x007fa0 asm
+0x008156 c-range src/item_flag_8156.c
+0x008164 c-range src/item_8164.c
+0x0081cc c-range src/field_hole_81cc.c
+0x008314 c-range src/field_81cc.c
 0x008518 c    src/field_check.c
 0x0085d8 asm
+0x0087b8 c-range src/field_dispatch_87b8.c
+0x00881a c-range src/field_helpers_881a.c
+0x0088fe asm
+0x008b20 c-prefix src/field_ready_8b20.c
+0x008b86 asm
+0x00907c c-range src/field_flag_counter_907c.c
+0x009098 c-range src/field_match_9098.c
+0x009180 asm
+0x0095b8 c-range src/field_helpers_881a.c
+0x0096ac asm
 0x009b90 c    src/main_loop.c
 0x009c0c c    src/f_9c0c.c
 0x00a226 asm
+0x00b2f4 c-range src/settings_reset_9c0c.c
+0x00b352 c-range src/settings_reset_9c0c.c
+0x00b36e c-range src/settings_reset_9c0c.c
+0x00b39a asm
+0x00be04 c-prefix src/menu_lookup_be04.c
+0x00be28 asm
 0x00d28c c    src/f_d28c.c
 0x00d394 asm
+0x00e3b8 c-range src/text_palette_e3b8.c
+0x00e3e0 asm
 0x00e520 c    src/f_e520.c
 0x00e750 c    src/text.c
 0x00e828 c    src/stubs_e828.c
@@ -30,21 +65,26 @@
 0x00e988 c    src/vm_e988.c
 0x00ead0 c    src/vm_ead0.c
 0x00ec0c asm
-0x00eeb0 c    src/vm_empty_eeb0.c
-0x00eebc asm
+0x00ee9c c-range src/vm_tail_ee9c.c
 0x00ef04 c    src/vm_ef04.c
 0x00f0e8 c    src/vm_f0e8.c
-0x00f200 asm
-0x00f4dc c    src/vm_empty_f4dc.c
-0x00f518 asm
+0x00f200 c-prefix src/vm_empty_f292.c
+0x00f292 c-range src/vm_empty_f292.c
+0x00f29a asm
+0x00f4c6 c-range src/vm_empty_f292.c
 0x00f5cc c    src/vm_f5cc.c
 0x00f6f8 c    src/vm_f6f8.c
 0x00f958 c    src/hud_f958.c
 0x0100a4 c    src/f_100a4.c
 0x0101b8 c    src/hud_101b8.c
-0x0103d0 asm
+0x0103d0 c-range src/hud_ranges_f958.c
+0x01050e asm
+0x0105ba c-range src/hud_ranges_f958.c
+0x01065e c-range src/hud_ranges_f958.c
+0x010788 asm
+0x010942 c-range src/hud_ranges_f958.c
 0x010b28 c    src/hud_10b28.c
-0x010d94 asm
+0x010d94 c-range src/hud_ranges_f958.c
 0x011254 c    src/hud_11254.c
 0x011518 c    src/f_11518.c
 0x01175c c    src/f_1175c.c
@@ -52,10 +92,17 @@
 0x011e98 c    src/f_11e98.c
 0x011fe8 c    src/f_11fe8.c
 0x0120c0 c    src/f_120c0.c
-0x012ad4 asm
+0x012ad4 c-range src/rank_display_12ad4.c
+0x012fa8 asm
+0x0131e8 c-range src/save_checksum_131e8.c
+0x01326c asm
+0x013378 c-range src/save_checksum_131e8.c
+0x013380 asm
 0x013484 c    src/rank_13484.c
 0x0149b4 c    src/rank_149b4.c
-0x014b10 asm
+0x014b10 c-range src/rank_switch_14b10.c
+0x014bce c-range src/rank_tail_149b4.c
+0x014d50 asm
 0x015f10 c-prefix src/draw_15f10.c
 0x015fae asm
 0x01715c c    src/state_1715c.c
@@ -63,13 +110,12 @@
 0x0176e0 c    src/effect_176e0.c
 0x018064 c    src/effect_18064.c
 0x0185f0 c    src/draw_req_185f0.c
-0x018708 asm
+0x018708 c src/time_18708.c
 0x0188ac c    src/field_clear.c
 0x018be0 c    src/f_18be0.c
 0x018fec c    src/f_18fec.c
 0x019014 c    src/f_19014.c
-0x01913c c-prefix src/playfield_1913c.c
-0x0191a4 asm
+0x01913c c    src/playfield_1913c.c
 0x0192e0 c    src/f_192e0.c
 0x019414 c    src/item_19414.c
 0x019d68 c    src/item_19d68.c
@@ -78,7 +124,7 @@
 0x01b3d4 c    src/item_1b3d4.c
 0x01b6f8 c    src/item_1b6f8.c
 0x01ba20 c    src/item_1ba20.c
-0x01c200 asm
+0x01c200 c src/item_1c200.c
 0x01c708 c    src/item_1c708.c
 0x01d1bc c    src/item_1d1bc.c
 0x01d640 c    src/item_1d640.c
@@ -97,17 +143,26 @@
 0x0206e0 c    src/effect_206e0.c
 0x0207d0 c    src/effect_207d0.c
 0x02090c asm
+0x0209a4 c-prefix src/effect_209a4.c
+0x020a9c asm
 0x020b24 c    src/effect_20b24.c
 0x020c14 c    src/effect_20c14.c
 0x020d60 c    src/effect_20d60.c
 0x020f78 c    src/effect_20f78.c
 0x021068 c    src/effect_21068.c
-0x021170 asm
+0x021170 c-range src/savechecksum_21170.c
+0x0211a2 c-range src/savestats_211a2.c
+0x021206 c-range src/saveio_21206.c
+0x0213da c-range src/savestatus_213da.c
 0x021454 c    src/medal_strip.c
-0x0216d0 asm
+0x0216d0 c-range src/medal_draw_216d0.c
+0x0217a2 c-range src/medal_skills_217a2.c
+0x021862 c-range src/medal_tail.c
 0x02190c c    src/medal.c
 0x021bc8 c    src/f_21bc8.c
 0x021d94 asm
+0x0225e4 c-range src/shuffle_225e4.c
+0x0225fa asm
 0x02261c c    src/task_2261c.c
 0x0230a8 c    src/effect_230a8.c
 0x023198 c    src/effect_23198.c
@@ -119,20 +174,38 @@
 0x023738 c    src/effect_23738.c
 0x023828 c    src/code_23828.c
 0x0238a8 asm
+0x023e3e c-range src/rankcode_draw_23e3e.c
 0x023f08 c-prefix src/task_23f08.c
-0x02452e asm
+0x02452e c-range src/task_23f08.c
+0x0245da c-range src/task_23f08.c
 0x0248a8 c-prefix src/objfile_248a8.c
-0x0251cc asm
+0x0251cc c-range src/objfile_248a8.c
+0x02521e c-range src/objfile_248a8.c
 0x02528c c    src/objpool_2528c.c
 0x0255dc c-prefix src/board_255dc.c
-0x0259ea asm
+0x0259ea c-range src/board_update_259ea.c
+0x025f6e c-range src/board_255dc.c
+0x026264 asm
+0x02631a c-range src/board_255dc.c
 0x02635c c    src/board_2635c.c
 0x02657c asm
+0x026f64 c-range src/board_redraw_lock_26faa.c
+0x026ff0 asm
+0x027310 c-range src/board_tile_callback_27310.c
+0x02733a c-range src/board_queue_2733a.c
+0x0274c0 asm
+0x02769e c-range src/board_callback_dispatch_2769e.c
+0x0276e8 c-range src/board_setters_2774a.c
+0x0277d0 asm
+0x0278c0 c-range src/board_clear_278c0.c
+0x027b50 c-range src/board_scroll_27b50.c
 0x027e70 c-prefix src/wave_27e70.c
-0x027e90 asm
+0x027e90 c-range src/wave_loop_27e90.c
 0x028334 c    src/board_28334.c
 0x029bf8 c-prefix src/palette_29bf8.c
-0x029cc6 asm
+0x02a0d4 c-range src/gfx_2ab56.c
+0x02ac4c asm
+0x02af5e c-range src/gfxblend_2af5e.c
 0x02afc0 c    src/f_2afc0.c
 0x02b430 c    src/frt.c
 0x02b4e8 c    src/frame_2b4e8.c
@@ -144,6 +217,9 @@
 0x02e1b8 c    src/sound.c
 0x02fdd8 c    src/eeprom.c
 0x030880 asm
+0x030a44 c-range src/checksum_display_30a44.c
+0x030c2e c-range src/checksum_30c2e.c
+0x030d40 asm
 0x03127c c    src/runtime_strncmp.c
 0x0312ba asm
 0x0313e4 c    src/runtime_memset.c
