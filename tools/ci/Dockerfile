@@ -11,7 +11,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
         binutils-sh-elf ca-certificates curl git make python3 python3-venv \
     && rm -rf /var/lib/apt/lists/*
-RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir capstone==5.0.9
+RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir capstone==5.0.9 pyelftools==0.33
 
 WORKDIR /opt/compilers
 # rof2elf_fillff.py fills alignment gaps with 0xFF, as the EPROMs have them.
