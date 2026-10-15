@@ -22,7 +22,7 @@ fetch unpushed commits.
 cd ~/workspace/tgm2p-decomp
 . tools/env.sh            # puts this host's toolchain on PATH, sets $PY
 git pull --ff-only
-tools/sync_evidence.sh pull   # only if you are on nuada after work on nephele
+tools/sync_evidence.sh pull   # on nephele, if anyone worked on nuada since
 make split check report   # rebuilds the ROM and checks both EPROM SHA-1s
 make status               # coverage, git state, and the largest open ranges
 ```
@@ -61,9 +61,13 @@ rebuilds the same ROM, passes the full test suite with
 gitignored (they hold ROM-derived binaries, compiler output, and several GB of
 logs) but many docs link into them, so keep them in place and add new packets
 next to them. `tools/sync_evidence.sh push|pull [host]` copies them between
-hosts without ever deleting anything. On nephele a launchd job
-(`com.colin.tgm2p-evidence-sync`) pushes to nuada every hour, so nuada always
-has a backup and can take over.
+hosts without ever deleting anything. Run it on nephele only (nuada has no ssh
+access to nephele): a launchd job (`com.colin.tgm2p-evidence-sync`) pushes to
+nuada every hour, so nuada always has a backup and can take over, and after
+any work on nuada, `tools/sync_evidence.sh pull` on nephele brings it back.
+A few old scratch files in `cases/agent_b` and `cases/agent_e` differ from a
+sibling only by letter case; nephele's case-insensitive disk keeps one of each
+pair, and nuada keeps both.
 
 Archived material lives on nuada in `/drive2/tgm2p/history/`, each folder with
 its own tarball: unreferenced scratch evidence and the old `/drive2` scratch
