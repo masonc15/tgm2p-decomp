@@ -1,0 +1,13 @@
+# Startup controls and HUD scheduling — continuation119
+
+Evidence: `session_condition_history119` and `session_hud_history119` under `tools/shc_probe/cases/`. These are compiler experiments; production remains checkpoint118.
+
+Five startup comparison/zero-test forms all reproduce the same 240-byte context and the same two-byte mismatch. Three fresh captures, six exact middle replays and nine hardware traces verify 96 scratch selections, 120 history events and 210 target emissions. The next disputed choice still selects R2 from last-register R3; these forms do not alter the needed history.
+
+Five HUD condition controls likewise produce identical 7104-byte contexts, preserving all five retained ranges but leaving four target byte differences. A previously tested address-in-result source is retained as a historical diagnostic control, not a newly discovered candidate; it leaves 18 differences. Both traced forms have 25 nominal roots and exact compiler native sections excluding comments.
+
+The fresh HUD trace validates 2109 scratch selections. In the baseline load sequence, GEN assigns address A to R3, address B to R2, then loads a mode word into R3. The original requires A in R2 and B in R3. The assembler dependency edge from A's byte read to the later R3 overwrite explains why A cannot occupy the desired delay slot in this candidate. B's read is already in the delay slot before the observed scheduling table. Forty scheduler buffers contain 172 nodes and 149 ordered dependency edges.
+
+PEP function numbering differs from native/GEN ordinals. An initial function-12 filter was wrongly scoped; those traces are preserved as `*_pep_wrong_ordinal` and are not credited as target evidence. Fresh all-function traces identify the target uniquely as PEP function15 through four frame constants. Both have 76 target events. They preserve the GEN load operations and destination registers; operand metadata byte2 changes from255 to0. Thus the delay-slot decision occurs after PEP and before the observed assembler scheduling table. Four exact middle replays, four GEN hardware replays, two correct PEP replays, two assembler hardware traces and four assembler normal/debug replays verify the respective outputs. Captured cleanup ASA metadata has the previously documented replay caveat; native entry captures avoid using it as a false equality claim.
+
+Changing only last-register state from0 to3 predicts R2 in the recovered scratch model. This is a counterfactual diagnostic, not an allowed source fix. No artificial source, compiler mutation or weakened verification was introduced. New verified bytes: **0**.
