@@ -77,8 +77,7 @@ def known_symbols() -> dict:
     # Functions the linked C files define under real names (field_clear_flag, ...).
     obj = ROOT / "build" / "obj"
     for start, end, kind, arg in read_splits():
-        suffix = f"_{start:06x}" if kind == "c-range" else ""
-        o = obj / (Path(arg).stem + suffix + ".o") if kind in ("c", "c-prefix", "c-range") else None
+        o = obj / (Path(arg).stem + ".o") if kind in ("c", "c-prefix") else None
         if o is None or not o.exists():
             continue
         nm = subprocess.run(["sh-elf-nm", "--defined-only", str(o)], capture_output=True, text=True).stdout

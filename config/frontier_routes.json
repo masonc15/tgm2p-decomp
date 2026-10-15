@@ -1,0 +1,395 @@
+{
+  "schema": 1,
+  "experiment_policy": {
+    "default_max_compiles_per_hypothesis": 24,
+    "require": [
+      "frozen source hash",
+      "ROM interval",
+      "original compiler identity and flags",
+      "one falsifiable question",
+      "raw residual and entry addresses",
+      "rejecting observation or integration receipt"
+    ],
+    "stop": "Stop at the bound or when the measured compiler mechanism is unchanged. A larger run requires a new evidence-backed prediction, recorded before execution.",
+    "admission": "Unchanged strict range proof plus full-ROM checks and report. Compiler instrumentation and normalized scores never grant credit.",
+    "work_selection": "Prefer a different unresolved owner after a bounded negative. Reopen a parked hypothesis only with new target or compiler evidence. Frontier source_candidates scans canonical src only: search research and tools/shc_probe/cases before calling a range undrafted; distinguish genuine source from excluded synthetic stubs."
+  },
+  "targets": [
+    {
+      "address": "0x10788",
+      "state": "parked-source-sweeps",
+      "class": "scratch-register-allocation",
+      "evidence": "research/2026-10-05-predecessor-first-57d4/f10788-scratch-oracles/RESULTS.json",
+      "observation": "Best legitimate source is 219/221 halfwords. Forced compiler scratch exclusion can diagnose the missing r0 pair but is not admissible output.",
+      "do_not_repeat": "Broad dead-code, dummy-local, boolean and predecessor-dead-state sweeps.",
+      "next_question": "Which genuine IR liveness or predecessor operation changes the observed emit118 exclusion/history while preserving the entire translation unit?"
+    },
+    {
+      "address": "0x2090c",
+      "state": "parked-source-families",
+      "class": "arithmetic-liveness-and-call-abi",
+      "evidence": "tools/shc_probe/cases/session_effectrow_next/HANDOFF.md",
+      "observation": "The independent unit is 152 bytes. Prior 15+80 source controls and genuine following context failed; the context moves internal roots and breaks the accepted following interval.",
+      "do_not_repeat": "The documented arithmetic/type/assignment/height/helper/prototype families or the combined following context without a new compiler mechanism.",
+      "next_question": "Identify a new source-allocation mechanism that explains the missing scratch history while preserving short x, clamped short n, and the genuine shake pointer."
+    },
+    {
+      "address": "0x23e3e",
+      "state": "accepted",
+      "class": "translation-unit-layout",
+      "evidence": "docs/research/2026-10-10-rankcode-drawing-match.md",
+      "observation": "Ordinary SHC source retains exact202 bytes [23e3e,23f08), including entire20-byte shared pool. Strict proof,278 tests,two cold whole-ROM replays and canonical check pass. Genuine predecessor1346 bytes are excluded.",
+      "do_not_repeat": "Rebasing the context, artificial padding, and prior coordinate/control matrices.",
+      "next_question": "Drawing resolved. Investigate real predecessor238fc operations while preserving this exact suffix; no further drawing-coordinate sweeps."
+    },
+    {
+      "address": "0x277d0",
+      "state": "parked-until-pep-prefix-mechanism",
+      "class": "peephole-branch-prefix-and-copy-elimination",
+      "evidence": "docs/research/2026-10-10-toggle-peephole.md",
+      "observation": "Middle pass and GEN retain reload. PEP deletes it at caller409611; first result copies delete at40c2cf/40c2e4. Explicit goto improves20 to18 differing bytes, protects134 setter bytes and all roots. No accepted bytes.",
+      "do_not_repeat": "Recorded branch-sharing, pointer casts, result widths, explicit-else, branch-local results, direct-store and scaled-address controls without changed PEP/GEN evidence.",
+      "next_question": "Which genuine source operation places stride104 before the occupied reload or changes PEP409450 prefix eligibility, while preserving both calls, raw pool, roots and protected setters?"
+    },
+    {
+      "address": "0x20a9c",
+      "state": "parked-expression-boundaries",
+      "class": "operand-recipe-scratch-planning",
+      "evidence": "docs/research/2026-10-10-effect-recipe-planning.md",
+      "observation": "Fresh best remains13 raw differing bytes,248 protected exact. Both product scratches are planned before emission20 using recipe4510a0. First selectsR3; last/recent ranking makes secondR2. Split controls defer second planning but forceR14/R4 accumulator homes and worsen raw output.",
+      "do_not_repeat": "Prior callee/array binding, signedness, first-sum grouping, or the six recorded subtotal/statement-boundary controls without new IR/recipe evidence.",
+      "next_question": "Which target-backed producer/IR structure gives the accumulator preferredR0 while preventing both products from being reserved together? Reopen only with a reduced compiler mechanism that predicts that change."
+    },
+    {
+      "address": "0x15794",
+      "state": "parked-until-original-storage-evidence",
+      "class": "semantic-recovery-and-stack-layout",
+      "evidence": "docs/research/2026-10-10-inline-lifetimes-piece-inputs.md",
+      "observation": "Authenticated native REG/ILB shows all four inline clones survive: local maps all toR4; repeated shares negative storage bindings. Array declarators identical; consumed one-pointer aggregates still44byte frame versus target60. Nine roots and924 protected bytes remain exact; all controls reject.",
+      "do_not_repeat": "Array first-argument cast tuning of old semantic draft; archived unsequenced q assignment/read or volatile/dead stack shaping; nested address-taking helpers; two equivalent repeated-base/indexed forms. Array formal and one-pointer aggregate formal controls; scalar clone existence is already proven.",
+      "next_question": "What target-backed source storage ownership explains four distinct base-table homes56/52/48/44 and computed pointer4? Do not repeat parameter forms without changed lifetime evidence."
+    },
+    {
+      "address": "0x4044",
+      "state": "parked-predicate-boundaries",
+      "class": "operand-order-and-common-value-storage",
+      "evidence": "docs/research/2026-10-10-piece-predicate-lifetimes.md",
+      "observation": "Two native contexts and four MDL replays authenticate final common-input logical10/R4, expression33 only. Three predicate controls reject; separate statements duplicate the input load, grouped tests do not spill, right association is byte-identical. All3894 protected bytes exact.",
+      "do_not_repeat": "Prior session_piece_update29 input/pressed-local/rotation-helper families; plain commutation; the recorded first-call integer field-address spelling, which is byte-identical. Separate-test gotos, grouped first-two tests and right-associated OR; these are now verified negative.",
+      "next_question": "What genuine producer context or consumed storage lifetime produces stack+4 for the promoted common input without duplicate reads? Separate R3 address formation remains unexplained; do not assume it follows automatically from the spill."
+    },
+    {
+      "address": "0x26264",
+      "state": "parked-discarded-read",
+      "evidence": "docs/research/2026-10-03-shc-read-scheduling.md",
+      "observation": "Archived native evidence traces ordinary unused load deletion in SHCMDL. Volatile control survives but imposes scheduling barrier inconsistent with ROM multiply straddling the read. Revisionsr10/r31 do not fix it.",
+      "do_not_repeat": "Unused result spelling/storage, dead consumers, volatile read/member forms, or already testedr10/r31 revisions.",
+      "next_question": "Identify a target-backed genuine use removed only after MDL, preserving the original interleaved read schedule; absent that, choose another owner.",
+      "class": "optimizer-deletion-and-scheduling"
+    },
+    {
+      "address": "0x7658",
+      "state": "parked-until-web-construction-evidence",
+      "evidence": "docs/research/2026-10-10-lifetime-graph-round.md",
+      "observation": "Full/reduced2and65535 neighborhoods identical,10edges each. Priority sums92vs66 explain profits-7vs-4. Late TEMP3/TEMP4 do not directly interfere. All12 priority/edge/presence models retain wrong order. Baseline19diff,690following exact; zero compiles.",
+      "do_not_repeat": "n>=3 single/both boundary controls; documented priority162 named-minimum/literal-suffix/coefficient families; guard Boolean and comparison sweeps through175. The two register-r/d controls, single local-only record transpositions under the frozen graph, and+1/+2 q/r/d/s priority models; no source prediction emerged from the latter. Twelve isolated priority/common-edge/missing-web models and reductions supply no source fix.",
+      "next_question": "Observe genuine definition-web construction/splitting with a source-backed prediction preserving early homes and real third constant4 use. Choose another owner until new evidence.",
+      "class": "constant-priority-and-traversal"
+    },
+    {
+      "address": "0x238fc",
+      "state": "parked-until-cast-web-evidence",
+      "class": "typed-address-expression-and-code-generation",
+      "evidence": "docs/research/2026-10-10-lifetime-graph-round.md",
+      "observation": "q priority2 blocked by i/R4, cast-base clones/R5,R6 and constant15/R7; saved registers require priority3. SP4 is independent call-crossing node15 pointer. Direct q reads CSE back to one use, identical1548bytes/raw1364/root23e40, protected202 fails.17launches,zero gain.",
+      "do_not_repeat": "Previous uniformaddress, counterwidth and signed-address families without changed evidence; field-behind-bytecast is now verified to change the scalar type gate in corrected context, but this exact control fails roots/suffix. Do not repeat or restore erroneous rank fallback to chase score. Direct q->c array consumers collapse by CSE and are byte-identical; stop repeated-use variants without changed native tree.",
+      "next_question": "Explain typed base-cast clone retention or original scalar-field layout with new native definition-tree evidence. Predict changed competing web before source control; removing q alone does not remove independent SP4."
+    },
+    {
+      "address": "0x238a8",
+      "state": "parked-until-offset-allocation-mechanism",
+      "class": "register-allocation-and-base-copy-ownership",
+      "evidence": "research/2026-10-13-node-indexed-view/REPORT.md",
+      "observation": "One indexed byte-view control, eight stages: complete 84-byte range worsens 41 to 56 raw differences. Base R5/offset R6 unchanged; pool moves two bytes early. Actual byte versus signed-short offsets preserved. No admission.",
+      "do_not_repeat": "Uninitialized ptr009/051; old raw/pointer and384+384aggregate families; inline scalar helpers; unchanged typed-u8 integer address family.",
+      "next_question": "Require a native lifetime or scratch-selection mechanism predicting original base R6/offset R7. Pointer-versus-array lvalue spelling alone is falsified for this owner."
+    },
+    {
+      "address": "0x13380",
+      "state": "parked-semantic-boundaries-checked",
+      "class": "paired-middle-pass-allocation",
+      "evidence": "docs/research/2026-10-10-predicate-semantic-round.md",
+      "observation": "Best16diff and old30diff agree with ROM on376controlled EEPROM/checksum/fallback states; independent links/oracle/six sensitivity controls pass. Both still fail strict admission. Paired first/third-loop swaps already localized to MDL in save-reader-materialization notes.",
+      "do_not_repeat": "Prior width/prototype/increment/pointer/helper families or same semantic domain as if new. Gate/dirty pairing is not exhaustive.",
+      "next_question": "Require a new genuine producer mechanism realizing paired MDL priority/lifetime changes while preserving exact context and protected140bytes; otherwise select another owner."
+    },
+    {
+      "address": "0x7fa0",
+      "state": "parked-until-new-lifetime-evidence",
+      "class": "weighted-selection-register-allocation",
+      "evidence": "research/2026-10-10-item-selection-semantics/REPORT.md",
+      "observation": "Archived ordinary438byte producer still370rawdiff.379controlled boundary/wrap states agree:377returns,two bounded step limits. Counter/subtraction and comparison negative models reject; no semantic source correction justified. Following118bytes exact.",
+      "do_not_repeat": "Prior15plus20 real-source controls and historical artificial dead writes/address-taking hints. Do not repeat finite semantic audit or equate step-limit agreement with game reachability/infinite-loop proof.",
+      "next_question": "Which new genuine source lifetime/context explains original persistent field/scratch/shift-base homes while preserving following owners? Require a measurable compiler prediction before source variants."
+    },
+    {
+      "address": "0x1050e",
+      "state": "parked-until-reservation-and-pool-order-evidence",
+      "class": "scratch-selection-and-stage-state",
+      "evidence": "research/2026-10-13-hud-native-auth/REPORT.md",
+      "observation": "Actual SHC child hardware trace authenticates all7104 native bytes and1055 scratch predictions. Consumed inline controls recover addressregister pairing but reorder pools/add formalcopy and move105ba to105bc; strict rejects. Named register storage on genuine inline pointer formal leaves all7104 bytes identical to prior B-helper: pointer copy, reversed pool, successor+2 unchanged; eight-stage transfer closed.",
+      "do_not_repeat": "Old source matrices, broken stage replays, and both consumed inline scalar-argument controls without a prediction preserving original pool order and removing formalcopy.",
+      "next_question": "Recover genuine expression graph changing reservation order while preserving pool emission order and omitting pointer-formal copy; native trace authenticity is resolved.",
+      "supporting_evidence": [
+        "research/2026-10-13-hud-inline-binding/REPORT.md"
+      ]
+    },
+    {
+      "address": "0x12fa8",
+      "state": "parked-until-discovery-identity-evidence",
+      "class": "constant-discovery-and-partition-order",
+      "evidence": "docs/research/2026-10-10-controller-setup-round.md",
+      "observation": "Captured graph belongs to153-difference short initializer, not146 best variant. Authenticated35/153 pair retains old32-node graph; new initializer edges touch m/done/zero.134/frame/155 keep12priority,5profit,26clashes and3uses.134/frame swap homes through changed discovery/partition order.13roots and1236protected bytes exact; no source prediction; zero compiles.",
+      "do_not_repeat": "Prior20+16 seed/prototype/assignment-order controls. Do not attribute153 graph to146 source, treat opaque type4 record as semantically decoded, or propose arbitrary record order as source.",
+      "next_question": "Recover the type4 record actual definition/use and discovery event versus real input mask16; require a genuine source mechanism predicting target134/frame homes before more compiler controls."
+    },
+    {
+      "address": "0x85d8",
+      "state": "parked-semantics-until-counterexample",
+      "class": "setup-scheduling-and-allocation",
+      "evidence": "research/2026-10-10-vs-setup-semantics/REPORT.md",
+      "observation": "480 bounded synchronous states per two saved candidates agree with ROM on ordered global/MMIO writes and call arguments/effects. Full480byte target remains37diff.570accepted neighbor bytes and external literals exact. IndependentPython and GNU relocation replay pass. Zero SHC launches.",
+      "do_not_repeat": "Recorded palette types/prototypes, implicit88b4/88fe, task-pointer, indexed/aggregateMMIO families; semantic state sweep without new target-backed counterexample. Sparse noisy pointers are not proof of real task-pointer validity.",
+      "next_question": "Identify native producer lifetime/scheduling mechanism for task valueR14 and MMIO scheduling; preserve exact contexts. Earlier task-pointer37to32 was already known and earns no fresh credit."
+    },
+    {
+      "address": "0x274c0",
+      "state": "parked-arithmetic-semantics-until-counterexample",
+      "class": "tile-lifetime-hoisting-and-layout",
+      "evidence": "research/2026-10-10-tile-writer-semantics/REPORT.md",
+      "observation": "240 controlled ROM/candidate runs agree with independent ordered-store model, using real division helpers and no callee stubs. Wrong floor/clip/tile-increment models rejected24/40/19cases. Native478byte target still352diff; following dispatch2769c is2early.386queue bytes exact; context equals accepted cold build. Zero compiles.",
+      "do_not_repeat": "Existing multiplication/shift, descriptor, staged-row families without changed native IR evidence; do not repeat sampled signed10bit/truncation/clip/count arithmetic as a new hypothesis.",
+      "next_question": "Find genuine source lifetime that suppresses unwanted row cache while preserving required32byte frame and original allocations; earlier staged-row control suppressed cache but changed frame/roots and failed. New source control requires changed definition-tree prediction."
+    },
+    {
+      "address": "0x3c88",
+      "state": "parked-until-native-conversion-evidence",
+      "class": "typed-conversion-and-code-generation-state",
+      "evidence": "research/2026-10-10-das-conversion-lifetime/REPORT.md",
+      "observation": "Two assembly-mode captures reproduce ordinary machine contexts; diagnostic REG/ILB exactly match native. Index and delay homes/lifetimes are unchanged; only delay scalar type differs. Signed15-difference baseline is wrong for high-bit index values; unsigned-correct240-difference control moves gravity+4. GEN normal/traced equality fails native authentication (598 SUA/506 ASA bytes).24 launches, no credit.",
+      "do_not_repeat": "Prior DAS type/cast/index/delay/copy families; identical-lifetime hypothesis; blind GEN stage replay with unresolved native state. Never accept signed high-bit index behavior.",
+      "next_question": "Explain native pre-GEN symbol/label state or independently decode native SUA correspondence before attributing conversion placement to GEN/PEP. New source control requires a predicted consumed lifetime/recipe change preserving unsigned indices and both exact neighbors."
+    },
+    {
+      "address": "0x2ac4c",
+      "state": "parked-until-counter-consumer-evidence",
+      "class": "counter-narrowing-and-loop-schedule",
+      "evidence": "research/2026-10-10-blend-counter-lifetime/REPORT.md",
+      "observation": "Two native machine contexts and normal/diagnostic MDL streams authenticate. Counter logical46 remains SP+0 with range10..85; REG differs only kind0x10 to0x8. Pointer homes/lifetimes stay fixed. Short counter adds EXTS.W at2af3e; setter root moves+2.182 to206 nominal-address target differences; protected setter fails for short control.22 launches, no credit.",
+      "do_not_repeat": "The archived125 variants of union/type/counter/address/declaration/inline-product families; treating short-counter root shift as pointer-web growth; shifted or normalized suffix credit.",
+      "next_question": "Map hardware-base invariant in archived lifetime_07/08 row/destination controls before further source edits. ROM upload prelude/loop are20/42 bytes versus16/48 in these controls: ROM includes0x24040000 in the invariant row base, while generated stores combine it inside the loop. Require authenticated native evidence predicting a preserved-root change."
+    },
+    {
+      "address": "0xe39c",
+      "state": "parked-until-pool-and-schedule-evidence",
+      "class": "predecessor-literal-pool-and-loop-delay-slot",
+      "evidence": "research/2026-10-13-gain-width/REPORT.md",
+      "observation": "Shared-test label removes delayed ADD but shifts palette entry; realguard restores all876baselinebytes and6byte residual. Stop these forms. Prior nospeedpair also fails and lacks real modulo pool literal.",
+      "do_not_repeat": "The215 archived basic/predecessor/type/address controls under session_texthelpers_parent. Do not mistake broad context scores for width-helper raw differences or delete real accesses merely to remove a pool entry.",
+      "next_question": "Recover genuine predecessor pool ownership and the native condition selecting ADD before TST/BF versus ADD in BF/S delay slot. Require a causal prediction before a new source control."
+    },
+    {
+      "address": "0x61d0",
+      "state": "parked-frame-and-id-source-families",
+      "class": "genuine-predecessor-context-and-local-lifetimes",
+      "evidence": "research/2026-10-13-resume-61d0/REPORT.md",
+      "observation": "Complete genuine61d0/667c/67f4 drafts existed in archived research despite zero canonical source_candidates. Current predecessor5b80 context preserves438accepted bytes but667c/67f4 roots are16/22bytes early; no new source credit. Archived direct/helper/packed position, cap/address/id and retry helpers already reject.",
+      "do_not_repeat": "Do not infer a missing body from source-only frontier. Prior session_field61d0_next, review, cap_next and retry_next source families are negative; no dummy frame or register hints.",
+      "next_question": "Require a target-backed producer lifetime explaining the missing local frame and ID/budget allocation while preserving genuine predecessor context; row-copy work is separately indexed at67f4."
+    },
+    {
+      "address": "0x67f4",
+      "state": "parked-until-offset-allocation-evidence",
+      "class": "row-copy-widths-and-index-allocation",
+      "evidence": "research/2026-10-13-queue-offset/REPORT.md",
+      "observation": "Eleven native stages: baseline already has both ROM offset extensions. Named typed offsets spill, move byte extension inside loop, and retain wrong predecessor roots. Protected 438 bytes exact; full 3636-byte range still differs. No admission.",
+      "do_not_repeat": "Whole-cell versus three-word source assignment and cached-pointer family without new mechanism; no root rebasing or artificial padding.",
+      "next_question": "Explain baseline destination/source offset register homes R12/R10 versus ROM R10/R12 through genuine priority and lifetime evidence, while recovering earlier owner roots. Do not repeat the falsified missing-width premise."
+    },
+    {
+      "address": "0x2657c",
+      "state": "genuine-whole-unit-draft-needs-storage-recovery",
+      "class": "stack-abi-loop-shape-and-pool-layout",
+      "evidence": "research/2026-10-13-resume-2657c/REPORT.md",
+      "observation": "Five ordinary launches recover7genuine function bodies; old archive2657c/26e18/26ff0/2722c bodies were synthetic g_dummy stubs and excluded. Correct26e18 stack order is px,row,py,x; explicit redraw do-loops remove unintended4fold unrolling. Latest context3320vs3476target, final helper156early,3330fixed-target differences including156missing. Parent8links reproduce and corrected row writer passes96controlled ROM cases in each of2contexts; zero credit. Later parent recovered exact70byte redraw-lock wrapper using incominglong args and narrowcallee; those bytes are now accepted in dedicated26faacontext, remainingproducer still unresolved. Current-redraw helper26f64 is now accepted with26faa in one140byte interval; registeroffset plusindexedbank-column consumer recovered its70bytes.",
+      "do_not_repeat": "No synthetic predecessor restoration; no repeated narrow step declarations (byte-identical) or blind scratch/pragma/ABI controls. Keep linear pool scans diagnostic.",
+      "next_question": "Recover original2657c28byte frame and storage reuse;26faa spill frame is now explained and accepted separately. Preserve authenticated26e18 ABI and original ownership."
+    },
+    {
+      "address": "0x12e2",
+      "state": "parked-until-joined-pointer-lifetime-evidence",
+      "class": "selected-coordinate-pointer-and-branch-merging",
+      "evidence": "research/2026-10-13-startup-graph-review/REPORT.md",
+      "observation": "Joined-pointer goto control preserves pR5 but emits backward branch and wrong trueR2/falseR3 scratches; nextroot+4,72targetdiff and8protected. Elevenstages. Bestfive remains unchanged. Fresh native branch-Y capture proves false pointer self-binds/merges with base and maps R14; register keyword does not remove binding. Best five unchanged.",
+      "do_not_repeat": "Closed pointer/cast/earlydefinition, inlineformal, cursorincrement and late metadata families without a new native source mechanism. No patchedcompiler output for admission.",
+      "next_question": "New callback finding identifies 0x40182f as nonempty-else emission scratch, already active in this helper. Transfer review authenticates861 selections/200archivedbodies; no duplicate commonreturn control. Require a genuine joined-pointer graph changing branch scratch history while preserving final layout.",
+      "supporting_evidence": [
+        "research/2026-10-13-startup-callback-mechanism/REPORT.md",
+        "research/2026-10-13-startup-branch-y-binding/REPORT.md"
+      ]
+    },
+    {
+      "address": "0xe3e0",
+      "state": "parked-until-producer-partition-evidence",
+      "class": "shared-pool-flush-and-local-call-identity",
+      "evidence": "research/2026-10-13-gain-textwrappers/REPORT.md",
+      "observation": "Real frame-pointer table/callee contract improves e412 register asymmetry but not pool. One section defers preceding pool; separate genuine section flushes it but emits longer indirect widthcall. Original ELF only has DIR32 relocations, insufficient GNU SH call relaxation metadata.",
+      "do_not_repeat": "Archived width/type/storage matrices, default-section reset, namedsection flush as exactness claim, or rebase/patch workarounds.",
+      "next_question": "Find genuine compiler/link partition evidence explaining E3D0 pool flush and E3EE local BSR together."
+    },
+    {
+      "address": "0xb39a",
+      "state": "parked-until-exact-producer-and-pool-proof",
+      "class": "shared-literal-pool-ownership",
+      "evidence": "research/2026-10-13-percentage-push/settings-pool-review/REPORT.md",
+      "observation": "38byte pool differs only Y/N data addresses and local displacedE520callee, but genuine context truncation plus original data references shifts helper roots. Existing single-root complete-code tail proof excludes trailingpool.",
+      "do_not_repeat": "Short or throughE490 context with Y/N extern replacements; manualpool patches or arbitrary data extraction.",
+      "next_question": "Recover exact nominal settings producer first; only then evaluate narrow argument-tail plus ownedpool proof with adversarial controls."
+    },
+    {
+      "address": "0x26faa",
+      "state": "accepted",
+      "class": "incoming-width-callee-binding-and-shared-pool",
+      "evidence": "docs/research/2026-10-13-redraw-lock-match.md",
+      "observation": "Exact70bytes,56codeplus14sharedpool; incominglong args to shortcallee reproduce12byteframe and nominal26ff0. Strictproof,289tests,two coldROMreplays pass.",
+      "do_not_repeat": "Do not count discarded26f64/26ff0/2722c context or change runtimeexception.",
+      "next_question": "Preserve the accepted combined140bytes [26f64,26ff0); following26ff0/2722c remain unlinked context."
+    },
+    {
+      "address": "0x21d94",
+      "state": "parked-until-real-cursor-and-counter-storage",
+      "class": "aggregate-frame-and-register-priority",
+      "evidence": "research/2026-10-13-shuffle-pool-native/round2/REPORT.md",
+      "observation": "Real persistentbases recover296frame but rootlate; bestvalid296frame225f6 remains18late. Postincrement initializer225e6 only2late haswrong292frame. Addressablecursor yields realSP0 but competingi/n/bounds and inline temporaries moveframe/root;13round2ordinarycontrols fail.",
+      "do_not_repeat": "No rebasing exactrelative56bytes, initializer/root-only acceptance, priorityhint/literalbound/inlinecursor matrices without new native graph evidence.",
+      "next_question": "Recover actual srcSP0/orderSP4/indexSP8 and iR4/nR8 simultaneously using real consumedstorage; hardgates296frame,nominal225e4 andcomplete56rawbytes."
+    },
+    {
+      "address": "0x26f64",
+      "state": "accepted",
+      "class": "signed-offset-storage-and-indexed-word-recipe",
+      "evidence": "docs/research/2026-10-13-redraw-current-match.md",
+      "observation": "Accepted70additionalbytes; combined140bytes with26faa andsharedpool exact. registercur andregisterlong signed16offset recoverR14/R13; indexedchararray address selectsoriginalwordload. Strictproof,291tests,two coldROMreplays, independentrelink andlivepublication pass.",
+      "do_not_repeat": "Do not credit following displaced2722c or ordinary pointer-add recipe; it adds2bytes and rejects.",
+      "next_question": "Preserve acceptedwrappers while recovering genuine following26ff0 storage or earlier2657cframe."
+    },
+    {
+      "address": "0x8b86",
+      "state": "parked-until-real-parameter-storage-evidence",
+      "evidence": "research/2026-10-13-field-reset-binding/REPORT.md",
+      "observation": "Fourteen stages: real callee331a takes selected field pointer. K&R byte formal produces distinct frontend IR but both normal and debug MDL crash before valid allocation output. ANSI full-context roots remain wrong; protected228+244 exact. Archived108-difference form uses inadmissible dead address-taking.",
+      "next_question": "Require target-backed consumed addressability or a working native formal-binding positive control to explain actual id SP0 and field pointer SP4. Wide-input/local-byte and dead-address families are closed.",
+      "class": "parameter-binding-and-pointer-lifetime"
+    },
+    {
+      "address": "0x7c08",
+      "state": "parked-until-relative-priority-evidence",
+      "evidence": "research/2026-10-13-announcement-priority-review/REPORT.md",
+      "observation": "Separate selectedpointer lowersbasepriority but retains wrongpair. Lateactualregisterindex recoversindexR4/baseR5 but demotesfieldR14\u2192R9/globalR11\u2192R12; gated3stages stop beforeordinarycompile. Wholefunctionregisterid already8failedcases.",
+      "next_question": "Need genuine relativepriority change without highprioritylateweb demoting persistentfields. No wholeid or lateindex register repeats.",
+      "class": "native-pointer-web-allocation"
+    },
+    {
+      "address": "0x26ff0",
+      "state": "parked-until-scalar-storage-evidence",
+      "class": "source-order-and-stack-storage",
+      "evidence": "research/2026-10-13-redraw-counter-storage/REPORT.md",
+      "observation": "Row-store order restores16bytes; realaggregate recoversiR9 but addsaggregatebaseR14/frame48. Registercountercontrol retains pointersinregisters, frame36/root-32; protected140exact. Allthree distinctstorage/loop familiesclosed.",
+      "next_question": "Recover original iR9,yyR14,lSP4,aeSP0 using genuine scalar lifetimes and clash evidence; no loop syntax, aggregate or registerhint matrix."
+    },
+    {
+      "state": "parked-until-frame-web-lifetime-evidence",
+      "evidence": "research/2026-10-13-producer-triage/REPORT.md",
+      "observation": "Genuine fourbodycontext leavesfirst1248bytes identical. Nativey0andfrm disjointlyreuseR8 whileconstant4 overlapsboth. Scalarframeaddresstype keepspriority17/profit5 andhomes unchanged;14stages, no gain.",
+      "next_question": "Find genuine consumedframe operation changing overlap/profit; y0-onlyspill andintegertype alonecannotfreeR8.",
+      "address": "0x15fae"
+    },
+    {
+      "state": "parked-duplicate-interrupt-controls",
+      "evidence": "research/2026-10-13-boot-irq-review/REPORT.md",
+      "observation": "Prior genuinepragma interruptvolatileMMIO controls alreadydefault/nospeed/optimize0negative, wrongscratchsavedregs andpools. Newreviewzerocompiles.",
+      "next_question": "Require originalcompiler/context evidence for R0/R1 andlongMMIOpools before newsourcecontrols.",
+      "address": "0x6ac"
+    },
+    {
+      "address": "0x2769e",
+      "state": "accepted",
+      "evidence": "docs/research/2026-10-13-callback-dispatch-match.md",
+      "observation": "Exact74bytes with genuine27310context. Explicitelse/commonreturn introducesR2selection beforesecondtest, makingtestR1. Strictwholecallbackproof,304tests, independent513adversarialchecks; canonicalreport137546.",
+      "next_question": "Preserveaccepted74andpreceding432. Applymeasuredscratchhistorylesson onlywithnewgenuinegraph evidence; tilewriter478 remainsunmatched.",
+      "class": "shared-return-scratch-history-and-dynamic-callback-tail"
+    },
+    {
+      "state": "accepted",
+      "evidence": "docs/research/2026-10-13-callback-setter-match.md",
+      "observation": "Complete 98-byte setter exact under ordinary unmodified compiler. Named narrowed register formal, consumed second-value local, and coherent long(int) getter contract recover native register bindings and spill order. Combined 232-byte default strict range preserves seven following setters; all 5862 affected old bytes remain exact. No verifier changes.",
+      "next_question": "Preserve accepted 232 bytes and coherent caller/callee contract. Transfer argument-preassignment or spill-frequency mechanisms only after native evidence distinguishes the next owner.",
+      "address": "0x276e8",
+      "supporting_evidence": [
+        "research/2026-10-13-callback-getter-contract/REPORT.md",
+        "research/2026-10-13-callback-contract-review/STAGE_REVIEW.json"
+      ]
+    },
+    {
+      "state": "parked-until-genuine-pool-producer",
+      "evidence": "research/2026-10-13-text-callback-history/REPORT.md",
+      "observation": "Three130-code differences areallPCdisplacements. Exacttyped023prefix truncationthroughE490 isnewbutnegative:full14415diff,tailffff/callee/width/frame,320alreadyflushedatE434. Rootnominal. Ordinary8stageandoriginalELFrelocs authenticated.",
+      "next_question": "Recovergenuineproducerpoolplacement preservingcodeandexternalliterals; neithercompletecodeproof norcallbackscratchlesson fixesactualdisplacementdifferences. No repeatedtruncation/poolspellingcontrols.",
+      "address": "0xe490"
+    },
+    {
+      "address": "0x96ac",
+      "state": "native-volume-timer-allocation-investigation",
+      "evidence": "research/2026-10-13-field96ac-snapshot-alias/REPORT.md",
+      "observation": "Raw target self-bind excluded low registers; removing want/tgt snapshot aliases clears bindings and recovers wantR4,targetR6,tablebaseR7,stateR5. Frame4/two tails restored, case-local casts and address arithmetic retained. Full1248extent/982raw differences incl4missing,protected472 exact; volumeSP0/timerR12 and pointer homes remain wrong.",
+      "next_question": "Read-only evaluate timer snapshot lifetime and volume/timer equal3/-2 score with exact pointer constants; do not launch register-hint or width grid without native prediction.",
+      "supporting_evidence": [
+        "research/2026-10-13-field96ac-lifetime/REPORT.md",
+        "research/2026-10-13-field96ac-lifetime/COMBINED_REVIEW.md",
+        "research/2026-10-13-field96ac-table-address/REPORT.md",
+        "research/2026-10-13-field96ac-cse-origin/PARENT_REVIEW.json",
+        "research/2026-10-13-field96ac-snapshot-alias/PARENT_REVIEW.json"
+      ]
+    },
+    {
+      "address": "0x225fa",
+      "state": "parked-predecessor-owned-frame-pool",
+      "evidence": "research/2026-10-13-copy-tail-ownership/REPORT.md",
+      "observation": "All 34 bytes belong to shared literal pool. Combined 56-byte copy extent differs only at 22606: FFFF versus 0128, the 296-byte predecessor frame cleanup. Prior genuine 296-frame source displaces root; no new compile.",
+      "next_question": "Recover genuine 296-byte predecessor frame and original copy root together; no isolated pool admission or fabricated padding."
+    },
+    {
+      "address": "0x1326c",
+      "state": "parked-until-genuine-seed-interference",
+      "evidence": "research/2026-10-13-save-writer-review/REPORT.md",
+      "observation": "Native PEP40c0c0 retargets immediate1 R4\u2192R0 and deletes R4\u2192R0 at40c2e4 after both417cc0 reference checks returnzero. Native outputs authenticated,668context,writer88diff,protected140exact,eightstages.",
+      "next_question": "Require a genuine consumed register-reference/lifetime difference blocking observed destination propagation without extra argument bindings; prior seed/formal families closed."
+    },
+    {
+      "address": "0x88fe",
+      "state": "native-promoted-byte-tie-investigation",
+      "evidence": "research/2026-10-13-field88fe-global-update-transfer/REPORT.md",
+      "observation": "Accepted ready217 positive control transfers: split GLOBAL updates preserve two GEN ages and compiler removes intermediate store. All31 prior residuals fixed; new full546 residual6 only promotedpa/pb R4/R5 swap. All16 roots/31literals/protected228 exact. Native27-node sort: g6064880 address priority5\u21927 changes unstable equal-profit partition. Named register promotion recovers pair but coalesces rawpa and changes globalhomes:51diff, rejected.",
+      "next_question": "Preserve rawpaR6 and all code while recovering promotedpaR4/pbR5. Inspect genuine nonempty-else return graph or source-backed actualaddress constant discovery, with native sort model. No priorityhint/type matrix.",
+      "supporting_evidence": [
+        "research/2026-10-13-frontier-producer-inventory/PARENT_REVIEW.json",
+        "research/2026-10-13-frontier-producer-inventory/MODE_ASSIGNMENT_QUESTION.json",
+        "research/2026-10-13-field88fe-mask-recipe/PARENT_REVIEW.json",
+        "research/2026-10-13-field88fe-mode-web/REPORT.md",
+        "docs/research/2026-10-04-ready-sequencing-match.md",
+        "research/2026-10-13-field88fe-global-update-transfer/SORT_MODEL.json",
+        "research/2026-10-13-field88fe-pa-promotion/REPORT.md"
+      ]
+    }
+  ]
+}

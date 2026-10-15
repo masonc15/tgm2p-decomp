@@ -2,6 +2,8 @@
 import contextlib
 import io
 import sys
+from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -27,18 +29,42 @@ class CoverageFilterTests(unittest.TestCase):
                 (self.mid, self.hi, 'asm', None)]):
             self.assertEqual(cuts.c_ranges(), [(self.lo, self.mid)])
 
-    def test_range_counts_only_its_kept_span(self):
+    def test_middle_range_counts_only_retained_span(self):
         import build
-        with patch.object(build, 'read_splits', return_value=[
-                (self.lo, self.mid, 'asm', None),
-                (self.mid, self.hi, 'c-range', 'context.c')]):
-            self.assertEqual(cuts.c_ranges(), [(self.mid, self.hi)])
+        segs = [(self.lo - 4, self.lo, 'asm', None),
+                (self.lo, self.mid, 'c-range', 'context.c'),
+                (self.mid, self.hi, 'asm', None)]
+        out = io.StringIO()
+        with (patch.object(build, 'read_splits', return_value=segs),
+              patch.object(build.fn, 'call_targets', return_value=[self.lo - 4, self.lo, self.mid]),
+              contextlib.redirect_stdout(out)):
+            self.assertEqual(cuts.c_ranges(), [(self.lo, self.mid)])
+            build.progress()
+        self.assertIn(f'{self.mid-self.lo:#x}/{self.hi-self.lo+4:#x} code bytes', out.getvalue())
+        self.assertIn('1/3 called functions', out.getvalue())
 
-    def test_multiple_ranges_of_one_source_have_distinct_objects(self):
+    def test_middle_ranges_of_same_source_have_distinct_objects(self):
         import build
-        self.assertNotEqual(build.c_object(self.lo, 'c-range', 'context.c'),
-                            build.c_object(self.mid, 'c-range', 'context.c'))
-        self.assertEqual(build.c_object(self.lo, 'c-prefix', 'context.c').name, 'context.o')
+        first = build.c_object(self.lo, 'c-range', 'src/context.c')
+        second = build.c_object(self.mid, 'c-range', 'src/context.c')
+        self.assertNotEqual(first, second)
+        self.assertEqual(build.c_object(self.lo, 'c', 'src/context.c').name, 'context.o')
+
+    def test_literal_tail_proof_is_explicit_opt_in(self):
+        import build
+        with tempfile.TemporaryDirectory() as td:
+            source = Path(td) / 'case.c'
+            for header, expected in [
+                    ('/* context-rom: 0x1278 */', False),
+                    ('/* literal-tail-calls: 1 flags: -speed */', True)]:
+                source.write_text(header + '\n')
+                self.assertEqual(build.c_literal_tail_calls(source), expected)
+            for header in ['/* literal-tail-calls: 0 */',
+                           '/* literal-tail-calls: yes */',
+                           '/* literal-tail-calls: 1 literal-tail-calls: 1 */']:
+                source.write_text(header + '\n')
+                with self.subTest(header=header), self.assertRaises(ValueError):
+                    build.c_literal_tail_calls(source)
 
     def test_single_c_segment_is_hidden(self):
         self.assertEqual(self.output([(self.lo, self.hi)]), "")

@@ -217,12 +217,12 @@ def functions():
     segs = build.read_splits()
     funcs = {}
     for a, b, kind, arg in segs:
-        if kind not in ("c", "c-prefix", "c-range"):
+        if kind not in ("c", "c-prefix"):
             continue
         defs = c_defs((ROOT / arg).read_text())
         kept = None
-        if kind in ("c-prefix", "c-range"):
-            obj = build.c_object(a, kind, arg)
+        if kind == "c-prefix":
+            obj = build.OBJ / (Path(arg).stem + ".o")
             kept = {name.removeprefix("_"): addr for addr, name in build.c_functions(obj, a).items()} if obj.exists() else {}
         prev = None
         for name, line in defs:
@@ -339,7 +339,7 @@ def cache_key() -> str:
     for p in [ROOT / "build" / "prog.bin", ROOT / "splits.txt", Path(__file__), ROOT / "tools" / "fn.py"]:
         h.update(p.read_bytes())
     for _, _, kind, arg in build.read_splits():
-        if kind in ("c", "c-prefix", "c-range"):
+        if kind in ("c", "c-prefix"):
             h.update(arg.encode())
             h.update((ROOT / arg).read_bytes())
     return h.hexdigest()[:16]
