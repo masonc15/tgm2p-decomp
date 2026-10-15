@@ -17,7 +17,7 @@ base.c wraps the function body in PERM_RANDOMIZE and its leading local
 declarations in PERM_LINESWAP (see wrap_perm_macros).
 
 usage: perm_setup.py <case> [func] [--dir DIR] [--cases CASEDIR] [--no-lineswap] [--lineswap-max N]
-then:  python /drive2/tgm2p/decomp-permuter/permuter.py DIR -j 6 --stop-on-zero
+then:  python $TGM2P_TOOLCHAIN/decomp-permuter/permuter.py DIR -j 6 --stop-on-zero
 """
 import argparse
 import json
@@ -31,6 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools" / "shc_probe"))
 from probe import CASES, HEADER, SHCC  # noqa: E402
 from objdiff_case import build_target  # noqa: E402
+import toolchain  # noqa: E402
 
 FUNC_DEF = re.compile(r"^[A-Za-z_][^;{}]*?\b(\w+)\s*\([^;]*?\)\s*\{", re.M | re.S)
 VERSION = "shc-v5.0r32"
@@ -220,7 +221,7 @@ def main() -> None:
     if func not in names:
         sys.exit(f"{func} not in {names}")
     k = names.index(func)
-    d = args.dir or Path("/drive2/tgm2p/perm") / func
+    d = args.dir or toolchain.PERM / func
     d.mkdir(parents=True, exist_ok=True)
 
     # pycparser can't read #pragma inline_asm bodies (SH assembly), so base.c

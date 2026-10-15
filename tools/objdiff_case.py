@@ -53,9 +53,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "tools" / "shc_probe"))
 import fn  # noqa: E402
+import toolchain  # noqa: E402
 from probe import HEADER, SHCC  # noqa: E402
 
-OBJDIFF = os.environ.get("OBJDIFF", "/drive2/tgm2p/bin/objdiff-cli")
+OBJDIFF = str(toolchain.OBJDIFF)
 AS = ["sh-elf-as", "--isa=sh2", "--big", "-no-pad-sections"]
 RAM_ROM_END = 0x313fc
 AUTO = re.compile(r"^_?(f|d|g)_([0-9a-f]+)$")

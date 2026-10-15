@@ -4,7 +4,8 @@
 # Runs shc.exe under wibo the same way decomp.me does, then converts the
 # SYSROF object to ELF with rof2elf.py so sh-elf-objdump/objdiff can read it.
 set -euo pipefail
-COMPILERS="${SHC_COMPILERS:-/drive2/tgm2p/compilers}"
+TOOLCHAIN="${TGM2P_TOOLCHAIN:-$([ -d /drive2/tgm2p ] && echo /drive2/tgm2p || echo "$HOME/tgm2p")}"
+COMPILERS="${SHC_COMPILERS:-$TOOLCHAIN/compilers}"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 VER="$1"; OUT="$(realpath -m "$2")"; SRC="$(realpath "$3")"; shift 3
 WORK="$(mktemp -d)"

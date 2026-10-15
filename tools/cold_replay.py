@@ -16,6 +16,8 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+import toolchain  # noqa: E402
 ROM_SHA1 = {"2b.u21": "783e8413b11f1fa08d331b09ef4ed63f62b87ead",
             "1b.u22": "3f7e81756470c173cc17a7e7dee91437571fd0c3"}
 PROGRAM_SHA256 = "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7"
@@ -105,7 +107,7 @@ def main():
                 raise ValueError("source drift during snapshot")
         verify_roms(frozen)
         receipt["inputs"] = before
-        compilers = Path(os.environ.get("SHC_COMPILERS", "/drive2/tgm2p/compilers"))
+        compilers = toolchain.COMPILERS
         tool_paths = sorted((compilers / "shc-v5.0r32/bin").glob("*"))
         tool_paths += [compilers / "wibo", compilers / "rof2elf_fillff.py"]
         tool_before = manifest(tool_paths, compilers)
@@ -118,7 +120,7 @@ def main():
                 [pinned_tools / p for p in tool_before], pinned_tools):
             raise ValueError("compiler drift during snapshot")
         receipt["compiler_inputs"] = tool_before
-        objdiff = Path("/drive2/tgm2p/bin/objdiff-cli")
+        objdiff = toolchain.OBJDIFF
         external = [Path(shutil.which(x)) for x in ("sh-elf-as", "sh-elf-ld", "sh-elf-nm", "sh-elf-objcopy", "sh-elf-objdump", "make", "python3")]
         external += [Path(sys.executable), objdiff]
         ext_before = {str(p): digest(p) for p in external}

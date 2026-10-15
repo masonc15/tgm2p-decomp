@@ -1,6 +1,10 @@
-# Runs on nuada (sh-elf binutils, wibo and SHC live there). See README.md.
-PY ?= /drive2/tgm2p/venv/bin/python
-OBJDIFF ?= /drive2/tgm2p/bin/objdiff-cli
+# Runs on nephele (~/tgm2p) or nuada (/drive2/tgm2p); see tools/toolchain.py.
+TGM2P_TOOLCHAIN ?= $(firstword $(wildcard /drive2/tgm2p $(HOME)/tgm2p) /drive2/tgm2p)
+PY ?= $(TGM2P_TOOLCHAIN)/venv/bin/python
+OBJDIFF ?= $(TGM2P_TOOLCHAIN)/bin/objdiff-cli
+SHC_COMPILERS ?= $(TGM2P_TOOLCHAIN)/compilers
+export TGM2P_TOOLCHAIN SHC_COMPILERS
+export PATH := $(TGM2P_TOOLCHAIN)/bin:$(PATH)
 
 .PHONY: all split build check report clean
 all: check

@@ -101,7 +101,8 @@ class PermuterTargetTests(unittest.TestCase):
     def test_exact_rotation_scores_zero_despite_unmatched_tail(self):
         # The real C prefix matches through rotation; DAS after it does not.
         # A whole-unit scorer cannot give this requested function score zero.
-        sys.path.insert(0, '/drive2/tgm2p/decomp-permuter')
+        import toolchain
+        sys.path.insert(0, str(toolchain.PERMUTER))
         from src.scorer import Scorer
         setup = self.root / 'exact-control'
         subprocess.run([sys.executable, str(self.oc.ROOT / 'tools/perm_setup.py'),
