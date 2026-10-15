@@ -1,0 +1,3218 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-02",
+  "account": "masonc15",
+  "compiler": "shc-v5.0r32-sh2",
+  "platform": "saturn",
+  "snapshot": {
+    "origin": "nuada:/tmp/tgm2p-publish.SuHkQC",
+    "provenance": "Isolated copy of nuada working tree, ahead of local git HEAD 2f819bb; rebuilt with make check report. Source hashes identify published versions.",
+    "matched_code": 121792,
+    "total_code": 200698,
+    "percent": 60.68421,
+    "image_sha1": "c84cf538962ddbb377290301d76d75d8b542e5a2",
+    "eprom_sha1": {
+      "2b.u21": "783e8413b11f1fa08d331b09ef4ed63f62b87ead",
+      "1b.u22": "3f7e81756470c173cc17a7e7dee91437571fd0c3"
+    }
+  },
+  "verification": {
+    "total_scratches": 135,
+    "existing_urls_refreshed": 23,
+    "new_scratches": 112,
+    "public_compile_successes": 134,
+    "public_compile_blocked": 1,
+    "site_score_zero": 89,
+    "match_overrides": 0,
+    "unpublished_compiler_blocked_groups": 4
+  },
+  "groups": [
+    {
+      "slug": "DMEqS",
+      "source": "src/piece_44d4.c",
+      "name": "TGM2+ - piece_44d4",
+      "partial": false,
+      "ranges": [
+        [
+          17620,
+          20704,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 153600,
+      "match_override": false,
+      "source_sha256": "9f814ae761d48db67582eb59290b309ad2e114746401efa5aaf000704c7c712a",
+      "url": "https://decomp.me/scratch/DMEqS",
+      "diff_label": "_f_44d4",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:12:57.175877+09:00"
+    },
+    {
+      "slug": "yVk0R",
+      "source": "src/f_2f68.c",
+      "name": "TGM2+ - f_2f68 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          12136,
+          15496,
+          "c-prefix"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 21355,
+      "max_score": 163300,
+      "match_override": false,
+      "source_sha256": "ac24bfa7cfe8b8ee83493f2e326422d6ebf964c77f6c469d51682ca5faf9357d",
+      "url": "https://decomp.me/scratch/yVk0R",
+      "diff_label": "_f_2f68",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:12:59.664851+09:00"
+    },
+    {
+      "slug": "J85sf",
+      "source": "src/rom_header.c",
+      "name": "TGM2+ - rom_header",
+      "partial": false,
+      "ranges": [
+        [
+          4704,
+          4728,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 1000,
+      "match_override": false,
+      "source_sha256": "36eb25b7882c898cdf6b060b49c106bad17fb69ee0572edf8ed29915826ae730",
+      "url": "https://decomp.me/scratch/J85sf",
+      "diff_label": "_f_1260",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:31.281798+09:00"
+    },
+    {
+      "slug": "Mf4uj",
+      "source": "src/rand.c",
+      "name": "TGM2+ - rand",
+      "partial": false,
+      "ranges": [
+        [
+          12092,
+          12136,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 2100,
+      "match_override": false,
+      "source_sha256": "cbf5b418e3c0a842ffd5a612b892690aa4e171d7732b7f1f5dc2d257ee1d8305",
+      "url": "https://decomp.me/scratch/Mf4uj",
+      "diff_label": "_rand_next",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:32.688822+09:00"
+    },
+    {
+      "slug": "qQCwy",
+      "source": "src/f_7f38.c",
+      "name": "TGM2+ - f_7f38",
+      "partial": false,
+      "ranges": [
+        [
+          32568,
+          32672,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 4800,
+      "match_override": false,
+      "source_sha256": "a72d8b6436a0d025062926e95f3dcae8c15df48b145cad577d613eed26fdad60",
+      "url": "https://decomp.me/scratch/qQCwy",
+      "diff_label": "_f_7f38",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:33.862649+09:00"
+    },
+    {
+      "slug": "I9QnN",
+      "source": "src/field_check.c",
+      "name": "TGM2+ - field_check",
+      "partial": false,
+      "ranges": [
+        [
+          34072,
+          34264,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 9500,
+      "match_override": false,
+      "source_sha256": "18b3a304ba00fa944feb20657944e9f6d611664cf7f01cc6ccbcc7c23be6e497",
+      "url": "https://decomp.me/scratch/I9QnN",
+      "diff_label": "_field_check_flag",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:35.134958+09:00"
+    },
+    {
+      "slug": "x45Rt",
+      "source": "src/main_loop.c",
+      "name": "TGM2+ - main_loop",
+      "partial": false,
+      "ranges": [
+        [
+          39824,
+          39948,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 5500,
+      "match_override": false,
+      "source_sha256": "973d3e6f75164cbabcd0902902ae700ed9439a685c5cfdc5ed71b5f65089e574",
+      "url": "https://decomp.me/scratch/x45Rt",
+      "diff_label": "_main_loop",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:36.709074+09:00"
+    },
+    {
+      "slug": "1XU2g",
+      "source": "src/text.c",
+      "name": "TGM2+ - text",
+      "partial": false,
+      "ranges": [
+        [
+          59216,
+          59432,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 10500,
+      "match_override": false,
+      "source_sha256": "5254df3f71945837d4fc7952db41e64893320aa7c13c941ece6efbb72702c78b",
+      "url": "https://decomp.me/scratch/1XU2g",
+      "diff_label": "_f_e750",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:37.231621+09:00"
+    },
+    {
+      "slug": "jcn2l",
+      "source": "src/stubs_e828.c",
+      "name": "TGM2+ - stubs_e828",
+      "partial": false,
+      "ranges": [
+        [
+          59432,
+          59444,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 600,
+      "match_override": false,
+      "source_sha256": "6c549d1087db804fa6b24ffe9179549a4112d2ae25ddb07b469efb30059149f7",
+      "url": "https://decomp.me/scratch/jcn2l",
+      "diff_label": "_f_e828",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:38.221562+09:00"
+    },
+    {
+      "slug": "zxCi7",
+      "source": "src/f_11fe8.c",
+      "name": "TGM2+ - f_11fe8",
+      "partial": false,
+      "ranges": [
+        [
+          73704,
+          73920,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 10400,
+      "match_override": false,
+      "source_sha256": "e822f5abb23b65f0085acb8db3ac12240455947cab18441cd15b89d6c1bbc81d",
+      "url": "https://decomp.me/scratch/zxCi7",
+      "diff_label": "_f_11fe8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:39.297314+09:00"
+    },
+    {
+      "slug": "Wb6Ok",
+      "source": "src/f_18fec.c",
+      "name": "TGM2+ - f_18fec",
+      "partial": false,
+      "ranges": [
+        [
+          102380,
+          102420,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 1700,
+      "match_override": false,
+      "source_sha256": "41dec68df0f1016f9f8a0aecba332962f4d3b002192bad2f5853f9b95c1aad8e",
+      "url": "https://decomp.me/scratch/Wb6Ok",
+      "diff_label": "_f_18fec",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:40.199140+09:00"
+    },
+    {
+      "slug": "tBulW",
+      "source": "src/effect_230a8.c",
+      "name": "TGM2+ - effect_230a8",
+      "partial": false,
+      "ranges": [
+        [
+          143528,
+          143768,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 5,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "1e86e62444e0ed2505f0d2bb1868a54212ccabc6dce2947e142631b5260622c7",
+      "url": "https://decomp.me/scratch/tBulW",
+      "diff_label": "_f_230a8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:40.705461+09:00"
+    },
+    {
+      "slug": "Sf8y6",
+      "source": "src/code_23828.c",
+      "name": "TGM2+ - code_23828",
+      "partial": false,
+      "ranges": [
+        [
+          145448,
+          145576,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 5800,
+      "match_override": false,
+      "source_sha256": "6003d99fa3b52266f8d96a82536da3ea71830fd0c53b0d90219c830f24976dcc",
+      "url": "https://decomp.me/scratch/Sf8y6",
+      "diff_label": "_f_23828",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:41.611949+09:00"
+    },
+    {
+      "slug": "sWQw4",
+      "source": "src/frt.c",
+      "name": "TGM2+ - frt",
+      "partial": false,
+      "ranges": [
+        [
+          177200,
+          177384,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 8700,
+      "match_override": false,
+      "source_sha256": "92c7ab4d9888e3da0d3ade175a65a95771e5143354ca057c1770177cbcdefb81",
+      "url": "https://decomp.me/scratch/sWQw4",
+      "diff_label": "_frt_init",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:43.253327+09:00"
+    },
+    {
+      "slug": "fdDVO",
+      "source": "src/sprite_2e06c.c",
+      "name": "TGM2+ - sprite_2e06c",
+      "partial": false,
+      "ranges": [
+        [
+          188524,
+          188856,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 15,
+      "max_score": 16200,
+      "match_override": false,
+      "source_sha256": "5d32d482e2d97aac0b63c87ada57d8b2a9550395a2d1022362c6f7d7ee59aca9",
+      "url": "https://decomp.me/scratch/fdDVO",
+      "diff_label": "_sprite_add_box",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:13:44.219935+09:00"
+    },
+    {
+      "slug": "RfEOY",
+      "source": "src/eeprom.c",
+      "name": "TGM2+ - eeprom",
+      "partial": false,
+      "ranges": [
+        [
+          196056,
+          198784,
+          "c"
+        ]
+      ],
+      "existing": true,
+      "success": true,
+      "score": 0,
+      "max_score": 133900,
+      "match_override": false,
+      "source_sha256": "4fb20c879ee226798fe93ab16d779960492e9f1e1828ca4500fec29a0cfd3358",
+      "url": "https://decomp.me/scratch/RfEOY",
+      "diff_label": "_eeprom_send_bit",
+      "compiler_flags": "-macsave=1 -optimize=0",
+      "last_updated": "2026-10-03T02:13:46.320952+09:00"
+    },
+    {
+      "slug": "c5vJz",
+      "source": "src/startup_tail.c",
+      "name": "TGM2+ - startup_tail (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          7308,
+          8382,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 113645,
+      "max_score": 50800,
+      "match_override": false,
+      "source_sha256": "5de02360e221a344ab91d963e42864d1e57961033b49d501e8b2b5872067f36c",
+      "url": "https://decomp.me/scratch/c5vJz",
+      "diff_label": "_f_1c8c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:14:12.018312+09:00"
+    },
+    {
+      "slug": "wrF0E",
+      "source": "src/f_50e0.c",
+      "name": "TGM2+ - f_50e0",
+      "partial": false,
+      "ranges": [
+        [
+          20704,
+          20980,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 13600,
+      "match_override": false,
+      "source_sha256": "5010729244bb8e83aa209ace3ae8c6e206de7ee26310d0fcde5e3dafcfd6da49",
+      "url": "https://decomp.me/scratch/wrF0E",
+      "diff_label": "_f_50e0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:14:14.588316+09:00"
+    },
+    {
+      "slug": "inSqz",
+      "source": "src/f_51f4.c",
+      "name": "TGM2+ - f_51f4",
+      "partial": false,
+      "ranges": [
+        [
+          20980,
+          21532,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 27100,
+      "match_override": false,
+      "source_sha256": "fd95c14490711d576add3604b7ef0ef0d75f996be6f29c6ce034851fa9b06e44",
+      "url": "https://decomp.me/scratch/inSqz",
+      "diff_label": "_f_51f4",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:14:16.206886+09:00"
+    },
+    {
+      "slug": "ltBRx",
+      "source": "src/f_541c.c",
+      "name": "TGM2+ - f_541c (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          21532,
+          22484,
+          "c-prefix"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 46505,
+      "max_score": 47500,
+      "match_override": false,
+      "source_sha256": "1889b62bea8e6f367c2e956d765f7cea21a3af886368f7cf66f789e6dfae1b3b",
+      "url": "https://decomp.me/scratch/ltBRx",
+      "diff_label": "_f_541c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:14:18.103499+09:00"
+    },
+    {
+      "slug": "8Cema",
+      "source": "src/field_7004.c",
+      "name": "TGM2+ - field_7004 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          28676,
+          29476,
+          "c-prefix"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 38520,
+      "max_score": 39600,
+      "match_override": false,
+      "source_sha256": "06a520369ccc5c2af0bd54406fd30e6ccc19f033a685d6767c03a0f20d41d700",
+      "url": "https://decomp.me/scratch/8Cema",
+      "diff_label": "_f_7004",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:14:20.104014+09:00"
+    },
+    {
+      "slug": "ThylR",
+      "source": "src/item_8164.c",
+      "name": "TGM2+ - item_8164 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          33124,
+          33228,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 1810,
+      "max_score": 4900,
+      "match_override": false,
+      "source_sha256": "775c50fd8ad2e8e851012604636bfc7f05cdd15aed4429595d02b70a75bc4fe2",
+      "url": "https://decomp.me/scratch/ThylR",
+      "diff_label": "_f_8164",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:14:21.862062+09:00"
+    },
+    {
+      "slug": "YoqKb",
+      "source": "src/field_81cc.c",
+      "name": "TGM2+ - field_81cc (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          33556,
+          34072,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 40,
+      "max_score": 24900,
+      "match_override": false,
+      "source_sha256": "ca090bc45d205c81110a728886f9c8b8f4d3568c3f610cc42d864d10812c6f9c",
+      "url": "https://decomp.me/scratch/YoqKb",
+      "diff_label": "_f_8314",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:17:01.327012+09:00"
+    },
+    {
+      "slug": "0Zkp3",
+      "source": "src/field_helpers_881a.c",
+      "name": "TGM2+ - field_helpers_881a (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          34842,
+          35070,
+          "c-range"
+        ],
+        [
+          38328,
+          38572,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 223130,
+      "max_score": 10500,
+      "match_override": false,
+      "source_sha256": "3bd860dfa942898fe0fa9a4075c3e420309c7043f3ed7e69f34acdfc986e32be",
+      "url": "https://decomp.me/scratch/0Zkp3",
+      "diff_label": "_f_881a",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:17:19.259734+09:00"
+    },
+    {
+      "slug": "4TEfY",
+      "source": "src/field_flag_counter_907c.c",
+      "name": "TGM2+ - field_flag_counter_907c (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          36988,
+          37016,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 130500,
+      "max_score": 1400,
+      "match_override": false,
+      "source_sha256": "b58955e85ae0ec205a95b0a9cfe0fada1c38c87a729f846fef0e8cf4ad39ebab",
+      "url": "https://decomp.me/scratch/4TEfY",
+      "diff_label": "_f_907c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:17:36.854204+09:00"
+    },
+    {
+      "slug": "WdHW9",
+      "source": "src/f_9c0c.c",
+      "name": "TGM2+ - f_9c0c",
+      "partial": false,
+      "ranges": [
+        [
+          39948,
+          41510,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 73200,
+      "match_override": false,
+      "source_sha256": "65b350b5da836bcf95751d594b9dc89a93aa996bb478247d3f47a77231970f8b",
+      "url": "https://decomp.me/scratch/WdHW9",
+      "diff_label": "_f_9c0c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:17:49.814554+09:00"
+    },
+    {
+      "slug": "ieqt9",
+      "source": "src/menu_lookup_be04.c",
+      "name": "TGM2+ - menu_lookup_be04 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          48644,
+          48680,
+          "c-prefix"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 150000,
+      "max_score": 1800,
+      "match_override": false,
+      "source_sha256": "2a150328186337204bf1c41b50859b5f72bd84991c9fe195733c2cb89fffabbb",
+      "url": "https://decomp.me/scratch/ieqt9",
+      "diff_label": "_f_be04",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:17:57.621192+09:00"
+    },
+    {
+      "slug": "gIhVO",
+      "source": "src/f_d28c.c",
+      "name": "TGM2+ - f_d28c",
+      "partial": false,
+      "ranges": [
+        [
+          53900,
+          54164,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 12700,
+      "match_override": false,
+      "source_sha256": "3de2eff9a2fc428659f4810b3ed7c0c3ad4b1bc3ea1490db2fe354a9711366c2",
+      "url": "https://decomp.me/scratch/gIhVO",
+      "diff_label": "_f_d28c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:18:26.936135+09:00"
+    },
+    {
+      "slug": "CB28B",
+      "source": "src/f_e520.c",
+      "name": "TGM2+ - f_e520",
+      "partial": false,
+      "ranges": [
+        [
+          58656,
+          59216,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 26600,
+      "match_override": false,
+      "source_sha256": "76316de10305fb3d18b88daa6cb4d5d97491b88d81d9353f09cfe28633f0b66d",
+      "url": "https://decomp.me/scratch/CB28B",
+      "diff_label": "_f_e520",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:18:35.970195+09:00"
+    },
+    {
+      "slug": "F7NIx",
+      "source": "src/vm_e834.c",
+      "name": "TGM2+ - vm_e834",
+      "partial": false,
+      "ranges": [
+        [
+          59444,
+          59784,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 16600,
+      "match_override": false,
+      "source_sha256": "6facd1d32d76fd7ee9e249f7a4138f244a48b2d78b149b7c0b028bc5714e7b34",
+      "url": "https://decomp.me/scratch/F7NIx",
+      "diff_label": "_f_e834",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:18:41.937364+09:00"
+    },
+    {
+      "slug": "tIOa4",
+      "source": "src/vm_e988.c",
+      "name": "TGM2+ - vm_e988",
+      "partial": false,
+      "ranges": [
+        [
+          59784,
+          60112,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 15600,
+      "match_override": false,
+      "source_sha256": "dfca4d2993ecb97093b7de02f5d4886f03a69544ea6c8f997539e9a67b75c7e4",
+      "url": "https://decomp.me/scratch/tIOa4",
+      "diff_label": "_f_e988",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:18:48.430218+09:00"
+    },
+    {
+      "slug": "Wk4Ru",
+      "source": "src/vm_ead0.c",
+      "name": "TGM2+ - vm_ead0",
+      "partial": false,
+      "ranges": [
+        [
+          60112,
+          60428,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 14900,
+      "match_override": false,
+      "source_sha256": "42379929aae2a4609877155629ab0f10e6c7783cf503746917a8db4ea3567acc",
+      "url": "https://decomp.me/scratch/Wk4Ru",
+      "diff_label": "_f_ead0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:18:58.473299+09:00"
+    },
+    {
+      "slug": "ntc1C",
+      "source": "src/vm_empty_eeb0.c",
+      "name": "TGM2+ - vm_empty_eeb0",
+      "partial": false,
+      "ranges": [
+        [
+          61104,
+          61116,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 600,
+      "match_override": false,
+      "source_sha256": "a55c178ce958821b767efc812d0633bebf42fd8a8cdb060a5830deef1b915cce",
+      "url": "https://decomp.me/scratch/ntc1C",
+      "diff_label": "_f_eeb0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:19:04.548174+09:00"
+    },
+    {
+      "slug": "YLt0d",
+      "source": "src/vm_ef04.c",
+      "name": "TGM2+ - vm_ef04 (compiler-path blocked)",
+      "partial": false,
+      "ranges": [
+        [
+          61188,
+          61672,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": false,
+      "score": 22900,
+      "max_score": 22900,
+      "match_override": false,
+      "source_sha256": "063a676be9051323a0014f29663eff5de7344cf14a4a7f42ceebc01e251b72c7",
+      "error": "Compiler error: SH SERIES C/C++ Compiler Ver. 5.0(Release32)\nCopyright (C) 1992,1998 Hitachi,Ltd.,Hitachi Software Engineering Co.,Ltd.\nLicensed Material of Hitachi,Ltd.,Hitachi Software Engineering Co.,Ltd.\n\n*** Analyzing Source Program (p) ***\n*** Analyzing Source Program (f) ***\n***     Generating Code (t)      ***\nsrc.c(68) : 2808 (E) Illegal option for #pragma inline_asm\nsrc.c(71) : 2225 (E) Undeclared name \"DMULS\"\nsrc.c(71) : 2203 (E) Illegal member reference for \".\"\nsrc.c(71) : 2500 (E) Illegal token \"R4\"\nsrc.c(71) : 2225 (E) Undeclared name \"R4\"\nsrc.c(72) : 2225 (E) Undeclared name \"R5\"\nsrc.c(72) : 2500 (E) Illegal token \"STS\"\nsrc.c(72) : 2225 (E) Undeclared name \"STS\"\nsrc.c(72) : 2500 (E) Illegal token \"MACH\"\nsrc.c(72) : 2225 (E) Undeclared name \"MACH\"\nsrc.c(73) : 2500 (E) Illegal token \"STS\"\nsrc.c(73) : 2500 (E) Illegal token \"MACL\"\nsrc.c(73) : 2225 (E) Undeclared name \"MACL\"\nsrc.c(74) : 2225 (E) Undeclared name \"R0\"\nsrc.c(74) : 2500 (E) Illegal token \"XTRCT\"\nsrc.c(74) : 2225 (E) Undeclared name \"XTRCT\"\nsrc.c(74) : 2500 (E) Illegal token \"R4\"\nsrc.c(75) : 2500 (E) Illegal token \"}\"\nObject not created\n",
+      "url": "https://decomp.me/scratch/YLt0d",
+      "diff_label": "_f_ef04",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:20:50.544845+09:00"
+    },
+    {
+      "slug": "DytzL",
+      "source": "src/vm_f0e8.c",
+      "name": "TGM2+ - vm_f0e8",
+      "partial": false,
+      "ranges": [
+        [
+          61672,
+          61952,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 13500,
+      "match_override": false,
+      "source_sha256": "4e515a7f87de78c8974c5108ee47c2802d1e7960e860dd1252ddbf842679d39a",
+      "url": "https://decomp.me/scratch/DytzL",
+      "diff_label": "_f_f0e8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:20:51.615949+09:00"
+    },
+    {
+      "slug": "cRa5V",
+      "source": "src/vm_empty_f292.c",
+      "name": "TGM2+ - vm_empty_f292 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          62098,
+          62106,
+          "c-range"
+        ],
+        [
+          62662,
+          62924,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 38600,
+      "max_score": 400,
+      "match_override": false,
+      "source_sha256": "09018093a287e0750499462fbaa364c6548292a252307485195c45a1c8ba4bbc",
+      "url": "https://decomp.me/scratch/cRa5V",
+      "diff_label": "_f_f292",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:20:53.394435+09:00"
+    },
+    {
+      "slug": "anqTD",
+      "source": "src/vm_f5cc.c",
+      "name": "TGM2+ - vm_f5cc",
+      "partial": false,
+      "ranges": [
+        [
+          62924,
+          63224,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 14500,
+      "match_override": false,
+      "source_sha256": "b1596bb45b7a90606a4c37fa1377189c99bb2f9968cf79110ef59e978d16ffab",
+      "url": "https://decomp.me/scratch/anqTD",
+      "diff_label": "_f_f5cc",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:20:54.938658+09:00"
+    },
+    {
+      "slug": "OiLvh",
+      "source": "src/hud_f958.c",
+      "name": "TGM2+ - hud_f958",
+      "partial": false,
+      "ranges": [
+        [
+          63832,
+          65700,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 89700,
+      "match_override": false,
+      "source_sha256": "c8a02e158efdb7ba681e0e84b3368da9bec14ac0adc67029fd60d790a0ca73f8",
+      "url": "https://decomp.me/scratch/OiLvh",
+      "diff_label": "_f_f958",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:20:56.709340+09:00"
+    },
+    {
+      "slug": "MG0u4",
+      "source": "src/f_100a4.c",
+      "name": "TGM2+ - f_100a4",
+      "partial": false,
+      "ranges": [
+        [
+          65700,
+          65976,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 13100,
+      "match_override": false,
+      "source_sha256": "056324cf1cb337650bf722ca81a5eee62902113cdb509d2fd75bdb2874822aad",
+      "url": "https://decomp.me/scratch/MG0u4",
+      "diff_label": "_f_100a4",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:20:58.519779+09:00"
+    },
+    {
+      "slug": "E67ky",
+      "source": "src/hud_101b8.c",
+      "name": "TGM2+ - hud_101b8",
+      "partial": false,
+      "ranges": [
+        [
+          65976,
+          66512,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 26100,
+      "match_override": false,
+      "source_sha256": "bf1d4da996676812b240278e06c158c3a1819f4c99750719bd7ce147c714196c",
+      "url": "https://decomp.me/scratch/E67ky",
+      "diff_label": "_f_101b8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:00.368620+09:00"
+    },
+    {
+      "slug": "n4OB3",
+      "source": "src/hud_ranges_f958.c",
+      "name": "TGM2+ - hud_ranges_f958 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          66512,
+          66830,
+          "c-range"
+        ],
+        [
+          67166,
+          67464,
+          "c-range"
+        ],
+        [
+          67906,
+          68392,
+          "c-range"
+        ],
+        [
+          69012,
+          70228,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 195835,
+      "max_score": 14900,
+      "match_override": false,
+      "source_sha256": "228e60134999dc156ed043d3b78b191efcb82e250b08a59d7cd2ac3a09181115",
+      "url": "https://decomp.me/scratch/n4OB3",
+      "diff_label": "_f_103d0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:02.453386+09:00"
+    },
+    {
+      "slug": "NIo1J",
+      "source": "src/hud_10b28.c",
+      "name": "TGM2+ - hud_10b28",
+      "partial": false,
+      "ranges": [
+        [
+          68392,
+          69012,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 29700,
+      "match_override": false,
+      "source_sha256": "324652cd6e20652c1886325fcb2a345227bbb058645ceee3c14d061db54d922c",
+      "url": "https://decomp.me/scratch/NIo1J",
+      "diff_label": "_f_10b28",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:05.178555+09:00"
+    },
+    {
+      "slug": "ze6dP",
+      "source": "src/hud_11254.c",
+      "name": "TGM2+ - hud_11254",
+      "partial": false,
+      "ranges": [
+        [
+          70228,
+          70936,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 34500,
+      "match_override": false,
+      "source_sha256": "95d1745eb370e55637ed85779dd0f12986821cbad4e871f9d7e036b0fb199fe8",
+      "url": "https://decomp.me/scratch/ze6dP",
+      "diff_label": "_f_11254",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:06.650008+09:00"
+    },
+    {
+      "slug": "mgQpM",
+      "source": "src/f_11518.c",
+      "name": "TGM2+ - f_11518",
+      "partial": false,
+      "ranges": [
+        [
+          70936,
+          71516,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 28300,
+      "match_override": false,
+      "source_sha256": "4ce6564050b86200b417e6a65fba7ab67bede82bd3b7d4295857807edde217b1",
+      "url": "https://decomp.me/scratch/mgQpM",
+      "diff_label": "_f_11518",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:08.424549+09:00"
+    },
+    {
+      "slug": "UKnX1",
+      "source": "src/f_1175c.c",
+      "name": "TGM2+ - f_1175c",
+      "partial": false,
+      "ranges": [
+        [
+          71516,
+          72092,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 27600,
+      "match_override": false,
+      "source_sha256": "70d90b4844515c2f46fd08414d2dbaf9262229970a26f0fd324e1b78bfa50795",
+      "url": "https://decomp.me/scratch/UKnX1",
+      "diff_label": "_f_1175c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:10.200148+09:00"
+    },
+    {
+      "slug": "TzgLh",
+      "source": "src/f_1199c.c",
+      "name": "TGM2+ - f_1199c",
+      "partial": false,
+      "ranges": [
+        [
+          72092,
+          73368,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 50,
+      "max_score": 62500,
+      "match_override": false,
+      "source_sha256": "1ac229b4970db04ef3a60596e107184625d64d354de9fafe80fe8c9c12b055a1",
+      "url": "https://decomp.me/scratch/TzgLh",
+      "diff_label": "_f_1199c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:12.021517+09:00"
+    },
+    {
+      "slug": "WAelT",
+      "source": "src/f_11e98.c",
+      "name": "TGM2+ - f_11e98",
+      "partial": false,
+      "ranges": [
+        [
+          73368,
+          73704,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 16600,
+      "match_override": false,
+      "source_sha256": "91e5ee88809aab325fc07017adc92a1cb85038d355e91cc1ccd907554703f1b1",
+      "url": "https://decomp.me/scratch/WAelT",
+      "diff_label": "_f_11e98",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:14.167284+09:00"
+    },
+    {
+      "slug": "OpQN7",
+      "source": "src/f_120c0.c",
+      "name": "TGM2+ - f_120c0",
+      "partial": false,
+      "ranges": [
+        [
+          73920,
+          76500,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 122300,
+      "match_override": false,
+      "source_sha256": "f5ecf53c4b6153116e985fcccb384ddaa792185e9a049614631a5a425dd2a6ba",
+      "url": "https://decomp.me/scratch/OpQN7",
+      "diff_label": "_f_120c0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:15.914826+09:00"
+    },
+    {
+      "slug": "3HHFZ",
+      "source": "src/save_checksum_131e8.c",
+      "name": "TGM2+ - save_checksum_131e8 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          78312,
+          78444,
+          "c-range"
+        ],
+        [
+          78712,
+          78720,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 25400,
+      "max_score": 6600,
+      "match_override": false,
+      "source_sha256": "7993da1c80297a0b38e13e4468df98d942bef34b29a4794c331b6c1c100090fe",
+      "url": "https://decomp.me/scratch/3HHFZ",
+      "diff_label": "_f_131e8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:18.292725+09:00"
+    },
+    {
+      "slug": "OooSR",
+      "source": "src/rank_13484.c",
+      "name": "TGM2+ - rank_13484",
+      "partial": false,
+      "ranges": [
+        [
+          78980,
+          84404,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 261200,
+      "match_override": false,
+      "source_sha256": "772f49d57dbe21e835f3f3b4e546a26b1a5a77df5dc44393ec5d2431bd23de60",
+      "url": "https://decomp.me/scratch/OooSR",
+      "diff_label": "_f_13484",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:20.421348+09:00"
+    },
+    {
+      "slug": "iMr6s",
+      "source": "src/rank_149b4.c",
+      "name": "TGM2+ - rank_149b4",
+      "partial": false,
+      "ranges": [
+        [
+          84404,
+          84752,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 14500,
+      "match_override": false,
+      "source_sha256": "4cf6d32bb1df893495473e8eced1769b5c883e8c2a9d74c46a9594f0a9540cb4",
+      "url": "https://decomp.me/scratch/iMr6s",
+      "diff_label": "_f_149b4",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:23.332924+09:00"
+    },
+    {
+      "slug": "cTOxr",
+      "source": "src/rank_tail_149b4.c",
+      "name": "TGM2+ - rank_tail_149b4 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          84942,
+          85328,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 202370,
+      "max_score": 17500,
+      "match_override": false,
+      "source_sha256": "a7519b198a21f3863cfd48cb5e14777ee05b85b6ba4b27bc5afb4c604d3b7443",
+      "url": "https://decomp.me/scratch/cTOxr",
+      "diff_label": "_f_14bce",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:25.273771+09:00"
+    },
+    {
+      "slug": "svsy0",
+      "source": "src/draw_15f10.c",
+      "name": "TGM2+ - draw_15f10 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          89872,
+          90030,
+          "c-prefix"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 52200,
+      "max_score": 7900,
+      "match_override": false,
+      "source_sha256": "fdab6bc0e5883527bd0b5eb3e6fcdb26b5cda789330b513ec7a565f64bef7532",
+      "url": "https://decomp.me/scratch/svsy0",
+      "diff_label": "_f_15f10",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:27.775519+09:00"
+    },
+    {
+      "slug": "KJQn9",
+      "source": "src/state_1715c.c",
+      "name": "TGM2+ - state_1715c",
+      "partial": false,
+      "ranges": [
+        [
+          94556,
+          95684,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 53200,
+      "match_override": false,
+      "source_sha256": "731ebf523a547b9c7ae4d62c9922fa91a0b49db68b93fc8dde849bb163966e17",
+      "url": "https://decomp.me/scratch/KJQn9",
+      "diff_label": "_f_1715c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:29.280898+09:00"
+    },
+    {
+      "slug": "2880L",
+      "source": "src/task.c",
+      "name": "TGM2+ - task",
+      "partial": false,
+      "ranges": [
+        [
+          95684,
+          95968,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 14100,
+      "match_override": false,
+      "source_sha256": "0a08e8312aa0ce2b00f95c990ee1fedc85a4df307af0aa47f6799423af2f482e",
+      "url": "https://decomp.me/scratch/2880L",
+      "diff_label": "_task_init_all",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:31.096281+09:00"
+    },
+    {
+      "slug": "31HBh",
+      "source": "src/effect_176e0.c",
+      "name": "TGM2+ - effect_176e0",
+      "partial": false,
+      "ranges": [
+        [
+          95968,
+          98404,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 116800,
+      "match_override": false,
+      "source_sha256": "9d19b6da9118a8481f1d0378ca6440ab0676968fc9e162ec7fd4cb5dc19244e2",
+      "url": "https://decomp.me/scratch/31HBh",
+      "diff_label": "_f_176e0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:32.818423+09:00"
+    },
+    {
+      "slug": "tuDGx",
+      "source": "src/effect_18064.c",
+      "name": "TGM2+ - effect_18064",
+      "partial": false,
+      "ranges": [
+        [
+          98404,
+          99824,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 69300,
+      "match_override": false,
+      "source_sha256": "42469243d622b2ce669a8df63078cd3d12c73c8ff842e377ffe4025800e1dfd8",
+      "url": "https://decomp.me/scratch/tuDGx",
+      "diff_label": "_f_18064",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:34.898247+09:00"
+    },
+    {
+      "slug": "v0JJh",
+      "source": "src/draw_req_185f0.c",
+      "name": "TGM2+ - draw_req_185f0",
+      "partial": false,
+      "ranges": [
+        [
+          99824,
+          100104,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 13400,
+      "match_override": false,
+      "source_sha256": "a36231a46f8625db0687812a3b45fe31d8626806a7bce4c767df430053f9b751",
+      "url": "https://decomp.me/scratch/v0JJh",
+      "diff_label": "_f_185f0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:36.950120+09:00"
+    },
+    {
+      "slug": "XDBhc",
+      "source": "src/time_18708.c",
+      "name": "TGM2+ - time_18708",
+      "partial": false,
+      "ranges": [
+        [
+          100104,
+          100524,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 20100,
+      "match_override": false,
+      "source_sha256": "3b08da31545c0313c5ee55e900e0a152f931b993ab5771a9bada9a7c8f165283",
+      "url": "https://decomp.me/scratch/XDBhc",
+      "diff_label": "_f_18708",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:38.526046+09:00"
+    },
+    {
+      "slug": "zqa1f",
+      "source": "src/field_clear.c",
+      "name": "TGM2+ - field_clear",
+      "partial": false,
+      "ranges": [
+        [
+          100524,
+          101344,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 40100,
+      "match_override": false,
+      "source_sha256": "f2df5c7e3d4ebfb25c003620fb703af609106fc82760ac4dc0df822816984fb7",
+      "url": "https://decomp.me/scratch/zqa1f",
+      "diff_label": "_field_clear_flag",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:52.055626+09:00"
+    },
+    {
+      "slug": "oYjHh",
+      "source": "src/f_18be0.c",
+      "name": "TGM2+ - f_18be0",
+      "partial": false,
+      "ranges": [
+        [
+          101344,
+          102380,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 51300,
+      "match_override": false,
+      "source_sha256": "270e17646842f3c86cdd87b11bb9ce6df8cac188f5dbe6035f1c0a5ac3c408b4",
+      "url": "https://decomp.me/scratch/oYjHh",
+      "diff_label": "_f_18be0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:53.923315+09:00"
+    },
+    {
+      "slug": "aJpDN",
+      "source": "src/f_19014.c",
+      "name": "TGM2+ - f_19014",
+      "partial": false,
+      "ranges": [
+        [
+          102420,
+          102716,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 14200,
+      "match_override": false,
+      "source_sha256": "3c0587351e58bab569a6a529ad19e5b6c90e8171bdbb046e01b5b6fad8d46ca6",
+      "url": "https://decomp.me/scratch/aJpDN",
+      "diff_label": "_f_19014",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:55.980154+09:00"
+    },
+    {
+      "slug": "PXb45",
+      "source": "src/playfield_1913c.c",
+      "name": "TGM2+ - playfield_1913c (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          102716,
+          102820,
+          "c-prefix"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 15000,
+      "max_score": 5200,
+      "match_override": false,
+      "source_sha256": "d779f1fd3937ac09c70688338252b206dad8fe8ab88a20aa7f92dbfea394c104",
+      "url": "https://decomp.me/scratch/PXb45",
+      "diff_label": "_f_1913c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:57.678020+09:00"
+    },
+    {
+      "slug": "Ns8ya",
+      "source": "src/f_192e0.c",
+      "name": "TGM2+ - f_192e0",
+      "partial": false,
+      "ranges": [
+        [
+          103136,
+          103444,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 14300,
+      "match_override": false,
+      "source_sha256": "8c14cd9a4a9b165a34a94b1e6fdaf292119324856bc5b4548767bd658fe33e12",
+      "url": "https://decomp.me/scratch/Ns8ya",
+      "diff_label": "_f_192e0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:21:59.293726+09:00"
+    },
+    {
+      "slug": "IhOp9",
+      "source": "src/item_19414.c",
+      "name": "TGM2+ - item_19414",
+      "partial": false,
+      "ranges": [
+        [
+          103444,
+          105832,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 117400,
+      "match_override": false,
+      "source_sha256": "9be7cbf476f5b36273407c6ebed140f4e682f872dddc58481d69fc03c4733bda",
+      "url": "https://decomp.me/scratch/IhOp9",
+      "diff_label": "_f_19414",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:00.831207+09:00"
+    },
+    {
+      "slug": "jbwY9",
+      "source": "src/item_19d68.c",
+      "name": "TGM2+ - item_19d68",
+      "partial": false,
+      "ranges": [
+        [
+          105832,
+          108488,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 130600,
+      "match_override": false,
+      "source_sha256": "7d6d551c2dfd36a4f936cdceeb2ca8c86369929d19b16c09c05d15c3b984da56",
+      "url": "https://decomp.me/scratch/jbwY9",
+      "diff_label": "_f_19d68",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:02.948824+09:00"
+    },
+    {
+      "slug": "yaWBP",
+      "source": "src/item_1a7c8.c",
+      "name": "TGM2+ - item_1a7c8",
+      "partial": false,
+      "ranges": [
+        [
+          108488,
+          110056,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 60,
+      "max_score": 77100,
+      "match_override": false,
+      "source_sha256": "629152c1ac8ad5ef37ac46f06d373534ffad419d72c207f8263585b956fa476c",
+      "url": "https://decomp.me/scratch/yaWBP",
+      "diff_label": "_f_1a7c8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:04.889544+09:00"
+    },
+    {
+      "slug": "3eBcQ",
+      "source": "src/item_1ade8.c",
+      "name": "TGM2+ - item_1ade8",
+      "partial": false,
+      "ranges": [
+        [
+          110056,
+          111572,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 60,
+      "max_score": 74400,
+      "match_override": false,
+      "source_sha256": "cfbca4a91feceea6e260e2b9057aa44b5795b7ca2a4143faf8c346e5b91a35d7",
+      "url": "https://decomp.me/scratch/3eBcQ",
+      "diff_label": "_f_1ade8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:06.614026+09:00"
+    },
+    {
+      "slug": "sPRkB",
+      "source": "src/item_1b3d4.c",
+      "name": "TGM2+ - item_1b3d4",
+      "partial": false,
+      "ranges": [
+        [
+          111572,
+          112376,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 60,
+      "max_score": 39100,
+      "match_override": false,
+      "source_sha256": "cef91ec59be4df1ea399555b69cdff438d48c9b0771f876c2fc34176ed1d9688",
+      "url": "https://decomp.me/scratch/sPRkB",
+      "diff_label": "_f_1b3d4",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:08.492636+09:00"
+    },
+    {
+      "slug": "Ru36l",
+      "source": "src/item_1b6f8.c",
+      "name": "TGM2+ - item_1b6f8",
+      "partial": false,
+      "ranges": [
+        [
+          112376,
+          113184,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 60,
+      "max_score": 39300,
+      "match_override": false,
+      "source_sha256": "8f3418410a83360f411789cca8a4ae317e4be2dda6293621f971f3d57a73aa56",
+      "url": "https://decomp.me/scratch/Ru36l",
+      "diff_label": "_f_1b6f8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:10.208691+09:00"
+    },
+    {
+      "slug": "sIITf",
+      "source": "src/item_1ba20.c",
+      "name": "TGM2+ - item_1ba20",
+      "partial": false,
+      "ranges": [
+        [
+          113184,
+          115200,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 60,
+      "max_score": 99300,
+      "match_override": false,
+      "source_sha256": "52b22fb73560a2f597eb7039b2aa07cb775fc4688ed2d12903b50ae26e076663",
+      "url": "https://decomp.me/scratch/sIITf",
+      "diff_label": "_f_1ba20",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:11.759373+09:00"
+    },
+    {
+      "slug": "cHbZR",
+      "source": "src/item_1c200.c",
+      "name": "TGM2+ - item_1c200",
+      "partial": false,
+      "ranges": [
+        [
+          115200,
+          116488,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 62900,
+      "match_override": false,
+      "source_sha256": "a7f6c98842ce016bc224bfe965db7cd81d059bfd9f2c05aa4561c28c0ba856d6",
+      "url": "https://decomp.me/scratch/cHbZR",
+      "diff_label": "_f_1c200",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:13.758694+09:00"
+    },
+    {
+      "slug": "apU8O",
+      "source": "src/item_1c708.c",
+      "name": "TGM2+ - item_1c708",
+      "partial": false,
+      "ranges": [
+        [
+          116488,
+          119228,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 70,
+      "max_score": 134800,
+      "match_override": false,
+      "source_sha256": "e0a34dfa77ba8aba5bbe4dd25d11dcfc2015072c8f07296a6bbb482b65bcc56e",
+      "url": "https://decomp.me/scratch/apU8O",
+      "diff_label": "_f_1c708",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:15.734642+09:00"
+    },
+    {
+      "slug": "qkgnA",
+      "source": "src/item_1d1bc.c",
+      "name": "TGM2+ - item_1d1bc",
+      "partial": false,
+      "ranges": [
+        [
+          119228,
+          120384,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 56500,
+      "match_override": false,
+      "source_sha256": "2bc719f6c6c9391e9c338969fbc93c03eae572a497af842f31e14d29576c4317",
+      "url": "https://decomp.me/scratch/qkgnA",
+      "diff_label": "_f_1d1bc",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:17.804369+09:00"
+    },
+    {
+      "slug": "Za62X",
+      "source": "src/item_1d640.c",
+      "name": "TGM2+ - item_1d640",
+      "partial": false,
+      "ranges": [
+        [
+          120384,
+          121974,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 50,
+      "max_score": 77900,
+      "match_override": false,
+      "source_sha256": "2f44fa26fbf59783a1ed58f18a490acac76b944d7a9c0bddcbebed5d7f987a7c",
+      "url": "https://decomp.me/scratch/Za62X",
+      "diff_label": "_f_1d640",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:19.694271+09:00"
+    },
+    {
+      "slug": "bOn1y",
+      "source": "src/item_1dc78.c",
+      "name": "TGM2+ - item_1dc78",
+      "partial": false,
+      "ranges": [
+        [
+          121976,
+          124032,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 101600,
+      "match_override": false,
+      "source_sha256": "de26cea30ae7be3de4a04b6c24cee65d13465caa87b4c945cdc7d43ddc2f8d7f",
+      "url": "https://decomp.me/scratch/bOn1y",
+      "diff_label": "_f_1dc78",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:21.541580+09:00"
+    },
+    {
+      "slug": "PNPDm",
+      "source": "src/item_1e480.c",
+      "name": "TGM2+ - item_1e480",
+      "partial": false,
+      "ranges": [
+        [
+          124032,
+          124340,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 14300,
+      "match_override": false,
+      "source_sha256": "6747dd26a4407956ed285d96541fe39789946dae0dca79728b20082fd2c32c24",
+      "url": "https://decomp.me/scratch/PNPDm",
+      "diff_label": "_f_1e480",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:23.441959+09:00"
+    },
+    {
+      "slug": "VbR4q",
+      "source": "src/item_1e5b4.c",
+      "name": "TGM2+ - item_1e5b4",
+      "partial": false,
+      "ranges": [
+        [
+          124340,
+          125724,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 67200,
+      "match_override": false,
+      "source_sha256": "6778a94bbc884de7023875096709157fea6f033acca383d3a6a282ac1b13b305",
+      "url": "https://decomp.me/scratch/VbR4q",
+      "diff_label": "_f_1e5b4",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:24.874381+09:00"
+    },
+    {
+      "slug": "VHe5T",
+      "source": "src/f_1eb1c.c",
+      "name": "TGM2+ - f_1eb1c",
+      "partial": false,
+      "ranges": [
+        [
+          125724,
+          126328,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 28800,
+      "match_override": false,
+      "source_sha256": "9a14f2b6ec987576aa9deda9d6a72a392403febca5207b07b7186c6736743bfb",
+      "url": "https://decomp.me/scratch/VHe5T",
+      "diff_label": "_f_1eb1c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:26.512444+09:00"
+    },
+    {
+      "slug": "SHnIJ",
+      "source": "src/f_1ed78.c",
+      "name": "TGM2+ - f_1ed78",
+      "partial": false,
+      "ranges": [
+        [
+          126328,
+          126844,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 24600,
+      "match_override": false,
+      "source_sha256": "dafc2861fb77a7edc70080504c8f509fe1a56ce8c32f3ce32551268904c1277e",
+      "url": "https://decomp.me/scratch/SHnIJ",
+      "diff_label": "_f_1ed78",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:28.170721+09:00"
+    },
+    {
+      "slug": "FEZru",
+      "source": "src/f_1ef7c.c",
+      "name": "TGM2+ - f_1ef7c",
+      "partial": false,
+      "ranges": [
+        [
+          126844,
+          128436,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 78000,
+      "match_override": false,
+      "source_sha256": "67181fe2f62f57a18513791271294a5f9dd964cdeb67db86508e3e938e0b1ff7",
+      "url": "https://decomp.me/scratch/FEZru",
+      "diff_label": "_f_1ef7c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:29.651657+09:00"
+    },
+    {
+      "slug": "yA29s",
+      "source": "src/f_1f5b4.c",
+      "name": "TGM2+ - f_1f5b4",
+      "partial": false,
+      "ranges": [
+        [
+          128436,
+          131096,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 50,
+      "max_score": 131500,
+      "match_override": false,
+      "source_sha256": "584e3443ff4af6e37f747242fb76b5a208dfcbf3f73605f063da05f27629ead4",
+      "url": "https://decomp.me/scratch/yA29s",
+      "diff_label": "_f_1f5b4",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:31.316295+09:00"
+    },
+    {
+      "slug": "MuuMO",
+      "source": "src/f_20018.c",
+      "name": "TGM2+ - f_20018",
+      "partial": false,
+      "ranges": [
+        [
+          131096,
+          131380,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 13000,
+      "match_override": false,
+      "source_sha256": "3e1d5d67ccfa89704744008c45f58f2cee6e8d78abe64158f7173ad689820890",
+      "url": "https://decomp.me/scratch/MuuMO",
+      "diff_label": "_f_20018",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:33.388003+09:00"
+    },
+    {
+      "slug": "k85k3",
+      "source": "src/f_20134.c",
+      "name": "TGM2+ - f_20134",
+      "partial": false,
+      "ranges": [
+        [
+          131380,
+          131664,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 13000,
+      "match_override": false,
+      "source_sha256": "adf85ccbd55049ebe4eacd5bbf44032ee044854f4f6cb4a850f5ce4470c80b86",
+      "url": "https://decomp.me/scratch/k85k3",
+      "diff_label": "_f_20134",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:34.757174+09:00"
+    },
+    {
+      "slug": "4Jy4L",
+      "source": "src/effect_20250.c",
+      "name": "TGM2+ - effect_20250",
+      "partial": false,
+      "ranges": [
+        [
+          131664,
+          132592,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 44800,
+      "match_override": false,
+      "source_sha256": "3e2930b384de7d17672ad349edaada09e65994127394073d39b9f6cab2f4c0ac",
+      "url": "https://decomp.me/scratch/4Jy4L",
+      "diff_label": "_f_20250",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:36.393838+09:00"
+    },
+    {
+      "slug": "vZnfk",
+      "source": "src/effect_205f0.c",
+      "name": "TGM2+ - effect_205f0",
+      "partial": false,
+      "ranges": [
+        [
+          132592,
+          132832,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "ec56b55b24cf579933d5ab7cfabec738b0f5be3cbc5de631aafba836bd8ed153",
+      "url": "https://decomp.me/scratch/vZnfk",
+      "diff_label": "_f_205f0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:38.240258+09:00"
+    },
+    {
+      "slug": "syTu5",
+      "source": "src/effect_206e0.c",
+      "name": "TGM2+ - effect_206e0",
+      "partial": false,
+      "ranges": [
+        [
+          132832,
+          133072,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "5da5e34aeefa5e040b6717d6eb9288cfbec7c6404e2f8503695905ff77e95745",
+      "url": "https://decomp.me/scratch/syTu5",
+      "diff_label": "_f_206e0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:39.691551+09:00"
+    },
+    {
+      "slug": "vxdvu",
+      "source": "src/effect_207d0.c",
+      "name": "TGM2+ - effect_207d0",
+      "partial": false,
+      "ranges": [
+        [
+          133072,
+          133388,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 15200,
+      "match_override": false,
+      "source_sha256": "b932c685309066aa953478809eff12636992a9f5f5230d4e79081ee00f93aaae",
+      "url": "https://decomp.me/scratch/vxdvu",
+      "diff_label": "_f_207d0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:41.314273+09:00"
+    },
+    {
+      "slug": "ieMn2",
+      "source": "src/effect_209a4.c",
+      "name": "TGM2+ - effect_209a4 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          133540,
+          133788,
+          "c-prefix"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 6100,
+      "max_score": 12400,
+      "match_override": false,
+      "source_sha256": "f36ec84952ccccda9da1ce9055b75289127e99684763db20a6ec8306348deb31",
+      "url": "https://decomp.me/scratch/ieMn2",
+      "diff_label": "_f_209a4",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:22:42.705996+09:00"
+    },
+    {
+      "slug": "MbPKo",
+      "source": "src/effect_20b24.c",
+      "name": "TGM2+ - effect_20b24",
+      "partial": false,
+      "ranges": [
+        [
+          133924,
+          134164,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "699c675c95dd631d3b200dabf86e84487b843ef1d0a16f1391eb1c9968d95ad3",
+      "url": "https://decomp.me/scratch/MbPKo",
+      "diff_label": "_f_20b24",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:01.678036+09:00"
+    },
+    {
+      "slug": "Zouuc",
+      "source": "src/effect_20c14.c",
+      "name": "TGM2+ - effect_20c14",
+      "partial": false,
+      "ranges": [
+        [
+          134164,
+          134496,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 16300,
+      "match_override": false,
+      "source_sha256": "d74a15106f1605bf95bf396ae020991a5ae9b0358afd982b95b99d411bdfe2f8",
+      "url": "https://decomp.me/scratch/Zouuc",
+      "diff_label": "_f_20c14",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:03.552076+09:00"
+    },
+    {
+      "slug": "09Fts",
+      "source": "src/effect_20d60.c",
+      "name": "TGM2+ - effect_20d60",
+      "partial": false,
+      "ranges": [
+        [
+          134496,
+          135032,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 26200,
+      "match_override": false,
+      "source_sha256": "e22ed8d936422cf47d7e2595a84edcfe72fc8f60230863d25297e6d446d1a5cc",
+      "url": "https://decomp.me/scratch/09Fts",
+      "diff_label": "_f_20d60",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:05.422623+09:00"
+    },
+    {
+      "slug": "IZc5S",
+      "source": "src/effect_20f78.c",
+      "name": "TGM2+ - effect_20f78",
+      "partial": false,
+      "ranges": [
+        [
+          135032,
+          135272,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "7ae0b513bd427bf934855da42f4a55ab16ce9b933bc7c0537262387293a8b627",
+      "url": "https://decomp.me/scratch/IZc5S",
+      "diff_label": "_f_20f78",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:07.389871+09:00"
+    },
+    {
+      "slug": "4HmHb",
+      "source": "src/effect_21068.c",
+      "name": "TGM2+ - effect_21068",
+      "partial": false,
+      "ranges": [
+        [
+          135272,
+          135536,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 12600,
+      "match_override": false,
+      "source_sha256": "660fed631d4ddf0001331851fca8fece928e4b05daf7edc55de240b55927b3d7",
+      "url": "https://decomp.me/scratch/4HmHb",
+      "diff_label": "_f_21068",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:09.193344+09:00"
+    },
+    {
+      "slug": "e2LLF",
+      "source": "src/savestats_211a2.c",
+      "name": "TGM2+ - savestats_211a2 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          135586,
+          135686,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 27635,
+      "max_score": 5000,
+      "match_override": false,
+      "source_sha256": "d4dbdfcb90a47d384ef53f95845ba85ea995278b0af1fcadaea75d6d86ef7800",
+      "url": "https://decomp.me/scratch/e2LLF",
+      "diff_label": "_f_211a2",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:11.054170+09:00"
+    },
+    {
+      "slug": "MtCE1",
+      "source": "src/medal_strip.c",
+      "name": "TGM2+ - medal_strip",
+      "partial": false,
+      "ranges": [
+        [
+          136276,
+          136912,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 30400,
+      "match_override": false,
+      "source_sha256": "1cb72bcef9f7de14541006ba05701f0508178a8089a915fcbc2b202835008392",
+      "url": "https://decomp.me/scratch/MtCE1",
+      "diff_label": "_f_21454",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:12.899407+09:00"
+    },
+    {
+      "slug": "01lfH",
+      "source": "src/medal_tail.c",
+      "name": "TGM2+ - medal_tail (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          137314,
+          137484,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 230,
+      "max_score": 8200,
+      "match_override": false,
+      "source_sha256": "78d805f49b79c95c9a836e9d237b18a739630e780a9fa78b89d3d8781a53223b",
+      "url": "https://decomp.me/scratch/01lfH",
+      "diff_label": "_f_21862",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:14.627933+09:00"
+    },
+    {
+      "slug": "pZaMc",
+      "source": "src/medal.c",
+      "name": "TGM2+ - medal",
+      "partial": false,
+      "ranges": [
+        [
+          137484,
+          138184,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 34100,
+      "match_override": false,
+      "source_sha256": "56e84ad494097cc58707dadc0394c42091a2c2a5ae4ba2ca7b251081d3e54329",
+      "url": "https://decomp.me/scratch/pZaMc",
+      "diff_label": "_medal_st",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:16.316675+09:00"
+    },
+    {
+      "slug": "7p5rf",
+      "source": "src/f_21bc8.c",
+      "name": "TGM2+ - f_21bc8",
+      "partial": false,
+      "ranges": [
+        [
+          138184,
+          138644,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 21300,
+      "match_override": false,
+      "source_sha256": "b0c261e57c815b8c50cd83ec58995b9e9c62254c6d6e276d88f2069671663c1a",
+      "url": "https://decomp.me/scratch/7p5rf",
+      "diff_label": "_f_21bc8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:18.493837+09:00"
+    },
+    {
+      "slug": "GdVpn",
+      "source": "src/task_2261c.c",
+      "name": "TGM2+ - task_2261c",
+      "partial": false,
+      "ranges": [
+        [
+          140828,
+          143528,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 128500,
+      "match_override": false,
+      "source_sha256": "8889399f33913795c2487bfed94c6bbb059339079a0b702fa5e4217601a67ee1",
+      "url": "https://decomp.me/scratch/GdVpn",
+      "diff_label": "_f_2261c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:21.093708+09:00"
+    },
+    {
+      "slug": "VJnUN",
+      "source": "src/effect_23198.c",
+      "name": "TGM2+ - effect_23198",
+      "partial": false,
+      "ranges": [
+        [
+          143768,
+          144008,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "176a08730ac587dc1e4c9722a6d54c5c7978b4afe7e2a41693d78a9579c30912",
+      "url": "https://decomp.me/scratch/VJnUN",
+      "diff_label": "_f_23198",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:27.513639+09:00"
+    },
+    {
+      "slug": "zuo8a",
+      "source": "src/effect_23288.c",
+      "name": "TGM2+ - effect_23288",
+      "partial": false,
+      "ranges": [
+        [
+          144008,
+          144248,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "9f85a8841189f4f2fb5dbbcc03b7a41762804d043952d8d7ab4d4967630977c1",
+      "url": "https://decomp.me/scratch/zuo8a",
+      "diff_label": "_f_23288",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:29.590116+09:00"
+    },
+    {
+      "slug": "vlUlB",
+      "source": "src/effect_23378.c",
+      "name": "TGM2+ - effect_23378",
+      "partial": false,
+      "ranges": [
+        [
+          144248,
+          144488,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "f59b2f9052ef26402ecdd575471ac0908ad6bd479b56083451c10fd9bad88f1c",
+      "url": "https://decomp.me/scratch/vlUlB",
+      "diff_label": "_f_23378",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:33.580890+09:00"
+    },
+    {
+      "slug": "m76D6",
+      "source": "src/effect_23468.c",
+      "name": "TGM2+ - effect_23468",
+      "partial": false,
+      "ranges": [
+        [
+          144488,
+          144728,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "5499ab8065df2fbd54438dab4600e361c58fd48517c2844622faa1a76165da24",
+      "url": "https://decomp.me/scratch/m76D6",
+      "diff_label": "_f_23468",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:35.303708+09:00"
+    },
+    {
+      "slug": "Dv85e",
+      "source": "src/effect_23558.c",
+      "name": "TGM2+ - effect_23558",
+      "partial": false,
+      "ranges": [
+        [
+          144728,
+          144968,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "3e3e7174d915add63cbd771d14acc3905e923d50a55eca0c4155bcf49b25e94a",
+      "url": "https://decomp.me/scratch/Dv85e",
+      "diff_label": "_f_23558",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:37.033017+09:00"
+    },
+    {
+      "slug": "baUnU",
+      "source": "src/effect_23648.c",
+      "name": "TGM2+ - effect_23648",
+      "partial": false,
+      "ranges": [
+        [
+          144968,
+          145208,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "8d85fdb5a0bdb511970281b55746572a6e45037fdd43f810b1b0dc2d1c912831",
+      "url": "https://decomp.me/scratch/baUnU",
+      "diff_label": "_f_23648",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:38.784979+09:00"
+    },
+    {
+      "slug": "hE9do",
+      "source": "src/effect_23738.c",
+      "name": "TGM2+ - effect_23738",
+      "partial": false,
+      "ranges": [
+        [
+          145208,
+          145448,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 11400,
+      "match_override": false,
+      "source_sha256": "28754b3cc5843c23192bb23dd37ea9ece74a502ad167d8bb8acea63f405a57a7",
+      "url": "https://decomp.me/scratch/hE9do",
+      "diff_label": "_f_23738",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:40.711326+09:00"
+    },
+    {
+      "slug": "YWDZo",
+      "source": "src/task_23f08.c",
+      "name": "TGM2+ - task_23f08 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          147208,
+          148782,
+          "c-prefix"
+        ],
+        [
+          148954,
+          149672,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 42615,
+      "max_score": 76200,
+      "match_override": false,
+      "source_sha256": "78106a9557edbaa184c5b948fd167d3429b07be193848d13dd25625bb2986c77",
+      "url": "https://decomp.me/scratch/YWDZo",
+      "diff_label": "_f_23f08",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:42.787142+09:00"
+    },
+    {
+      "slug": "EI8yn",
+      "source": "src/objfile_248a8.c",
+      "name": "TGM2+ - objfile_248a8 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          149672,
+          152012,
+          "c-prefix"
+        ],
+        [
+          152094,
+          152204,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 9140,
+      "max_score": 112900,
+      "match_override": false,
+      "source_sha256": "c6be5ba96bf92bb3fe54e44bf4eaf22464b1e6f4b1d2d78ea13f96dfd0df47cd",
+      "url": "https://decomp.me/scratch/EI8yn",
+      "diff_label": "_f_248a8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:45.407144+09:00"
+    },
+    {
+      "slug": "XVYjW",
+      "source": "src/objpool_2528c.c",
+      "name": "TGM2+ - objpool_2528c",
+      "partial": false,
+      "ranges": [
+        [
+          152204,
+          153052,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 41400,
+      "match_override": false,
+      "source_sha256": "83cca66e414e0b097e6c4bf527f9069b3376bb28c03e95f0ce5ae6b481d310d3",
+      "url": "https://decomp.me/scratch/XVYjW",
+      "diff_label": "_f_2528c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:47.629777+09:00"
+    },
+    {
+      "slug": "Mh67L",
+      "source": "src/board_255dc.c",
+      "name": "TGM2+ - board_255dc (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          153052,
+          154090,
+          "c-prefix"
+        ],
+        [
+          155502,
+          156260,
+          "c-range"
+        ],
+        [
+          156442,
+          156508,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 118445,
+      "max_score": 50400,
+      "match_override": false,
+      "source_sha256": "1d26f37a0a8ee58b37c81f58230f4f432e28660d37b63a45f4b1c94782600282",
+      "url": "https://decomp.me/scratch/Mh67L",
+      "diff_label": "_f_255dc",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:49.733908+09:00"
+    },
+    {
+      "slug": "REJIb",
+      "source": "src/board_2635c.c",
+      "name": "TGM2+ - board_2635c",
+      "partial": false,
+      "ranges": [
+        [
+          156508,
+          157052,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 26900,
+      "match_override": false,
+      "source_sha256": "fe8d5e6bcaa1d6a31643ee2c89e17f3c799cb38ca0bf06ff5ed23da76f76a855",
+      "url": "https://decomp.me/scratch/REJIb",
+      "diff_label": "_f_2635c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:52.293388+09:00"
+    },
+    {
+      "slug": "0lCPz",
+      "source": "src/board_tile_callback_27310.c",
+      "name": "TGM2+ - board_tile_callback_27310 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          160528,
+          160570,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 45805,
+      "max_score": 2100,
+      "match_override": false,
+      "source_sha256": "ad6ee9c84b241ccff2d437c5c31e243306c276a6843e3b913f6e4ce340f2cf3f",
+      "url": "https://decomp.me/scratch/0lCPz",
+      "diff_label": "_f_27310",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:53.944201+09:00"
+    },
+    {
+      "slug": "Ch18s",
+      "source": "src/board_setters_2774a.c",
+      "name": "TGM2+ - board_setters_2774a (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          161610,
+          161744,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 10635,
+      "max_score": 6700,
+      "match_override": false,
+      "source_sha256": "8a90a7796d1b98fe6d80165b05b6dbc243298d9467eac0e55b2160ec166df8b6",
+      "url": "https://decomp.me/scratch/Ch18s",
+      "diff_label": "_f_2774a",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:56.606089+09:00"
+    },
+    {
+      "slug": "YptMG",
+      "source": "src/palette_29bf8.c",
+      "name": "TGM2+ - palette_29bf8 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          171000,
+          171924,
+          "c-prefix"
+        ],
+        [
+          172172,
+          172244,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 15490,
+      "max_score": 43900,
+      "match_override": false,
+      "source_sha256": "fd63694353b5b567aa5a5715136277a750e3a14141ec55aa7ed637d633bdac0a",
+      "url": "https://decomp.me/scratch/YptMG",
+      "diff_label": "_f_29bf8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:23:58.528737+09:00"
+    },
+    {
+      "slug": "5WlOi",
+      "source": "src/gfx_2ab56.c",
+      "name": "TGM2+ - gfx_2ab56 (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          174934,
+          175180,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 255,
+      "max_score": 11800,
+      "match_override": false,
+      "source_sha256": "ee3c1b4841fae30e8b6ab949242fff59f6fc4738d7930645fb2d7a5a24b26bcb",
+      "url": "https://decomp.me/scratch/5WlOi",
+      "diff_label": "_f_2ab56",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:00.304743+09:00"
+    },
+    {
+      "slug": "vfrIU",
+      "source": "src/gfxblend_2af5e.c",
+      "name": "TGM2+ - gfxblend_2af5e (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          175966,
+          176064,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 230,
+      "max_score": 4600,
+      "match_override": false,
+      "source_sha256": "b97108468af8375ee1983fa6853c9d2d95175160f7c68a40a66699d278eb5cd3",
+      "url": "https://decomp.me/scratch/vfrIU",
+      "diff_label": "_f_2af5e",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:02.231581+09:00"
+    },
+    {
+      "slug": "I29Ld",
+      "source": "src/f_2afc0.c",
+      "name": "TGM2+ - f_2afc0",
+      "partial": false,
+      "ranges": [
+        [
+          176064,
+          177200,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 55500,
+      "match_override": false,
+      "source_sha256": "f6dae1190ac0a3175663c3eded1c2fb4653b567130b435c39fcddbfabe239fd8",
+      "url": "https://decomp.me/scratch/I29Ld",
+      "diff_label": "_f_2afc0",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:04.356135+09:00"
+    },
+    {
+      "slug": "Ev9lQ",
+      "source": "src/frame_2b4e8.c",
+      "name": "TGM2+ - frame_2b4e8",
+      "partial": false,
+      "ranges": [
+        [
+          177384,
+          179300,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 85800,
+      "match_override": false,
+      "source_sha256": "42a82b130d664f14f0e1a0a40984516bdd33cda735b627c1d555795fe59281a0",
+      "url": "https://decomp.me/scratch/Ev9lQ",
+      "diff_label": "_f_2b4e8",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:06.318474+09:00"
+    },
+    {
+      "slug": "QRMr0",
+      "source": "src/gfx_2bf58.c",
+      "name": "TGM2+ - gfx_2bf58",
+      "partial": false,
+      "ranges": [
+        [
+          180056,
+          185020,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 240300,
+      "match_override": false,
+      "source_sha256": "2bf937e5fd76cfb34267155d92808bfddb51dfe45d77c566fb3d60f9bc94368b",
+      "url": "https://decomp.me/scratch/QRMr0",
+      "diff_label": "_f_2bf58",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:38.709651+09:00"
+    },
+    {
+      "slug": "auHaI",
+      "source": "src/input_2d2bc.c",
+      "name": "TGM2+ - input_2d2bc",
+      "partial": false,
+      "ranges": [
+        [
+          185020,
+          187340,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 111000,
+      "match_override": false,
+      "source_sha256": "e39c798fbc60843fdd75b492f39f20cac385f3697e46ade3d7f356693d2537d7",
+      "url": "https://decomp.me/scratch/auHaI",
+      "diff_label": "_f_2d2bc",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:41.659924+09:00"
+    },
+    {
+      "slug": "6VfhE",
+      "source": "src/sprite_2dbcc.c",
+      "name": "TGM2+ - sprite_2dbcc",
+      "partial": false,
+      "ranges": [
+        [
+          187340,
+          188524,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 58200,
+      "match_override": false,
+      "source_sha256": "331614dfd8c459fc3d3313e5653e68649c63c813bafa46d77ee33254cd8db5db",
+      "url": "https://decomp.me/scratch/6VfhE",
+      "diff_label": "_f_2dbcc",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:44.064550+09:00"
+    },
+    {
+      "slug": "ZzK6o",
+      "source": "src/sound.c",
+      "name": "TGM2+ - sound",
+      "partial": false,
+      "ranges": [
+        [
+          188856,
+          196056,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 333100,
+      "match_override": false,
+      "source_sha256": "956ba8db8e319308bb15bc17b941b32735aa83bd46b55f043e83547af99bfa73",
+      "url": "https://decomp.me/scratch/ZzK6o",
+      "diff_label": "_f_2e1b8",
+      "compiler_flags": "-macsave=1 -optimize=0 -speed",
+      "last_updated": "2026-10-03T02:24:46.365412+09:00"
+    },
+    {
+      "slug": "l7rRH",
+      "source": "src/checksum_30c2e.c",
+      "name": "TGM2+ - checksum_30c2e (verified ranges; context WIP)",
+      "partial": true,
+      "ranges": [
+        [
+          199726,
+          200000,
+          "c-range"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 2540,
+      "max_score": 13400,
+      "match_override": false,
+      "source_sha256": "828d74fa34e970c44d85f3fb8b8cb6d1b6aa818b2ea5675b797d9c613da3782f",
+      "url": "https://decomp.me/scratch/l7rRH",
+      "diff_label": "_f_30c2e",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:49.481199+09:00"
+    },
+    {
+      "slug": "Sxsgn",
+      "source": "src/runtime_strncmp.c",
+      "name": "TGM2+ - runtime_strncmp",
+      "partial": false,
+      "ranges": [
+        [
+          201340,
+          201402,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 3100,
+      "match_override": false,
+      "source_sha256": "402ae3ce4247c8e9a9d4b34b583dab330b3ecb701e5c3adea68efcb5a49723e6",
+      "url": "https://decomp.me/scratch/Sxsgn",
+      "diff_label": "_f_3127c",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:51.197626+09:00"
+    },
+    {
+      "slug": "GxGqi",
+      "source": "src/runtime_memset.c",
+      "name": "TGM2+ - runtime_memset",
+      "partial": false,
+      "ranges": [
+        [
+          201700,
+          201724,
+          "c"
+        ]
+      ],
+      "existing": false,
+      "success": true,
+      "score": 0,
+      "max_score": 1200,
+      "match_override": false,
+      "source_sha256": "279451bbe5dde54fecdb9996b9df55460b65c3418c81b493dfd20dbd7e5f5d5b",
+      "url": "https://decomp.me/scratch/GxGqi",
+      "diff_label": "_f_313e4",
+      "compiler_flags": "-macsave=1 -optimize=1 -speed",
+      "last_updated": "2026-10-03T02:24:53.112095+09:00"
+    }
+  ],
+  "legacy": [
+    {
+      "slug": "WiQI3",
+      "name": "TGM2+ - v23048b (legacy subset)",
+      "start": 143432,
+      "end": 143528,
+      "localLinked": true,
+      "canonical": "GdVpn",
+      "source": "src/task_2261c.c",
+      "current": {
+        "success": true,
+        "score": 710,
+        "max_score": 4400
+      },
+      "candidate": {
+        "success": true,
+        "score": 15,
+        "max_score": 4400
+      },
+      "sourceUpdated": true,
+      "success": true,
+      "score": 15,
+      "max_score": 4400
+    },
+    {
+      "slug": "NwT4b",
+      "name": "TGM2+ - setters_2e1b8 (legacy subset)",
+      "start": 188856,
+      "end": 188944,
+      "localLinked": true,
+      "canonical": "ZzK6o",
+      "source": "src/sound.c",
+      "current": {
+        "success": true,
+        "score": 260,
+        "max_score": 4000
+      },
+      "candidate": {
+        "success": true,
+        "score": 329110,
+        "max_score": 4000
+      },
+      "sourceUpdated": false,
+      "success": true,
+      "score": 260,
+      "max_score": 4000
+    },
+    {
+      "slug": "T0pNx",
+      "name": "TGM2+ - p_60e8b (WIP)",
+      "start": 24808,
+      "end": 25040,
+      "localLinked": false,
+      "current": {
+        "success": true,
+        "score": 1575,
+        "max_score": 11300
+      },
+      "candidate": null,
+      "sourceUpdated": false,
+      "success": true,
+      "score": 1575,
+      "max_score": 11300
+    },
+    {
+      "slug": "EXTom",
+      "name": "TGM2+ - o_2f304 (legacy subset)",
+      "start": 193284,
+      "end": 193500,
+      "localLinked": true,
+      "canonical": "ZzK6o",
+      "source": "src/sound.c",
+      "current": {
+        "success": true,
+        "score": 170,
+        "max_score": 9100
+      },
+      "candidate": {
+        "success": true,
+        "score": 118650,
+        "max_score": 9100
+      },
+      "sourceUpdated": false,
+      "success": true,
+      "score": 170,
+      "max_score": 9100
+    },
+    {
+      "slug": "XLikp",
+      "name": "TGM2+ - o26k (WIP)",
+      "start": 159588,
+      "end": 159728,
+      "localLinked": false,
+      "current": {
+        "success": true,
+        "score": 4445,
+        "max_score": 6700
+      },
+      "candidate": null,
+      "sourceUpdated": false,
+      "success": true,
+      "score": 4445,
+      "max_score": 6700
+    },
+    {
+      "slug": "9WBUS",
+      "name": "TGM2+ - draw_2090c (WIP)",
+      "start": 133388,
+      "end": 133540,
+      "localLinked": false,
+      "current": {
+        "success": true,
+        "score": 475,
+        "max_score": 7400
+      },
+      "candidate": null,
+      "sourceUpdated": false,
+      "success": true,
+      "score": 475,
+      "max_score": 7400
+    },
+    {
+      "slug": "yAZ4w",
+      "name": "TGM2+ - c_2f2cc (legacy subset)",
+      "start": 193228,
+      "end": 193256,
+      "localLinked": true,
+      "canonical": "ZzK6o",
+      "source": "src/sound.c",
+      "current": {
+        "success": true,
+        "score": 9360,
+        "max_score": 1400
+      },
+      "candidate": {
+        "success": true,
+        "score": 128410,
+        "max_score": 1400
+      },
+      "sourceUpdated": false,
+      "success": true,
+      "score": 9360,
+      "max_score": 1400
+    },
+    {
+      "slug": "MPWP4",
+      "name": "TGM2+ - stubs_23f08",
+      "start": 147208,
+      "end": 147216,
+      "localLinked": true,
+      "canonical": "YWDZo",
+      "source": "src/task_23f08.c",
+      "current": {
+        "success": true,
+        "score": 0,
+        "max_score": 400
+      },
+      "candidate": null,
+      "sourceUpdated": false,
+      "success": true,
+      "score": 0,
+      "max_score": 400
+    },
+    {
+      "slug": "Pw19Z",
+      "name": "TGM2+ - field_clear",
+      "start": 100524,
+      "end": 100688,
+      "localLinked": true,
+      "canonical": "zqa1f",
+      "source": "src/field_clear.c",
+      "current": {
+        "success": true,
+        "score": 0,
+        "max_score": 8000
+      },
+      "candidate": {
+        "success": true,
+        "score": 32100,
+        "max_score": 8000
+      },
+      "sourceUpdated": false,
+      "success": true,
+      "score": 0,
+      "max_score": 8000
+    }
+  ],
+  "skipped": [
+    {
+      "source": "src/vm_f6f8.c",
+      "ranges": [
+        [
+          63224,
+          63832,
+          "c"
+        ]
+      ],
+      "reason": "Public SHC wrapper rejects #pragma inline_asm; local path uses -code=asmcode and asmsh."
+    },
+    {
+      "source": "src/wave_27e70.c",
+      "ranges": [
+        [
+          163440,
+          163472,
+          "c-prefix"
+        ]
+      ],
+      "reason": "Public SHC wrapper rejects #pragma inline_asm; local path uses -code=asmcode and asmsh."
+    },
+    {
+      "source": "src/board_28334.c",
+      "ranges": [
+        [
+          164660,
+          171000,
+          "c"
+        ]
+      ],
+      "reason": "Public SHC wrapper rejects #pragma inline_asm; local path uses -code=asmcode and asmsh."
+    },
+    {
+      "source": "src/f_2bc64.c",
+      "ranges": [
+        [
+          179300,
+          180056,
+          "c"
+        ]
+      ],
+      "reason": "Public SHC wrapper rejects #pragma inline_asm; local path uses -code=asmcode and asmsh."
+    }
+  ]
+}
