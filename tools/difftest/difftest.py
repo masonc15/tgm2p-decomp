@@ -66,7 +66,7 @@ from sh2emu import MASK, RAM_DELTA, RAM_BASE, RAM_END, HELPERS  # noqa: E402
 
 ROM = emu.ROM_PATH.read_bytes()
 ELF = ROOT / "build" / "tgm2p.elf"
-CACHE = Path.home() / ".cache" / "tgm2p-difftest" / "arity-v3.json"
+CACHE = Path.home() / ".cache" / "tgm2p-difftest" / "arity-v4.json"
 
 CAND_BASE = 0x0E000000        # where the compiled .text is placed
 DATA_BASE = 0x0D000000        # other sections of the object, if referenced
@@ -534,6 +534,21 @@ class ArityRun(emu.CPU):
             self.R[k] = mix(k, self.steps) & MASK
 
 
+def reachable_code(rom, code_end):
+    """[(pc, halfword)] in address order for the instructions that control
+    flow reaches from `rom` without leaving [rom, code_end), following SHC
+    switch tables; None when another indirect jump leaves that set unknown.
+    Literal pools are never reached, so a pool word fn.py's pool detection
+    missed cannot pass for an argument read (f_2e5aa's pool at 0x2e5c4 holds
+    0x1878, which decodes as `mov.l r7,@(32,r8)`)."""
+    import asm_scan
+    import fn
+    f = asm_scan.Func(rom, code_end, set(), rom, code_end)
+    if f.unknown_jumps:
+        return None
+    return [(pc, fn.hw(pc)) for pc in sorted(f.insns) if f.insns[pc].valid]
+
+
 class Ctx:
     def __init__(self):
         self.cache = {}
@@ -561,8 +576,11 @@ class Ctx:
 
     def _measure(self, tgt):
         rom = tgt - RAM_DELTA if RAM_BASE <= tgt < RAM_END else tgt
-        if not (0x400 <= rom < emu.RAM_ROM_END) or rom % 2:
-            return (1, 0)   # a function pointer we can't see into: compare r4 only
+        if not (emu.RAM_ROM <= rom < emu.RAM_ROM_END) or rom % 2:
+            # a function pointer we can't see into, or the boot block, which
+            # runs from ROM and has no RAM copy to run (f_a226 leaves through
+            # `jmp 0x686`, the warm-reset entry): compare r4 only
+            return (1, 0)
         import fn
         code_end = fn.extent(rom)[0]
         start, end = tgt, tgt + (code_end - rom)
@@ -583,8 +601,10 @@ class Ctx:
         nstack = max(words) + 1 if words else 0
         # Paths the random runs missed can still read an argument; take the
         # static guess too (first appearance of r4-r7 in code order is a read).
-        _, _, pool, _ = fn.extent(rom)
-        code = [(a, fn.hw(a)) for a in range(rom, code_end, 2) if a not in pool]
+        code = reachable_code(rom, code_end)
+        if code is None:
+            _, _, pool, _ = fn.extent(rom)
+            code = [(a, fn.hw(a)) for a in range(rom, code_end, 2) if a not in pool]
         nregs = max(nregs, emu.static_arg_regs(code))
         return (nregs, nstack)
 

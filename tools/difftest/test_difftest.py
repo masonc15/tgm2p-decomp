@@ -158,3 +158,35 @@ class CompileTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+@unittest.skipUnless((dt.ROOT / "build" / "prog.bin").exists(), "needs build/prog.bin")
+class StaticArityTests(unittest.TestCase):
+    """The static arity guess reads only code control flow reaches."""
+
+    def test_pool_word_is_not_an_argument_read(self):
+        # f_2e5aa(char n): its pool at 0x2e5c4 holds 0x1878, which decodes as
+        # mov.l r7,@(32,r8); fn.py's pool detection misses that word
+        code = dt.reachable_code(0x2E5AA, 0x2E6FC)
+        self.assertNotIn(0x2E5CA, {pc for pc, _ in code})
+        self.assertEqual(emu.static_arg_regs(code), 1)
+
+    def test_known_arities_are_kept(self):
+        # f_2af5e(int, int, long), f_29cc6(4 arguments) and f_e412 (4)
+        import fn
+        for rom, n in ((0x2AF5E, 3), (0x29CC6, 4), (0xE412, 4)):
+            code = dt.reachable_code(rom, fn.extent(rom)[0])
+            self.assertIsNotNone(code, hex(rom))
+            self.assertEqual(emu.static_arg_regs(code), n, hex(rom))
+
+    def test_unresolved_jump_falls_back(self):
+        # an indirect jump other than a switch table leaves the set unknown
+        import asm_scan
+        with patch.object(asm_scan.Func, "walk", lambda self: self.unknown_jumps.append(0)):
+            self.assertIsNone(dt.reachable_code(0x2E5AA, 0x2E6FC))
+
+
+class BootTargetArityTests(unittest.TestCase):
+    def test_boot_block_target_is_not_measured(self):
+        # the warm-reset entry 0x686 runs from ROM; measuring it used to crash
+        self.assertEqual(dt.Ctx()._measure(0x686), (1, 0))

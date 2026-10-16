@@ -50,8 +50,13 @@ input or path coverage.
 ## Limits of the model
 
 Calls are stubbed, except the SHC runtime helpers. Their arguments are selected
-by sampled callee-arity discovery, which can miss conditional argument uses;
-unknown callees default to comparing only r4. Stubs do not dereference pointer
+by sampled callee-arity discovery, which can miss conditional argument uses,
+together with a static guess (r4-r7 whose first appearance is a read) over the
+instructions control flow reaches from the callee's entry, following SHC switch
+tables; literal pools are never reached, so a pool word fn.py's pool detection
+misses cannot pass for an argument read (it made f_2e5aa(char) look like four
+arguments). A callee with another indirect jump falls back to a linear pass
+over its non-pool words. Unknown callees default to comparing only r4. Stubs do not dereference pointer
 arguments or reproduce memory side effects. Frame-pointer offsets are normalized
 away, so passing the wrong local buffer can escape detection. Unwritten frame
 slots receive synthetic values, not real game state. Lazy random memory depends
