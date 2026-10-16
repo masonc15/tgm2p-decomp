@@ -38,6 +38,50 @@ class VerdictTests(unittest.TestCase):
                          "/* difftest-rom-end: f_cac8=0xcf68 (the loop at 0xcb44 is part of it) */\n")
             self.assertEqual(nc.rom_ends(p), {"f_cac8": 0xCF68})
 
+    def test_step_limit_annotation(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / "x.c"
+            p.write_text("/* rom: 0x163fc len: 0xd60 func: f_163fc flags: -optimize=1 */\n"
+                         "/* difftest-steps: f_16938=30000000 f_163fc=30000000 */\n")
+            self.assertEqual(nc.step_limits(p), {"f_16938": 30000000, "f_163fc": 30000000})
+
+
+HANG = """  input 1: ok (120/118 steps)
+  input 2: ok (2000001/2000001 steps, truncated)
+  input 3/m6064750.4=0: ok (300/290 steps)
+INCONCLUSIVE: only 2 of 3 trials ran to completion (step limit 2000000)
+  trials: 2 complete, 1 hit the step limit (compared up to it), 0 unsupported; 3 run, 1 of them mutated inputs
+"""
+
+
+class NonReturningTests(unittest.TestCase):
+    def test_hanging_on_both_sides_passes(self):
+        ok, why, hang = nc.nonreturning(HANG, 2000000, 3)
+        self.assertTrue(ok, why)
+        self.assertEqual(hang, ["2"])
+
+    def test_candidate_returning_where_the_original_hangs_fails(self):
+        log = HANG.replace("2000001/2000001 steps", "2000001/4000 steps")
+        ok, why, _ = nc.nonreturning(log, 2000000, 3)
+        self.assertFalse(ok)
+        self.assertIn("only the original", why)
+
+    def test_a_difference_fails(self):
+        log = HANG.replace("INCONCLUSIVE: only 2 of 3 trials ran to completion (step limit 2000000)",
+                           "DIFFERENT: input 2: memory writes after call #1 differ")
+        self.assertFalse(nc.nonreturning(log, 2000000, 3)[0])
+
+    def test_too_few_trials_fails(self):
+        self.assertFalse(nc.nonreturning(HANG, 2000000, 500)[0])
+
+    def test_annotations(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / "x.c"
+            p.write_text("/* difftest-nonreturning: f_a226 f_a608 (menus wait for a button) */\n"
+                         "/* difftest-inputs f_a226: 3/m6064750.4=0,m6064754.1=28 7/c1=0 */\n")
+            self.assertEqual(nc.nonreturning_functions(p), {"f_a226", "f_a608"})
+            self.assertEqual(nc.returning_inputs(p), {"f_a226": ["3/m6064750.4=0,m6064754.1=28", "7/c1=0"]})
+
 
 if __name__ == "__main__":
     unittest.main()
