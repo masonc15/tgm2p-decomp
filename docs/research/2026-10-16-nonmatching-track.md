@@ -16,17 +16,41 @@ and every coverage figure ignore it; `splits.txt` is unchanged.
 
 ## Acceptance
 
-A unit is accepted only when both of these hold:
+A unit is accepted only when both of these hold, as Colin set them on
+2026-10-16:
 
-1. `tools/difftest` reports `MATCHED_TRIALS` over 500 complete trials (none
-   step-limited) for every function the unit defines.
-   `tools/nonmatching_check.py` runs this for every listed unit, each function
-   with its own HOME, and exits 0 only if all of them pass.
-2. The shiftable build with the unit passes the full MAME replay check:
-   `make shiftable NONMATCHING=1` and then `tools/replay_check.sh
-   build/shiftable-nm/tgm2p.bin`, a 12,000-frame attract run and a
-   24,000-frame scripted gameplay replay, screen hashes compared with the
-   original ROM every 100 frames.
+1. Difftest, for every function the unit defines. `tools/difftest` reports
+   `MATCHED_TRIALS` over 500 complete trials, none step-limited. A function
+   whose original does not return on some random inputs is marked
+   `difftest-nonreturning` in its source. It passes instead when:
+   - its 500 trials show no difference, with step-limited trials compared up
+     to the limit;
+   - every step-limited trial hit the limit on both sides, so the C hangs on
+     exactly the inputs where the original hangs;
+   - up to five of those inputs still hang on both sides at ten times the
+     limit (`difftest.py --status`, which records no events);
+   - inputs on which the original returns also match: the random trials that
+     completed, plus the inputs listed as `difftest-inputs f_x: ...`, run as
+     trials with `difftest.py --input`.
+
+   `tools/nonmatching_check.py` checks all of this for every listed unit, each
+   function with its own HOME, and exits 0 only if all of them pass.
+   `difftest-rom-end` and `difftest-steps` give a verified function end, or a
+   larger step limit for an original that needs it on large random inputs.
+2. The MAME replay check. `make shiftable NONMATCHING=1` and then
+   `tools/replay_check.sh build/shiftable-nm/tgm2p.bin` run a 12,000-frame
+   attract run and a 24,000-frame scripted gameplay replay, comparing screen
+   hashes with the original ROM every 100 frames. Which mode applies depends
+   on whether the replays execute the unit:
+   - A unit they never execute must pass as it stands.
+   - A unit they execute passes with `--pin-idle`. The frame wait's idle
+     counter reads as 40,000 in both images, so the random sequence no longer
+     depends on cycle counts, and the check also records the real idle count
+     of every frame. A frame in which the candidate has none while the
+     original waited means the replacement overran the frame time: the game
+     missed a frame, and the check fails. `tools/idle_report.py` gives each
+     unit's smallest idle count over the frames its code ran in, against the
+     original's over the same frames.
 
 Accepted units are logged in `GOAL.md` under a separate "Non-matching track"
 heading.
@@ -88,7 +112,7 @@ Functions without a passing draft are drafted from the disassembly.
 
 ## Accepted units
 
-The accepted units are those whose functions neither replay executes (from the instruction-fetch trace of both runs). For them the replay
+The accepted units are those whose functions neither replay executes (from the instruction-fetch trace of both runs; `gfx_2ac4c` turned out to run, see below, and passed this replay all the same). For them the replay
 shows that linking the replacement C, its islands and the moved code leaves
 the rest of the game frame-identical. It cannot show that the functions
 themselves behave alike; difftest covers that part.
@@ -142,8 +166,22 @@ identically. The pilot unit `text_e3e0.c` (the text-drawing helpers, difftest-cl
 `replay_check.sh --pin-idle` makes every read of `g_606000c` return 40,000 in
 both images, which removes this one timing channel and compares everything
 else. With it, the pilot matched over the full 12,000 + 24,000 frames.
-Whether a pinned replay may count as the replay check is an acceptance-rule
-question for Colin, so no unit that the replays execute is accepted yet.
+Colin accepted the pinned replay for units the replays execute on
+2026-10-16, with the condition that no frame is missed (see Acceptance).
+
+Status of the executed units, staged but not yet committed (the sources and
+logs are in the tgm2p-private research packet
+`research/2026-10-16-nonmatching-staged/`): a shiftable build with the 14
+accepted units and 27 executed ones (41 units) passes the full pinned replay.
+All 360 checkpoints are identical; the candidate never misses a frame, and
+its smallest idle count is 1, as is the original's. 40 of the 27 units' 41
+functions pass difftest, `f_2722c` under the non-returning rule. `f_5b80`
+still needs its non-returning check at 20M steps. At 2M steps one random
+field takes longer than the limit but returns.
+`tools/idle_report.py` gives per-unit minimums within a few hundred idle
+loops of the original's over the same frames. The marks also show that
+`gfx_2ac4c` runs in 1,237 frames. The entry-fetch trace had missed it, but it
+passed the strict replay anyway.
 
 The pinned replay also catches real differences that difftest misses. With
 all 28 difftest-clean units linked it diverged in attract mode at frame
