@@ -37,11 +37,19 @@ status: build/prog.bin
 # with no SHIFT_PAD the image must equal the original ROM. SHIFT_PAD="0xADDR:N
 # ..." inserts padding and writes build/shiftable-pad/tgm2p.bin instead; check
 # such an image with tools/replay_check.sh.
+# NONMATCHING=1 also links the c-nonmatching units of splits_nonmatching.txt
+# (src/nonmatching/) into build/shiftable-nm/tgm2p.bin; they never count as C.
+# Its code is padded to NM_TEXT_SIZE (the original 0x30c7c plus 1024), a size
+# whose boot timing the replay check reproduces.
 SHIFT_PAD ?=
+NONMATCHING ?=
+NM_TEXT_SIZE ?= 0x3107c
 shiftable: build/prog.bin
 	@test -d asm || $(PY) tools/build.py split
 	$(PY) tools/build.py build
-ifeq ($(strip $(SHIFT_PAD)),)
+ifneq ($(strip $(NONMATCHING)),)
+	$(PY) tools/shiftable.py build --nonmatching --text-size $(NM_TEXT_SIZE) --out build/shiftable-nm $(foreach p,$(SHIFT_PAD),--pad $(p))
+else ifeq ($(strip $(SHIFT_PAD)),)
 	$(PY) tools/shiftable.py build --check
 else
 	$(PY) tools/shiftable.py build --out build/shiftable-pad $(foreach p,$(SHIFT_PAD),--pad $(p))

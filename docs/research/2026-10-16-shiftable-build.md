@@ -171,12 +171,16 @@ pointers written as cache-through literals in C.
 ```
 make shiftable                                   # zero shift; fails unless identical
 make shiftable SHIFT_PAD="0xADDR:N ..."          # writes build/shiftable-pad/tgm2p.bin
+make shiftable NONMATCHING=1                     # with the non-matching C: build/shiftable-nm
 tools/replay_check.sh [--nodrc] IMAGE            # attract 12000 + gameplay 24000 frames
-SHIFTABLE_TESTS=1 python -m unittest tools/test_shiftable.py
+SHIFTABLE_TESTS=1 python -m unittest discover -s tools -p test_shiftable.py
 ```
 
 `.text` padding goes before an existing segment; ROM-data padding at any
-4-aligned address in `[0x3141c, 0xb00ff)`. Padding in `.text` is filled with
+4-aligned address in `[0x3141c, 0xb00ff)`. `shiftable.py build --text-size
+N` pads `.text` with `nop` to exactly N bytes, and `--nonmatching-file LIST`
+links another list of non-matching units
+([nonmatching-track.md](2026-10-16-nonmatching-track.md)). Padding in `.text` is filled with
 `nop`, so a function that falls into the next one still works. Both MAME's
 recompiler and its interpreter (`--nodrc`) reproduce the proof; reads can
 only be logged under the interpreter, since the recompiler reaches RAM

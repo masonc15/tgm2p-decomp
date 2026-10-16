@@ -95,6 +95,34 @@ class BuildTests(unittest.TestCase):
         # ROM copy of RAM data, which moved, and must stay as it is
         self.assertEqual(int.from_bytes(data[0xD0EC:0xD0F0], "big"), 216000)
 
+    def test_text_size_pads_the_code_with_nop(self):
+        import shiftable
+        with tempfile.TemporaryDirectory() as td:
+            data, layout = shiftable.build_shiftable([], Path(td), text_size=0x30C7C + 1024)
+        # the code is followed by nop, and the RAM data after it moved
+        self.assertEqual(bytes(data[0x313FC:0x313FC + 1024]), b"\x00\x09" * 512)
+        ct = 0x313FC + 1024
+        self.assertEqual(int.from_bytes(data[ct + 16:ct + 20], "big"), 0x30C7C + 1024)
+        self.assertEqual(int.from_bytes(data[ct + 24:ct + 28], "big"), 0x06030C7C + 1024)
+
+    @unittest.skipUnless((ROOT / "splits_nonmatching.txt").exists(), "no non-matching units")
+    def test_nonmatching_units_keep_the_alignment_after_them(self):
+        import shiftable
+        with tempfile.TemporaryDirectory() as td:
+            data, layout = shiftable.build_shiftable([], Path(td), nonmatching=True)
+            islands = list(Path(td).glob("island_*.s"))
+        self.assertEqual(len(data), 0x100000)
+        kinds = {u["kind"] for u in layout["units"]}
+        self.assertIn("c-nonmatching", kinds)
+        for u in layout["units"]:
+            if u["kind"] in ("vectors", "filler", "c-nonmatching") or not 0x780 <= u["start"] < 0x313FC:
+                continue
+            orig = u["start"] - 0x780 + 0x06000000
+            self.assertEqual((u["vma"] - orig) % 4, 0, hex(u["start"]))
+        # kept code loads shared-pool words from inside replaced ranges: those
+        # words were copied to literal islands, with their original values
+        self.assertTrue(islands)
+
     def test_padding_inside_a_text_unit_is_rejected(self):
         import shiftable
         with tempfile.TemporaryDirectory() as td, self.assertRaises(SystemExit):
