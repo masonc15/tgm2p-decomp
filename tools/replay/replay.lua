@@ -166,7 +166,7 @@ if readpath then
 	local spec = os.getenv("REPLAY_READ_RANGES") or ""
 	if spec == "" then spec = "400-fffff,6000000-605ffff" end
 	for lo, hi in string.gmatch(spec, "(%x+)-(%x+)") do
-		local tap = space:install_read_tap(tonumber(lo, 16) & ~3, tonumber(hi, 16), "replay-" .. lo,
+		local tap = space:install_read_tap(tonumber(lo, 16) & ~3, tonumber(hi, 16) | 3, "replay-" .. lo,
 			function(offset, data, mask) note(offset, mask, data) end)
 		table.insert(read_taps, tap)
 	end
