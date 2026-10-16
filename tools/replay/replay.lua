@@ -37,6 +37,15 @@
 --                  random sequence depends on how many cycles each frame took;
 --                  needs -nodrc (the recompiler bypasses taps on RAM)
 --
+--   REPLAY_IDLE   optional file: "frame count" lines, the real number of
+--                  idle-loop increments of g_606000c in each frame (nonzero
+--                  writes, counted by a write tap, so the pin above does not
+--                  hide them). A frame whose processing overruns the frame
+--                  time has none; needs -nodrc
+--   REPLAY_MARKS  "lo-hi,lo-hi,..." hex code ranges in the image being run;
+--                  with REPLAY_IDLE, "mark frame lo" lines record the frames in
+--                  which code in each range was fetched
+--
 -- The screen hash is FNV-1a (64-bit) over the raw 320x240 pixel buffer, so it
 -- compares exactly what MAME rendered. Inputs depend only on the frame number
 -- and the seed, never on game state, so two ROMs that behave identically see
@@ -120,6 +129,20 @@ if os.getenv("REPLAY_PIN_IDLE") == "1" then
 	pin_tap = space:install_read_tap(0x0606000c, 0x0606000f, "pin-idle",
 		function(offset, data, mask) return 40000 end)
 end
+local idlepath = os.getenv("REPLAY_IDLE")
+local idle_counts, idle_now, marks = {}, 0, {}
+if idlepath then
+	local space = m.devices[":maincpu"].spaces["program"]
+	idle_tap = space:install_write_tap(0x0606000c, 0x0606000f, "idle-count",
+		function(offset, data, mask) if data ~= 0 then idle_now = idle_now + 1 end end)
+	mark_taps = {}
+	for lo, hi in string.gmatch(os.getenv("REPLAY_MARKS") or "", "(%x+)-(%x+)") do
+		local addr = tonumber(lo, 16)
+		local tap = space:install_read_tap(addr & ~3, (tonumber(hi, 16) - 1) | 3, "mark-" .. lo,
+			function(offset, data, mask) marks[addr * 0x100000 + frame] = true end)
+		table.insert(mark_taps, tap)
+	end
+end
 if readpath then
 	reads = {}
 	local space = m.devices[":maincpu"].spaces["program"]
@@ -174,6 +197,7 @@ end
 
 replay_sub = emu.add_machine_frame_notifier(function()
 	if reads then per_frame[frame] = frame_reads; frame_reads = 0 end
+	if idlepath then idle_counts[frame] = idle_now; idle_now = 0 end
 	frame = frame + 1
 	for name, release in pairs(held) do
 		if frame >= release then
@@ -194,6 +218,16 @@ replay_sub = emu.add_machine_frame_notifier(function()
 	end
 	if frame >= total then
 		out:close()
+		if idlepath then
+			local f = assert(io.open(idlepath, "w"))
+			for k = 0, frame - 1 do
+				if idle_counts[k] then f:write(string.format("%d %d\n", k, idle_counts[k])) end
+			end
+			for k in pairs(marks) do
+				f:write(string.format("mark %d %08x\n", k % 0x100000, k // 0x100000))
+			end
+			f:close()
+		end
 		if reads then
 			local f = assert(io.open(readpath, "w"))
 			for key, n in pairs(reads) do

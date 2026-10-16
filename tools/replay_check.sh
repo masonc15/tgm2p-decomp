@@ -13,7 +13,12 @@
 #   --nodrc        run MAME's SH-2 interpreter instead of the recompiler
 #   --pin-idle     pin the frame wait's idle counter (REPLAY_PIN_IDLE), so
 #                  the game's random sequence no longer depends on cycle
-#                  timing; implies --nodrc
+#                  timing; implies --nodrc. Both images also record the real
+#                  idle count of every frame (REPLAY_IDLE), and the check fails
+#                  if the candidate has none in a frame where the reference
+#                  waited, i.e. it missed a frame; REPLAY_MARKS ("lo-hi,..."
+#                  hex code ranges, see tools/idle_report.py) records which
+#                  frames ran which code
 #   --out DIR      work directory                 (default build/replay)
 #
 # REFERENCE defaults to build/prog.bin, the original program image. Images are
@@ -42,11 +47,11 @@ while [ $# -gt 0 ]; do
 		--nodrc) nodrc=1; shift ;;
 		--pin-idle) pin=1; nodrc=1; shift ;;
 		--out) out=$(realpath -m "$2"); shift 2 ;;
-		-h|--help) sed -n 2,25p "$0"; exit 0 ;;
+		-h|--help) sed -n 2,30p "$0"; exit 0 ;;
 		*) args+=("$1"); shift ;;
 	esac
 done
-[ ${#args[@]} -ge 1 ] || { sed -n 2,25p "$0"; exit 2; }
+[ ${#args[@]} -ge 1 ] || { sed -n 2,30p "$0"; exit 2; }
 cand="$(realpath "${args[0]}")"
 ref="$(realpath "${args[1]:-$ROOT/build/prog.bin}")"
 [ -f "$MAME_ROMS/1b.u22" ] || { echo "replay_check: no MAME ROM set in $MAME_ROMS" >&2; exit 2; }
@@ -62,6 +67,10 @@ run() {  # run NAME IMAGE MODE FRAMES
 	"$PY" "$ROOT/tools/interleave.py" split "$image" -o "$dir/roms/tgm2p" > /dev/null
 	local readenv=() drc=()
 	[ "$reads" = 1 ] && readenv=(REPLAY_READS="$dir/reads.txt")
+	if [ "$pin" = 1 ]; then
+		readenv+=(REPLAY_IDLE="$dir/idle.txt")
+		[ "$name" = "${name#cand-}" ] || readenv+=(REPLAY_MARKS="${REPLAY_MARKS:-}")
+	fi
 	[ "$nodrc" = 1 ] && drc=(-nodrc)
 	(cd "$dir" && env REPLAY_MODE="$mode" REPLAY_FRAMES="$frames" REPLAY_EVERY="$every" \
 		REPLAY_SEED="$seed" REPLAY_PIN_IDLE="$pin" REPLAY_SNAPS="${REPLAY_SNAPS:-}" REPLAY_READ_RANGES="${REPLAY_READ_RANGES:-}" REPLAY_READS_FROM="${REPLAY_READS_FROM:-0}" REPLAY_READS_SKIP_BOOT="${REPLAY_READS_SKIP_BOOT:-0}" REPLAY_READS_UNTIL="${REPLAY_READS_UNTIL:-}" REPLAY_READS_PC="${REPLAY_READS_PC:-0}" REPLAY_OUT="$dir/hashes.txt" "${readenv[@]}" \
@@ -86,8 +95,9 @@ for scenario in attract:$attract gameplay:$gameplay; do
 	key="$(sha1sum "$ref" | cut -c1-40)-$(sha1sum "$ROOT/tools/replay/replay.lua" | cut -c1-8)"
 	key="$key-$mode-$frames-$every-$seed-pin$pin-nodrc$nodrc"
 	cache="$ROOT/build/replay-cache/$key.txt"
-	if [ "$reads" = 0 ] && [ -s "$cache" ]; then
+	if [ "$reads" = 0 ] && [ -s "$cache" ] && { [ "$pin" = 0 ] || [ -s "${cache%.txt}.idle" ]; }; then
 		mkdir -p "$out/ref-$mode" && cp "$cache" "$out/ref-$mode/hashes.txt"
+		[ "$pin" = 0 ] || cp "${cache%.txt}.idle" "$out/ref-$mode/idle.txt"
 		run "cand-$mode" "$cand" "$mode" "$frames" || exit 1
 	else
 		run "ref-$mode" "$ref" "$mode" "$frames" &
@@ -95,7 +105,10 @@ for scenario in attract:$attract gameplay:$gameplay; do
 		wait -n || status=1
 		wait -n || status=1
 		[ $status = 0 ] || exit 1
-		[ "$reads" = 1 ] || { mkdir -p "$(dirname "$cache")" && cp "$out/ref-$mode/hashes.txt" "$cache"; }
+		if [ "$reads" = 0 ]; then
+			mkdir -p "$(dirname "$cache")" && cp "$out/ref-$mode/hashes.txt" "$cache"
+			[ "$pin" = 0 ] || cp "$out/ref-$mode/idle.txt" "${cache%.txt}.idle"
+		fi
 	fi
 	r="$out/ref-$mode/hashes.txt" c="$out/cand-$mode/hashes.txt"
 	total=$(wc -l < "$r")
@@ -107,6 +120,16 @@ for scenario in attract:$attract gameplay:$gameplay; do
 		first=$(diff <(cat "$r") <(cat "$c") | grep -m1 '^<' | cut -c3- || true)
 		echo "$mode: MISMATCH; first differing checkpoint: ${first:-?}"
 		status=1
+	fi
+	if [ "$pin" = 1 ]; then
+		# real idle counts: a candidate frame with none where the reference
+		# waited means the replacement code overran the frame time
+		read -r waited cmin rmin missed <<<"$(awk 'NR == FNR { if ($1 != "mark") r[$1] = $2; next }
+			$1 != "mark" && ($1 in r) && r[$1] > 0 { n++; if (cmin == "" || $2 < cmin) cmin = $2
+				if (rmin == "" || r[$1] < rmin) rmin = r[$1]; if ($2 == 0) z++ }
+			END { print n + 0, cmin + 0, rmin + 0, z + 0 }' "$out/ref-$mode/idle.txt" "$out/cand-$mode/idle.txt")"
+		echo "  idle loops per frame over the $waited frames the original waits in: candidate minimum $cmin, original minimum $rmin; frames missed: $missed"
+		[ "$missed" = 0 ] && [ "$waited" -gt 0 ] || status=1
 	fi
 done
 exit $status
