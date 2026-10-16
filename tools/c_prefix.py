@@ -367,6 +367,18 @@ def validate_prefix(compiled, rom, start, end, entries, *, context_start=None,
         elif w & 0xff00 in (0xe400, 0xe500):
             effect.update(operation='argument_immediate', writes=[(w >> 8) & 15],
                           immediate=sext(w & 255, 8))
+        elif w >> 8 == 0xe1:
+            effect.update(operation='immediate', writes=[1], immediate=sext(w & 255, 8))
+        elif w >> 8 == 0xd1:
+            address, width = literal(w, pc)
+            effect.update(operation='literal_load', writes=[1], special_reads=['PC'],
+                          memory=dict(access='read', size=width, base=None, index=None,
+                                      address=address, destination=1))
+        elif w in (0x2010, 0x2120):
+            base, value = (0, 1) if w == 0x2010 else (1, 2)
+            effect.update(operation='store_byte', reads=[base, value],
+                          memory=dict(access='write', size=1, base=base, index=None,
+                                      value_register=value))
         elif w == 0x02ed:
             effect.update(operation='load_indexed_word', reads=[0, 14], writes=[2],
                           memory=dict(access='read', size=2, base=14, index=0,
@@ -406,32 +418,36 @@ def validate_prefix(compiled, rom, start, end, entries, *, context_start=None,
         return effect
 
     def long_tail_shape(jump, register):
-        # Two exact SHC setup/restore forms, never a generic enlarged opcode window.
-        forms = {
-            3: ('A', (0x314c, 0x2100, 'e4', 0x4f16, 0x4f26,
+        # Three exact SHC setup/restore forms, never a generic enlarged opcode
+        # window. Form C ends a three-register frame after two byte stores.
+        forms = [
+            (3, 'A', (0x314c, 0x2100, 'e4', 0x4f16, 0x4f26,
                       0x69f6, 0x6af6, 0x6bf6, 0x6cf6, 0x6df6)),
-            1: ('B', ('e5', 0x02ed, 0x64e3, 0x223b, 0x0e25, 0x4f16, 0x4f26)),
-        }
-        spec = forms.get(register)
-        if spec is None:
-            return None
-        form, between = spec
-        if len(between) > 10:
-            return None
-        load = jump - 2 * (len(between) + 1)
+            (1, 'B', ('e5', 0x02ed, 0x64e3, 0x223b, 0x0e25, 0x4f16, 0x4f26)),
+            (3, 'C', ('e1', 0x2010, 'd1', 0x2120, 0x4f26, 0x6cf6, 0x6df6)),
+        ]
         slot = jump + 2
-        if load < start or slot + 2 > end:
+
+        def matches(between):
+            load = jump - 2 * (len(between) + 1)
+            if load < start or slot + 2 > end:
+                return False
+            defining = word(load)
+            if defining >> 12 != 13 or (defining >> 8) & 15 != register:
+                return False
+            for index, expected in enumerate(between):
+                actual = word(load + 2 * (index + 1))
+                if (isinstance(expected, str) and actual >> 8 != int(expected, 16) or
+                        isinstance(expected, int) and actual != expected):
+                    return False
+            return word(slot) == 0x6ef6
+
+        found = [(form, between) for form_register, form, between in forms
+                 if form_register == register and matches(between)]
+        if len(found) != 1:
             return None
-        defining = word(load)
-        if defining >> 12 != 13 or (defining >> 8) & 15 != register:
-            return None
-        for index, expected in enumerate(between):
-            actual = word(load + 2 * (index + 1))
-            if (isinstance(expected, str) and actual >> 8 != int(expected, 16) or
-                    isinstance(expected, int) and actual != expected):
-                return None
-        if word(slot) != 0x6ef6:
-            return None
+        form, between = found[0]
+        load = jump - 2 * (len(between) + 1)
         # Even a complete opcode match must not span contextual function entries.
         function_root = max(a for a in entries if a <= load)
         function_end = min((a for a in entries if a > function_root),

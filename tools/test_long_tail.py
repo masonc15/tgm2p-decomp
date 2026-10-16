@@ -8,7 +8,13 @@ FORMS = {
           0x69f6, 0x6af6, 0x6bf6, 0x6cf6, 0x6df6, 0x432b, 0x6ef6],
     'B': [0xd11b, 0xe501, 0x02ed, 0x64e3, 0x223b, 0x0e25,
           0x4f16, 0x4f26, 0x412b, 0x6ef6],
+    'C': [0xd31b, 0xe113, 0x2010, 0xd11b, 0x2120, 0x4f26,
+          0x6cf6, 0x6df6, 0x432b, 0x6ef6],
 }
+# Signed argument immediates and form C's store-address literal displacement.
+WILDCARDS = {'A': (3,), 'B': (1,), 'C': (1, 3)}
+IMMEDIATE = {'A': 3, 'B': 1, 'C': 1}
+STACK = {'A': 32, 'B': 12, 'C': 16}
 
 
 class LongTailTests(unittest.TestCase):
@@ -31,7 +37,7 @@ class LongTailTests(unittest.TestCase):
                         entries or {START: '_f_1000', END: '_f_1080'}, **kw)
         return proofs
 
-    def test_both_forms_are_proven(self):
+    def test_all_forms_are_proven(self):
         for name,ops in FORMS.items():
             with self.subTest(form=name):
                 proof, = self.validate(ops)
@@ -39,20 +45,20 @@ class LongTailTests(unittest.TestCase):
                 self.assertEqual(proof['jump_pc'], START+(len(ops)-2)*2)
                 self.assertEqual(proof['target_rom'], TARGET)
                 self.assertEqual(proof['form'],name)
-                self.assertEqual(proof['stack_increment'],32 if name=='A' else 12)
+                self.assertEqual(proof['stack_increment'],STACK[name])
                 self.assertEqual([e['pc'] for e in proof['effects']],
                                  list(range(START,START+len(ops)*2,2)))
 
-    def test_default_still_rejects_both(self):
+    def test_default_still_rejects_all(self):
         for ops in FORMS.values():
             with self.assertRaisesRegex(PrefixError, 'indirect jump'):
                 self.validate(ops, enabled=False)
 
     def test_every_non_immediate_opcode_bit_mutation_fails(self):
-        # The only wildcard is the signed argument immediate; mutating any
-        # other instruction bit must not discover an arbitrary safe pattern.
+        # The only wildcards are the signed argument immediate and form C's
+        # literal displacement; mutating any other instruction bit must not
+        # discover an arbitrary safe pattern.
         for name,ops in FORMS.items():
-            immediate = 3 if name == 'A' else 1
             for index in range(1,len(ops)):
                 if index == len(ops)-2:
                     # JSR/RTS are supported by the preexisting validator;
@@ -60,7 +66,7 @@ class LongTailTests(unittest.TestCase):
                     # not invalidate an otherwise exact ordinary range.
                     continue
                 for bit in range(16):
-                    if index == immediate and bit < 8:
+                    if index in WILDCARDS[name] and bit < 8:
                         continue
                     changed = list(ops)
                     changed[index] ^= 1 << bit
@@ -80,7 +86,7 @@ class LongTailTests(unittest.TestCase):
 
     def test_immediate_argument_values_are_not_address_specific(self):
         for name,ops in FORMS.items():
-            index = 3 if name == 'A' else 1
+            index = IMMEDIATE[name]
             for value in (0,1,127,128,255):
                 changed = list(ops)
                 changed[index] = (changed[index] & 0xff00) | value
@@ -135,6 +141,27 @@ class LongTailTests(unittest.TestCase):
                           extra=extra,proofs_out=proofs)
         self.assertEqual(proofs,[])
 
+
+    def test_form_c_is_only_for_r3(self):
+        for register in (1, 2):
+            changed = list(FORMS['C'])
+            changed[0] = 0xd01b | register << 8
+            changed[-2] = 0x402b | register << 8
+            with self.subTest(register=register), self.assertRaises(PrefixError):
+                self.validate(changed)
+
+    def test_form_c_store_literal_moves_with_its_displacement(self):
+        changed = list(FORMS['C'])
+        changed[3] = 0xd11a
+        proof, = self.validate(changed)
+        load, = [e for e in proof['effects'] if e['pc'] == START+6]
+        self.assertEqual(load['memory']['address'], POOL)
+        self.assertEqual(load['writes'], [1])
+
+    def test_form_a_restores_after_form_c_stores_fail(self):
+        a, c = FORMS['A'], FORMS['C']
+        with self.assertRaises(PrefixError):
+            self.validate(c[:5] + a[4:])
 
 if __name__ == '__main__':
     unittest.main()
