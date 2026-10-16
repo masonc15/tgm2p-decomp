@@ -3889,3 +3889,15 @@ mechanism. Do not conflate type/hash position with a confirmed weight result.
 Prepared acceptance scripts infield88fe-acceptance are unexecuted expectations,
 not evidence of138190 C bytes. Current verified total remains137644/200698,
 61416 non-exempt bytes remain; goal stays ACTIVE.
+
+### 2026-10-16 cloud: readiness reset 88fe retained (137644 → 138190)
+
+`src/field_reset_88fe.c` retains exact546 bytes [88fe,8b20) from the genuine
+85d8 unit (c-range, 4986 context bytes excluded, 0 external literal loads).
+The flags word is a fixed lvalue `*(unsigned long *)0x06064880` in f_88b4 and
+f_88fe, so the shared literal 8998 is one numeric constant web; this fixes the
+six promoted pa/pb R4/R5 swaps. Before/after: 137644 → 138190 C bytes
+(+546, +0.272 pp, 68.8547%). Full304 tests (0 skips), canonical split/check/
+report, both chip SHA-1s and two cold whole-ROM replays
+(`research/cold-2026-10-16-88fe-a`, passed) pass. 60870 non-exempt bytes
+remain; goal stays ACTIVE.

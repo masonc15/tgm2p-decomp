@@ -377,11 +377,14 @@
     },
     {
       "address": "0x88fe",
-      "state": "native-promoted-byte-tie-investigation",
-      "evidence": "research/2026-10-13-field88fe-global-update-transfer/REPORT.md",
-      "observation": "Accepted ready217 positive control transfers: split GLOBAL updates preserve two GEN ages and compiler removes intermediate store. All31 prior residuals fixed; new full546 residual6 only promotedpa/pb R4/R5 swap. All16 roots/31literals/protected228 exact. Native27-node sort: g6064880 address priority5\u21927 changes unstable equal-profit partition. Named register promotion recovers pair but coalesces rawpa and changes globalhomes:51diff, rejected.",
-      "next_question": "Preserve rawpaR6 and all code while recovering promotedpaR4/pbR5. Inspect genuine nonempty-else return graph or source-backed actualaddress constant discovery, with native sort model. No priorityhint/type matrix.",
+      "state": "accepted",
+      "class": "global-lvalue-constant-web",
+      "evidence": "research/2026-10-16-88fe-reconstruct/REPORT.md",
+      "observation": "Ordinary SHC source retains exact546 bytes [88fe,8b20) from genuine 85d8 unit. Flags word written as fixed lvalue (*(unsigned long *)0x06064880) in f_88b4 and f_88fe, so shared literal 8998 is one numeric constant web; promoted pa/pb R4/R5 recovered. Strict proof, full tests, two cold replays pass.",
+      "do_not_repeat": "Named register promotion, priority hints, type matrices.",
+      "next_question": "Range resolved. field_helpers_881a.c still declares f_88fe via extern global; reconcile the two 85d8-unit sources only if a neighbouring range needs it.",
       "supporting_evidence": [
+        "research/2026-10-13-field88fe-global-update-transfer/REPORT.md",
         "research/2026-10-13-frontier-producer-inventory/PARENT_REVIEW.json",
         "research/2026-10-13-frontier-producer-inventory/MODE_ASSIGNMENT_QUESTION.json",
         "research/2026-10-13-field88fe-mask-recipe/PARENT_REVIEW.json",

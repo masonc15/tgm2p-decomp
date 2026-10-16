@@ -37,7 +37,7 @@
 0x0085d8 asm
 0x0087b8 c-range src/field_dispatch_87b8.c
 0x00881a c-range src/field_helpers_881a.c
-0x0088fe asm
+0x0088fe c-range src/field_reset_88fe.c
 0x008b20 c-prefix src/field_ready_8b20.c
 0x008b86 asm
 0x00907c c-range src/field_flag_counter_907c.c
