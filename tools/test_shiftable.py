@@ -44,6 +44,7 @@ class ClassifierTests(unittest.TestCase):
         self.assertFalse(pp(0x00050000))  # a flag
         self.assertFalse(pp(0x0007FFFF))  # a mask
         self.assertFalse(pp(0x0607926C))  # BSS
+        self.assertFalse(pp(0x00034BC0))  # 216000, inside the ROM copy of RAM data
 
     def test_nonmatching_splices_only_asm(self):
         segs = [(0x100, 0x200, "asm", None), (0x200, 0x300, "c", "src/x.c")]
@@ -86,6 +87,9 @@ class BuildTests(unittest.TestCase):
         # the copy table describes the larger image
         ct = 0x313FC + 256
         self.assertEqual(int.from_bytes(data[ct + 16:ct + 20], "big"), 0x30C7C + 256)
+        # 216000 (frames per hour, a pool word before the padding) lies in the
+        # ROM copy of RAM data, which moved, and must stay as it is
+        self.assertEqual(int.from_bytes(data[0xD0EC:0xD0F0], "big"), 216000)
 
     def test_padding_inside_a_text_unit_is_rejected(self):
         import shiftable

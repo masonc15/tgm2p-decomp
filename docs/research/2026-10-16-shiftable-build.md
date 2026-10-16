@@ -58,8 +58,8 @@ location and its target by unit symbol, and `shiftable.py` applies them to the
 linked image from the ELF symbol table, refusing any displacement out of
 range. At zero shift every fixup reproduces the original word.
 
-Current counts: 226 units; 970 pool pointers in asm units (583 into code, 209
-into RAM data, 178 into ROM data); 85 literal addresses in C pools; 1,127
+Current counts: 226 units; 968 pool pointers in asm units (583 into code, 209
+into RAM data, 176 into ROM data); 85 literal addresses in C pools; 1,127
 pointer words in data (178 code pointers, 152 RAM-data pointers, 797 ROM-data
 pointers); 618 fixups (570 cross-object pc-relative instructions, 48 C
 literal words). A unit that starts 2 mod 4 keeps its own pool loads as raw
@@ -69,8 +69,11 @@ is always a multiple of 4, so those relative loads cannot change.
 ## Which words are addresses
 
 Code pools. RAM addresses (code, RAM data) and cache-through ROM addresses
-(`0x2004002c`, the header pointer) are always addresses. A plain ROM-data
-value is an address unless it is integer-shaped: a multiple of 0x1000 (the
+(`0x2004002c`, the header pointer) are always addresses. A value inside the
+ROM copy of the RAM data (`0x3141c`–`0x36301`) never is: the game reads that
+copy only through the copy table, and the two pool words there hold 216,000,
+the frames in an hour, in the play-time screen (`0xd0ec`, `0xd268`). A plain
+ROM-data value is an address unless it is integer-shaped: a multiple of 0x1000 (the
 field flags `0x40000`, `0x50000`, `0x80000`), a mask (`0x7ffff`), or a packed
 pair of small shorts (`0x000b0009`). Calibration: of the 145 ROM-data words
 the linked C objects relocate, none is integer-shaped; of the 113

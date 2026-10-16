@@ -91,7 +91,9 @@ class Map:
             return v - self.text_vma + self.text_lma, ct, "ram-text"
         if self.ram_data[0] <= v < self.ram_data[1]:
             return v - self.data_vma + self.data_lma, ct, "ram-data"
-        if self.copytab <= v < self.filler:
+        # the ROM copy of the RAM data is read only through the copy table:
+        # a value in it is an integer (216000, frames per hour, at 0xd0ec)
+        if self.copytab <= v < self.data_lma or self.rodata <= v < self.filler:
             return v, ct, "rom-data"
         return None
 
