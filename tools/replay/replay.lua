@@ -31,6 +31,12 @@
 --                  boot code, the program image, the code and initialized
 --                  data copied to RAM)
 --
+--   REPLAY_PIN_IDLE  1: every read of g_606000c, the idle-loop counter of the
+--                  frame wait in f_2b4e8, returns 40000. The system random
+--                  f_2beca multiplies by it, so without the pin the game's
+--                  random sequence depends on how many cycles each frame took;
+--                  needs -nodrc (the recompiler bypasses taps on RAM)
+--
 -- The screen hash is FNV-1a (64-bit) over the raw 320x240 pixel buffer, so it
 -- compares exactly what MAME rendered. Inputs depend only on the frame number
 -- and the seed, never on game state, so two ROMs that behave identically see
@@ -109,6 +115,11 @@ end
 
 local reads
 local frame = 0
+if os.getenv("REPLAY_PIN_IDLE") == "1" then
+	local space = m.devices[":maincpu"].spaces["program"]
+	pin_tap = space:install_read_tap(0x0606000c, 0x0606000f, "pin-idle",
+		function(offset, data, mask) return 40000 end)
+end
 if readpath then
 	reads = {}
 	local space = m.devices[":maincpu"].spaces["program"]

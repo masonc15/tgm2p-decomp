@@ -11,6 +11,9 @@
 #   --reads        also log data-region reads (REPLAY_READS) for both images;
 #                  implies --nodrc
 #   --nodrc        run MAME's SH-2 interpreter instead of the recompiler
+#   --pin-idle     pin the frame wait's idle counter (REPLAY_PIN_IDLE), so
+#                  the game's random sequence no longer depends on cycle
+#                  timing; implies --nodrc
 #   --out DIR      work directory                 (default build/replay)
 #
 # REFERENCE defaults to build/prog.bin, the original program image. Images are
@@ -26,7 +29,7 @@ MAME_ROMS="${TGM2P_MAME_ROMS:-$TOOLCHAIN/mame/tgm2p}"
 MAME="${MAME:-$(command -v mame || echo /usr/games/mame)}"
 PY="${PY:-$TOOLCHAIN/venv/bin/python}"
 
-attract=12000 gameplay=24000 every=100 seed=1 reads=0 nodrc=0 out="$ROOT/build/replay"
+attract=12000 gameplay=24000 every=100 seed=1 reads=0 nodrc=0 pin=0 out="$ROOT/build/replay"
 args=()
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -36,12 +39,13 @@ while [ $# -gt 0 ]; do
 		--seed) seed=$2; shift 2 ;;
 		--reads) reads=1; nodrc=1; shift ;;
 		--nodrc) nodrc=1; shift ;;
+		--pin-idle) pin=1; nodrc=1; shift ;;
 		--out) out=$2; shift 2 ;;
-		-h|--help) sed -n 2,21p "$0"; exit 0 ;;
+		-h|--help) sed -n 2,24p "$0"; exit 0 ;;
 		*) args+=("$1"); shift ;;
 	esac
 done
-[ ${#args[@]} -ge 1 ] || { sed -n 2,21p "$0"; exit 2; }
+[ ${#args[@]} -ge 1 ] || { sed -n 2,24p "$0"; exit 2; }
 cand="$(realpath "${args[0]}")"
 ref="$(realpath "${args[1]:-$ROOT/build/prog.bin}")"
 [ -f "$MAME_ROMS/1b.u22" ] || { echo "replay_check: no MAME ROM set in $MAME_ROMS" >&2; exit 2; }
@@ -59,7 +63,7 @@ run() {  # run NAME IMAGE MODE FRAMES
 	[ "$reads" = 1 ] && readenv=(REPLAY_READS="$dir/reads.txt")
 	[ "$nodrc" = 1 ] && drc=(-nodrc)
 	(cd "$dir" && env REPLAY_MODE="$mode" REPLAY_FRAMES="$frames" REPLAY_EVERY="$every" \
-		REPLAY_SEED="$seed" REPLAY_SNAPS="${REPLAY_SNAPS:-}" REPLAY_READ_RANGES="${REPLAY_READ_RANGES:-}" REPLAY_READS_FROM="${REPLAY_READS_FROM:-0}" REPLAY_READS_SKIP_BOOT="${REPLAY_READS_SKIP_BOOT:-0}" REPLAY_READS_UNTIL="${REPLAY_READS_UNTIL:-}" REPLAY_READS_PC="${REPLAY_READS_PC:-0}" REPLAY_OUT="$dir/hashes.txt" "${readenv[@]}" \
+		REPLAY_SEED="$seed" REPLAY_PIN_IDLE="$pin" REPLAY_SNAPS="${REPLAY_SNAPS:-}" REPLAY_READ_RANGES="${REPLAY_READ_RANGES:-}" REPLAY_READS_FROM="${REPLAY_READS_FROM:-0}" REPLAY_READS_SKIP_BOOT="${REPLAY_READS_SKIP_BOOT:-0}" REPLAY_READS_UNTIL="${REPLAY_READS_UNTIL:-}" REPLAY_READS_PC="${REPLAY_READS_PC:-0}" REPLAY_OUT="$dir/hashes.txt" "${readenv[@]}" \
 		timeout 3600 "$MAME" tgm2p "${drc[@]}" -rompath "$dir/roms" \
 		-autoboot_script "$ROOT/tools/replay/replay.lua" -autoboot_delay 0 \
 		-video none -sound none -nothrottle -skip_gameinfo \
