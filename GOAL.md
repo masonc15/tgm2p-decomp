@@ -3915,3 +3915,25 @@ zero-addend R_SH_DIR32 at pool 8878). Before/after: 138190 → 138670 C bytes
 (+480, +0.239 pp, 69.0939%). Full 314 tests, canonical split/check/report, both
 chip SHA-1s and two cold whole-ROM replays (`research/cold-2026-10-16-85d8-b`,
 passed) pass. 60390 non-exempt bytes remain.
+
+## Non-matching track (shiftable build only; never matching coverage)
+
+Functionally equivalent C for unresolved ranges, in `src/nonmatching/` and
+`splits_nonmatching.txt`, linked only by `make shiftable NONMATCHING=1`.
+`splits.txt`, `make check` and the coverage figures ignore it. A unit is
+accepted when difftest reports MATCHED_TRIALS over 500 complete trials for
+each of its functions and the shiftable build with it passes the full MAME
+replay check. See `docs/research/2026-10-16-nonmatching-track.md`.
+
+### 2026-10-16 cloud: nine never-executed units accepted (4,846 asm bytes)
+
+Accepted: f_7fa0, f_8b86, f_ec0c, f_f29a+f_f3a2, f_1326c, f_2090c, f_20a9c,
+f_21d94 and f_277d0+f_27862 (ranges 7fa0, 8b86, ec0c, f29a, 1326c, 2090c,
+20a9c, 21d94, 277d0). `tools/nonmatching_check.py`: 11/11 functions
+MATCHED_TRIALS over 500 complete trials. `make shiftable NONMATCHING=1`
+(sha1 e27a372b, `.text` padded to 0x3107c) with `tools/replay_check.sh`:
+attract 12,000 and gameplay 24,000 frames, all 360 checkpoints identical,
+without idle pinning. Neither replay executes these functions, so the
+replay shows only that the link leaves the game unchanged; difftest covers
+their behaviour. Units the replays execute wait on Colin's decision about
+`--pin-idle`.

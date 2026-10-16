@@ -1,0 +1,13 @@
+# Non-matching units for the shiftable build only (tools/shiftable.py --nonmatching,
+# make shiftable NONMATCHING=1): <start> <end> c-nonmatching <source>. Each replaces an
+# unresolved asm range with functionally equivalent C from src/nonmatching/. These never
+# count as matching coverage and the matching build (make check) never reads this file.
+0x007fa0 0x008156 c-nonmatching src/nonmatching/item_7fa0.c
+0x008b86 0x008c96 c-nonmatching src/nonmatching/field_ready_8b86.c
+0x00ec0c 0x00ee9c c-nonmatching src/nonmatching/vm_ec0c.c
+0x00f29a 0x00f4c6 c-nonmatching src/nonmatching/vm_f29a.c
+0x01326c 0x013378 c-nonmatching src/nonmatching/save_1326c.c
+0x02090c 0x0209a4 c-nonmatching src/nonmatching/draw_2090c.c
+0x020a9c 0x020b24 c-nonmatching src/nonmatching/effect_20a9c.c
+0x021d94 0x0225e4 c-nonmatching src/nonmatching/shuffle_21d94.c
+0x0277d0 0x0278c0 c-nonmatching src/nonmatching/board_setters_277d0.c
