@@ -90,9 +90,10 @@ and size options change almost everything and mostly for the worse.
 
 ## Functions that reach a funcscore match
 
-Twelve function entries reach residual zero under some set; five of them are
-already linked C in other sources (`f_2e4c`, `f_1ede`, `f_2058`, `f_e63a`
-from older drafts), so they say nothing new. The unresolved ones:
+Twelve function entries reach residual zero under some set. Six are functions
+already linked as C from other sources (`f_2e4c` in three research drafts,
+`f_1ede` and `f_2058` in the `0x1914` context, `f_e63a` in the `0x9c0c`
+context), so they say nothing new. The six unresolved entries:
 
 | Function | Draft | Halfwords | Baseline residual | Exact under (examples) |
 |---|---|---:|---:|---|
