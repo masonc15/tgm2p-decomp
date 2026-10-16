@@ -3937,3 +3937,13 @@ without idle pinning. Neither replay executes these functions, so the
 replay shows only that the link leaves the game unchanged; difftest covers
 their behaviour. Units the replays execute wait on Colin's decision about
 `--pin-idle`.
+
+### 2026-10-16 cloud: four more never-executed units accepted (4,798 asm bytes)
+
+Accepted: f_8c96 (drafted from the disassembly), f_2657c+f_26cb0+f_26e18
+(drafted from the disassembly), f_274c0 and f_2ac4c. 13 units, 9,644 asm
+bytes in all. `tools/nonmatching_check.py`: 6/6 new functions MATCHED_TRIALS
+over 500 complete trials. `make shiftable NONMATCHING=1` (sha1 04c5d8ce)
+with `tools/replay_check.sh`: attract 12,000 and gameplay 24,000 frames, all
+360 checkpoints identical without idle pinning. Neither replay executes
+these functions.
