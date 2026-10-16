@@ -98,6 +98,13 @@
       "end": 176064,
       "sha256": "6f519d9e5f98e59be9d1a05f70f76df8afc14a355fcdbff11c3b13ea79fa01c4",
       "evidence": "Accepted gfxblend_2af5e original compiler GLOBAL/FUNC export at context+0x312, retained98bytes exactly match ROM. Leaf consumes low unsigned bytes R4/R5 and pointer R6, preserves SP/PR/R8-R14, returns RTS2af9c with final pointer store delay2af9e. Genuine text palette setup calls and tails to this entry with palette81/82,count1,data00067910; original external-global zero-addend DIR32 at poolE3DC resolves0602A7DE. Parent target review in research/2026-10-10-text-palette-integration/."
+    },
+    {
+      "symbol": "_f_2b4e8",
+      "start": 177384,
+      "end": 177738,
+      "sha256": "0070c55beb3a9a8df14c781233ec9b939ab1f4ee13566a5dde2a88a5084d9577",
+      "evidence": "Defined GLOBAL/FUNC _f_2b4e8 at retained whole-C frame_2b4e8.o .text+0, ROM 0x2b4e8; the next export _f_2b64a is at .text+0x162, so all 354 bytes in this reviewed span are compiler-verified C. The int(void) per-frame driver is called from main_loop.c and the VS unit. Genuine VS setup f_85d8 terminally transfers to it after its sound byte stores through a unique external zero-addend R_SH_DIR32 relocation at pool 0x8878 (context .text+0x2a0). Review in research/2026-10-16-85d8-fixed-lvalue/."
     }
   ]
 }

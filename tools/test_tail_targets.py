@@ -54,7 +54,7 @@ class TailTargetTests(unittest.TestCase):
         self.assertNotIn('_f_64b0', seen)
         self.assertEqual(set(seen), {'_f_31dc', '_f_7fa0', '_f_10942', '_f_12fa8', '_f_17638', '_f_247b0',
                                     '_f_29c50', '_f_2af5e', '_f_2c6fc', '_f_2e6fc', '_f_3036e',
-                                    '_f_20250', '_f_21d94', '_f_1175c'})
+                                    '_f_20250', '_f_21d94', '_f_1175c', '_f_2b4e8'})
 
     def test_pool_seed_rejected_by_structural_tail_proof(self):
         import build
@@ -158,8 +158,8 @@ class TailTargetTests(unittest.TestCase):
         module = importlib.import_module('tail_targets')
         result = module.load_tail_targets(build.ROOT / 'tail_targets.json', build.fn.ROM)
         self.assertEqual(result, {f'_f_{a:x}': a for a in [0x31dc, 0x7fa0, 0x10942, 0x1175c, 0x12fa8, 0x17638,
-                                                        0x20250, 0x21d94, 0x247b0, 0x29c50, 0x2af5e, 0x2c6fc,
-                                                        0x2e6fc, 0x3036e]})
+                                                        0x20250, 0x21d94, 0x247b0, 0x29c50, 0x2af5e, 0x2b4e8,
+                                                        0x2c6fc, 0x2e6fc, 0x3036e]})
 
 
 if __name__ == '__main__':
