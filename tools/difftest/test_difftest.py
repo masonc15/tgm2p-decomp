@@ -190,3 +190,10 @@ class BootTargetArityTests(unittest.TestCase):
     def test_boot_block_target_is_not_measured(self):
         # the warm-reset entry 0x686 runs from ROM; measuring it used to crash
         self.assertEqual(dt.Ctx()._measure(0x686), (1, 0))
+
+
+class StatusRunTests(unittest.TestCase):
+    def test_discarding_log_keeps_nothing(self):
+        log = dt._Discard()
+        log.append(("W", 0, 4, 1, 0))
+        self.assertEqual(len(log), 0)

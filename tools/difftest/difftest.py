@@ -420,12 +420,20 @@ def initial_state(seed: int):
                 Q=rng.getrandbits(1), M=rng.getrandbits(1), gbr=HEAP + (rng.getrandbits(20) & 0xFFFFC))
 
 
-def execute(prog: Program, ctx, seed: int, limit: int, seen=None, ovr=None, explore=False):
+class _Discard(list):
+    """An event log that keeps nothing (for runs that only need a status)."""
+
+    def append(self, item):
+        pass
+
+
+def execute(prog: Program, ctx, seed: int, limit: int, seen=None, ovr=None, explore=False, record=True):
     """Run one side from the seed's state (plus any overrides: ('m', addr,
     size) or ('c', call index) -> value). Returns (events, steps, status, cpu)
-    where status is 'ok', 'limit' or an Unsupported message."""
+    where status is 'ok', 'limit' or an Unsupported message; with
+    record=False no events are kept."""
     ovr = ovr or {}
-    log = []
+    log = [] if record else _Discard()
     mem = Mem(seed, prog.static, log, {k[1:]: v for k, v in ovr.items() if k[0] == "m"})
     c = Run(prog, mem, ctx, seed)
     c.call_ovr = {k[1]: v for k, v in ovr.items() if k[0] == "c"}
@@ -1010,6 +1018,15 @@ def spans_of(funcs, labels, text, resolve, where):
     return out
 
 
+def print_status(rprog, cprog, ctx, spec, steps):
+    """Whether each side returns within `steps` on one input, recording no
+    events, so a long run (an input on which both sides hang) stays cheap."""
+    tseed, tovr = parse_ovr(spec)
+    for prog in (rprog, cprog):
+        _, n, status, _ = execute(prog, ctx, tseed, steps, None, tovr, record=False)
+        print(f"--- {prog.label}: {n} steps, {status}")
+
+
 def print_trace(rprog, cprog, ctx, spec, steps):
     tseed, tovr = parse_ovr(spec)
     for prog in (rprog, cprog):
@@ -1157,6 +1174,8 @@ def main() -> int:
     ap.add_argument("--trace", metavar="INPUT", help="print both event traces for one input (a seed, or the "
                     "seed/overrides string a DIFFERENT report gives)")
     ap.add_argument("--cov", action="store_true", help="list the ROM instructions no trial executed")
+    ap.add_argument("--status", metavar="INPUT", help="print only whether each side returns within --steps "
+                    "on one input (no events recorded)")
     ap.add_argument("--input", action="append", default=[], metavar="INPUT",
                     help="run exactly these inputs (seed or seed/overrides, as --trace takes) as the trials, "
                     "compared as any trial is; repeatable")
@@ -1252,6 +1271,10 @@ def main() -> int:
                 print("  note:", nt)
         if args.trace is not None:
             print_trace(rprog, cprog, ctx, args.trace, args.steps)
+            ctx.save()
+            return 0
+        if args.status is not None:
+            print_status(rprog, cprog, ctx, args.status, args.steps)
             ctx.save()
             return 0
         v = check(args, ctx, name, rprog, cprog, rom, code_end, ret_bits, quiet=args.all)

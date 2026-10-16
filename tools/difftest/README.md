@@ -27,7 +27,9 @@ and callee-arity discovery. Use an external timeout for a hard execution cap.
 
 `--trace INPUT` prints both traces for a seed or seed/overrides string.
 `--input INPUT` (repeatable) runs exactly the given inputs as the trials,
-compared as any trial is, for example inputs chosen so a function's loops end. `--all`
+compared as any trial is, for example inputs chosen so a function's loops end.
+`--status INPUT` only reports whether each side returns within `--steps`,
+recording no events, to show cheaply that both hang on an input. `--all`
 checks every mapped function in the case. `--at name=0xADDR` supplies a ROM
 address for a differently named function. `--ret none|8|16|32` overrides the
 source-based return-type guess.
