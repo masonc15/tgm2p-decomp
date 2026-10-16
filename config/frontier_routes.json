@@ -245,10 +245,11 @@
       "class": "shared-pool-flush-and-local-call-identity",
       "evidence": "research/2026-10-13-gain-textwrappers/REPORT.md",
       "observation": "Real frame-pointer table/callee contract improves e412 register asymmetry but not pool. One section defers preceding pool; separate genuine section flushes it but emits longer indirect widthcall. Original ELF only has DIR32 relocations, insufficient GNU SH call relaxation metadata.",
-      "do_not_repeat": "Archived width/type/storage matrices, default-section reset, namedsection flush as exactness claim, or rebase/patch workarounds.",
+      "do_not_repeat": "Archived width/type/storage matrices, default-section reset, namedsection flush as exactness claim, or rebase/patch workarounds. Per-file -inline=80 (Colin-approved test, 2026-10-16): retained f_e3b8 stays exact, but SHC inlines f_e412 into f_e3e0 (25 to 73-79 insns), so f_e412 compiles 96-112 bytes late and the strict [e412,e520) proof fails; ROM f_e3e0 is 0x32 bytes with BSR f_e39c and a fall-through into f_e412, which rules this inlining out.",
       "next_question": "Find genuine compiler/link partition evidence explaining E3D0 pool flush and E3EE local BSR together.",
       "supporting_evidence": [
-        "research/2026-10-16-e3e0-helpers/REPORT.md"
+        "research/2026-10-16-e3e0-helpers/REPORT.md",
+        "research/2026-10-16-e3e0-inline80/REPORT.md"
       ]
     },
     {
