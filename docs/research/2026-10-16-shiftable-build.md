@@ -153,7 +153,9 @@ program, not of the link.
 ## Debugging tools
 
 `tools/replay_check.sh` runs both images under the same scripted inputs and
-compares screen hashes (FNV-1a over MAME's pixel buffer) at checkpoints.
+compares screen hashes (FNV-1a over MAME's pixel buffer) at checkpoints. The
+reference's hashes are cached in `build/replay-cache`, keyed by its image,
+`replay.lua` and the run settings.
 `--reads` (with `REPLAY_READ_RANGES`, `REPLAY_READS_FROM`/`_UNTIL`,
 `REPLAY_READS_SKIP_BOOT`, `REPLAY_READS_PC`) logs reads, followed pointers
 and per-frame read counts, and `shiftable.py mapreads` maps a padded image's

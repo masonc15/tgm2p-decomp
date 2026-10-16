@@ -21,7 +21,8 @@
 # with the rest of the MAME ROM set from $TGM2P_MAME_ROMS (default
 # $TGM2P_TOOLCHAIN/mame/tgm2p). Each run starts from the ROM set's default
 # EEPROM in a fresh nvram directory. Exit 0 only when every checkpoint of both
-# scenarios matches.
+# scenarios matches. The reference's hashes are cached in build/replay-cache,
+# keyed by its image, replay.lua and these settings.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TOOLCHAIN="${TGM2P_TOOLCHAIN:-$([ -d /drive2/tgm2p ] && echo /drive2/tgm2p || echo "$HOME/tgm2p")}"
@@ -41,11 +42,11 @@ while [ $# -gt 0 ]; do
 		--nodrc) nodrc=1; shift ;;
 		--pin-idle) pin=1; nodrc=1; shift ;;
 		--out) out=$2; shift 2 ;;
-		-h|--help) sed -n 2,24p "$0"; exit 0 ;;
+		-h|--help) sed -n 2,25p "$0"; exit 0 ;;
 		*) args+=("$1"); shift ;;
 	esac
 done
-[ ${#args[@]} -ge 1 ] || { sed -n 2,24p "$0"; exit 2; }
+[ ${#args[@]} -ge 1 ] || { sed -n 2,25p "$0"; exit 2; }
 cand="$(realpath "${args[0]}")"
 ref="$(realpath "${args[1]:-$ROOT/build/prog.bin}")"
 [ -f "$MAME_ROMS/1b.u22" ] || { echo "replay_check: no MAME ROM set in $MAME_ROMS" >&2; exit 2; }
@@ -80,11 +81,22 @@ echo "candidate $(sha1sum "$cand" | cut -c1-40)  $cand"
 for scenario in attract:$attract gameplay:$gameplay; do
 	mode=${scenario%%:*} frames=${scenario#*:}
 	[ "$frames" -gt 0 ] || continue
-	run "ref-$mode" "$ref" "$mode" "$frames" &
-	run "cand-$mode" "$cand" "$mode" "$frames" &
-	wait -n || status=1
-	wait -n || status=1
-	[ $status = 0 ] || exit 1
+	# the reference's hashes depend only on its image and these settings, so
+	# they are cached (not with --reads, whose logs are wanted too)
+	key="$(sha1sum "$ref" | cut -c1-40)-$(sha1sum "$ROOT/tools/replay/replay.lua" | cut -c1-8)"
+	key="$key-$mode-$frames-$every-$seed-pin$pin-nodrc$nodrc"
+	cache="$ROOT/build/replay-cache/$key.txt"
+	if [ "$reads" = 0 ] && [ -s "$cache" ]; then
+		mkdir -p "$out/ref-$mode" && cp "$cache" "$out/ref-$mode/hashes.txt"
+		run "cand-$mode" "$cand" "$mode" "$frames" || exit 1
+	else
+		run "ref-$mode" "$ref" "$mode" "$frames" &
+		run "cand-$mode" "$cand" "$mode" "$frames" &
+		wait -n || status=1
+		wait -n || status=1
+		[ $status = 0 ] || exit 1
+		[ "$reads" = 1 ] || { mkdir -p "$(dirname "$cache")" && cp "$out/ref-$mode/hashes.txt" "$cache"; }
+	fi
 	r="$out/ref-$mode/hashes.txt" c="$out/cand-$mode/hashes.txt"
 	total=$(wc -l < "$r")
 	distinct=$(cut -d' ' -f2 "$r" | sort -u | wc -l)
