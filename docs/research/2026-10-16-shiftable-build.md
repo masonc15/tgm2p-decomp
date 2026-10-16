@@ -115,7 +115,12 @@ The evidence covers what the attract and gameplay replays exercise. Data
 used only by other modes is classified by the static rules and is not proven
 by this replay; one example is the header word `0x40020` (`0x00060090`, which
 probably points just past the `PALETTE ` tag at `0x60088`), left as an
-integer because no run reads it.
+integer because no run reads it. The rules run on the data units as they
+are in the original, before padding splits one: two frame pointers at
+`0xacdfc` and `0xace34`, found through another pointer's target, were lost
+when `0x72194` split their unit, and stayed unmoved in the first padded
+images. The 216,000 constant was also moved by 1,024 in those images. The
+replays reach neither, and both are fixed.
 
 ## Timing: the game's randomness counts idle loops
 

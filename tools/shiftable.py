@@ -639,6 +639,13 @@ def build_shiftable(pads, out: Path, nonmatching=False):
     for pc in insns:
         code_words.add(pc)
     ptr_report = defaultdict(int)
+    # data words are classified over the unsplit data units, so padding a
+    # data unit cannot break a pointer run or hide a pointer's target
+    known = known_targets(pool)
+    data_ptrs = set()
+    for u in units(nm_entries):
+        if u.kind == "data":
+            data_ptrs |= set(data_pointers(u.start, u.end, known, want_ptr, want_int))
     for u in us:
         src = out / f"{u.kind}_{u.start:06x}.s"
         if u.kind in ("asm",):
@@ -664,8 +671,7 @@ def build_shiftable(pads, out: Path, nonmatching=False):
                     pointers[a] = expr_for_value(us, v)
             src.write_text(render_data(u, pointers))
         elif u.kind == "data":
-            known = known_targets(pool)
-            found = data_pointers(u.start, u.end, known, want_ptr, want_int)
+            found = [a for a in data_ptrs if u.start <= a < u.end]
             pointers = {}
             for a in found:
                 pointers[a] = expr_for_value(us, u32(a))

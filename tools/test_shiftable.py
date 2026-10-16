@@ -87,6 +87,10 @@ class BuildTests(unittest.TestCase):
         # the copy table describes the larger image
         ct = 0x313FC + 256
         self.assertEqual(int.from_bytes(data[ct + 16:ct + 20], "big"), 0x30C7C + 256)
+        # pointers found through another pointer's target survive the split
+        # of the data unit at the padding (0xa5aec is a frame record)
+        for a in (0xACDFC, 0xACE34):
+            self.assertEqual(int.from_bytes(data[a + 512:a + 516], "big"), 0xA5AEC + 512, hex(a))
         # 216000 (frames per hour, a pool word before the padding) lies in the
         # ROM copy of RAM data, which moved, and must stay as it is
         self.assertEqual(int.from_bytes(data[0xD0EC:0xD0F0], "big"), 216000)
