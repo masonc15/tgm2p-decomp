@@ -245,7 +245,10 @@
       "evidence": "research/2026-10-13-gain-textwrappers/REPORT.md",
       "observation": "Real frame-pointer table/callee contract improves e412 register asymmetry but not pool. One section defers preceding pool; separate genuine section flushes it but emits longer indirect widthcall. Original ELF only has DIR32 relocations, insufficient GNU SH call relaxation metadata.",
       "do_not_repeat": "Archived width/type/storage matrices, default-section reset, namedsection flush as exactness claim, or rebase/patch workarounds.",
-      "next_question": "Find genuine compiler/link partition evidence explaining E3D0 pool flush and E3EE local BSR together."
+      "next_question": "Find genuine compiler/link partition evidence explaining E3D0 pool flush and E3EE local BSR together.",
+      "supporting_evidence": [
+        "research/2026-10-16-e3e0-helpers/REPORT.md"
+      ]
     },
     {
       "address": "0xb39a",
@@ -393,6 +396,51 @@
         "research/2026-10-13-field88fe-global-update-transfer/SORT_MODEL.json",
         "research/2026-10-13-field88fe-pa-promotion/REPORT.md"
       ]
+    },
+    {
+      "address": "0x20be",
+      "state": "drafting-blocked-on-f20be-length",
+      "class": "loop-hoist-and-allocation-tie",
+      "evidence": "research/2026-10-16-20be-tail/REPORT.md",
+      "observation": "Unit spans 0x1278-0x2f3c (f_20be bra-tail-calls f_2efc; f_2e4c/f_2efc exact in it). Tail drafts f_29ea/f_2d06 match at ROM parity; f_20be 26 bytes short from case-30 loop i++ hoist; using i for the later loop fixes both loops but reorders a profit -6 tie.",
+      "do_not_repeat": "Loop variable renames, >=63 order, x=x+8, <=3, ++i, split init, i for f_29ea result.",
+      "next_question": "Find the variable usage that keeps both +=8 loops un-hoisted while preserving v4 allocation (0x10000000 in r8, x on stack); check with alloc.py/lsort.py first."
+    },
+    {
+      "address": "0x57d4",
+      "state": "near-miss-allocation-tie",
+      "class": "constant-web-clash-profit",
+      "evidence": "research/2026-10-16-57d4-allclear/REPORT.md",
+      "observation": "TU 0x51f4-0x7004; context exact to 0x57d4. T1 shape (two cross-jumped f_179b8 calls) correct; all_clear clash sum 123/14 gives profit -3 vs constant 32 -4. Y1/t3 forms fix allocation but break cross-jump or store shape.",
+      "do_not_repeat": "limit as ?:, all_clear single-expression forms, Y1 ternary call statement.",
+      "next_question": "Genuine T1-shaped source giving all_clear clash floor >= 9 (sum >= 126 or one <=3 clash removed)."
+    },
+    {
+      "address": "0x780",
+      "state": "drafting",
+      "class": "zero-constant-callee-saved-home",
+      "evidence": "research/2026-10-16-1108-alloc/REPORT.md",
+      "observation": "f_780 (2370 B) undrafted; f_1108 (344 B) draft has zero constant at top profit taking r4; ROM zero r14, 256 r13, row offset r12 with separate base and immediate inner pointer.",
+      "do_not_repeat": "Prior f_1108 array/pointer/counter-type sweeps (2026-10-16-1108-video-init).",
+      "next_question": "Recover f_1108 loop-3 form with separate base r1 and row offset r12 so loop webs outrank zero; draft f_780."
+    },
+    {
+      "address": "0xa226",
+      "state": "blocked-by-unit-layout",
+      "class": "same-unit-callee-literal",
+      "evidence": "research/2026-10-16-ad80-screen-test/REPORT.md",
+      "observation": "0x9c0c unit runs to 0xe63a (f_ad80 reloads f_e3e0 per call; f_d8e0 bsr f_e3e0). Retention needs the whole unit length-exact plus ROM pool flush at e3d0; unit drafts differ in ~4000 normalized instructions. Truncated contexts change earlier functions.",
+      "do_not_repeat": "Truncating the unit or declaring later helpers extern.",
+      "next_question": "Explain the e3d0 pool flush (see 0xe3e0 route) before investing in unit-wide length fixes."
+    },
+    {
+      "address": "0xbe28",
+      "state": "blocked-by-unit-layout",
+      "class": "same-unit-callee-literal",
+      "evidence": "research/2026-10-16-ad80-screen-test/REPORT.md",
+      "observation": "Same 0x9c0c unit as 0xa226; f_be28/f_c21a/f_cac8/f_cf68 drafts differ in 63/717/368/121 normalized instructions and reference f_e3e0/f_e412/f_e520/f_e63a.",
+      "do_not_repeat": "Truncated contexts.",
+      "next_question": "As 0xa226."
     }
   ]
 }
