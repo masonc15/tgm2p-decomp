@@ -3901,3 +3901,17 @@ six promoted pa/pb R4/R5 swaps. Before/after: 137644 → 138190 C bytes
 report, both chip SHA-1s and two cold whole-ROM replays
 (`research/cold-2026-10-16-88fe-a`, passed) pass. 60870 non-exempt bytes
 remain; goal stays ACTIVE.
+
+### 2026-10-16 cloud: VS setup 85d8 retained (138190 → 138670)
+
+`src/field_setup_85d8.c` retains exact 480 bytes [85d8,87b8) as the c-prefix of
+the genuine 85d8 unit (5052 context bytes excluded, 3 external literal loads).
+The task pointer is loaded into a local before its test, the sound bytes are
+plain stores, and b6 is cleared before the chained b4 pair (16 compiles). Its
+terminal transfer needed a new exact r3 long-tail form C (two byte stores in a
+three-register epilogue), approved by Colin, with mutation fixtures, plus a
+reviewed `_f_2b4e8` registry entry (whole-C frame_2b4e8.o export, original
+zero-addend R_SH_DIR32 at pool 8878). Before/after: 138190 → 138670 C bytes
+(+480, +0.239 pp, 69.0939%). Full 314 tests, canonical split/check/report, both
+chip SHA-1s and two cold whole-ROM replays (`research/cold-2026-10-16-85d8-b`,
+passed) pass. 60390 non-exempt bytes remain.

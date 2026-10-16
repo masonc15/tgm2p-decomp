@@ -848,7 +848,8 @@ class PrefixCompileTests(unittest.TestCase):
         for filename,start,end,origin,names,form,stack in [
                 ('field_7004.c',0x7004,0x7264,None,{'_f_7004'},'A',32),
                 ('field_7004.c',0x7004,0x7324,None,{'_f_7004','_f_7264'},'A',32),
-                ('field_81cc.c',0x8430,0x8518,0x81cc,{'_f_8430'},'B',12)]:
+                ('field_81cc.c',0x8430,0x8518,0x81cc,{'_f_8430'},'B',12),
+                ('field_setup_85d8.c',0x85d8,0x87b8,None,{'_f_85d8'},'C',16)]:
             with self.subTest(start=start,end=end):
                 exports,manifest=self.run_case(filename,start,end,context_start=origin,
                                                literal_tail_calls=True)
@@ -859,9 +860,20 @@ class PrefixCompileTests(unittest.TestCase):
 
     def test_real_ordered_long_tails_default_rejected(self):
         for filename,start,end,origin in [('field_7004.c',0x7004,0x7324,None),
-                                          ('field_81cc.c',0x8430,0x8518,0x81cc)]:
+                                          ('field_81cc.c',0x8430,0x8518,0x81cc),
+                                          ('field_setup_85d8.c',0x85d8,0x87b8,None)]:
             with self.subTest(start=start), self.assertRaisesRegex(PrefixError,'indirect jump'):
                 self.run_case(filename,start,end,context_start=origin)
+
+    def test_real_form_c_tail_needs_reviewed_frame_driver(self):
+        _, manifest = self.run_case('field_setup_85d8.c', 0x85d8, 0x87b8,
+                                    literal_tail_calls=True)
+        self.assertEqual([(p['jump_pc'], p['register'], p['literal'], p['target_rom'])
+                          for p in manifest['tail_proofs']],
+                         [(0x87b4, 3, 0x8878, 0x2b4e8)])
+        with self.assertRaisesRegex(PrefixError, 'noncanonical literal tail function'):
+            self.run_case('field_setup_85d8.c', 0x85d8, 0x87b8, literal_tail_calls=True,
+                          canonical_functions={})
 
     def test_proof_mode_preserves_previous_middle_spans(self):
         for start, end in [(0x1e64, 0x1ede), (0x1fce, 0x2058)]:

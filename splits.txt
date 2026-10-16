@@ -34,7 +34,7 @@
 0x0081cc c-range src/field_hole_81cc.c
 0x008314 c-range src/field_81cc.c
 0x008518 c    src/field_check.c
-0x0085d8 asm
+0x0085d8 c-prefix src/field_setup_85d8.c
 0x0087b8 c-range src/field_dispatch_87b8.c
 0x00881a c-range src/field_helpers_881a.c
 0x0088fe c-range src/field_reset_88fe.c

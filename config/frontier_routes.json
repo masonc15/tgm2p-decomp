@@ -155,12 +155,13 @@
     },
     {
       "address": "0x85d8",
-      "state": "parked-semantics-until-counterexample",
+      "state": "accepted",
       "class": "setup-scheduling-and-allocation",
-      "evidence": "research/2026-10-10-vs-setup-semantics/REPORT.md",
-      "observation": "480 bounded synchronous states per two saved candidates agree with ROM on ordered global/MMIO writes and call arguments/effects. Full480byte target remains37diff.570accepted neighbor bytes and external literals exact. IndependentPython and GNU relocation replay pass. Zero SHC launches.",
-      "do_not_repeat": "Recorded palette types/prototypes, implicit88b4/88fe, task-pointer, indexed/aggregateMMIO families; semantic state sweep without new target-backed counterexample. Sparse noisy pointers are not proof of real task-pointer validity.",
-      "next_question": "Identify native producer lifetime/scheduling mechanism for task valueR14 and MMIO scheduling; preserve exact contexts. Earlier task-pointer37to32 was already known and earns no fresh credit."
+      "evidence": "research/2026-10-16-85d8-fixed-lvalue/REPORT.md",
+      "observation": "Ordinary SHC source retains exact480 bytes [85d8,87b8) as the prefix of the genuine 85d8 unit (src/field_setup_85d8.c). Task pointer loaded into a local before its test, sound bytes as plain stores, b6 cleared before the b4 pair. Terminal transfer to f_2b4e8 proven by exact long-tail form C and a reviewed registry entry. Strict proof, full tests, two cold replays pass.",
+      "do_not_repeat": "Volatile MMIO stores; chained b4/b6 clears with b6 innermost (2 diffs); typed zeros; signed b4.",
+      "next_question": "Range resolved. The other 85d8-unit sources keep their own context copies of f_85d8; reconcile only if a neighbouring range needs it.",
+      "supporting_evidence": ["research/2026-10-10-vs-setup-semantics/REPORT.md"]
     },
     {
       "address": "0x274c0",
