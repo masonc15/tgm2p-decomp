@@ -1047,7 +1047,10 @@ def check(args, ctx, func, rprog, cprog, rom, code_end, ret_bits, quiet=False):
         # Random seeds for the first quarter, then two in three trials from
         # the mutation queue while it has work.
         item = None
-        if t >= args.trials // 4 and t % 3 and queue:
+        inputs = getattr(args, "input", None)
+        if inputs:
+            item = parse_ovr(inputs[t])
+        elif t >= args.trials // 4 and t % 3 and queue:
             while queue:
                 pc, kind, o, sd = queue.pop(0)
                 if not cmp_done(outcomes.get(pc, set()), kind):
@@ -1056,7 +1059,7 @@ def check(args, ctx, func, rprog, cprog, rom, code_end, ret_bits, quiet=False):
         if item is None:
             item = (next_seed, {})
             next_seed += 1
-        else:
+        elif not inputs:
             mutated += 1
         seed, ovr = item
         rev, rsteps, rstat, rc = execute(rprog, ctx, seed, args.steps, seen, ovr, explore=True)
@@ -1154,8 +1157,14 @@ def main() -> int:
     ap.add_argument("--trace", metavar="INPUT", help="print both event traces for one input (a seed, or the "
                     "seed/overrides string a DIFFERENT report gives)")
     ap.add_argument("--cov", action="store_true", help="list the ROM instructions no trial executed")
+    ap.add_argument("--input", action="append", default=[], metavar="INPUT",
+                    help="run exactly these inputs (seed or seed/overrides, as --trace takes) as the trials, "
+                    "compared as any trial is; repeatable")
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args()
+    if args.input:
+        args.trials = len(args.input)
+        args.time = 1e9 if args.time == 60 else args.time   # every listed input runs
     if args.trials <= 0 or args.steps <= 0 or not (0 < args.time < float("inf")):
         ap.error("--trials, --steps and --time must be positive and finite")
     if args.rom_end is not None and args.all:

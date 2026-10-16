@@ -25,7 +25,9 @@ A time budget can stop before the requested count. It is checked between trials
 after at least 20 trials, not a hard wall-clock timeout; it excludes compilation
 and callee-arity discovery. Use an external timeout for a hard execution cap.
 
-`--trace INPUT` prints both traces for a seed or seed/overrides string. `--all`
+`--trace INPUT` prints both traces for a seed or seed/overrides string.
+`--input INPUT` (repeatable) runs exactly the given inputs as the trials,
+compared as any trial is, for example inputs chosen so a function's loops end. `--all`
 checks every mapped function in the case. `--at name=0xADDR` supplies a ROM
 address for a differently named function. `--ret none|8|16|32` overrides the
 source-based return-type guess.
