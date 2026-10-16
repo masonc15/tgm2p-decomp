@@ -108,17 +108,19 @@ themselves behave alike; difftest covers that part.
 | `board_2657c.c` | 0x2657c–0x26f64 | 2,536 | f_2657c, f_26cb0, f_26e18 | drafted from the disassembly |
 | `board_queue_274c0.c` | 0x274c0–0x2769e | 478 | f_274c0 | context in src/board_queue_2733a.c |
 | `gfx_2ac4c.c` | 0x2ac4c–0x2af5e | 786 | f_2ac4c | wip/gfx_2ac4c.c |
+| `rankcode_238a8.c` | 0x238a8–0x23e3e | 1,430 | f_238a8, f_238fc | drafted from the disassembly and src/rankcode_draw_23e3e.c |
 
-9,644 bytes of unresolved assembly in all. Evidence, from the first nine
-(`251d8b2`) and the four after them:
+11,074 bytes of unresolved assembly in all. Evidence, from the first nine
+(`251d8b2`), the four after them (`251cb6e`) and `rankcode_238a8.c`:
 
 ```
 $ python tools/nonmatching_check.py
 ...
 11/11 functions MATCHED_TRIALS over 500 complete trials   (first nine units)
 6/6 functions MATCHED_TRIALS over 500 complete trials     (field_8c96, board_2657c, board_queue_274c0, gfx_2ac4c)
+2/2 functions MATCHED_TRIALS over 500 complete trials     (rankcode_238a8)
 $ make shiftable NONMATCHING=1
-shiftable: 0x100000 bytes sha1 04c5d8cea7913cf4516ea81fae647b4a02ad0db6 differs from the original ROM; ...
+shiftable: 0x100000 bytes sha1 987d89efd8f9d31290fbb549e74598c468624a8e differs from the original ROM; ...
 $ tools/replay_check.sh build/shiftable-nm/tgm2p.bin
 attract: 12000 frames, 120 checkpoints every 100 frames (96 distinct screens): identical
 gameplay: 24000 frames, 240 checkpoints every 100 frames (237 distinct screens): identical

@@ -11,6 +11,7 @@
 0x02090c 0x0209a4 c-nonmatching src/nonmatching/draw_2090c.c
 0x020a9c 0x020b24 c-nonmatching src/nonmatching/effect_20a9c.c
 0x021d94 0x0225e4 c-nonmatching src/nonmatching/shuffle_21d94.c
+0x0238a8 0x023e3e c-nonmatching src/nonmatching/rankcode_238a8.c
 0x02657c 0x026f64 c-nonmatching src/nonmatching/board_2657c.c
 0x0274c0 0x02769e c-nonmatching src/nonmatching/board_queue_274c0.c
 0x0277d0 0x0278c0 c-nonmatching src/nonmatching/board_setters_277d0.c

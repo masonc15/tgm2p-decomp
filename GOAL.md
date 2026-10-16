@@ -3947,3 +3947,12 @@ over 500 complete trials. `make shiftable NONMATCHING=1` (sha1 04c5d8ce)
 with `tools/replay_check.sh`: attract 12,000 and gameplay 24,000 frames, all
 360 checkpoints identical without idle pinning. Neither replay executes
 these functions.
+
+### 2026-10-16 cloud: rank-code unit accepted (1,430 asm bytes)
+
+Accepted: f_238a8+f_238fc (`rankcode_238a8.c`, from the disassembly and the
+context in src/rankcode_draw_23e3e.c). 14 units, 11,074 asm bytes in all.
+`tools/nonmatching_check.py`: 2/2 MATCHED_TRIALS over 500 complete trials.
+`make shiftable NONMATCHING=1` (sha1 987d89ef) with `tools/replay_check.sh`:
+attract 12,000 and gameplay 24,000 frames, all 360 checkpoints identical
+without idle pinning. Neither replay executes these functions.
