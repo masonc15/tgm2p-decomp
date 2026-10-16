@@ -442,5 +442,313 @@
       "do_not_repeat": "Truncated contexts.",
       "next_question": "As 0xa226."
     }
-  ]
+  ],
+  "asm_scan": {
+    "scope": "hypotheses from tools/asm_scan.py; routing only, not an authorship proof or an exemption. See docs/research/2026-10-16-handwritten-asm-scan.md.",
+    "program_sha256": "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7",
+    "controls": {
+      "negatives": 507,
+      "positives": 9,
+      "true_positive": 9,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "ranges": [
+      {
+        "start": "0x000400",
+        "end": "0x000780",
+        "verdict": "mixed",
+        "observation": "5/9 functions carry strong evidence (0x00400: callee-clobber, scratch-input, system-op, zero-idiom; 0x00658: shared-code; 0x00686: scratch-input, sp-write, system-op, zero-idiom; 0x006dc: zero-idiom; 0x00710: system-op).",
+        "hand_written_functions": [
+          "0x00400",
+          "0x00658",
+          "0x00686",
+          "0x006dc",
+          "0x00710"
+        ]
+      },
+      {
+        "start": "0x000780",
+        "end": "0x001260",
+        "verdict": "shc-shaped",
+        "observation": "2 functions decoded; no strong hand-written evidence. 654 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0012e2",
+        "end": "0x001896",
+        "verdict": "shc-shaped",
+        "observation": "2 functions decoded; no strong hand-written evidence. 166 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0020be",
+        "end": "0x002e4c",
+        "verdict": "shc-shaped",
+        "observation": "6 functions decoded; no strong hand-written evidence. 430 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x003c88",
+        "end": "0x003e2e",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 34 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x004044",
+        "end": "0x0044d4",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 162 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0057d4",
+        "end": "0x00601a",
+        "verdict": "shc-shaped",
+        "observation": "2 functions decoded; no strong hand-written evidence. 280 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0061d0",
+        "end": "0x007004",
+        "verdict": "shc-shaped",
+        "observation": "3 functions decoded; no strong hand-written evidence. 324 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x007324",
+        "end": "0x007956",
+        "verdict": "shc-shaped",
+        "observation": "2 functions decoded; no strong hand-written evidence. 218 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x007c08",
+        "end": "0x007f38",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 98 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x007fa0",
+        "end": "0x008156",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 26 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0085d8",
+        "end": "0x0087b8",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 168 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x008b86",
+        "end": "0x00907c",
+        "verdict": "shc-shaped",
+        "observation": "2 functions decoded; no strong hand-written evidence. 190 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x009180",
+        "end": "0x0095b8",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 228 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0096ac",
+        "end": "0x009b90",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 144 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x00a226",
+        "end": "0x00b2f4",
+        "verdict": "shc-shaped",
+        "observation": "5 functions decoded; no strong hand-written evidence. 710 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x00b39a",
+        "end": "0x00be04",
+        "verdict": "shc-shaped",
+        "observation": "4 functions decoded; no strong hand-written evidence. 358 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x00be28",
+        "end": "0x00d28c",
+        "verdict": "shc-shaped",
+        "observation": "5 functions decoded; no strong hand-written evidence. 770 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x00d394",
+        "end": "0x00e3b8",
+        "verdict": "shc-shaped",
+        "observation": "6 functions decoded; no strong hand-written evidence. 508 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x00e3e0",
+        "end": "0x00e520",
+        "verdict": "shc-shaped",
+        "observation": "3 functions decoded; no strong hand-written evidence. 14 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x00ec0c",
+        "end": "0x00ee9c",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 38 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x00f29a",
+        "end": "0x00f4c6",
+        "verdict": "shc-shaped",
+        "observation": "2 functions decoded; no strong hand-written evidence. 68 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x01050e",
+        "end": "0x0105ba",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 0 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x010788",
+        "end": "0x010942",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 40 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x012fa8",
+        "end": "0x0131e8",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 84 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x01326c",
+        "end": "0x013378",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 26 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x013380",
+        "end": "0x013484",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 46 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x014d50",
+        "end": "0x015f10",
+        "verdict": "shc-shaped",
+        "observation": "5 functions decoded; no strong hand-written evidence. 1014 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x015fae",
+        "end": "0x01715c",
+        "verdict": "shc-shaped",
+        "observation": "3 functions decoded; no strong hand-written evidence. 578 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x02090c",
+        "end": "0x0209a4",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 18 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x020a9c",
+        "end": "0x020b24",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 42 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x021d94",
+        "end": "0x0225e4",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 146 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0225fa",
+        "end": "0x02261c",
+        "verdict": "pool-data",
+        "observation": "No code: 34 bytes of literal pool or table data, covered with the functions that load them.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0238a8",
+        "end": "0x023e3e",
+        "verdict": "shc-shaped",
+        "observation": "2 functions decoded; no strong hand-written evidence. 88 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x026264",
+        "end": "0x02631a",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 0 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x02657c",
+        "end": "0x026f64",
+        "verdict": "shc-shaped",
+        "observation": "3 functions decoded; no strong hand-written evidence. 58 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x026ff0",
+        "end": "0x027310",
+        "verdict": "shc-shaped",
+        "observation": "2 functions decoded; no strong hand-written evidence. 40 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0274c0",
+        "end": "0x02769e",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 24 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0277d0",
+        "end": "0x0278c0",
+        "verdict": "shc-shaped",
+        "observation": "2 functions decoded; no strong hand-written evidence. 64 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x02ac4c",
+        "end": "0x02af5e",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 14 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x030880",
+        "end": "0x030a44",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 52 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      }
+    ]
+  }
 }
