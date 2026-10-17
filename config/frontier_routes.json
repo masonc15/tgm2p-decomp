@@ -414,8 +414,12 @@
       "class": "constant-web-clash-profit",
       "evidence": "research/2026-10-16-57d4-allclear/REPORT.md",
       "observation": "TU 0x51f4-0x7004; context exact to 0x57d4. T1 shape (two cross-jumped f_179b8 calls) correct; all_clear clash sum 123/14 gives profit -3 vs constant 32 -4. Y1/t3 forms fix allocation but break cross-jump or store shape.",
-      "do_not_repeat": "limit as ?:, all_clear single-expression forms, Y1 ternary call statement.",
-      "next_question": "Genuine T1-shaped source giving all_clear clash floor >= 9 (sum >= 126 or one <=3 clash removed)."
+      "do_not_repeat": "limit as ?:, all_clear single-expression forms, Y1 ternary call statement. Early m/all_clear consumed-local reuse: separate webs, identical 4068-byte context (2026-10-17). Short-circuit &&/|| call alternative: stack recovered but R2/R3 call tails remain separate; f5b80 +8 (2026-10-17).",
+      "next_question": "Genuine T1-shaped source giving all_clear clash floor >= 9 (sum >= 126 or one <=3 clash removed).",
+      "supporting_evidence": [
+        "research/2026-10-17-f57d4-local-web/REPORT.md",
+        "research/2026-10-17-f57d4-shortcircuit/REPORT.md"
+      ]
     },
     {
       "address": "0x780",
@@ -423,8 +427,11 @@
       "class": "zero-constant-callee-saved-home",
       "evidence": "research/2026-10-16-1108-alloc/REPORT.md",
       "observation": "f_780 (2370 B) undrafted; f_1108 (344 B) draft has zero constant at top profit taking r4; ROM zero r14, 256 r13, row offset r12 with separate base and immediate inner pointer.",
-      "do_not_repeat": "Prior f_1108 array/pointer/counter-type sweeps (2026-10-16-1108-video-init).",
-      "next_question": "Recover f_1108 loop-3 form with separate base r1 and row offset r12 so loop webs outrank zero; draft f_780."
+      "do_not_repeat": "Prior f_1108 array/pointer/counter-type sweeps (2026-10-16-1108-video-init). Single inline row-fill formal: zero R5, three per-row shifts, 356B/238 raw differences; diagnostic REG replay unauthenticated (2026-10-17).",
+      "next_question": "Recover f_1108 loop-3 form with separate base r1 and row offset r12 so loop webs outrank zero; draft f_780.",
+      "supporting_evidence": [
+        "research/2026-10-17-video-producer/REPORT.md"
+      ]
     },
     {
       "address": "0xa226",
