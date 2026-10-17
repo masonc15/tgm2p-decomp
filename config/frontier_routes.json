@@ -161,7 +161,9 @@
       "observation": "Ordinary SHC source retains exact480 bytes [85d8,87b8) as the prefix of the genuine 85d8 unit (src/field_setup_85d8.c). Task pointer loaded into a local before its test, sound bytes as plain stores, b6 cleared before the b4 pair. Terminal transfer to f_2b4e8 proven by exact long-tail form C and a reviewed registry entry. Strict proof, full tests, two cold replays pass.",
       "do_not_repeat": "Volatile MMIO stores; chained b4/b6 clears with b6 innermost (2 diffs); typed zeros; signed b4.",
       "next_question": "Range resolved. The other 85d8-unit sources keep their own context copies of f_85d8; reconcile only if a neighbouring range needs it.",
-      "supporting_evidence": ["research/2026-10-10-vs-setup-semantics/REPORT.md"]
+      "supporting_evidence": [
+        "research/2026-10-10-vs-setup-semantics/REPORT.md"
+      ]
     },
     {
       "address": "0x274c0",
@@ -401,12 +403,12 @@
     },
     {
       "address": "0x20be",
-      "state": "drafting-blocked-on-f20be-length",
+      "state": "parked-until-authenticated-loop-web-evidence",
       "class": "loop-hoist-and-allocation-tie",
-      "evidence": "research/2026-10-16-20be-tail/REPORT.md",
-      "observation": "Unit spans 0x1278-0x2f3c (f_20be bra-tail-calls f_2efc; f_2e4c/f_2efc exact in it). Tail drafts f_29ea/f_2d06 match at ROM parity; f_20be 26 bytes short from case-30 loop i++ hoist; using i for the later loop fixes both loops but reorders a profit -6 tie.",
-      "do_not_repeat": "Loop variable renames, >=63 order, x=x+8, <=3, ++i, split init, i for f_29ea result.",
-      "next_question": "Find the variable usage that keeps both +=8 loops un-hoisted while preserving v4 allocation (0x10000000 in r8, x on stack); check with alloc.py/lsort.py first."
+      "evidence": "research/2026-10-17-menu-palette-abi/REPORT.md",
+      "observation": "Prior later-loop reuse preserves both extension sequences but misallocates x. Authentic palette ABI control keeps xR8 and leaves f29ea+2; no raw/protected interval passes. Diagnostic replay unauthenticated; native object preserved.",
+      "do_not_repeat": "Prior loop-variable permutation families and palette-call ABI correction as an allocation fix. No register/type grid without native mechanism.",
+      "next_question": "Authenticate native definition-web history explaining both non-hoisted short loops and mask0x10000000 R8 while x stays on stack; retain genuine1278-2f3c producer and actual pools."
     },
     {
       "address": "0x57d4",
@@ -423,12 +425,12 @@
     },
     {
       "address": "0x780",
-      "state": "drafting",
+      "state": "parked-until-genuine-startup-layout",
       "class": "zero-constant-callee-saved-home",
-      "evidence": "research/2026-10-16-1108-alloc/REPORT.md",
-      "observation": "f_780 (2370 B) undrafted; f_1108 (344 B) draft has zero constant at top profit taking r4; ROM zero r14, 256 r13, row offset r12 with separate base and immediate inner pointer.",
-      "do_not_repeat": "Prior f_1108 array/pointer/counter-type sweeps (2026-10-16-1108-video-init). Single inline row-fill formal: zero R5, three per-row shifts, 356B/238 raw differences; diagnostic REG replay unauthenticated (2026-10-17).",
-      "next_question": "Recover f_1108 loop-3 form with separate base r1 and row offset r12 so loop webs outrank zero; draft f_780.",
+      "evidence": "research/2026-10-17-video-byte-offset/REPORT.md",
+      "observation": "Genuine startup draft places f1108 at10d8,48 bytes early. Register counters plus byte-address row expression reproduce all344 video bytes only at displaced root. Nominal standalone and declarations-only controls emit356 bytes,143 differences. Zero accepted gain.",
+      "do_not_repeat": "Do not rebase diagnostic slice, add synthetic predecessor/padding or repeat standalone declaration controls. Preserve successful row-byte mechanism.",
+      "next_question": "Recover genuine f780 producer frame292 versus36 and nominal1108 entry; explain predecessor-body constant history before fresh video source controls.",
       "supporting_evidence": [
         "research/2026-10-17-video-producer/REPORT.md"
       ]

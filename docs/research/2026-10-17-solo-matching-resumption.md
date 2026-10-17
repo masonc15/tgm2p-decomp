@@ -53,17 +53,35 @@ Each packet records its hypothesis and prediction before compiling, source
 and tool identity, bounded budget, actual entries, raw differences, and
 preserved neighboring ranges. None qualifies for source integration.
 
-## Next producer work
+## Producer follow-up and later bounded controls
 
-Recover the genuine f780 startup body before another isolated f1108 syntax
-search. The archived ROM listing and m2c discovery output are in
-research/2026-10-17-video-producer/; the latter is incomplete discovery
-output, not a buildable or accepted candidate. Resolve its local storage,
-call declarations, shared pools and complete CFG, including the large
-startup switch, before the first bounded whole-unit drafting experiment.
+The genuine f780 draft is preserved in research/2026-10-17-startup780-draft.
+Its frame is36 bytes versus ROM292, and f1108 starts10d8 versus1108. No
+invented local buffer or alignment filler was added. Restricted differential
+runs pass32 controlled and21 directed-switch trials, with46% and80% estimated
+instruction coverage; they do not establish equivalence or exactness.
+
+Register loop counters and a flat indexed store recovered the video initializer
+register homes. The separate research/2026-10-17-video-byte-offset packet then
+reproduced all344 function bytes at the displaced10d8 root. That is diagnostic
+only and earns no credit. Independent nominal compilation and a genuine
+header-only control each emit356 bytes with143 raw differences. The preceding
+body affects compiler history; its actual layout must be recovered. Each packet
+used24 compiler stages. No extraction, rebasing or padding was integrated.
+
+research/2026-10-17-menu-palette-abi tests the genuine unsigned-byte palette
+callee contract in the recovered1278-2f3c unit. The corrected interface changes
+code but retains x in R8 instead of restoring the desired mask allocation.
+f29ea remains two bytes late; protected following bytes fail. Two native
+captures plus diagnostics used18 stages. Diagnostic REG equality fails, so
+only original native objects support conclusions. No further ABI grid follows.
+
+All follow-up work still earns **0 bytes, +0.000000 percentage points**.
+Routes preserve these negatives and require new native/context evidence.
+The frontier is regenerated and checked; no canonical source or split changed.
 
 Read-only f9180 review also preserved its target listing. Its apparently
 redundant flags &= ~0xc6; flags = 1 corresponds to actual ROM AND at
-0x94c2 followed by store of R13 at 0x94c4; do not change it to OR merely
+0x94c2 followed by store of R13 at0x94c4; do not change it to OR merely
 because the source looks suspicious. Prior palette/field ABI controls are
 already byte-identical negatives.
