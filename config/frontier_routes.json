@@ -403,12 +403,19 @@
     },
     {
       "address": "0x20be",
-      "state": "parked-until-authenticated-loop-web-evidence",
+      "state": "parked-until-simultaneous-loop-and-allocation-evidence",
       "class": "loop-hoist-and-allocation-tie",
-      "evidence": "research/2026-10-17-menu-palette-abi/REPORT.md",
-      "observation": "Prior later-loop reuse preserves both extension sequences but misallocates x. Authentic palette ABI control keeps xR8 and leaves f29ea+2; no raw/protected interval passes. Diagnostic replay unauthenticated; native object preserved.",
-      "do_not_repeat": "Prior loop-variable permutation families and palette-call ABI correction as an allocation fix. No register/type grid without native mechanism.",
-      "next_question": "Authenticate native definition-web history explaining both non-hoisted short loops and mask0x10000000 R8 while x stays on stack; retain genuine1278-2f3c producer and actual pools."
+      "evidence": "research/2026-10-17-menu-native-auth/REPORT.md",
+      "observation": "Fresh frontend normal/debug REG and ILB equal native; lregsort123 events authenticated. Derived position raises final i11->13 and restores maskR8 but recomputes100+20*i; initial do-while restores maskR8 but loses unrolling. Typed12-byte frame table is byte-identical. Zero accepted gain.",
+      "do_not_repeat": "Earlier loop-variable permutations and palette ABI correction; derived100+20*i position, first-loop do-while latch, or typed frame-table arithmetic alone.",
+      "next_question": "Recover maskR8/palette spill together with original first-loop unrolling and position100/+20 recurrence. Require new producer or native definition-graph evidence before another source control.",
+      "supporting_evidence": [
+        "research/2026-10-16-20be-tail/REPORT.md",
+        "research/2026-10-17-menu-palette-abi/REPORT.md",
+        "research/2026-10-17-menu-derived-position/REPORT.md",
+        "research/2026-10-17-menu-initial-latch/REPORT.md",
+        "research/2026-10-17-menu-frame-type/REPORT.md"
+      ]
     },
     {
       "address": "0x57d4",

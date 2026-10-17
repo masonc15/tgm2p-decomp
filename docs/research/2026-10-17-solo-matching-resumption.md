@@ -85,3 +85,8 @@ redundant flags &= ~0xc6; flags = 1 corresponds to actual ROM AND at
 0x94c2 followed by store of R13 at0x94c4; do not change it to OR merely
 because the source looks suspicious. Prior palette/field ABI controls are
 already byte-identical negatives.
+
+The subsequent [menu native-allocation report](2026-10-17-menu-native-allocation.md)
+authenticates fresh frontend/MDL replays and records three additional bounded
+source controls. They restore allocation in two cases but fail instruction
+layout, so coverage remains unchanged.
