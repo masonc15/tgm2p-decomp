@@ -101,3 +101,7 @@ The [ABI and clamp controls](2026-10-17-abi-and-clamp-controls.md) reconcile the
 newer board source and recover the music routine volume/timer homes through
 a rejected conditional-clamp control. Both remain raw-negative. VM/checksum
 routes now reference existing negatives; no fresh coverage is claimed.
+
+## Additional staged evidence and title context
+
+The canonical-context audit found no exact unresolved function among63 contexts/107 pairs. A second private branch supplied the staged functional-source packet; both snapshots are preserved. The title-screen24byte stride correction recovers the original address recipe but leaves795 raw target differences. A separate authenticated flag-width control falsifies the proposed extra-home mechanism and fails protected bytes and roots. See [staged rank context](2026-10-17-staged-rank-context.md) for hashes, budgets, negative results and the newly identified text-pointer lifetime discrepancy. Coverage change: **0 bytes, +0.000000 percentage points**.

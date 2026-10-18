@@ -499,6 +499,33 @@
       "evidence": "docs/research/2026-10-03-shc-bank-scratch.md",
       "observation": "Prior allocation-correct controls still useR2 where ROM requiresR1 and fail raw layout. Nine follow-up full contexts fail; production baseline122 raw differences.",
       "next_question": "Explain consumed bank-input expression/history selectingR1 while preserving allocation, audio-read order and actual roots. Closed flags/initializers/decrement families are not new hypotheses."
+    },
+    {
+      "address": "0x152d4",
+      "state": "parked-after-flag-width-negative",
+      "class": "semantic-stride-and-source-storage-lifetimes",
+      "evidence": "docs/research/2026-10-17-staged-rank-context.md",
+      "observation": "Real24byte animation stride recovers scaling recipe; fullcontext5408/all9nominal roots,795rawtargetdiff,retained190strictpass. Native-authenticated done short-to-int changes only scalar type; frame40/SP36 unchanged,15794 moves12early and retained switch literal changes. Zero credit.",
+      "do_not_repeat": "Flag-width-only extra-promoted-home hypothesis is falsified. No shared frame-size change: adjacent14f1c genuinely uses12byte steps. No unbounded register/storage sweeps.",
+      "next_question": "ROM initial text temporary atSP0 dies before p1 takes that slot; blinking calls reloadg6033748. Draft q has a whole-loop lifetime. Predict this genuine lifetime boundary in a separate bounded experiment; also recover original word toggle before tuning registers."
+    },
+    {
+      "address": "0x14f1c",
+      "state": "parked-source-families",
+      "class": "countdown-lifetime-and-global-allocation",
+      "evidence": "tools/shc_probe/cases/session_rank14f1c_next/HANDOFF.md",
+      "observation": "Archived145controls reduce341to86rawdifferences,all9roots/protected924bytes exact; no strict match. ROMtable stride12 is correct,unlike152d4.",
+      "do_not_repeat": "Archived type,stickycountdown,register,constant,init/declaration families. Do not propagate152d4 stride24 here.",
+      "next_question": "Recover new native lifetime evidence explaining early constant10 and original short-index storage without repeating the archived86difference control."
+    },
+    {
+      "address": "0x14d50",
+      "state": "parked-until-genuine-loop-context",
+      "class": "constant-hoisting-and-global-allocation",
+      "evidence": "tools/shc_probe/cases/session_rank14d50_next/STATUS.md",
+      "observation": "Archived best215 has10rawdifferences but contains inert if(0)done=10 history shaping. Not a fresh admissible source candidate. Extensive countdown,loopbound,type,ABI and inlinehelper controls already recorded.",
+      "do_not_repeat": "Archived inert-AST and allocation sweeps; no new dummy/dead statements to manufacture compiler history.",
+      "next_question": "Recover genuine source loop/lifetime context explaining constant10 placement and timer/done/160 register cycle."
     }
   ],
   "asm_scan": {
