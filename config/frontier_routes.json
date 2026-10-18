@@ -551,6 +551,20 @@
       "observation": "Native unsigned absolute-value expression reproduces original constant-zero R14 test and three syntactic RNG call sites with two runtime events. Recovered genuine initializer order/int-x/five explicit stores produce48byte frame versus52, w4R8 insteadSP4, and five address slots inwrongorder. Actualrootd2d8 remains188early; protected166exact; no coverage.",
       "do_not_repeat": "Unsigned RNG absolute-value expression, known reset loop/direct-store contrast, or historical five dead g_dummy statements. No initializer-address patch or context rebasing.",
       "next_question": "Recover genuine constant1/R8 lifetime plus w4SP4/promotedSP0 and table slots12..28, retaining runSP36/tabSP40; original preceding unit roots and initializer pool6032e40 remain mandatory."
+    },
+    {
+      "address": "0x27862",
+      "state": "parked-until-real-predecessor-and-pointer-lifetime-evidence",
+      "class": "genuine-local-call-context-and-member-addressing",
+      "evidence": "research/2026-10-17-cache-update-unit/VERIFICATION.json",
+      "supporting_docs": [
+        "docs/research/2026-10-17-cache-update-unit.md",
+        "docs/research/2026-10-10-toggle-producer-context.md",
+        "docs/research/2026-10-04-board-clear-context-match.md"
+      ],
+      "observation": "Joined genuine context recovers local BSR and preserves accepted140byte redraw prefix. Typed player/cache members recover indexed82 load and separate scaledR6; signedlong shift recoversSHLR16/EXTS.W. All helper roots27832,48early; typed/signedextent94 but92fixed-target raw differences, retained downstream neighbors regress.28stages across12/8/8budgets include4stage construction error and3native drivers. Strict target rejected; zero gain.",
+      "next_question": "Recover real26ff0/2722c predecessor deficit, actual game-cache array extent, and helper lock-global/pointer lifetime before more source tuning.",
+      "do_not_repeat": "Do not repeat whole-unit/member/signed-shift controls or earlier index forms without new mechanism evidence. No padding, missing bodies, rebasing, branch adjustment, or one-element array admission without actual extent."
     }
   ],
   "asm_scan": {
