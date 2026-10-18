@@ -94,3 +94,50 @@ any future width control needs its own prediction and budget.
 No modified-compiler output was linked. There is no new acceptance receipt,
 cold replay, test-suite claim, or dashboard publication for these rejected
 research producers. The canonical baseline remains unchanged.
+
+## Text lifetime and word toggle follow-up
+
+Two further hypotheses were recorded separately before execution. Each used
+one ordinary producer and authenticated frontend/normal/debug replay, for
+11 new executable stages per hypothesis. Both reused the immediately prior
+producer with its source and native-intermediate provenance.
+
+`research/2026-10-17-rank152d4-text-lifetime/` changes only the two blinking
+calls to use g_6033748 directly; the genuine setup calls still consume q.
+Its baseline is the preceding int-done control with corrected animation
+stride. The prediction that q would cease to span the loop is confirmed:
+its final REG range changes from the whole loop to19..21. The frame shrinks
+from40 to36 bytes and done moves fromSP36 toSP32, matching those original
+storage facts. The predicted SP0 sharing does not occur: q instead takes
+R14, and p1's stack home moves. Actual f15794 is1578c, eight bytes early;
+the context is5,400 bytes. There are1,077 nominal target differences, and the
+retained switch literal at14b9f changes. Both strict gates reject. Recovering
+frame size alone is not a coverage gain.
+
+`research/2026-10-17-rank152d4-toggle-width/` then changes only the title
+function's char tog to unsigned short. ROM15380/1564e/15656 use word accesses
+and15658 uses EXTU.W, supplying the declaration evidence. The prediction
+was that the correct conversions could also change the common zero's use
+or allocation and recover early zero inR14 with setup q spilled. The word
+accesses/conversion are recovered, but the allocation prediction is false.
+Authenticated final REG differs only in symbol230's type0x0 to0xc; every
+physical assignment and live range is identical. Zero's priority10/profit3
+and unallocated status are unchanged; setup q remainsR14. Frame36 and
+completion flagSP32 remain. The context becomes5,388 bytes, f15794 is15780
+(20 early), and1,117 nominal target bytes differ. The same retained literal
+and target-boundary proofs reject. Stop this width-only family.
+
+The zero logical record conflicts with all seven allocated saved-register
+values, including the later loop's constant1. The final constant1 usesR14
+starting at native range48, while q usesR14 earlier at19..21. Thus the
+mismatch is not that the initial calls use that same allocated constant1:
+their emitted immediates are ordinary scratch-register values. Future work
+must explain the original early zero's distinct lifetime/use identity before
+attempting another source change. The current graph is retained in each
+packet's target-graph.json; no altered compiler output or offline priority
+model is an acceptance candidate.
+
+The paired normal/debug REG and ILB streams equal their native captures.
+RESULT.json and summarize.py retain raw comparisons, original roots and the
+strict rejection messages. These experiments add **0 verified bytes and
++0.000000 percentage points**. No canonical code or split was changed.

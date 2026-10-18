@@ -502,12 +502,12 @@
     },
     {
       "address": "0x152d4",
-      "state": "parked-after-flag-width-negative",
+      "state": "parked-until-zero-web-lifetime-evidence",
       "class": "semantic-stride-and-source-storage-lifetimes",
       "evidence": "docs/research/2026-10-17-staged-rank-context.md",
-      "observation": "Real24byte animation stride recovers scaling recipe; fullcontext5408/all9nominal roots,795rawtargetdiff,retained190strictpass. Native-authenticated done short-to-int changes only scalar type; frame40/SP36 unchanged,15794 moves12early and retained switch literal changes. Zero credit.",
-      "do_not_repeat": "Flag-width-only extra-promoted-home hypothesis is falsified. No shared frame-size change: adjacent14f1c genuinely uses12byte steps. No unbounded register/storage sweeps.",
-      "next_question": "ROM initial text temporary atSP0 dies before p1 takes that slot; blinking calls reloadg6033748. Draft q has a whole-loop lifetime. Predict this genuine lifetime boundary in a separate bounded experiment; also recover original word toggle before tuning registers."
+      "observation": "Real24byte stride recovers recipe. Consumed setup-only q lifetime reduces frame40to36 and flagSP36toSP32 but q takesR14, nextroot1578c. Wordtoggle changes only scalar type, zero priority10/profit3 unchanged; root15780. Both reject retained switch14b9f and targetboundary. Native REG/ILB authenticated; zero credit.",
+      "do_not_repeat": "Flag-width-only extra-home hypothesis and toggle-width allocation hypothesis are falsified. Setup-only q/direct blinking calls tested: frame success is not exactness. No shared frame-size change: adjacent14f1c uses12byte steps. No declaration/register grid.",
+      "next_question": "Explain original early zero lifetime inR14 versus current global zero clashing with all seven saved-register owners. Current q usesR14 at19..21 and constant1 starts48; initial call immediates are scratch values, so do not claim that allocated constant1 blocks early zero by itself."
     },
     {
       "address": "0x14f1c",
