@@ -634,6 +634,15 @@
       "observation": "Hint-free native sequential/nested controls have 72/419 nominal raw differences, next roots 152d8/152dc, and two retained-dispatcher differences. Both fail strict boundaries. Nested constant10 dominator changes but remains unallocated. Zero accepted bytes.",
       "do_not_repeat": "Loop nesting, declaration/type permutations or inert predecessor hints.",
       "next_question": "No further tuning under the superseded per-target loop; qualify a source-to-output mechanism through the active campaign first."
+    },
+    {
+      "address": "0xbd8a",
+      "state": "accepted",
+      "class": "compiler-created-index-recurrences",
+      "evidence": "docs/research/2026-10-17-mirrored-table-match.md",
+      "observation": "82 exact bytes [bd8a,bddc), actual root bd8a and successor be04, four original literal dependencies, 166 protected neighboring bytes exact; ordinary SHC, existing proof and two cold whole-ROM replays pass.",
+      "do_not_repeat": "504 archived explicit descending-pointer bodies and closed pointer/register/counter sweeps. Shared trailing pool remains excluded.",
+      "next_question": "Identify another genuine indexed operation before interpreting compiler-created recurrences as source locals; require new evidence before compiling."
     }
   ],
   "asm_scan": {

@@ -52,6 +52,8 @@
 0x00b352 c-range src/settings_reset_9c0c.c
 0x00b36e c-range src/settings_reset_9c0c.c
 0x00b39a asm
+0x00bd8a c-range src/settings_mirror_bd8a.c
+0x00bddc asm
 0x00be04 c-prefix src/menu_lookup_be04.c
 0x00be28 asm
 0x00d28c c    src/f_d28c.c
