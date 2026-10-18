@@ -90,3 +90,9 @@ The subsequent [menu native-allocation report](2026-10-17-menu-native-allocation
 authenticates fresh frontend/MDL replays and records three additional bounded
 source controls. They restore allocation in two cases but fail instruction
 layout, so coverage remains unchanged.
+
+The [native storage trials](2026-10-17-native-storage-trials.md) identify the
+f9180 promoted-result spill and test a dimensional lifetime split in f2657c.
+Both bounded packets preserve ordinary native outputs and authenticated
+diagnostics; neither yields an admissible interval. Session gain remains
+**0 bytes, +0.000000 percentage points**.

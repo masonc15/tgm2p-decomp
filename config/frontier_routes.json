@@ -221,12 +221,15 @@
     },
     {
       "address": "0x2657c",
-      "state": "genuine-whole-unit-draft-needs-storage-recovery",
+      "state": "parked-until-coordinate-and-pointer-lifetime-evidence",
       "class": "stack-abi-loop-shape-and-pool-layout",
-      "evidence": "research/2026-10-13-resume-2657c/REPORT.md",
-      "observation": "Five ordinary launches recover7genuine function bodies; old archive2657c/26e18/26ff0/2722c bodies were synthetic g_dummy stubs and excluded. Correct26e18 stack order is px,row,py,x; explicit redraw do-loops remove unintended4fold unrolling. Latest context3320vs3476target, final helper156early,3330fixed-target differences including156missing. Parent8links reproduce and corrected row writer passes96controlled ROM cases in each of2contexts; zero credit. Later parent recovered exact70byte redraw-lock wrapper using incominglong args and narrowcallee; those bytes are now accepted in dedicated26faacontext, remainingproducer still unresolved. Current-redraw helper26f64 is now accepted with26faa in one140byte interval; registeroffset plusindexedbank-column consumer recovered its70bytes.",
-      "do_not_repeat": "No synthetic predecessor restoration; no repeated narrow step declarations (byte-identical) or blind scratch/pragma/ABI controls. Keep linear pool scans diagnostic.",
-      "next_question": "Recover original2657c28byte frame and storage reuse;26faa spill frame is now explained and accepted separately. Preserve authenticated26e18 ABI and original ownership."
+      "evidence": "docs/research/2026-10-17-native-storage-trials.md",
+      "observation": "Five ordinary launches recover7genuine function bodies; old archive2657c/26e18/26ff0/2722c bodies were synthetic g_dummy stubs and excluded. Correct26e18 stack order is px,row,py,x; explicit redraw do-loops remove unintended4fold unrolling. Latest context3320vs3476target, final helper156early,3330fixed-target differences including156missing. Parent8links reproduce and corrected row writer passes96controlled ROM cases in each of2contexts; zero credit. Later parent recovered exact70byte redraw-lock wrapper using incominglong args and narrowcallee; those bytes are now accepted in dedicated26faacontext, remainingproducer still unresolved. Current-redraw helper26f64 is now accepted with26faa in one140byte interval; registeroffset plusindexedbank-column consumer recovered its70bytes. Authenticated native trial splits row count from pixel height: cur moves to original R9, but pixel height takes R8 and local still spills. Frame stays24 rather than28, next root26c6c (68 early), target1719 raw differences. All later roots/residual counts unchanged; zero gain.",
+      "do_not_repeat": "No synthetic predecessor restoration; no repeated narrow step declarations (byte-identical) or blind scratch/pragma/ABI controls. Keep linear pool scans diagnostic. Do not repeat the row-count/pixel-height split without new lifetime evidence.",
+      "next_question": "Explain original local-coordinate R8 and field-pointer SP0 together; target recomputes initial coordinate while native CSE shares it. Preserve genuine declarations and ABI; no padding or arbitrary volatile shaping.",
+      "supporting_evidence": [
+        "research/2026-10-13-resume-2657c/REPORT.md"
+      ]
     },
     {
       "address": "0x12e2",
@@ -459,6 +462,15 @@
       "observation": "Same 0x9c0c unit as 0xa226; f_be28/f_c21a/f_cac8/f_cf68 drafts differ in 63/717/368/121 normalized instructions and reference f_e3e0/f_e412/f_e520/f_e63a.",
       "do_not_repeat": "Truncated contexts.",
       "next_question": "As 0xa226."
+    },
+    {
+      "address": "0x9180",
+      "state": "parked-until-result-promotion-lifetime-evidence",
+      "class": "short-result-promotion-and-stack-storage",
+      "evidence": "docs/research/2026-10-17-native-storage-trials.md",
+      "observation": "Genuine full-context int-return baseline has nominal9180, successor95b0,919 raw differences. Authenticated native diagnostics identify promoted-result int spill causing fifth stack slot. Register-short control retains spill/frame20, successor95be,992 differences; protected326 bytes exact. Original frame16 and final empty comparison confirmed.",
+      "do_not_repeat": "Prior palette/field ABI controls or register-short result control. No artificial empty operations; preserve only ROM-backed final comparison.",
+      "next_question": "Find genuine expression lifetime that avoids promoted-result caching across cleanup calls while preserving original short result, nominal roots and protected neighboring bytes."
     }
   ],
   "asm_scan": {
