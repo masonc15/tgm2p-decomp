@@ -22,7 +22,7 @@ uses heuristic names and groups and is kept separate from byte acceptance.
 
 ## Start or resume
 
-Run from `~/workspace/tgm2p-decomp` on nephele (or nuada as the fallback) after
+For this active goal, run from `/home/colin/workspace/tgm2p-decomp` on nuada after
 `. tools/env.sh`; [the workspace guide](WORKSPACE.md) covers hosts and setup.
 `make status` summarizes the queue below.
 
@@ -64,19 +64,55 @@ and full context. Existing broad version comparisons are archived on nuada in
 (`tgm2p-toolchain-audit-20261005/`); those are historical
 measurements, not a substitute for checking the active binaries.
 
-## Bounded two-agent trial
+## Active strategy: campaign reset, 2026-10-17
 
-On 2026-10-10 the user authorized two GPT-6.1 Sol subagents, superseding solo
-work for this trial. Assign different unresolved routines and unique research
-directories, existing negatives and a concrete predicted mechanism. Cap each
-assignment at 24 compiler invocations total, counting baselines and captures.
-On 2026-10-11 the user raised that cap to 100 for drafting assignments (first or
-whole-unit drafts of unresolved ranges with no parked route or prior near-match);
-near-miss and parked-route work keeps 24.
-No nested agents or edits to canonical source, splits or shared tools. The
-primary agent reviews packets and alone integrates with the acceptance gates
-below. Review accepted bytes and reproducible actionable discoveries before
-starting another trial round. Current assignments are in GOAL.md.
+The user rejected the zero-gain target-rotation process. Work **solo on nuada**.
+No brainstorming or subagents. This supersedes the historical two-agent trial
+and host fallback instructions for this goal. Read
+[the reset and first campaign](research/2026-10-17-process-reset.md) and
+`config/matching_campaign.json` before selecting work.
+
+The unit of work is now a reusable source/compiler mechanism, with a **single
+budget across all targets**, not a new allowance for each renamed hypothesis.
+The old target routes remain negative evidence; changing targets does not reset
+the campaign budget or reopen a parked family.
+
+1. Start from a previously accepted source change and its rejected control.
+   Identify the complete causal chain: genuine source operation, resulting IR,
+   allocation/scheduling, nominal linked bytes, and protected neighbors.
+2. Use existing objects and authenticated traces first. Historical replay is
+   calibration, never a blind prediction. A model supplied with the observed
+   graph or eligibility cannot claim to predict those inputs from source.
+3. Select an unresolved case only after identifying the same mechanism and
+   checking its previous negatives. Freeze a source-level prediction BEFORE
+   observing the candidate output: changed nodes/lifetimes, relevant allocation
+   or schedule, expected root/pool effects, and a rejecting observation.
+   Require a complete causal connection to a potentially admissible interval;
+   merely predicting that a register changes is insufficient.
+4. Limit the first transfer to one ordinary source candidate, plus a necessary
+   baseline if absent. All driver subprocesses, captures and diagnostic replays
+   consume the same **24 compiler-stage campaign budget**. The ceiling is not a
+   quota. No 100-compile drafting exception applies to this active campaign.
+5. If the prediction fails, close the campaign. Do not repair the explanation
+   after observing the output and restart with another syntax form or function.
+   If the prediction succeeds but cannot produce an admissible interval, record
+   that separately from accepted bytes; do not call the campaign a matching win.
+6. Bound evidence-only work to **90 minutes per campaign**. At the limit, either
+   run the qualified transfer or close the campaign with the missing premise.
+   Two consecutive campaigns with zero accepted bytes force a different work
+   class (for example original TU/data ownership or source provenance), with an
+   explicit strategy review. This is a research stop, not abandonment of the goal.
+
+Use one campaign ledger for costs, predictions and outcomes. Do not create a new
+report/commit for every minor negative. New infrastructure is justified only by
+an immediate named decision it enables; use the existing models and captures.
+Compiler instrumentation is allowed only to resolve a specific uncertainty in
+an otherwise qualified transfer, within the shared budget.
+
+Acceptance, original ROM identity, denominator, exceptions, tests, cold replay
+and publication requirements below remain mandatory and unchanged. Acceptance
+checks after an exact candidate do not spend the exploratory campaign budget.
+Their cost and failures must still be recorded; failed admission earns zero.
 
 ## One experiment packet
 
@@ -104,9 +140,11 @@ compiler logs. Prefer a few discriminating controls over multiplying equivalent
 source forms. When an experiment fails, record precisely the tested forms it
 rules out; do not claim all possible C expressions are impossible.
 
+The active campaign budget above takes precedence over this per-packet template.
 Stop when the budget expires or the predicted mechanism does not move. Update
 the target's route with the negative evidence and a new observable question.
-Move to another owner if that question cannot yet be tested. The queue does not
+Close the campaign if that question cannot yet be tested; do not reset its budget
+by moving to another owner. The queue does not
 automatically enforce the compile budget; agents must follow it explicitly.
 
 ## Acceptance and cold replay

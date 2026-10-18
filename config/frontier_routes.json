@@ -10,9 +10,13 @@
       "raw residual and entry addresses",
       "rejecting observation or integration receipt"
     ],
-    "stop": "Stop at the bound or when the measured compiler mechanism is unchanged. A larger run requires a new evidence-backed prediction, recorded before execution.",
+    "stop": "Stop at the shared campaign budget or first failed source-level prediction. Two zero-gain campaigns require a different work class and explicit strategy review.",
     "admission": "Unchanged strict range proof plus full-ROM checks and report. Compiler instrumentation and normalized scores never grant credit.",
-    "work_selection": "Prefer a different unresolved owner after a bounded negative. Reopen a parked hypothesis only with new target or compiler evidence. Frontier source_candidates scans canonical src only: search research and tools/shc_probe/cases before calling a range undrafted; distinguish genuine source from excluded synthetic stubs."
+    "work_selection": "Campaign gate takes precedence: no autonomous rotation through parked functions. Qualify a transferable source mechanism against accepted/rejected controls before selecting a new candidate. New address or hypothesis does not reset the shared budget. Preserve all prior route negatives.",
+    "active_workflow": "docs/DECOMP_WORKFLOW.md#active-strategy-campaign-reset-2026-10-17",
+    "campaign": "config/matching_campaign.json",
+    "max_compiler_stages_per_campaign": 24,
+    "max_evidence_minutes_per_campaign": 90
   },
   "targets": [
     {
@@ -621,6 +625,15 @@
       "supporting_docs": [
         "docs/research/2026-10-17-settings-data-owner.md"
       ]
+    },
+    {
+      "address": "0x15104",
+      "state": "parked-process-reset",
+      "class": "loop-placement-and-constant-allocation",
+      "evidence": "research/2026-10-17-rank15104-native-loop/STOPPED.md",
+      "observation": "Hint-free native sequential/nested controls have 72/419 nominal raw differences, next roots 152d8/152dc, and two retained-dispatcher differences. Both fail strict boundaries. Nested constant10 dominator changes but remains unallocated. Zero accepted bytes.",
+      "do_not_repeat": "Loop nesting, declaration/type permutations or inert predecessor hints.",
+      "next_question": "No further tuning under the superseded per-target loop; qualify a source-to-output mechanism through the active campaign first."
     }
   ],
   "asm_scan": {

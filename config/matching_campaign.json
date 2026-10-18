@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "strategy": "accepted-mechanism-transfer",
+  "host": "nuada",
+  "execution": "solo",
+  "baseline": {
+    "linked_c_bytes": 138670,
+    "total_bytes": 200698,
+    "completion_c_bytes": 199060,
+    "approved_assembly_bytes": 1638
+  },
+  "campaign_id": "2026-10-17-source-prediction-01",
+  "state": "qualification-only",
+  "allow_tuning_compiles": false,
+  "budget": {
+    "max_evidence_minutes": 90,
+    "max_compiler_stages": 24,
+    "compiler_stages_used": 0,
+    "shared_across_targets": true,
+    "reset_by_new_hypothesis": false
+  },
+  "calibration": [
+    "docs/research/2026-10-04-ready-sequencing-match.md",
+    "docs/research/2026-10-13-field-reset-match.md"
+  ],
+  "replay": "research/2026-10-17-process-reset/model-replay.json",
+  "qualification_result": "Historical 27+27 allocation replay passes; source-to-graph prediction is not established. No unresolved case is yet qualified.",
+  "next_action": "Trace the accepted joined/split global-update change through the existing source, IR and cache evidence. Identify whether a source-level prediction transfers to an untested unresolved case; reject already exhausted families. Do not launch the compiler merely to discover which case responds.",
+  "required_before_tuning": [
+    "specific unresolved owner and prior-negative review",
+    "source and tool hashes",
+    "target-backed source operation",
+    "prediction of changed IR and downstream native output",
+    "nominal entry/pool and protected-neighbor expectations",
+    "path to a whole admissible interval",
+    "prediction recorded before candidate output"
+  ],
+  "success_metric": "accepted linked C bytes after unchanged strict admission and publication",
+  "verified_gain_bytes": 0,
+  "percentage_point_gain": 0,
+  "consecutive_zero_gain_campaigns": 0,
+  "note": "The 17 prior research commits are the superseded strategy, not 17 fresh campaign allowances. This campaign closes at its evidence limit even if qualification fails.",
+  "started_at_utc": "2026-10-18T01:35:57.089072+00:00"
+}
