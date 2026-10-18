@@ -254,12 +254,13 @@
       "state": "parked-until-producer-partition-evidence",
       "class": "shared-pool-flush-and-local-call-identity",
       "evidence": "research/2026-10-13-gain-textwrappers/REPORT.md",
-      "observation": "Real frame-pointer table/callee contract improves e412 register asymmetry but not pool. One section defers preceding pool; separate genuine section flushes it but emits longer indirect widthcall. Original ELF only has DIR32 relocations, insufficient GNU SH call relaxation metadata.",
+      "observation": "Real frame-pointer table/callee contract improves e412 register asymmetry but not pool. One section defers preceding pool; separate genuine section flushes it but emits longer indirect widthcall. Original ELF only has DIR32 relocations, insufficient GNU SH call relaxation metadata. Fresh original ROF has33 DIR32-equivalent records and no omitted call-relaxation record. Native historical optimizer reads it but leaves both sections/relocs/roots unchanged with corrected original placement; externals unresolved, so no fully resolved optimization claim.",
       "do_not_repeat": "Archived width/type/storage matrices, default-section reset, namedsection flush as exactness claim, or rebase/patch workarounds. Per-file -inline=80 (Colin-approved test, 2026-10-16): retained f_e3b8 stays exact, but SHC inlines f_e412 into f_e3e0 (25 to 73-79 insns), so f_e412 compiles 96-112 bytes late and the strict [e412,e520) proof fails; ROM f_e3e0 is 0x32 bytes with BSR f_e39c and a fall-through into f_e412, which rules this inlining out.",
-      "next_question": "Find genuine compiler/link partition evidence explaining E3D0 pool flush and E3EE local BSR together.",
+      "next_question": "Establish native inter-module optimization metadata prerequisites and a fully resolved positive control before another partition experiment. Current original ROF does not contain discarded callsite metadata; corrected isolated native run leaves indirect call unchanged. Preserve E3D0 pool flush plus E3EE local BSR as the actual requirement.",
       "supporting_evidence": [
         "research/2026-10-16-e3e0-helpers/REPORT.md",
-        "research/2026-10-16-e3e0-inline80/REPORT.md"
+        "research/2026-10-16-e3e0-inline80/REPORT.md",
+        "docs/research/2026-10-17-text-native-object.md"
       ]
     },
     {
