@@ -96,3 +96,8 @@ f9180 promoted-result spill and test a dimensional lifetime split in f2657c.
 Both bounded packets preserve ordinary native outputs and authenticated
 diagnostics; neither yields an admissible interval. Session gain remains
 **0 bytes, +0.000000 percentage points**.
+
+The [ABI and clamp controls](2026-10-17-abi-and-clamp-controls.md) reconcile the
+newer board source and recover the music routine volume/timer homes through
+a rejected conditional-clamp control. Both remain raw-negative. VM/checksum
+routes now reference existing negatives; no fresh coverage is claimed.

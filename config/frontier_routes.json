@@ -20,9 +20,13 @@
       "state": "parked-source-sweeps",
       "class": "scratch-register-allocation",
       "evidence": "research/2026-10-05-predecessor-first-57d4/f10788-scratch-oracles/RESULTS.json",
-      "observation": "Best legitimate source is 219/221 halfwords. Forced compiler scratch exclusion can diagnose the missing r0 pair but is not admissible output.",
+      "observation": "Current canonical context has six raw byte differences at1082e,10830-10831,108b4,108b6-108b7. Archived219/221 source additionally contains inert history-shaping statements; forced scratch exclusion diagnoses missingR0 pair but is not admissible compiler output.",
       "do_not_repeat": "Broad dead-code, dummy-local, boolean and predecessor-dead-state sweeps.",
-      "next_question": "Which genuine IR liveness or predecessor operation changes the observed emit118 exclusion/history while preserving the entire translation unit?"
+      "next_question": "Which genuine IR liveness or predecessor operation changes the observed emit118 exclusion/history while preserving the entire translation unit?",
+      "supporting_evidence": [
+        "research/2026-10-17-hud10788-context/canonical-inventory.json",
+        "docs/research/2026-10-17-abi-and-clamp-controls.md"
+      ]
     },
     {
       "address": "0x2090c",
@@ -224,11 +228,12 @@
       "state": "parked-until-coordinate-and-pointer-lifetime-evidence",
       "class": "stack-abi-loop-shape-and-pool-layout",
       "evidence": "docs/research/2026-10-17-native-storage-trials.md",
-      "observation": "Five ordinary launches recover7genuine function bodies; old archive2657c/26e18/26ff0/2722c bodies were synthetic g_dummy stubs and excluded. Correct26e18 stack order is px,row,py,x; explicit redraw do-loops remove unintended4fold unrolling. Latest context3320vs3476target, final helper156early,3330fixed-target differences including156missing. Parent8links reproduce and corrected row writer passes96controlled ROM cases in each of2contexts; zero credit. Later parent recovered exact70byte redraw-lock wrapper using incominglong args and narrowcallee; those bytes are now accepted in dedicated26faacontext, remainingproducer still unresolved. Current-redraw helper26f64 is now accepted with26faa in one140byte interval; registeroffset plusindexedbank-column consumer recovered its70bytes. Authenticated native trial splits row count from pixel height: cur moves to original R9, but pixel height takes R8 and local still spills. Frame stays24 rather than28, next root26c6c (68 early), target1719 raw differences. All later roots/residual counts unchanged; zero gain.",
-      "do_not_repeat": "No synthetic predecessor restoration; no repeated narrow step declarations (byte-identical) or blind scratch/pragma/ABI controls. Keep linear pool scans diagnostic. Do not repeat the row-count/pixel-height split without new lifetime evidence.",
+      "observation": "Five ordinary launches recover7genuine function bodies; old archive2657c/26e18/26ff0/2722c bodies were synthetic g_dummy stubs and excluded. Correct26e18 stack order is px,row,py,x; explicit redraw do-loops remove unintended4fold unrolling. Latest context3320vs3476target, final helper156early,3330fixed-target differences including156missing. Parent8links reproduce and corrected row writer passes96controlled ROM cases in each of2contexts; zero credit. Later parent recovered exact70byte redraw-lock wrapper using incominglong args and narrowcallee; those bytes are now accepted in dedicated26faacontext, remainingproducer still unresolved. Current-redraw helper26f64 is now accepted with26faa in one140byte interval; registeroffset plusindexedbank-column consumer recovered its70bytes. Authenticated native trial splits row count from pixel height: cur moves to original R9, but pixel height takes R8 and local still spills. Frame stays24 rather than28, next root26c6c (68 early), target1719 raw differences. All later roots/residual counts unchanged; zero gain. Newer functional-track source in coherent legacy-call full context also fails: frame24, next root26c38 (120 early),1758 raw target differences.100 sampled trials pass but grant no exactness credit.",
+      "do_not_repeat": "No synthetic predecessor restoration; no repeated narrow step declarations (byte-identical) or blind scratch/pragma/ABI controls. Keep linear pool scans diagnostic. Do not repeat the row-count/pixel-height split without new lifetime evidence. Do not repeat the coherent legacy-ABI/newer semantic-body combination without new compiler evidence.",
       "next_question": "Explain original local-coordinate R8 and field-pointer SP0 together; target recomputes initial coordinate while native CSE shares it. Preserve genuine declarations and ABI; no padding or arbitrary volatile shaping.",
       "supporting_evidence": [
-        "research/2026-10-13-resume-2657c/REPORT.md"
+        "research/2026-10-13-resume-2657c/REPORT.md",
+        "research/2026-10-17-board2657c-semantic/REPORT.md"
       ]
     },
     {
@@ -359,17 +364,19 @@
     },
     {
       "address": "0x96ac",
-      "state": "native-volume-timer-allocation-investigation",
-      "evidence": "research/2026-10-13-field96ac-snapshot-alias/REPORT.md",
-      "observation": "Raw target self-bind excluded low registers; removing want/tgt snapshot aliases clears bindings and recovers wantR4,targetR6,tablebaseR7,stateR5. Frame4/two tails restored, case-local casts and address arithmetic retained. Full1248extent/982raw differences incl4missing,protected472 exact; volumeSP0/timerR12 and pointer homes remain wrong.",
-      "next_question": "Read-only evaluate timer snapshot lifetime and volume/timer equal3/-2 score with exact pointer constants; do not launch register-hint or width grid without native prediction.",
+      "state": "parked-until-joint-clamp-and-address-lifetime-evidence",
+      "evidence": "docs/research/2026-10-17-abi-and-clamp-controls.md",
+      "observation": "Raw target self-bind excluded low registers; removing want/tgt snapshot aliases clears bindings and recovers wantR4,targetR6,tablebaseR7,stateR5. Frame4/two tails restored, case-local casts and address arithmetic retained. Full1248extent/982raw differences incl4missing,protected472 exact; volumeSP0/timerR12 and pointer homes remain wrong. New conditional second-clamp source restores volumeR12/timerSP0 through two priority2 webs, falsifying predicted single priority6 web. Target1260 versus1252 bytes,1051 raw differences plus8 excess,protected472 strict-pass; zero credit.",
+      "next_question": "Recover original clamp instruction sequence and pending/volume/target address roles together with timer-only frame. Recovered volume/timer homes alone do not qualify.",
       "supporting_evidence": [
         "research/2026-10-13-field96ac-lifetime/REPORT.md",
         "research/2026-10-13-field96ac-lifetime/COMBINED_REVIEW.md",
         "research/2026-10-13-field96ac-table-address/REPORT.md",
         "research/2026-10-13-field96ac-cse-origin/PARENT_REVIEW.json",
-        "research/2026-10-13-field96ac-snapshot-alias/PARENT_REVIEW.json"
-      ]
+        "research/2026-10-13-field96ac-snapshot-alias/PARENT_REVIEW.json",
+        "research/2026-10-13-field96ac-snapshot-alias/REPORT.md"
+      ],
+      "do_not_repeat": "Snapshot-alias and flattened-table families; conditional second-clamp control. State/volume-address +1/+2 priority models do not reverse the tie, so no source compiles justified."
     },
     {
       "address": "0x225fa",
@@ -471,6 +478,27 @@
       "observation": "Genuine full-context int-return baseline has nominal9180, successor95b0,919 raw differences. Authenticated native diagnostics identify promoted-result int spill causing fifth stack slot. Register-short control retains spill/frame20, successor95be,992 differences; protected326 bytes exact. Original frame16 and final empty comparison confirmed.",
       "do_not_repeat": "Prior palette/field ABI controls or register-short result control. No artificial empty operations; preserve only ROM-backed final comparison.",
       "next_question": "Find genuine expression lifetime that avoids promoted-result caching across cleanup calls while preserving original short result, nominal roots and protected neighboring bytes."
+    },
+    {
+      "address": "0xec0c",
+      "state": "parked-until-new-storage-producer-evidence",
+      "evidence": "research/2026-10-13-frontier-small-owner-inventory/REPORT.md",
+      "observation": "Genuine whole context exists; prior storage, letter-lifetime, row-cache, addition/subtraction and result-reuse controls fail. Historical audit541 raw differences,104 protected tail bytes exact. No new compiler launch.",
+      "next_question": "Require a new native mechanism preserving actual sprite-ID stack storage, frame44 and original roots together; do not repeat documented width/address/loop families."
+    },
+    {
+      "address": "0xf29a",
+      "state": "parked-until-new-rotate-consumer-binding-evidence",
+      "evidence": "research/2026-10-13-vm-rotate-abi/REPORT.md",
+      "observation": "Real task API contract control is full-context byte-identical; nominalf29a/f4c6, f3a2 two early,415 raw differences; protected154 and262 bytes exact.",
+      "next_question": "Find a new real consumer/lifetime explanation for both rotate bodies and nominal internal root; do not repeat task API or old pointer/result shape matrices."
+    },
+    {
+      "address": "0x30880",
+      "state": "parked-until-bank-scratch-state-evidence",
+      "evidence": "docs/research/2026-10-03-shc-bank-scratch.md",
+      "observation": "Prior allocation-correct controls still useR2 where ROM requiresR1 and fail raw layout. Nine follow-up full contexts fail; production baseline122 raw differences.",
+      "next_question": "Explain consumed bank-input expression/history selectingR1 while preserving allocation, audio-read order and actual roots. Closed flags/initializers/decrement families are not new hypotheses."
     }
   ],
   "asm_scan": {
