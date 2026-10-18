@@ -189,12 +189,15 @@
     },
     {
       "address": "0x2ac4c",
-      "state": "parked-until-counter-consumer-evidence",
+      "state": "parked-until-upload-induction-boundary-evidence",
       "class": "counter-narrowing-and-loop-schedule",
       "evidence": "research/2026-10-10-blend-counter-lifetime/REPORT.md",
-      "observation": "Two native machine contexts and normal/diagnostic MDL streams authenticate. Counter logical46 remains SP+0 with range10..85; REG differs only kind0x10 to0x8. Pointer homes/lifetimes stay fixed. Short counter adds EXTS.W at2af3e; setter root moves+2.182 to206 nominal-address target differences; protected setter fails for short control.22 launches, no credit.",
+      "observation": "Two native machine contexts and normal/diagnostic MDL streams authenticate. Counter logical46 remains SP+0 with range10..85; REG differs only kind0x10 to0x8. Pointer homes/lifetimes stay fixed. Short counter adds EXTS.W at2af3e; setter root moves+2.182 to206 nominal-address target differences; protected setter fails for short control.22 launches, no credit. Archived row/destination native controls now authenticated: both short-lived values remainR6, range73..81. Destination hoists hardware base into outer induction and gives equal-score zeroR8, spillinguSP0/frame80. Row frame76 but hardware addition stays in upload stores. Actual setter roots2af5c/2af6a;231/714 target differences and68/78 protected differences.22 stages, zero gain.",
       "do_not_repeat": "The archived125 variants of union/type/counter/address/declaration/inline-product families; treating short-counter root shift as pointer-web growth; shifted or normalized suffix credit.",
-      "next_question": "Map hardware-base invariant in archived lifetime_07/08 row/destination controls before further source edits. ROM upload prelude/loop are20/42 bytes versus16/48 in these controls: ROM includes0x24040000 in the invariant row base, while generated stores combine it inside the loop. Require authenticated native evidence predicting a preserved-root change."
+      "next_question": "Recover genuine boundary retaining hardware base as upload-loop invariant while recomputing row from short i before each upload, as ROM20-byte setup/42-byte body. Current row/destination forms both strength-reduce row across outer loop; destination also flips zero/u equal-score allocation. Preserve uR8/frame76 and nominal setter. Do not repeat row/dest or existing reset controls without new evidence.",
+      "supporting_evidence": [
+        "docs/research/2026-10-17-blend-upload-invariant.md"
+      ]
     },
     {
       "address": "0xe39c",
