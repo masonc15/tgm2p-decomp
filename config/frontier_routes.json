@@ -180,12 +180,15 @@
     },
     {
       "address": "0x3c88",
-      "state": "parked-until-native-conversion-evidence",
+      "state": "parked-until-register-conversion-binding-evidence",
       "class": "typed-conversion-and-code-generation-state",
       "evidence": "research/2026-10-10-das-conversion-lifetime/REPORT.md",
-      "observation": "Two assembly-mode captures reproduce ordinary machine contexts; diagnostic REG/ILB exactly match native. Index and delay homes/lifetimes are unchanged; only delay scalar type differs. Signed15-difference baseline is wrong for high-bit index values; unsigned-correct240-difference control moves gravity+4. GEN normal/traced equality fails native authentication (598 SUA/506 ASA bytes).24 launches, no credit.",
+      "observation": "Two assembly-mode captures reproduce ordinary machine contexts; diagnostic REG/ILB exactly match native. Index and delay homes/lifetimes are unchanged; only delay scalar type differs. Signed15-difference baseline is wrong for high-bit index values; unsigned-correct240-difference control moves gravity+4. GEN normal/traced equality fails native authentication (598 SUA/506 ASA bytes).24 launches, no credit. Native exec-boundary snapshots now authenticate GEN SUA/ASA exactly for both complete machine contexts. Only CMN changes among GEN input files; replacing just that file with after-GEN state breaks replay. GEN itself emits in-place EXTU.B R4,R4 plus MOV R4,R9 from one parent node with finalR9. Outer unsigned-long promotion changes threshold type and two comparison bytes but not conversion recipe or roots:240 target/500 protected differences; gravity+4. Native packet22 stages, source control10, zero gain.",
       "do_not_repeat": "Prior DAS type/cast/index/delay/copy families; identical-lifetime hypothesis; blind GEN stage replay with unresolved native state. Never accept signed high-bit index behavior.",
-      "next_question": "Explain native pre-GEN symbol/label state or independently decode native SUA correspondence before attributing conversion placement to GEN/PEP. New source control requires a predicted consumed lifetime/recipe change preserving unsigned indices and both exact neighbors."
+      "next_question": "Recover genuine consumed conversion/binding evidence selecting direct EXTU.B R4,R9 from register-source recipe while preserving unsigned index, original roots and both protected neighbors. Authentic GEN method is now available: snapshot before GEN, never final CMN. Outer promotion type alone leaves recipe0x44e3d8 unchanged; do not repeat.",
+      "supporting_evidence": [
+        "docs/research/2026-10-17-das-native-gen.md"
+      ]
     },
     {
       "address": "0x2ac4c",
