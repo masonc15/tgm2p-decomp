@@ -585,7 +585,8 @@
       "observation": "One8stage full-context control restores actualR4zero supplied to29bf8; sole19684text changeadca0009toe400. Targetraw32to30,rootsad80/af8cexact,166acceptedbytes/dependenciespreserved. InputR9/R10 andlateR2/R3 remainwrong. First302rodatabytesmatchoriginalowner but full1182layoutnotexact. Zeroacceptedgain.",
       "next_question": "Recover genuine input-global allocation and text-callee/data owner context. Before any admission reconcile actual zero argument with unused callee formals. Do not repeat argument width/count controls without evidence.",
       "supporting_docs": [
-        "docs/research/2026-10-17-helper-storage-and-screen-call.md"
+        "docs/research/2026-10-17-helper-storage-and-screen-call.md",
+        "docs/research/2026-10-17-settings-data-owner.md"
       ]
     },
     {
@@ -597,6 +598,28 @@
       "next_question": "Read complete array243 native binding/ordinal evidence before fresh source prediction; do not repeat cachedstate or broadregister sweeps.",
       "supporting_docs": [
         "docs/research/2026-10-17-helper-storage-and-screen-call.md"
+      ]
+    },
+    {
+      "address": "0xb3c0",
+      "state": "parked-until-error-message-owner-and-scalar-allocation-evidence",
+      "class": "genuine-readonly-data-owner-and-initializer-scheduling",
+      "evidence": "research/2026-10-17-settings-data-owner/VERIFICATION.json",
+      "observation": "Two8stage nativecontrols restore genuine default11short andlimit10byte definitions atoriginal addresses; later32strings/52uses and128fontwidths emitted. Full19684text size/rootsstable,166acceptedbytes/dependenciesexact. Fixedtarget39canonical,32ownerlinkedbaseline,27newownedcontrols,stillstrictrejectb3db. Data2086vs2098knownspan; all laterstrings/font/namepointers12early, missingoriginalBg is Zero message. Zeroacceptedgain.",
+      "next_question": "Require genuine error-check/configuration producer for missing12byte message and native evidence for initialstore/zero/scratch allocation; no unusedstringpadding, constantfalsehint, declarationorder orbuffersize sweep.",
+      "supporting_docs": [
+        "docs/research/2026-10-17-settings-data-owner.md"
+      ]
+    },
+    {
+      "address": "0xcac8",
+      "state": "parked-until-genuine-unreachable-error-producer",
+      "class": "constant-condition-source-and-literal-ownership",
+      "evidence": "tools/shc_probe/cases/session_coverage_gap18_review/menu_cac8_review/REVIEW.md",
+      "observation": "Prior originalCFG confirmsunreachableCB44-CB68 skippedbyBRAatCB40; historicalconstantfalseblockisnotadmissionevidence. Freshdataownerworkfindsmissing12byte Bg is Zero string at6032d98; actualdeadtextcallpassesfadeaddressR12 andwholeROMcontainsno6032d98addressliteral. Do notinferoriginalcondition fromthat alone.",
+      "next_question": "Recover original errorcheck or buildconfiguration before reconstructing skippedblock/string; do not invent initialrepeatstate or reuseconstantfalsecodeasallocatorhint.",
+      "supporting_docs": [
+        "docs/research/2026-10-17-settings-data-owner.md"
       ]
     }
   ],
