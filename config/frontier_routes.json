@@ -310,17 +310,23 @@
       "address": "0x8b86",
       "state": "parked-until-real-parameter-storage-evidence",
       "evidence": "research/2026-10-13-field-reset-binding/REPORT.md",
-      "observation": "Fourteen stages: real callee331a takes selected field pointer. K&R byte formal produces distinct frontend IR but both normal and debug MDL crash before valid allocation output. ANSI full-context roots remain wrong; protected228+244 exact. Archived108-difference form uses inadmissible dead address-taking.",
-      "next_question": "Require target-backed consumed addressability or a working native formal-binding positive control to explain actual id SP0 and field pointer SP4. Wide-input/local-byte and dead-address families are closed.",
-      "class": "parameter-binding-and-pointer-lifetime"
+      "observation": "Fourteen stages: real callee331a takes selected field pointer. K&R byte formal produces distinct frontend IR but both normal and debug MDL crash before valid allocation output. ANSI full-context roots remain wrong; protected228+244 exact. Archived108-difference form uses inadmissible dead address-taking. Native ordinary K&R driver now succeeds. Before-MDL ILA/SYM/INT/SWI equal the earlier failed frontend files; changing only selected CMN in identical input sets changes MDL crash to exact native REG/ILB. K&R f_8b86 REG and actual262-byte body remain identical to ANSI, with idR4/fR13; target254 differences. Following callers shorten unit8 bytes and protected95b8..96ac has232 differences.12 stages, zero gain.",
+      "next_question": "Require genuine consumed storage/lifetime evidence for idSP0 and fSP4 with original roots and protected neighbors. K&R byte formal is now a verified ordinary-output negative, not a compiler-support unknown. Use actual pre-stage snapshots for diagnostic gates; stale CMN caused the old replay crash.",
+      "class": "parameter-binding-and-pointer-lifetime",
+      "supporting_evidence": [
+        "docs/research/2026-10-17-field-native-kr.md"
+      ]
     },
     {
       "address": "0x7c08",
       "state": "parked-until-relative-priority-evidence",
       "evidence": "research/2026-10-13-announcement-priority-review/REPORT.md",
-      "observation": "Separate selectedpointer lowersbasepriority but retains wrongpair. Lateactualregisterindex recoversindexR4/baseR5 but demotesfieldR14\u2192R9/globalR11\u2192R12; gated3stages stop beforeordinarycompile. Wholefunctionregisterid already8failedcases.",
+      "observation": "Separate selectedpointer lowersbasepriority but retains wrongpair. Lateactualregisterindex recoversindexR4/baseR5 but demotesfieldR14\u2192R9/globalR11\u2192R12; gated3stages stop beforeordinarycompile. Wholefunctionregisterid already8failedcases. Actual eight-stage native driver now exactly reproduces archived REG/ILB. Original object root7c08/extent816 is correct but129 raw differences versus baseline24; the earlier gate is authenticated, not a stale-CMN artifact.",
       "next_question": "Need genuine relativepriority change without highprioritylateweb demoting persistentfields. No wholeid or lateindex register repeats.",
-      "class": "native-pointer-web-allocation"
+      "class": "native-pointer-web-allocation",
+      "supporting_evidence": [
+        "docs/research/2026-10-17-announcement-native-gate.md"
+      ]
     },
     {
       "address": "0x26ff0",
