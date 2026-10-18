@@ -141,11 +141,12 @@
       "state": "parked-until-reservation-and-pool-order-evidence",
       "class": "scratch-selection-and-stage-state",
       "evidence": "research/2026-10-13-hud-native-auth/REPORT.md",
-      "observation": "Actual SHC child hardware trace authenticates all7104 native bytes and1055 scratch predictions. Consumed inline controls recover addressregister pairing but reorder pools/add formalcopy and move105ba to105bc; strict rejects. Named register storage on genuine inline pointer formal leaves all7104 bytes identical to prior B-helper: pointer copy, reversed pool, successor+2 unchanged; eight-stage transfer closed.",
-      "do_not_repeat": "Old source matrices, broken stage replays, and both consumed inline scalar-argument controls without a prediction preserving original pool order and removing formalcopy.",
+      "observation": "Actual SHC child hardware trace authenticates all7104 native bytes and1055 scratch predictions. Consumed inline controls recover addressregister pairing but reorder pools/add formalcopy and move105ba to105bc; strict rejects. Named register storage on genuine inline pointer formal leaves all7104 bytes identical to prior B-helper: pointer copy, reversed pool, successor+2 unchanged; eight-stage transfer closed. Scalar ABI control for accepted input/draw callees leaves actual172byte target identical; earlier bodies grow8, targetroot10516,170nominaldiff. Eight native stages, zero gain.",
+      "do_not_repeat": "Old source matrices, broken stage replays, and both consumed inline scalar-argument controls without a prediction preserving original pool order and removing formalcopy. Joint short-input/long-coordinate declaration correction is closed; actual target mechanism unchanged.",
       "next_question": "Recover genuine expression graph changing reservation order while preserving pool emission order and omitting pointer-formal copy; native trace authenticity is resolved.",
       "supporting_evidence": [
-        "research/2026-10-13-hud-inline-binding/REPORT.md"
+        "research/2026-10-13-hud-inline-binding/REPORT.md",
+        "docs/research/2026-10-17-hud-scalar-call-abi.md"
       ]
     },
     {
@@ -541,6 +542,15 @@
       "observation": "Archived best215 has10rawdifferences but contains inert if(0)done=10 history shaping. Not a fresh admissible source candidate. Extensive countdown,loopbound,type,ABI and inlinehelper controls already recorded.",
       "do_not_repeat": "Archived inert-AST and allocation sweeps; no new dummy/dead statements to manufacture compiler history.",
       "next_question": "Recover genuine source loop/lifetime context explaining constant10 placement and timer/done/160 register cycle."
+    },
+    {
+      "address": "0xd394",
+      "state": "parked-until-genuine-one-and-cursor-storage",
+      "class": "source-expression-and-table-address-lifetime",
+      "evidence": "docs/research/2026-10-17-secret-menu-semantics.md",
+      "observation": "Native unsigned absolute-value expression reproduces original constant-zero R14 test and three syntactic RNG call sites with two runtime events. Recovered genuine initializer order/int-x/five explicit stores produce48byte frame versus52, w4R8 insteadSP4, and five address slots inwrongorder. Actualrootd2d8 remains188early; protected166exact; no coverage.",
+      "do_not_repeat": "Unsigned RNG absolute-value expression, known reset loop/direct-store contrast, or historical five dead g_dummy statements. No initializer-address patch or context rebasing.",
+      "next_question": "Recover genuine constant1/R8 lifetime plus w4SP4/promotedSP0 and table slots12..28, retaining runSP36/tabSP40; original preceding unit roots and initializer pool6032e40 remain mandatory."
     }
   ],
   "asm_scan": {
