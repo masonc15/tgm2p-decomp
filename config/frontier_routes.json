@@ -446,12 +446,13 @@
       "state": "near-miss-allocation-tie",
       "class": "constant-web-clash-profit",
       "evidence": "research/2026-10-16-57d4-allclear/REPORT.md",
-      "observation": "TU 0x51f4-0x7004; context exact to 0x57d4. T1 shape (two cross-jumped f_179b8 calls) correct; all_clear clash sum 123/14 gives profit -3 vs constant 32 -4. Y1/t3 forms fix allocation but break cross-jump or store shape.",
-      "do_not_repeat": "limit as ?:, all_clear single-expression forms, Y1 ternary call statement. Early m/all_clear consumed-local reuse: separate webs, identical 4068-byte context (2026-10-17). Short-circuit &&/|| call alternative: stack recovered but R2/R3 call tails remain separate; f5b80 +8 (2026-10-17).",
-      "next_question": "Genuine T1-shaped source giving all_clear clash floor >= 9 (sum >= 126 or one <=3 clash removed).",
+      "observation": "TU 0x51f4-0x7004; context exact to 0x57d4. T1 shape (two cross-jumped f_179b8 calls) correct; all_clear clash sum 123/14 gives profit -3 vs constant 32 -4. Y1/t3 forms fix allocation but break cross-jump or store shape. Native GEN: Y1 plans both call scratches before emit146 (R2 thenR3); T1 selects firstR2, nonempty-else callback40182f selectsR3, then secondcallR2. Authenticated22stage trace. Acceptedcallee short-coordinate declaration control9stages leaves entire4068byte T1 context identical.",
+      "do_not_repeat": "limit as ?:, all_clear single-expression forms, Y1 ternary call statement. Early m/all_clear consumed-local reuse: separate webs, identical 4068-byte context (2026-10-17). Short-circuit &&/|| call alternative: stack recovered but R2/R3 call tails remain separate; f5b80 +8 (2026-10-17). Short-coordinate f179b8 declaration changes four ILB bytes but no REG/GEN/object bytes.",
+      "next_question": "Recover genuine source with all_clear profit<=-4 and statement-style call planning. Y1 jointly reserves both callees before emitting arms; T1 else callback40182f intervenes between them. Require new definition-web or planning evidence; do not repeat coordinate-width or conditional-call spelling controls.",
       "supporting_evidence": [
         "research/2026-10-17-f57d4-local-web/REPORT.md",
-        "research/2026-10-17-f57d4-shortcircuit/REPORT.md"
+        "research/2026-10-17-f57d4-shortcircuit/REPORT.md",
+        "docs/research/2026-10-17-allclear-native-branches.md"
       ]
     },
     {
