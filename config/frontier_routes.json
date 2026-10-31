@@ -652,7 +652,7 @@
       "state": "blocked-by-unit-layout",
       "class": "same-unit-callee-identity-and-rodata-ownership",
       "evidence": "docs/research/2026-10-31-settings-unit-callees.md",
-      "observation": "In the full settings context every f_bc02 instruction matches; only literals f_e412 (bc7c,bde8), f_e520 (bdf8) and the Yes/No labels (bc90,bde4) differ. Shared literal strings prove the unit spans 9c0c..~e74f. Ending the unit after f_be04 with Yes/No as ROM-text externs changed f_a226 allocation and 165 f_bc02 instruction halfwords (entries -28..-126): SHC uses same-unit callee knowledge. One driver, 8 stages, zero gain.",
+      "observation": "In the full settings context every f_bc02 instruction matches; only literals f_e412 (bc7c,bde8), f_e520 (bdf8) and the Yes/No labels (bc90,bde4) differ. Shared literal strings prove the unit spans 9c0c..~e74f. Ending the unit after f_be04 with Yes/No as ROM-text externs changed f_a226 allocation and 165 f_bc02 instruction halfwords (entries -28..-126): SHC uses same-unit callee knowledge. One driver, 8 stages, zero gain. 2026-10-31: ROM f_ad80 passes r4=0 to f_29bf8 at adc8 (first f_ad80 code difference), matching the startup unit's confirmed f_29bf8(0) calls; settings-unit calls of f_29bf8 should take 0 when the layout chain is reopened.",
       "do_not_repeat": "Truncating the settings unit or making same-unit callees external to fix literal values; it changes caller code generation.",
       "next_question": "Recover genuine size-correct bodies for be28,c21a,cac8,cf68,d394,d8e0,d962,dbe8 (drift +8,-108,-80,-12,-20,+38,+150,+412) so f_e412/f_e520 reach e412/e520 inside the full unit, plus an admissible owner for the unit's .rodata labels."
     },
