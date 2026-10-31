@@ -47,6 +47,28 @@ captures shows profit = priority − 3; variables show −3 to −5. Physical
 registers are then assigned in profit order, each web taking the lowest free
 index that does not clash (index p is register r(19−p), so r14 is taken first).
 
+## Immediate-operand exclusion (`0x404cd0`)
+
+`0x404cd0(parent, operand index, value)` decides whether a constant node does
+not count. It first requires an arithmetic, compare or assignment parent, then
+dispatches on `parent op - 0x40` through the table at `0x4051e0`/`0x405184`:
+
+| Parent op | Excluded when |
+|---|---|
+| 0x40, 0x50, 0x60, 0x61 | value in -128..127 (`add #imm`, `cmp/eq #imm`) |
+| 0x41, 0x51 | value in -127..127 and operand 2 |
+| 0x44, 0x54 | 16-bit value, operand 2, with variable-type checks on operand 1 |
+| 0x46-0x49, 0x56-0x59, 0x4c-0x4e, 0x5c-0x5e | separate handlers |
+| 0x5f (assignment) | operand 1 is op `0x35` |
+| 0x64-0x67 (ordered compares) | value 0 and not unsigned |
+| 0x78 (call argument) | value in -128..127 and passed in an argument register (`0x4054d0` < 5) |
+| others | never |
+
+So `timer < 500`, `i < 7`, `j < 2` and similar ordered loop bounds always
+count, and the ROM's unregistered loop bounds in f_780 and f_e074 cannot come
+from immediate exclusion. Small constants passed directly as call arguments do
+not count.
+
 ## Consequences confirmed by compiles
 
 All on f_e074 in the `text_palette_e3b8.c` context:
