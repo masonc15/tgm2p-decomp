@@ -9,20 +9,20 @@
     "completion_c_bytes": 199060,
     "approved_assembly_bytes": 1638
   },
-  "campaign_id": "2026-10-31-startup-final-counter",
-  "state": "closed-prediction-failed",
+  "campaign_id": "2026-10-31-startup-sort-capture",
+  "state": "closed-observation",
   "allow_tuning_compiles": false,
   "budget": {
     "max_evidence_minutes": 90,
     "max_compiler_stages": 24,
-    "compiler_stages_used": 8,
+    "compiler_stages_used": 1,
     "shared_across_targets": true,
     "reset_by_new_hypothesis": false
   },
   "calibration": [
     "research/2026-10-31-context-harvest/REPORT.md"
   ],
-  "replay": "research/2026-10-31-startup-final-counter/RESULT.json",
+  "replay": "research/2026-10-31-startup-sort-capture/RESULT.json",
   "qualification_result": "Default argument promotion confirmed twice (f_253bc/f_252f8 object copy; f_2140e/f_213da extu.w) qualified unprototyped callee declarations for the whole startup unit; root moved 0x10fc->0x1108 with f_1108 exact; strict admission passed.",
   "next_action": "Continue unit-layout recovery: board chain (f_27862) or settings chain (f_bc02), or f_780 body from the unproto.c base.",
   "required_before_tuning": [
