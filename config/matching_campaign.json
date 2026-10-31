@@ -4,13 +4,13 @@
   "host": "nephele",
   "execution": "solo",
   "baseline": {
-    "linked_c_bytes": 138670,
+    "linked_c_bytes": 138752,
     "total_bytes": 200698,
     "completion_c_bytes": 199060,
     "approved_assembly_bytes": 1638
   },
-  "campaign_id": "2026-10-17-nephele-mirrored-table",
-  "state": "accepted",
+  "campaign_id": "2026-10-31-bc02-literal-owner",
+  "state": "closed-prediction-failed",
   "allow_tuning_compiles": false,
   "budget": {
     "max_evidence_minutes": 90,
@@ -20,11 +20,11 @@
     "reset_by_new_hypothesis": false
   },
   "calibration": [
-    "docs/research/2026-10-03-shc-rank-recurrence.md"
+    "research/2026-10-31-context-harvest/REPORT.md"
   ],
-  "replay": "research/2026-10-17-nephele-mirrored-table/ACCEPTED.json",
-  "qualification_result": "All 504 archived variants explicitly declared descending q; target symmetric indexed operation and previously traced recurrence construction qualified one source-level prediction. Exact ordinary output and unchanged admission confirmed it. No new internal IR trace claimed.",
-  "next_action": "Qualify a distinct indexed-source transfer using archived negatives; publication is verified in the private PUBLICATION.json receipt.",
+  "replay": "research/2026-10-31-bc02-literal-owner/RESULT.json",
+  "qualification_result": "Zero-compile harvest of existing linked contexts found f_bc02 instruction-exact with only same-unit callee (f_e412,f_e520) and .rodata label literals differing. One source prediction: ending the genuine 0x9c0c unit after f_be04 and naming the labels by ROM text changes relocations only.",
+  "next_action": "Two different-class reviews before another transfer: genuine size-correct later settings bodies (unit layout) or a non-settings owner with new mechanism evidence. Do not truncate units to externalize same-unit callees.",
   "required_before_tuning": [
     "specific unresolved owner and prior-negative review",
     "source and tool hashes",
@@ -35,14 +35,15 @@
     "prediction recorded before candidate output"
   ],
   "success_metric": "accepted linked C bytes after unchanged strict admission and publication",
-  "verified_gain_bytes": 82,
-  "percentage_point_gain": 0.040857407647310884,
-  "consecutive_zero_gain_campaigns": 0,
-  "note": "Supersedes the qualification-only reset campaign. All intervening negative research is preserved under research/2026-10-17-nephele-* and grants zero bytes. Prior campaign metadata preserved in the acceptance packet.",
-  "started_at_utc": "2026-10-18T02:24:26.341032+00:00",
+  "verified_gain_bytes": 0,
+  "percentage_point_gain": 0.0,
+  "consecutive_zero_gain_campaigns": 1,
+  "note": "Prediction failed: f_a226 allocation and 165 f_bc02 instruction halfwords changed; entries moved -28..-126. SHC code generation depends on same-unit callee definitions. Zero bytes.",
+  "started_at_utc": "2026-10-31T03:00:00+00:00",
   "prior_campaign": {
-    "id": "2026-10-17-source-prediction-01",
-    "state": "qualification-only",
-    "evidence": "research/2026-10-17-nephele-mirrored-table/acceptance/matching_campaign.before.json"
+    "id": "2026-10-17-nephele-mirrored-table",
+    "state": "accepted",
+    "verified_gain_bytes": 82,
+    "evidence": "research/2026-10-31-bc02-literal-owner/matching_campaign.before.json"
   }
 }
