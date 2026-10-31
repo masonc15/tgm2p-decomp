@@ -50,3 +50,28 @@ Acceptance rules do not change: no padding, rebasing, truncation, modified
 compiler output or new exceptions. Every layout step earns zero bytes until
 f_1108 is nominal at 0x1108 and still exact; then its 344 bytes go through
 c-range admission, the full test suite, two cold replays and publication.
+
+## Addendum, later on 2026-10-31
+
+- **Startup chain: done.** Unprototyped callees put f_780 at its genuine size
+  and f_1108 was admitted (+344, coverage 139,096). See
+  docs/research/2026-10-31-startup-video-match.md.
+- **Settings chain: sized to -120, admission blocked.** With the exact 2,098-byte
+  `.rodata` the unit is -120 bytes at f_e3e0 (docs/research/2026-10-31-settings-unit-sizing.md).
+  The remaining gaps are f_c21a -110, f_d394 -32, f_cac8 +26, f_cf68 -12,
+  f_be28 +8, f_dbe8 -8 and f_e074 +2.
+  - Even at exact sizes, f_ad80/f_af8c/f_b3c0/f_bc02/f_e074 only match with the
+    unit `.rodata` at its ROM address. The strict proof places it after `.text`.
+  - Validating it in place would be new proof tooling, which needs the owner's
+    decision. Until then this chain can earn no bytes.
+  - The last f_be28 control (per-region f_e63a prototypes) is refused by SHC
+    (error 2118).
+- **Board chain: unchanged.** ROM f_2657c's 28-byte frame touches @0, @4, @12,
+  @20 and @24 and passes r15 to callees, so the 24-vs-28 gap is a spill, not an
+  unreferenced local. The startup frame mechanism does not transfer; no compile
+  was spent.
+
+There are now 52 consecutive zero-gain campaigns. Under the stop rule, the next
+work class needs a decision: either approve a `.rodata`-at-ROM-address proof
+mode for the settings unit, or name another chain. Acceptance rules are
+unchanged.
