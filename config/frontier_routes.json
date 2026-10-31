@@ -253,7 +253,7 @@
       "state": "parked-until-joined-pointer-lifetime-evidence",
       "class": "selected-coordinate-pointer-and-branch-merging",
       "evidence": "research/2026-10-13-startup-graph-review/REPORT.md",
-      "observation": "Joined-pointer goto control preserves pR5 but emits backward branch and wrong trueR2/falseR3 scratches; nextroot+4,72targetdiff and8protected. Elevenstages. Bestfive remains unchanged. Fresh native branch-Y capture proves false pointer self-binds/merges with base and maps R14; register keyword does not remove binding. Best five unchanged.",
+      "observation": "Joined-pointer goto control preserves pR5 but emits backward branch and wrong trueR2/falseR3 scratches; nextroot+4,72targetdiff and8protected. Elevenstages. Bestfive remains unchanged. Fresh native branch-Y capture proves false pointer self-binds/merges with base and maps R14; register keyword does not remove binding. Best five unchanged. 2026-10-31: unprototyped callee declarations across startup_setup_1278 leave [12e2,1896) at 643 raw differences (f_12e2 9) with the retained prefix passing (research/2026-10-31-setup-oldstyle): no effect; this unit passes only full-width arguments.",
       "do_not_repeat": "Closed pointer/cast/earlydefinition, inlineformal, cursorincrement and late metadata families without a new native source mechanism. No patchedcompiler output for admission.",
       "next_question": "New callback finding identifies 0x40182f as nonempty-else emission scratch, already active in this helper. Transfer review authenticates861 selections/200archivedbodies; no duplicate commonreturn control. Require a genuine joined-pointer graph changing branch scratch history while preserving final layout.",
       "supporting_evidence": [
