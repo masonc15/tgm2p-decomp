@@ -519,8 +519,9 @@
       "address": "0x30880",
       "state": "parked-until-bank-scratch-state-evidence",
       "evidence": "docs/research/2026-10-03-shc-bank-scratch.md",
-      "observation": "Prior allocation-correct controls still useR2 where ROM requiresR1 and fail raw layout. Nine follow-up full contexts fail; production baseline122 raw differences.",
-      "next_question": "Explain consumed bank-input expression/history selectingR1 while preserving allocation, audio-read order and actual roots. Closed flags/initializers/decrement families are not new hypotheses."
+      "observation": "Prior allocation-correct controls still useR2 where ROM requiresR1 and fail raw layout. Nine follow-up full contexts fail; production baseline122 raw differences. 2026-10-31: unsigned long bank-loop counter (ROM compares without extu.w) raises f_30880 raw differences 122->149 while f_30a44 still passes (research/2026-10-31-checksum-counter): rejected.",
+      "next_question": "Explain consumed bank-input expression/history selectingR1 while preserving allocation, audio-read order and actual roots. Closed flags/initializers/decrement families are not new hypotheses.",
+      "do_not_repeat": "Counter width alone (unsigned long i)."
     },
     {
       "address": "0x152d4",
