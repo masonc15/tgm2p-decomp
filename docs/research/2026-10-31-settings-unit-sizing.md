@@ -74,6 +74,25 @@ All of these are ordinary-compiler controls with frozen predictions.
   and `f_2ee0c` (r12) at entry. In the draft the Y/N leaves rank at priority 6
   (counted before unrolling), far below constant 200 (24). ROM's frame is 88
   with a 44-byte scalar area; the draft's is 40.
+- **f_c21a, findings without a compile.**
+  - *Pool attribution.* ROM dumps `f_c21a`'s tail pool at its own end. The
+    pool holds 200, the short table 0xcc/0xbe/0xd0/0xc2/0xb4, `f_e63a`, the
+    strings and `f_2f2cc`/`f_2f3dc`/`f_2b4e8`. The best draft defers that pool
+    into `f_cac8`'s first dump point, so about 50 bytes of `f_cac8`'s "+26"
+    belong to `f_c21a`. Correctly attributed, `f_c21a` is about -60 and
+    `f_cac8` about -24.
+  - *The outer loop is syntactic.* ROM loads Y (0x6032b64, r10), 8 (r9), N
+    (0x6032b68, r11) and `f_2ee0c` (r12) at c2a0..c2a6, just before the
+    back-edge target c2a8. That is preheader motion, which goto-built loops
+    do not get. The draft's preheader holds 200 (r8), 8 (r11) and `f_2ee0c`
+    (r12). The only leaf/constant difference is Y/N versus 200.
+  - *The extra frame slot.* ROM's extra 4-byte scalar is the sign-extended
+    `sel` temporary. It is spilled to @4 and reloaded with `mov.l` before
+    nine `cmp/eq #k` tests, because r8..r14 are all taken. The draft keeps
+    it in r9.
+  - *The goto test.* A goto outer loop (research/2026-10-31-settings-c21a-goto)
+    moves the tail pool to `f_c21a`'s end as in ROM. It still holds 200 in
+    r14 and leaves Y/N unregistered, so it was rejected.
 - **f_d394 (-32).** ROM keeps `run` (@36), `w4` (@4) and `mode` (@32) on the
   stack; the main loop is syntactic (entered directly).
 - **f_cac8 (+30).** The unreachable "Bg is Zero" countdown fragment
