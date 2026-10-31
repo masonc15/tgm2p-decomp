@@ -9,8 +9,8 @@
     "completion_c_bytes": 199060,
     "approved_assembly_bytes": 1638
   },
-  "campaign_id": "2026-10-31-blend-goto-outer",
-  "state": "closed-prediction-failed",
+  "campaign_id": "2026-10-31-settings-d962-goto",
+  "state": "confirmed-step-zero-bytes",
   "allow_tuning_compiles": false,
   "budget": {
     "max_evidence_minutes": 90,
@@ -22,7 +22,7 @@
   "calibration": [
     "research/2026-10-31-context-harvest/REPORT.md"
   ],
-  "replay": "research/2026-10-31-blend-goto-outer/RESULT.json",
+  "replay": "research/2026-10-31-settings-d962-goto/RESULT.json",
   "qualification_result": "Default argument promotion confirmed twice (f_253bc/f_252f8 object copy; f_2140e/f_213da extu.w) qualified unprototyped callee declarations for the whole startup unit; root moved 0x10fc->0x1108 with f_1108 exact; strict admission passed.",
   "next_action": "Continue unit-layout recovery: board chain (f_27862) or settings chain (f_bc02), or f_780 body from the unproto.c base.",
   "required_before_tuning": [
@@ -70,5 +70,6 @@
   },
   "f_780_best_context": "research/2026-10-31-startup-29bf8-arg/arg.c (1253 raw differences, f_1108 exact)",
   "budget_note": "32 stages including an avoidable 24-stage baseline measurement; exceeded the 24-stage campaign cap; the measurement script now compiles one entry unless --all.",
-  "f_e074_best": "research/2026-10-31-textmenu-modulo-short/modshort.c (794 bytes, raw 510, 220/404 opcodes exact)"
+  "f_e074_best": "research/2026-10-31-textmenu-modulo-short/modshort.c (794 bytes, raw 510, 220/404 opcodes exact)",
+  "settings_unit_best": "research/2026-10-31-settings-d962-goto/d962.c (f_d8e0 130 exact size, f_d962 582/646)"
 }
