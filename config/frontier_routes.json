@@ -670,8 +670,8 @@
       "state": "parked-until-call-address-hoisting-evidence",
       "class": "callee-address-vs-local-allocation",
       "evidence": "docs/research/2026-10-31-settings-unit-callees.md",
-      "observation": "2026-10-31: in the accepted text_palette_e3b8 context f_e074 is size-exact at its nominal root (808 bytes) but only 87 bytes equal. ROM frame 24 keeps run=1 on the stack @(16) and hoists f_2bf58 into r13; the context keeps run in r11 (frame 20) and reloads f_2bf58 per call. Same pattern as startup f_780 (ROM hoists f_e3e0/f_e520/f_185f0 and spills loop locals).",
-      "next_question": "Identify the shared source or declaration mechanism that gives repeatedly called function addresses callee-saved registers ahead of user locals; [e074,e39c) is an admissible interval ending at f_e39c."
+      "observation": "2026-10-31: in the accepted text_palette_e3b8 context f_e074 is size-exact at its nominal root (808 bytes) but only 87 bytes equal. ROM frame 24 keeps run=1 on the stack @(16) and hoists f_2bf58 into r13; the context keeps run in r11 (frame 20) and reloads f_2bf58 per call. Same pattern as startup f_780 (ROM hoists f_e3e0/f_e520/f_185f0 and spills loop locals). ROM registers r9=g_606006c base (pool 0606006c, displacement fields @(8)/@(4), b28 via r0), r13=f_2bf58, r14=g_6032ff8, r10=320, and reloads f_2b4e8 at each call; context folds field addresses (06060074/06060070), hoists f_2b4e8 in r10 and keeps run in r11. f_bc02 (code-exact, same extern array) also keeps the unfolded base in a register, so the difference is leaf-web priority, not declaration.",
+      "next_question": "Native sort capture of f_e074 in the text_palette context (one MDL stage) to rank g_606006c/f_2bf58/string leaves against f_2b4e8 and run, before any source control."
     }
   ],
   "asm_scan": {
