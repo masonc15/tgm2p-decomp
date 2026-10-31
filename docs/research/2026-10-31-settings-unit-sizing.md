@@ -89,6 +89,22 @@ All of these are ordinary-compiler controls with frozen predictions.
   `g_606006c` one priority point lower and 64 one higher than the draft.
 - **f_dbe8 (-8).** The `b & 0x20` modulo cases and the r13/r10 roles.
 
+## What the near-exact bodies still lack (zero compiles)
+
+Halfword diff of the best draft against ROM, with `.rodata` at 0x6032a3c:
+
+- **f_bc02 (392):** one halfword, the low half of the `f_e412` literal (0xdc16
+  vs 0xdc92), caused by the -124 shift. It is exact once the unit is
+  size-exact through `f_e412`.
+- **f_af8c (872):** four code halfwords at af8e..afa8 (the constant 1 and
+  block-move register swap), plus the `f_e3e0`/`f_e412`/`f_e520` literals.
+- **f_ad80 (524):** the `f_29bf8(0)` argument at adca, r9/r10 and r2/r3 swaps,
+  the `g_6079304`/`g_6079305` pool order and the `f_e3e0` literal.
+- **f_b3c0 (1234):** register swaps, the save-slot load at b420, the shifted
+  `f_e3e0`/`f_e520` literals, and the `f_2f36e`/`f_20206` callee names.
+  The research unit predates commit 76d26c9, which corrected those names in
+  `src/`.
+
 ## Admission gap
 
 Even with every size exact, the literal-gated bodies need their string and
