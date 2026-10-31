@@ -2,7 +2,7 @@
 
 Solo work on nephele recovered `f_1108`, ROM `[0x1108,0x1260)`, using ordinary
 SHC v5.0r32 (`-macsave=1 -optimize=1 -speed`). Coverage rises from 138,752 to
-**139,096 / 200,698 bytes (69.306022%)**, a gain of **344 bytes and 0.171402
+**139,096 / 200,698 bytes (69.306122%)**, a gain of **344 bytes and 0.171402
 percentage points**. The agreed goal remains 199,060 linked C bytes, and 59,964
 non-exempt bytes remain. No exceptions, proof rules or tools changed.
 
