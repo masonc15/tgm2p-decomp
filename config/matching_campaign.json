@@ -9,7 +9,7 @@
     "completion_c_bytes": 199060,
     "approved_assembly_bytes": 1638
   },
-  "campaign_id": "2026-10-31-settings-c21a-frame",
+  "campaign_id": "2026-10-31-settings-e63a-unproto",
   "state": "closed-prediction-failed",
   "allow_tuning_compiles": false,
   "budget": {
@@ -22,7 +22,7 @@
   "calibration": [
     "research/2026-10-31-context-harvest/REPORT.md"
   ],
-  "replay": "research/2026-10-31-settings-c21a-frame/RESULT.json",
+  "replay": "research/2026-10-31-settings-e63a-unproto/RESULT.json",
   "qualification_result": "Default argument promotion confirmed twice (f_253bc/f_252f8 object copy; f_2140e/f_213da extu.w) qualified unprototyped callee declarations for the whole startup unit; root moved 0x10fc->0x1108 with f_1108 exact; strict admission passed.",
   "next_action": "Continue unit-layout recovery: board chain (f_27862) or settings chain (f_bc02), or f_780 body from the unproto.c base.",
   "required_before_tuning": [
@@ -37,7 +37,7 @@
   "success_metric": "accepted linked C bytes after unchanged strict admission and publication",
   "verified_gain_bytes": 0,
   "percentage_point_gain": 0.0,
-  "consecutive_zero_gain_campaigns": 44,
+  "consecutive_zero_gain_campaigns": 45,
   "note": "Startup layout campaigns of 2026-10-31 culminate in the accepted f_1108 range.",
   "started_at_utc": "2026-10-31T03:00:00+00:00",
   "prior_campaign": {

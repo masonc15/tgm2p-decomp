@@ -488,7 +488,7 @@
       "state": "blocked-by-unit-layout",
       "class": "same-unit-callee-literal",
       "evidence": "research/2026-10-16-ad80-screen-test/REPORT.md",
-      "observation": "Same 0x9c0c unit as 0xa226; f_be28/f_c21a/f_cac8/f_cf68 drafts differ in 63/717/368/121 normalized instructions and reference f_e3e0/f_e412/f_e520/f_e63a. 2026-10-31: f_be28 differs structurally only near c120..c178: ROM computes the cursor row sel*14+50 into r5 and stores from it (draft spills int y to @(12)), and keeps constant 0 in r14 for f_e63a stack arguments. Assigning the row inside the f_e520 argument (research/2026-10-31-settings-be28-row, 8 stages) leaves 1018 bytes and raw 281 (from 245): rejected.",
+      "observation": "Same 0x9c0c unit as 0xa226; f_be28/f_c21a/f_cac8/f_cf68 drafts differ in 63/717/368/121 normalized instructions and reference f_e3e0/f_e412/f_e520/f_e63a. 2026-10-31: f_be28 differs structurally only near c120..c178: ROM computes the cursor row sel*14+50 into r5 and stores from it (draft spills int y to @(12)), and keeps constant 0 in r14 for f_e63a stack arguments. Assigning the row inside the f_e520 argument (research/2026-10-31-settings-be28-row, 8 stages) leaves 1018 bytes and raw 281 (from 245): rejected. f_be28 capture inside the unit (research/2026-10-31-c21a-sort mdl, fn 428, 1 stage): const 0 holds r14 (39 refs) but the f_e63a 0/ternary arguments are materialised (mov #0) where ROM uses r14. Unprototyped f_e63a declarations (research/2026-10-31-settings-e63a-unproto, 8 stages) make f_be28 1026 and shrink the f_a608 region by 36: rejected.",
       "do_not_repeat": "Truncated contexts.",
       "next_question": "As 0xa226."
     },
