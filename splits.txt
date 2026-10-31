@@ -3,6 +3,7 @@
 0x000000 bin  vectors
 0x000400 asm  boot code, runs from ROM
 0x000780 asm  copied to RAM at 0x06000000 and run there
+0x001108 c-range src/startup_video_1108.c
 0x001260 c    src/rom_header.c
 0x001278 c-prefix src/startup_setup_1278.c
 0x0012e2 asm

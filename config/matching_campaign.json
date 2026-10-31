@@ -4,27 +4,27 @@
   "host": "nephele",
   "execution": "solo",
   "baseline": {
-    "linked_c_bytes": 138752,
+    "linked_c_bytes": 139096,
     "total_bytes": 200698,
     "completion_c_bytes": 199060,
     "approved_assembly_bytes": 1638
   },
-  "campaign_id": "2026-10-31-startup-long-x",
-  "state": "closed-prediction-failed",
+  "campaign_id": "2026-10-31-startup-unprototyped",
+  "state": "accepted",
   "allow_tuning_compiles": false,
   "budget": {
     "max_evidence_minutes": 90,
     "max_compiler_stages": 24,
-    "compiler_stages_used": 16,
+    "compiler_stages_used": 8,
     "shared_across_targets": true,
     "reset_by_new_hypothesis": false
   },
   "calibration": [
     "research/2026-10-31-context-harvest/REPORT.md"
   ],
-  "replay": "research/2026-10-31-startup-long-x/RESULT.json",
-  "qualification_result": "Frame evidence (292 reserved, 36 accessed) qualified an unreferenced 256-byte local: confirmed (root 10d8->10e0, video exact). Indexed-recurrence transfer to all case loops: rejected (root 10a4).",
-  "next_action": "Startup layout: segments d42-dec (-8) and b4e-bda (-6) from the textloops base.",
+  "replay": "docs/research/2026-10-31-startup-video-match.md",
+  "qualification_result": "Default argument promotion confirmed twice (f_253bc/f_252f8 object copy; f_2140e/f_213da extu.w) qualified unprototyped callee declarations for the whole startup unit; root moved 0x10fc->0x1108 with f_1108 exact; strict admission passed.",
+  "next_action": "Continue unit-layout recovery: board chain (f_27862) or settings chain (f_bc02), or f_780 body from the unproto.c base.",
   "required_before_tuning": [
     "specific unresolved owner and prior-negative review",
     "source and tool hashes",
@@ -35,10 +35,10 @@
     "prediction recorded before candidate output"
   ],
   "success_metric": "accepted linked C bytes after unchanged strict admission and publication",
-  "verified_gain_bytes": 0,
-  "percentage_point_gain": 0.0,
-  "consecutive_zero_gain_campaigns": 7,
-  "note": "Prediction failed: f_a226 allocation and 165 f_bc02 instruction halfwords changed; entries moved -28..-126. SHC code generation depends on same-unit callee definitions. Zero bytes.",
+  "verified_gain_bytes": 344,
+  "percentage_point_gain": 0.17140180769115784,
+  "consecutive_zero_gain_campaigns": 0,
+  "note": "Startup layout campaigns of 2026-10-31 culminate in the accepted f_1108 range.",
   "started_at_utc": "2026-10-31T03:00:00+00:00",
   "prior_campaign": {
     "id": "2026-10-17-nephele-mirrored-table",

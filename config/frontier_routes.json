@@ -463,12 +463,12 @@
     },
     {
       "address": "0x780",
-      "state": "parked-until-genuine-startup-layout",
+      "state": "parked-until-startup-allocation-evidence",
       "class": "zero-constant-callee-saved-home",
       "evidence": "research/2026-10-17-video-byte-offset/REPORT.md",
       "observation": "Genuine startup draft places f1108 at10d8,48 bytes early. Register counters plus byte-address row expression reproduce all344 video bytes only at displaced root. Nominal standalone and declarations-only controls emit356 bytes,143 differences. Zero accepted gain. 2026-10-31: an unreferenced 256-byte local reproduces the ROM frame (mov.w #-292/#292) with identical local displacements and keeps the 344 video bytes exact; f1108 root 10d8->10e0, startup raw differences 2260->1916 (research/2026-10-31-startup-frame/frame256.c). Indexed text loops then gain 12 more bytes in cases 0-2, but indexed sprite loops lose 46-58 in case 3 (root 10a4); case-0 stack homes still absent. Native trace (research/2026-10-31-startup-alloc-trace, REG/ILB native-equal, 11 stages): frame256 case 0 hoists f_2b4e8, f_e412, 500 and one constant while timer/i take r8/r10; ROM instead hoists f_2b4e8, g_6030d24, 600, f_e3e0, f_e412, 0 and 15 and reloads 500. The gap is the hoisted-invariant set (f_e3e0 call and string not hoisted in frame256), not a priority tie. Text-loop indexing alone on frame256 (research/2026-10-31-startup-textloops): root 10f0 (-24), video exact, startup raw differences 1887; outside its stated +/-2 band by 2 bytes in the improving direction, so recorded as a band miss. Unprototyped f_253bc/f_252f8 (research/2026-10-31-startup-kr-args) reproduce ROM's short-object store, reload and long @(n) copy feeding f_252f8 (+4 in bda-c90) but lose 4 in case 1 (root 10ec): rejected. Declaring g_6030d24 as char[] without casts (research/2026-10-31-startup-string-type) leaves the object identical: rejected. In textloops, case 1 matches ROM shape (timer/i on stack, cursor walk) except the register set: ROM {f_2b4e8,g_6030d24,600,f_e3e0,f_e412,0,15} loaded before the switch at c28, textloops {x recurrence r8,f_2b4e8,600,500,f_e412,0,15}. All ROM 500 compares are unsigned with per-case mov.w pools. Explicit long row with indexed tables (research/2026-10-31-startup-long-x) moves root to 10e8: rejected; textloops (10f0, -24) remains the base.",
       "do_not_repeat": "Do not rebase diagnostic slice, add synthetic predecessor/padding or repeat standalone declaration controls. Preserve successful row-byte mechanism.",
-      "next_question": "Why does the compiler-created x=60+i*20 recurrence take r8 (and 500 r11) in textloops while ROM spills x as a long and hoists g_6030d24/f_e3e0 before the switch? Test an explicit long x recurrence with indexed table access only with a priority prediction.",
+      "next_question": "f_1108 is accepted (2026-10-31). For f_780 itself start from research/2026-10-31-startup-unprototyped/unproto.c: explain register/slot naming before 0xbda and why ROM hoists g_6030d24/f_e3e0 (not 500) before the mode switch.",
       "drift_map": "2026-10-31 zero-compile call alignment of the byte_offset draft against ROM: prologue -2 is exactly the frame (ROM mov.w #-292+add versus add #-36); ROM never forms an r15 address and touches only @(0..32,r15), so 256 bytes are reserved but unaccessed. Remaining code-shape drift by call segment: 7c8-93c -4, 93c-bda -8, bda-d42 -26, d42-e8c -16, e8c-1032 +10. Start with bda-d42. Segment bda-d42 (case 0 of the mode switch): ROM homes outer counter (limit 500) @(16,r15), inner counter (limit 7, upcount) @(12,r15), long y+=20 @(4,r15) and table pointer+=4 @r15, while keeping repeated callees in r8/r9/r11/r12; the draft uses register counters with DT, short y and pool reloads. The 26 bytes are allocation priority across the function, not a missing statement.",
       "supporting_evidence": [
         "research/2026-10-17-video-producer/REPORT.md"
@@ -654,6 +654,15 @@
       "observation": "In the full settings context every f_bc02 instruction matches; only literals f_e412 (bc7c,bde8), f_e520 (bdf8) and the Yes/No labels (bc90,bde4) differ. Shared literal strings prove the unit spans 9c0c..~e74f. Ending the unit after f_be04 with Yes/No as ROM-text externs changed f_a226 allocation and 165 f_bc02 instruction halfwords (entries -28..-126): SHC uses same-unit callee knowledge. One driver, 8 stages, zero gain.",
       "do_not_repeat": "Truncating the settings unit or making same-unit callees external to fix literal values; it changes caller code generation.",
       "next_question": "Recover genuine size-correct bodies for be28,c21a,cac8,cf68,d394,d8e0,d962,dbe8 (drift +8,-108,-80,-12,-20,+38,+150,+412) so f_e412/f_e520 reach e412/e520 inside the full unit, plus an admissible owner for the unit's .rodata labels."
+    },
+    {
+      "address": "0x1108",
+      "state": "accepted",
+      "class": "genuine-predecessor-layout",
+      "evidence": "docs/research/2026-10-31-startup-video-match.md",
+      "observation": "344 exact bytes [1108,1260) at nominal root in the genuine 0x780 startup unit; predecessor f_780 size recovered through frame, indexed text loops, string literals and unprototyped callees; strict c-range proof, 341 tests and two cold replays pass.",
+      "do_not_repeat": "Standalone/declaration-only f_1108 contexts; indexed sprite loops; long row variable; char[] label control.",
+      "next_question": "Recover f_780 bytes (size-exact before 0xbda; remaining differences are register/slot naming and the mode-switch hoisted-invariant set)."
     }
   ],
   "asm_scan": {
