@@ -512,7 +512,7 @@
       "address": "0xf29a",
       "state": "parked-until-new-rotate-consumer-binding-evidence",
       "evidence": "research/2026-10-13-vm-rotate-abi/REPORT.md",
-      "observation": "Real task API contract control is full-context byte-identical; nominalf29a/f4c6, f3a2 two early,415 raw differences; protected154 and262 bytes exact.",
+      "observation": "Real task API contract control is full-context byte-identical; nominalf29a/f4c6, f3a2 two early,415 raw differences; protected154 and262 bytes exact. 2026-10-31: removing register from f_f29a/f_f3a2 locals moves sizes away from ROM (f_f29a 262->260 vs 264; f_f3a2 294->284 vs 292): rejected; register is not the residual here (research/2026-10-31-register-sweep).",
       "next_question": "Find a new real consumer/lifetime explanation for both rotate bodies and nominal internal root; do not repeat task API or old pointer/result shape matrices."
     },
     {
