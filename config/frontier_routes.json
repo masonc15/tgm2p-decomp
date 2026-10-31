@@ -664,6 +664,14 @@
       "observation": "344 exact bytes [1108,1260) at nominal root in the genuine 0x780 startup unit; predecessor f_780 size recovered through frame, indexed text loops, string literals and unprototyped callees; strict c-range proof, 341 tests and two cold replays pass.",
       "do_not_repeat": "Standalone/declaration-only f_1108 contexts; indexed sprite loops; long row variable; char[] label control.",
       "next_question": "Recover f_780 bytes (size-exact before 0xbda; remaining differences are register/slot naming and the mode-switch hoisted-invariant set)."
+    },
+    {
+      "address": "0xe074",
+      "state": "parked-until-call-address-hoisting-evidence",
+      "class": "callee-address-vs-local-allocation",
+      "evidence": "docs/research/2026-10-31-settings-unit-callees.md",
+      "observation": "2026-10-31: in the accepted text_palette_e3b8 context f_e074 is size-exact at its nominal root (808 bytes) but only 87 bytes equal. ROM frame 24 keeps run=1 on the stack @(16) and hoists f_2bf58 into r13; the context keeps run in r11 (frame 20) and reloads f_2bf58 per call. Same pattern as startup f_780 (ROM hoists f_e3e0/f_e520/f_185f0 and spills loop locals).",
+      "next_question": "Identify the shared source or declaration mechanism that gives repeatedly called function addresses callee-saved registers ahead of user locals; [e074,e39c) is an admissible interval ending at f_e39c."
     }
   ],
   "asm_scan": {
