@@ -68,3 +68,14 @@ Private packets, with replay scripts and hashes:
 `research/2026-10-31-context-harvest/` and
 `research/2026-10-31-bc02-literal-owner/`, which contains `INTENT.json`,
 `RESULT.json`, the candidate source and its context outputs.
+
+## Same check for the board unit
+
+The same instruction evidence ties the board code together. ROM 0x2789c, in
+the unresolved `f_27862`, is `bsr f_26f64` (-0x938). BSRs from 0x2668c to
+0x27100 reach 0x2722c, 0x26e18, 0x26ff0 and 0x26cb0, so 0x2657c through 0x278c0
+is one unit. The `board_setters_2774a.c` and `board_clear_278c0.c` contexts
+start at 0x276e8, so they compile that call as a pooled JSR. Admitting
+`f_27862` needs the unit from no later than 0x26f64, with size-correct bodies.
+The measured size errors are `f_26ff0` -46, `f_2722c` -2, `f_274c0` -2,
+`f_2769e` -2 and `f_277d0` -2 bytes, mostly in the unresolved [0x26ff0,0x27310).

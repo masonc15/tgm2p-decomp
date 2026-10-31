@@ -57,7 +57,8 @@
       "evidence": "docs/research/2026-10-10-toggle-peephole.md",
       "observation": "Middle pass and GEN retain reload. PEP deletes it at caller409611; first result copies delete at40c2cf/40c2e4. Explicit goto improves20 to18 differing bytes, protects134 setter bytes and all roots. No accepted bytes.",
       "do_not_repeat": "Recorded branch-sharing, pointer casts, result widths, explicit-else, branch-local results, direct-store and scaled-address controls without changed PEP/GEN evidence.",
-      "next_question": "Which genuine source operation places stride104 before the occupied reload or changes PEP409450 prefix eligibility, while preserving both calls, raw pool, roots and protected setters?"
+      "next_question": "Which genuine source operation places stride104 before the occupied reload or changes PEP409450 prefix eligibility, while preserving both calls, raw pool, roots and protected setters?",
+      "unit_extent": "ROM 2789c is BSR f_26f64 (-0x938), so f_27862 shares a unit with 26f64; 2668c..27100 BSRs tie 2657c..27310 together. Contexts starting at 276e8 compile that call as a pooled JSR. Admitting f_27862 needs the unit from <=26f64 with size-correct bodies: measured drift f_26ff0 -46, f_2722c -2, f_274c0 -2, f_2769e -2, f_277d0 -2 (2026-10-31, docs/research/2026-10-31-settings-unit-callees.md)."
     },
     {
       "address": "0x20a9c",
