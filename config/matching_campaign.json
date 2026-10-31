@@ -24,7 +24,7 @@
   ],
   "replay": "research/2026-10-31-bc02-literal-owner/RESULT.json",
   "qualification_result": "Zero-compile harvest of existing linked contexts found f_bc02 instruction-exact with only same-unit callee (f_e412,f_e520) and .rodata label literals differing. One source prediction: ending the genuine 0x9c0c unit after f_be04 and naming the labels by ROM text changes relocations only.",
-  "next_action": "Two different-class reviews before another transfer: genuine size-correct later settings bodies (unit layout) or a non-settings owner with new mechanism evidence. Do not truncate units to externalize same-unit callees.",
+  "next_action": "Campaign on f_780 segment bda-d42 (-26 bytes): recover genuine source for that segment from ROM, predict exact segment bytes before one compile; preserve f_1108 displaced exactness.",
   "required_before_tuning": [
     "specific unresolved owner and prior-negative review",
     "source and tool hashes",
@@ -45,5 +45,20 @@
     "state": "accepted",
     "verified_gain_bytes": 82,
     "evidence": "research/2026-10-31-bc02-literal-owner/matching_campaign.before.json"
+  },
+  "strategy_review_2026_10_31": {
+    "trigger": "one zero-gain campaign plus exhausted zero-compile qualification across all near misses",
+    "findings": [
+      "no contextual function is exact at either nominal or displaced roots in canonical contexts",
+      "pool-only harvest: no assembly-range literal is owned solely by linked C",
+      "every remaining near miss is either parked with native-trace closure (1050e, 10788, 12e2, e39c, 7658, 3c88) or blocked by unit layout (settings 9c0c unit, board 2657c unit, startup 780)"
+    ],
+    "selected_work_class": "unit layout reconstruction with genuine bodies",
+    "priority": [
+      "0x780: one predecessor (f_780 +48 bytes) unblocks displaced-exact f_1108 (344 bytes); drift map in frontier_routes 0x780",
+      "board unit: f_26ff0 -46 plus four -2 bodies unblock f_27862 (94)",
+      "settings unit: eight bodies, about -378 net, unblock f_bc02 plus pool (432)"
+    ],
+    "constraint": "Each layout step earns zero bytes until the whole chain is size-correct and the target stays exact; keep 24-stage campaigns and record each step here."
   }
 }

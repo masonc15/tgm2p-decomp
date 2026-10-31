@@ -469,6 +469,7 @@
       "observation": "Genuine startup draft places f1108 at10d8,48 bytes early. Register counters plus byte-address row expression reproduce all344 video bytes only at displaced root. Nominal standalone and declarations-only controls emit356 bytes,143 differences. Zero accepted gain.",
       "do_not_repeat": "Do not rebase diagnostic slice, add synthetic predecessor/padding or repeat standalone declaration controls. Preserve successful row-byte mechanism.",
       "next_question": "Recover genuine f780 producer frame292 versus36 and nominal1108 entry; explain predecessor-body constant history before fresh video source controls.",
+      "drift_map": "2026-10-31 zero-compile call alignment of the byte_offset draft against ROM: prologue -2 is exactly the frame (ROM mov.w #-292+add versus add #-36); ROM never forms an r15 address and touches only @(0..32,r15), so 256 bytes are reserved but unaccessed. Remaining code-shape drift by call segment: 7c8-93c -4, 93c-bda -8, bda-d42 -26, d42-e8c -16, e8c-1032 +10. Start with bda-d42.",
       "supporting_evidence": [
         "research/2026-10-17-video-producer/REPORT.md"
       ]
