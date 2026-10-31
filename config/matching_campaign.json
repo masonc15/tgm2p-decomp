@@ -9,8 +9,8 @@
     "completion_c_bytes": 199060,
     "approved_assembly_bytes": 1638
   },
-  "campaign_id": "2026-10-31-startup-unprototyped",
-  "state": "accepted",
+  "campaign_id": "2026-10-31-startup-slot-order",
+  "state": "closed-prediction-failed",
   "allow_tuning_compiles": false,
   "budget": {
     "max_evidence_minutes": 90,
@@ -22,7 +22,7 @@
   "calibration": [
     "research/2026-10-31-context-harvest/REPORT.md"
   ],
-  "replay": "docs/research/2026-10-31-startup-video-match.md",
+  "replay": "research/2026-10-31-startup-slot-order/RESULT.json",
   "qualification_result": "Default argument promotion confirmed twice (f_253bc/f_252f8 object copy; f_2140e/f_213da extu.w) qualified unprototyped callee declarations for the whole startup unit; root moved 0x10fc->0x1108 with f_1108 exact; strict admission passed.",
   "next_action": "Continue unit-layout recovery: board chain (f_27862) or settings chain (f_bc02), or f_780 body from the unproto.c base.",
   "required_before_tuning": [
@@ -35,9 +35,9 @@
     "prediction recorded before candidate output"
   ],
   "success_metric": "accepted linked C bytes after unchanged strict admission and publication",
-  "verified_gain_bytes": 344,
-  "percentage_point_gain": 0.17140180769115784,
-  "consecutive_zero_gain_campaigns": 0,
+  "verified_gain_bytes": 0,
+  "percentage_point_gain": 0.0,
+  "consecutive_zero_gain_campaigns": 1,
   "note": "Startup layout campaigns of 2026-10-31 culminate in the accepted f_1108 range.",
   "started_at_utc": "2026-10-31T03:00:00+00:00",
   "prior_campaign": {
@@ -62,5 +62,10 @@
     "constraint": "Each layout step earns zero bytes until the whole chain is size-correct and the target stays exact; keep 24-stage campaigns and record each step here."
   },
   "strategy_review": "docs/research/2026-10-31-strategy-review.md",
-  "startup_layout_base": "research/2026-10-31-startup-textloops/textloops.c (f_1108 root 0x10f0, exact; 24 bytes short)"
+  "startup_layout_base": "research/2026-10-31-startup-textloops/textloops.c (f_1108 root 0x10f0, exact; 24 bytes short)",
+  "last_accepted": {
+    "campaign": "2026-10-31-startup-unprototyped",
+    "gain_bytes": 344,
+    "coverage": 139096
+  }
 }
