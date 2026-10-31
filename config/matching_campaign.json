@@ -9,8 +9,8 @@
     "completion_c_bytes": 199060,
     "approved_assembly_bytes": 1638
   },
-  "campaign_id": "2026-10-31-textmenu-run-diagnostic",
-  "state": "closed-diagnostic-negative",
+  "campaign_id": "2026-10-31-textmenu-goto-loop",
+  "state": "closed-prediction-failed",
   "allow_tuning_compiles": false,
   "budget": {
     "max_evidence_minutes": 90,
@@ -22,7 +22,7 @@
   "calibration": [
     "research/2026-10-31-context-harvest/REPORT.md"
   ],
-  "replay": "research/2026-10-31-textmenu-run-diagnostic/RESULT.json",
+  "replay": "research/2026-10-31-textmenu-goto-loop/RESULT.json",
   "qualification_result": "Default argument promotion confirmed twice (f_253bc/f_252f8 object copy; f_2140e/f_213da extu.w) qualified unprototyped callee declarations for the whole startup unit; root moved 0x10fc->0x1108 with f_1108 exact; strict admission passed.",
   "next_action": "Continue unit-layout recovery: board chain (f_27862) or settings chain (f_bc02), or f_780 body from the unproto.c base.",
   "required_before_tuning": [
@@ -37,7 +37,7 @@
   "success_metric": "accepted linked C bytes after unchanged strict admission and publication",
   "verified_gain_bytes": 0,
   "percentage_point_gain": 0.0,
-  "consecutive_zero_gain_campaigns": 14,
+  "consecutive_zero_gain_campaigns": 19,
   "note": "Startup layout campaigns of 2026-10-31 culminate in the accepted f_1108 range.",
   "started_at_utc": "2026-10-31T03:00:00+00:00",
   "prior_campaign": {
@@ -69,5 +69,6 @@
     "coverage": 139096
   },
   "f_780_best_context": "research/2026-10-31-startup-29bf8-arg/arg.c (1253 raw differences, f_1108 exact)",
-  "budget_note": "32 stages including an avoidable 24-stage baseline measurement; exceeded the 24-stage campaign cap; the measurement script now compiles one entry unless --all."
+  "budget_note": "32 stages including an avoidable 24-stage baseline measurement; exceeded the 24-stage campaign cap; the measurement script now compiles one entry unless --all.",
+  "f_e074_best": "research/2026-10-31-textmenu-goto-loop/gotoloop.c (ROM loop shape; 766 bytes, raw 671) and research/2026-10-31-textmenu-struct-short/structshort.c (ROM frame; 794 bytes)"
 }
