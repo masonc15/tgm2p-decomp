@@ -724,7 +724,7 @@ void f_b36e(void)
 
 void f_b892(short *,short);
 unsigned char f_bc02(char *,short *,char);
-extern void f_20206(void);
+extern void f_21206(void);
 static const char *const names[30] = {
 	"Normal", "Reverse", "1 Round", "3 Rounds", "5 Rounds",
 	"Lv.100", "Lv.200", "Lv.300", "Lv.400", "Lv.500", "Lv.600", "Lv.700", "Lv.800", "Lv.900", "Lv.999",
@@ -845,8 +845,8 @@ void f_b3c0(void)
 				for (i = 0, j = 0; i < 10; i++)
 					j += (short)(k = buf[i]), cfg[i] = k;
 				cfg[10] = j;
-				f_2f36e();
-				f_20206();
+				f_3036e();
+				f_21206();
 				f_b892(buf, 11);
 				f_e3e0(200, "Saved", 0);
 				k = g_60792ec;
