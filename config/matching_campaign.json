@@ -9,22 +9,22 @@
     "completion_c_bytes": 199060,
     "approved_assembly_bytes": 1638
   },
-  "campaign_id": "2026-10-31-startup-frame",
-  "state": "closed-prediction-failed",
+  "campaign_id": "2026-10-31-startup-alloc-trace",
+  "state": "closed-observation",
   "allow_tuning_compiles": false,
   "budget": {
     "max_evidence_minutes": 90,
     "max_compiler_stages": 24,
-    "compiler_stages_used": 16,
+    "compiler_stages_used": 11,
     "shared_across_targets": true,
     "reset_by_new_hypothesis": false
   },
   "calibration": [
     "research/2026-10-31-context-harvest/REPORT.md"
   ],
-  "replay": "research/2026-10-31-startup-frame/RESULT.json",
+  "replay": "research/2026-10-31-startup-alloc-trace/RESULT.json",
   "qualification_result": "Frame evidence (292 reserved, 36 accessed) qualified an unreferenced 256-byte local: confirmed (root 10d8->10e0, video exact). Indexed-recurrence transfer to all case loops: rejected (root 10a4).",
-  "next_action": "Native GEN/MDL allocation trace of frame256 f_780 case loops on nuada (why invariants hold r8-r14 and loop variables spill); then one predicted ordinary candidate.",
+  "next_action": "Qualify a source form that makes f_e3e0/string/zero hoistable in frame256 case loops (route 0x780); one predicted ordinary candidate.",
   "required_before_tuning": [
     "specific unresolved owner and prior-negative review",
     "source and tool hashes",
@@ -37,7 +37,7 @@
   "success_metric": "accepted linked C bytes after unchanged strict admission and publication",
   "verified_gain_bytes": 0,
   "percentage_point_gain": 0.0,
-  "consecutive_zero_gain_campaigns": 2,
+  "consecutive_zero_gain_campaigns": 3,
   "note": "Prediction failed: f_a226 allocation and 165 f_bc02 instruction halfwords changed; entries moved -28..-126. SHC code generation depends on same-unit callee definitions. Zero bytes.",
   "started_at_utc": "2026-10-31T03:00:00+00:00",
   "prior_campaign": {
