@@ -24,7 +24,7 @@
   ],
   "replay": "research/2026-10-31-startup-frame/RESULT.json",
   "qualification_result": "Frame evidence (292 reserved, 36 accessed) qualified an unreferenced 256-byte local: confirmed (root 10d8->10e0, video exact). Indexed-recurrence transfer to all case loops: rejected (root 10a4).",
-  "next_action": "Two consecutive zero-gain campaigns: change work class. Startup layout base is frame256 at -40; next startup step must qualify text-loop indexing alone.",
+  "next_action": "Native GEN/MDL allocation trace of frame256 f_780 case loops on nuada (why invariants hold r8-r14 and loop variables spill); then one predicted ordinary candidate.",
   "required_before_tuning": [
     "specific unresolved owner and prior-negative review",
     "source and tool hashes",
@@ -60,5 +60,6 @@
       "settings unit: eight bodies, about -378 net, unblock f_bc02 plus pool (432)"
     ],
     "constraint": "Each layout step earns zero bytes until the whole chain is size-correct and the target stays exact; keep 24-stage campaigns and record each step here."
-  }
+  },
+  "strategy_review": "docs/research/2026-10-31-strategy-review.md"
 }
