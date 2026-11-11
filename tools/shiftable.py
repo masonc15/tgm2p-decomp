@@ -564,6 +564,11 @@ def wrap_prefix(u, us, insns, fixups, literal_words):
             raise SystemExit(f"{u.arg}: relocation straddles the retained end")
         if shndx == "SHN_UNDEF":
             words[off] = f"{name}+{add}" if add else name
+        elif "genuine_rodata" in manifest and isinstance(shndx, int) and shndx != tidx:
+            # The proof linked this context's only other allocated section,
+            # .rodata, at its genuine RAM address and verified it against ROM.
+            rom = manifest["genuine_rodata"]["rom"]
+            words[off] = loc(us, rom + (svalue if styp != "STT_SECTION" else 0) + add)
         else:
             # section-relative or a defined local symbol: an address in the context
             tgt = cs + (svalue if styp == "STT_FUNC" else 0) + add
