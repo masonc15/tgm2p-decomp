@@ -214,6 +214,22 @@ halfword at `0x64ae` looks like BSR and falsely seeds data at `0x64b0`.
 Function-count reporting still uses the existing discovery heuristic; the
 fixed byte denominator remains unchanged.
 
+By default the proof links only `.text`, so a context's `.rodata` (strings
+and initialiser templates) lands after it and any retained load of one of
+those addresses fails. A source whose unit data lives in the original RAM data
+block can declare `genuine-rodata: 0x...` in its first-line header. Every range
+compiled from that file then links the context's single `.rodata` at that RAM
+address, and the complete section must equal the ROM copy that the boot copy
+table at `0x313fc` places there. A different byte, a shifted address, an
+address outside the copied data block, or a context without `.rodata` fails.
+The data is only compared, never packaged: the data block keeps its existing
+split and no data byte counts as C. The manifest records the section's address,
+ROM offset, size and hash under `genuine_rodata`, and `tools/shiftable.py`
+relocates retained references through that record. The owner approved this
+mode on 2026-11-10 for the settings unit (`0x9c0c`-`0xe74f`, `.rodata` at
+`0x6032a3c`); `research/2026-11-10-genuine-rodata-control` holds the
+real-data controls.
+
 The startup range has exactly three such proofs. Its manifest records each
 function, instruction spine, delay ownership, relocation identity, and
 canonical target. Every build recompiles and recomputes these proofs;

@@ -132,6 +132,14 @@ proof links `.rodata` after `.text`. A proof mode that validates `.rodata` at
 its genuine address would be new proof tooling. This needs an explicit
 decision before it is built; it is not assumed here.
 
+**Update 2026-11-10.** The owner approved the mode. Sources can now declare
+`genuine-rodata: 0x6032a3c` (README, "Verified middle ranges"). With the
+known-fixes draft it verifies all 2,098 `.rodata` bytes and passes the
+already-exact `f_b2f4` range, while a one-bit string change, a 4-byte
+address shift and the default link all fail. `f_bc02` still fails on its
+`f_e412` literal, as the sizing table predicts. Admission now depends only on
+sizing the unit (`research/2026-11-10-genuine-rodata-control`).
+
 Packets: `research/2026-10-31-settings-*`, `research/2026-10-31-tailmerge-*`,
 `research/2026-10-31-textmenu-*`, `research/2026-10-31-*-sort`,
 `research/2026-10-31-init-align-probe`.
