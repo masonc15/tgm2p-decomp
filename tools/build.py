@@ -366,6 +366,22 @@ def c_function_code_range(src: Path, start: int) -> bool:
     return start == selected
 
 
+def c_genuine_rodata(src: Path):
+    """RAM address of the context's .rodata in the original link, if declared.
+
+    It applies to every range compiled from the file, because the placement
+    changes the whole linked context. compile_prefix verifies the section
+    against ROM; the marker itself proves nothing.
+    """
+    header = src.read_text().split('\n', 1)[0]
+    if 'genuine-rodata:' not in header:
+        return None
+    markers = re.findall(r'\bgenuine-rodata:\s*([^\s*]+)', header)
+    if len(markers) != 1 or not re.fullmatch(r'0x[0-9a-fA-F]+', markers[0]):
+        raise ValueError(f'{src}: genuine-rodata requires one explicit hex RAM address')
+    return int(markers[0], 16)
+
+
 def build() -> Path:
     segs = read_splits()
     OBJ.mkdir(parents=True, exist_ok=True)
@@ -396,6 +412,7 @@ def build() -> Path:
                                guarded_switches=c_guarded_switches(src),
                                local_loop_jumps=c_local_loop_jumps(src),
                                function_code_range=c_function_code_range(src, start),
+                               genuine_rodata=c_genuine_rodata(src),
                                canonical_functions=reviewed_tail_functions()
                                if c_literal_tail_calls(src) else None)
             elif not o.exists() or o.stat().st_mtime < src.stat().st_mtime:

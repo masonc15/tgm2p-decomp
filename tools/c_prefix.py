@@ -834,11 +834,16 @@ def compile_prefix(src, out, start, end, *, rom, shcc, version, flags, symbols, 
                    context_start=None, literal_tail_calls=False, canonical_functions=None,
                    leaf_argument_tails=False, guarded_switches=False, local_loop_jumps=False,
                    field_flag_tails=False, startup_reset_tails=False,
-                   function_code_range=False, callback_tails=False):
+                   function_code_range=False, callback_tails=False, genuine_rodata=None):
     """Produce a relocation-free object with only verified compiler bytes.
 
     Full-context compilation/linking is repeated each build: a stale manifest
     or changed literal dependency must never bypass validation.
+
+    genuine_rodata, when given, is the RAM address of the context's .rodata in
+    the original link. The section is linked there instead of after .text and
+    must equal, byte for byte, the ROM copy the boot code places at that
+    address. It is still only a comparison: no data byte is packaged.
     """
     from elftools.elf.elffile import ELFFile
     from elftools.elf.relocation import RelocationSection
@@ -947,12 +952,46 @@ def compile_prefix(src, out, start, end, *, rom, shcc, version, flags, symbols, 
         if addr is None:
             raise PrefixError(f'unresolved contextual symbol {name}')
         resolved[name] = addr
+    rodata_placement = ''
+    if genuine_rodata is not None:
+        # The boot copy table (the same one shiftable.Map reads) gives the
+        # original RAM data block and its ROM copy. Only that block can hold a
+        # genuine placement, and only the whole section is ever compared.
+        table = 0x313fc
+        data_lma, data_vma, data_size = (int.from_bytes(rom[table + 4 * i:table + 4 * i + 4], 'big')
+                                         for i in (5, 6, 7))
+        if data_lma != table + 32:
+            raise PrefixError('unexpected boot copy table for genuine .rodata')
+        if len(readonly_context_sections) != 1:
+            raise PrefixError('genuine .rodata requires exactly one nonempty context .rodata')
+        rodata_size = readonly_context_sections[0]['size']
+        if (genuine_rodata % 4 or not data_vma <= genuine_rodata or
+                genuine_rodata + rodata_size > data_vma + data_size):
+            raise PrefixError(f'genuine .rodata {genuine_rodata:#x} is outside the original RAM data block')
+        rodata_lma = genuine_rodata - data_vma + data_lma
+        rodata_placement = f' .rodata 0x{genuine_rodata:x} : {{ *(.rodata) }}'
     script.write_text(
-        f'SECTIONS {{ .text 0x{context_start + ram_delta:x} : {{ *(.text) }} /DISCARD/ : {{ *(.comment) }} }}\n' +
+        f'SECTIONS {{ .text 0x{context_start + ram_delta:x} : {{ *(.text) }}{rodata_placement} '
+        f'/DISCARD/ : {{ *(.comment) }} }}\n' +
         '\n'.join(f'{name} = 0x{addr:x};' for name, addr in sorted(resolved.items())) + '\n')
     subprocess.run(['sh-elf-ld', '-T', str(script), '-o', str(linked), str(context)], check=True)
     subprocess.run(['sh-elf-objcopy', '-O', 'binary', '-j', '.text', str(linked), str(binary)], check=True)
     compiled = binary.read_bytes()
+    verified_rodata = None
+    if genuine_rodata is not None:
+        with linked.open('rb') as f:
+            sections = [s for s in ELFFile(f).iter_sections() if s.name == '.rodata']
+            if len(sections) != 1 or sections[0]['sh_addr'] != genuine_rodata:
+                raise PrefixError('linked .rodata is not at its declared genuine address')
+            data = sections[0].data()
+        if len(data) != rodata_size:
+            raise PrefixError('linked .rodata size changed')
+        if data != rom[rodata_lma:rodata_lma + rodata_size]:
+            first = next(i for i, (a, b) in enumerate(zip(data, rom[rodata_lma:])) if a != b)
+            raise PrefixError(f'genuine .rodata differs from ROM at {genuine_rodata + first:#x} '
+                              f'(ROM {rodata_lma + first:#x})')
+        verified_rodata = dict(name='.rodata', vma=genuine_rodata, rom=rodata_lma,
+                               size=rodata_size, sha256=hashlib.sha256(data).hexdigest())
     proofs = []
     switch_results = []
     loop_results = []
@@ -1010,6 +1049,10 @@ def compile_prefix(src, out, start, end, *, rom, shcc, version, flags, symbols, 
                     prefix_sha256=hashlib.sha256(kept).hexdigest(),
                     functions=[name for name, _, _ in exports], literal_dependencies=deps,
                     discarded_readonly_sections=readonly_context_sections)
+    if verified_rodata is not None:
+        # Verified against ROM but still not packaged: the data block stays
+        # in its existing split.
+        manifest['genuine_rodata'] = verified_rodata
     if callback_tails:
         manifest["callback_tails"] = True
         manifest["callback_proofs"] = callback_results

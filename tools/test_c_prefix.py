@@ -987,5 +987,114 @@ class PrefixCompileTests(unittest.TestCase):
                 self.run_case('startup_tail.c', 0x1e64, 0x1ede, context_start=0x1278)
 
 
+class GenuineRodataMarkerTests(unittest.TestCase):
+    def marker(self, header):
+        import build
+        with tempfile.TemporaryDirectory() as td:
+            src = Path(td) / 'case.c'
+            src.write_text(header + '\nvoid f(void) {}\n')
+            return build.c_genuine_rodata(src)
+
+    def test_marker_is_optional_and_explicit(self):
+        self.assertIsNone(self.marker('/* rom: 0x1000 */'))
+        self.assertEqual(self.marker('/* genuine-rodata: 0x6032a3c */'), 0x6032a3c)
+        for bad in ('/* genuine-rodata: 1 */', '/* genuine-rodata: 0x10 genuine-rodata: 0x20 */',
+                    '/* genuine-rodata: */'):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                self.marker(bad)
+
+
+@unittest.skipUnless(os.environ.get('PREFIX_COMPILE_TESTS') == '1', 'requires nuada SHC/binutils')
+class GenuineRodataCompileTests(unittest.TestCase):
+    """A synthetic ROM is the only way to get an exact positive control
+    before a real unit is size-exact; each negative changes one fact."""
+    START = 0x1000
+    SOURCE = ('/* flags: -macsave=1 -optimize=1 -speed */\n'
+              'extern void f_2bf58(const char *);\n'
+              'int f_1000(void) { f_2bf58("GENUINE"); f_2bf58("DATA"); return 1; }\n')
+
+    def setUp(self):
+        import build
+        self.build = build
+        rom = build.fn.ROM
+        table = 0x313fc
+        self.data_lma, self.data_vma, self.data_size = (
+            int.from_bytes(rom[table + 4 * i:table + 4 * i + 4], 'big') for i in (5, 6, 7))
+        self.vma = self.data_vma + 0x100
+        self.td = tempfile.TemporaryDirectory()
+        self.dir = Path(self.td.name)
+
+    def tearDown(self):
+        self.td.cleanup()
+
+    def compile(self, rom, *, source=None, end=None, genuine_rodata='default'):
+        src = self.dir / 'case.c'
+        src.write_text(source or self.SOURCE)
+        obj = self.dir / 'kept.o'
+        b = self.build
+        compile_prefix(src, obj, self.START, end or self.START + 2, rom=rom, shcc=b.SHCC,
+                       version=b.SHC_VERSION, flags=b.c_flags(src), symbols=b.read_symbols(),
+                       assembler=b.AS,
+                       genuine_rodata=self.vma if genuine_rodata == 'default' else genuine_rodata)
+        return obj
+
+    def synthetic_rom(self):
+        """Run once against the real ROM (rejected), then plant the exact
+        compiler output where a genuine link would have put it."""
+        from elftools.elf.elffile import ELFFile
+        with self.assertRaisesRegex(PrefixError, 'genuine .rodata differs'):
+            self.compile(self.build.fn.ROM)
+        text = (self.dir / 'kept.context.bin').read_bytes()
+        with (self.dir / 'kept.context.elf').open('rb') as f:
+            rodata = ELFFile(f).get_section_by_name('.rodata').data()
+        rom = bytearray(self.build.fn.ROM)
+        rom[self.START:self.START + len(text)] = text
+        lma = self.vma - self.data_vma + self.data_lma
+        rom[lma:lma + len(rodata)] = rodata
+        return rom, self.START + len(text), lma, rodata
+
+    def test_exact_text_and_rodata_at_genuine_address_pass(self):
+        rom, end, lma, rodata = self.synthetic_rom()
+        obj = self.compile(bytes(rom), end=end)
+        manifest = json.loads(obj.with_suffix('.prefix.json').read_text())
+        self.assertEqual(manifest['genuine_rodata']['vma'], self.vma)
+        self.assertEqual(manifest['genuine_rodata']['rom'], lma)
+        self.assertEqual(manifest['genuine_rodata']['size'], len(rodata))
+        self.assertIn(b'GENUINE', rodata)
+        # The string addresses the retained code loads are the genuine ones.
+        code = rom[self.START:end]
+        self.assertIn(self.vma.to_bytes(4, 'big'), code)
+
+    def test_changed_rodata_byte_rejected(self):
+        rom, end, lma, rodata = self.synthetic_rom()
+        rom[lma + rodata.index(b'DATA')] ^= 1
+        with self.assertRaisesRegex(PrefixError, 'genuine .rodata differs'):
+            self.compile(bytes(rom), end=end)
+        self.assertFalse((self.dir / 'kept.o').exists())
+        self.assertFalse((self.dir / 'kept.prefix.json').exists())
+
+    def test_wrong_declared_address_rejected(self):
+        rom, end, _, _ = self.synthetic_rom()
+        for vma in (self.vma + 4, self.vma - 4):
+            with self.subTest(vma=vma), self.assertRaisesRegex(PrefixError, 'genuine .rodata differs'):
+                self.compile(bytes(rom), end=end, genuine_rodata=vma)
+
+    def test_default_placement_cannot_match_genuine_literals(self):
+        rom, end, _, _ = self.synthetic_rom()
+        with self.assertRaisesRegex(PrefixError, 'differs from ROM'):
+            self.compile(bytes(rom), end=end, genuine_rodata=None)
+
+    def test_address_outside_ram_data_block_rejected(self):
+        rom, end, _, _ = self.synthetic_rom()
+        for vma in (0x6000000, self.data_vma - 4, self.data_vma + self.data_size - 4, self.vma + 2):
+            with self.subTest(vma=vma), self.assertRaisesRegex(PrefixError, 'outside the original RAM data'):
+                self.compile(bytes(rom), end=end, genuine_rodata=vma)
+
+    def test_context_without_rodata_rejected(self):
+        with self.assertRaisesRegex(PrefixError, 'exactly one nonempty context .rodata'):
+            self.compile(self.build.fn.ROM,
+                         source='/* flags: -macsave=1 -optimize=1 -speed */\nvoid f_1000(void) {}\n')
+
+
 if __name__ == '__main__':
     unittest.main()
