@@ -195,6 +195,21 @@ def loops(ft):
     return out
 
 
+def loop_body_ends(ft):
+    """Index of the closing brace of every braced loop body (while, for, do), in source order."""
+    m = mask_of(ft)
+    ends = []
+    for hit in re.finditer(r"\b(while|for)\s*\(|\bdo\s*\{", m):
+        if hit[1]:
+            j = skip_ws(m, close_of(m, hit.end() - 1) + 1)
+            if j >= len(m) or m[j] != "{":
+                continue
+        else:
+            j = hit.end() - 1
+        ends.append(close_of(m, j))
+    return ends
+
+
 def switches(ft):
     """[(start, end, replacement)] for switches that convert cleanly to if/else chains."""
     m = mask_of(ft)
@@ -266,11 +281,9 @@ def mutations(ft, kinds):
                 new = (f"{init};\n\t" if init else "") + f"goto {lab};\n\tdo {{{body.rstrip()}\n\t{inc + ';' if inc else ''}\n\t{lab}:;\n\t}} while ({cond});"
             out[f"dog{n}"] = ft[:a] + ("{ " + new + " }" if bare else new) + ft[b:]
     if "lab" in kinds:
-        m = mask_of(ft)
-        for n, (kind, a, b, parts, bare) in enumerate(loops(ft)):
-            lab = label_for(ft)
-            if m[b - 1] == "}":
-                out[f"lab{n}"] = ft[:b - 1] + f"{lab}:;\n\t}}" + ft[b:]
+        lab = label_for(ft)
+        for n, close in enumerate(loop_body_ends(ft)):
+            out[f"lab{n}"] = ft[:close] + f"{lab}:;\n\t" + ft[close:]
     if "andk" in kinds:
         hits = list(ANDK.finditer(ft))
         for n, h in enumerate(hits):
