@@ -154,7 +154,7 @@ pass after linking it as ordinary C.
 
 ## Building
 
-`make check` (on nephele or nuada; see [docs/WORKSPACE.md](docs/WORKSPACE.md)) rebuilds the whole program ROM from source, then splits the result back into `2b.u21` and `1b.u22` and compares them against the original EPROM dumps by SHA-1. It also prints how much of the code is in C.
+`make check` (on phrixus or nuada; see [docs/WORKSPACE.md](docs/WORKSPACE.md)) rebuilds the whole program ROM from source, then splits the result back into `2b.u21` and `1b.u22` and compares them against the original EPROM dumps by SHA-1. It also prints how much of the code is in C.
 
 `splits.txt` is the map. Each line gives a start address and what builds that stretch of ROM: `asm`, `c` (with its source file) or `bin`, and each segment runs to the next line's address. The vectors (`0x0`–`0x400`) and everything after the code (`0x313fc` onward, starting with what looks like the RAM-copy table) are included as binary. The code in between is disassembled by `tools/build.py split` into `asm/*.s`. Those files are generated, not committed, and hold real instructions with labels for branch targets and literal pools. Any halfword the assembler can't reproduce exactly, mostly data tables inside the code, falls back to a raw `.short`.
 
@@ -401,7 +401,7 @@ pass. Detailed source/test pins and preserved interim receipts are in
 
 ## Layout and tools
 
-Builds run on nephele (toolchain in `~/tgm2p`) or nuada (`/drive2/tgm2p`). Each toolchain root holds the SHC compilers, wibo, `rof2elf`, objdiff-cli, the permuter and the Python venv, and nuada also has Ghidra 12.1.4. [docs/WORKSPACE.md](docs/WORKSPACE.md) covers both hosts; `. tools/env.sh` sets up a shell and `make status` prints where things stand.
+Builds run on phrixus (toolchain in `~/tgm2p`) or nuada (`/drive2/tgm2p`). Each toolchain root holds the SHC compilers, wibo, `rof2elf`, objdiff-cli, the permuter, the Python venv and Ghidra 12.1.4. [docs/WORKSPACE.md](docs/WORKSPACE.md) covers both hosts; `. tools/env.sh` sets up a shell and `make status` prints where things stand.
 
 - `tools/interleave.py` joins the two EPROM halves into `build/prog.bin` and splits a rebuilt image back apart, checking SHA-1s.
 - `tools/fn.py` prints annotated listings with function extents and literal pools, and `--scan` classifies every call target.

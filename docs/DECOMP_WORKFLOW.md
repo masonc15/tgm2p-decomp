@@ -200,7 +200,7 @@ synthetic state, and known sampling misses mean it cannot promote exactness.
 Commit the accepted change and push it to `origin`. Nuada's import timer pulls
 `main` within 15 minutes, rebuilds under the import lock, and the services below
 publish a verified increase. Push evidence with `tools/sync_evidence.sh push`
-(nephele also does this hourly).
+(phrixus also does this hourly).
 
 Current services observed on 2026-10-10:
 

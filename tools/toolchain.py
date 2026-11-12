@@ -1,7 +1,7 @@
 """Locate this host's TGM2+ toolchain (compilers, venv, objdiff-cli, permuter).
 
 The root is $TGM2P_TOOLCHAIN when set, else /drive2/tgm2p (nuada) or ~/tgm2p
-(nephele), whichever exists. Every host uses the same layout under it:
+(phrixus), whichever exists. Every host uses the same layout under it:
 bin/ (objdiff-cli, sh-elf-* on macOS), compilers/, venv/, decomp-permuter/,
 perm/ and roms/. tools/env.sh exports the same settings for shells.
 """

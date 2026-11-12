@@ -1,4 +1,4 @@
-# Runs on nephele (~/tgm2p) or nuada (/drive2/tgm2p); see tools/toolchain.py.
+# Runs on phrixus (~/tgm2p) or nuada (/drive2/tgm2p); see tools/toolchain.py.
 TGM2P_TOOLCHAIN ?= $(firstword $(wildcard /drive2/tgm2p $(HOME)/tgm2p) /drive2/tgm2p)
 PY ?= $(TGM2P_TOOLCHAIN)/venv/bin/python
 OBJDIFF ?= $(TGM2P_TOOLCHAIN)/bin/objdiff-cli
