@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Run a program image in MAME and compare it with a reference image, frame for
 # frame: an attract-mode run with no input and a scripted gameplay replay,
 # each hashing the rendered screen at regular checkpoints (tools/replay/replay.lua).
