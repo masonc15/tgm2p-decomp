@@ -3956,3 +3956,16 @@ context in src/rankcode_draw_23e3e.c). 14 units, 11,074 asm bytes in all.
 `make shiftable NONMATCHING=1` (sha1 987d89ef) with `tools/replay_check.sh`:
 attract 12,000 and gameplay 24,000 frames, all 360 checkpoints identical
 without idle pinning. Neither replay executes these functions.
+
+### 2026-11-12 phrixus: first-principles review (0 bytes)
+
+Coverage unchanged at 139,096 / 200,698. Host and release checks: wibo 1.2.0
+on macOS and native Windows 11 give identical code for all 204 units tested;
+v5.0r31 and v5.0r32 are identical on 212 units and no other release is closer
+to the ROM once pool placement is discounted. `tools/shc_probe/triage.py`
+classes the 61 drafted unresolved functions by instruction alignment: 22 far
+(26,428 bytes), 24 mid, 14 near, 1 registers-only. A scripted enumeration of
+source forms took `f_d962` from 118 to 233 of 269 aligned instructions (loop
+entered at its test, inlined centre-print helper, `run` on the stack); it is
+not exact and earns nothing. See
+docs/research/2026-11-12-first-principles-review.md.
