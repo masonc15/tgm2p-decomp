@@ -1743,12 +1743,16 @@ void f_d8e0(void)
 	f_2b4e8();
 }
 
+#pragma inline(cprint)
+static short cprint(char *s, short y)
+{
+	return f_2bf58(s, y, (320 - f_2c0d0(s)) >> 1);
+}
+
 void f_d962(void)
 {
 	short i, sel, k;
 	long run;
-	unsigned char b;
-
 	run = 1;
 	while (g_6064750)
 		f_2b4e8();
@@ -1759,35 +1763,34 @@ void f_d962(void)
 	while (run) {
 		f_2b4e8();
 		f_9ede();
-		f_2bf58(g_6032eec, 10, (320 - f_2c0d0(g_6032eec)) >> 1);
+		cprint(g_6032eec, 10);
 		for (i = 0; i < 4; i++) {
 			k = f_2bf58(d_3a8f4[i].s, d_3a8f4[i].w2, d_3a8f4[i].w0);
 			if (i != sel)
 				g_606006c[k].b1c = 64;
 		}
-		f_2bf58(g_6032f04, 200, (320 - f_2c0d0(g_6032f04)) >> 1);
+		cprint(g_6032f04, 200);
 		switch (sel) {
 		case 2:
-			f_2bf58(g_6032f1c, 210, (320 - f_2c0d0(g_6032f1c)) >> 1);
+			cprint(g_6032f1c, 210);
 			break;
 		case 3:
-			f_2bf58(g_6032f34, 210, (320 - f_2c0d0(g_6032f34)) >> 1);
+			cprint(g_6032f34, 210);
 			break;
 		default:
-			f_2bf58(g_6032f4c, 210, (320 - f_2c0d0(g_6032f4c)) >> 1);
+			cprint(g_6032f4c, 210);
 			break;
 		}
 		g_606006c[g_60792ec].w4 = d_3a8f4[sel].w2;
-		b = g_6079304;
-		if (b & 0x80) {
+		if (g_6079304 & 0x80) {
 			if (sel-- == 0)
 				sel = 3;
 		}
-		if (b & 0x40) {
+		if (g_6079304 & 0x40) {
 			if (sel++ == 3)
 				sel = 0;
 		}
-		if (b & 0xe) {
+		if (g_6079304 & 0xe) {
 			switch (sel) {
 			case 0:
 				f_dbe8();
@@ -1808,6 +1811,7 @@ void f_d962(void)
 	}
 }
 
+
 void f_dbe8(void)
 {
 	short h[4];
@@ -1825,7 +1829,7 @@ void f_dbe8(void)
 	while (run) {
 		f_2b4e8();
 		f_9ede();
-		f_2bf58(g_6032f64, 10, (320 - f_2c0d0(g_6032f64)) >> 1);
+		cprint(g_6032f64, 10);
 		for (i = 0; i < 5; i++) {
 			k = f_2bf58(d_3a984[i].s, d_3a984[i].w2, d_3a984[i].w0);
 			if (i != sel)
@@ -1839,11 +1843,11 @@ void f_dbe8(void)
 			if (j != sel)
 				g_606006c[h[j]].b1c = 64;
 		}
-		f_2bf58(g_6032f84, 200, (320 - f_2c0d0(g_6032f84)) >> 1);
+		cprint(g_6032f84, 200);
 		if (sel == 4)
-			f_2bf58(g_6032fa4, 210, (320 - f_2c0d0(g_6032fa4)) >> 1);
+			cprint(g_6032fa4, 210);
 		else
-			f_2bf58(g_6032fd4, 210, (320 - f_2c0d0(g_6032fd4)) >> 1);
+			cprint(g_6032fd4, 210);
 		g_606006c[g_60792ec].w4 = d_3a984[sel].w2;
 		b = g_6079304;
 		if (b & 0x80) {
@@ -1857,28 +1861,32 @@ void f_dbe8(void)
 		if (b & 0x10) {
 			switch (sel) {
 			case 0:
-				c = (g_60792de & 31) - 1;
+				c = g_60792de & 31;
+				c = c - 1;
 				if (c < 0)
 					c = 17;
 				g_60792de &= ~31;
 				g_60792de |= c;
 				break;
 			case 1:
-				c = ((g_60792de >> 5) & 3) - 1;
+				c = (g_60792de >> 5) & 3;
+				c = c - 1;
 				if (c < 0)
 					c = 2;
 				g_60792de &= ~0x60;
 				g_60792de |= c << 5;
 				break;
 			case 2:
-				c = ((g_60792de >> 7) & 1) - 1;
+				c = (g_60792de >> 7) & 1;
+				c = c - 1;
 				if (c < 0)
 					c = 1;
 				g_60792de &= ~0x80;
 				g_60792de |= c << 7;
 				break;
 			case 3:
-				c = ((g_60792de >> 8) & 1) - 1;
+				c = (g_60792de >> 8) & 1;
+				c = c - 1;
 				if (c < 0)
 					c = 1;
 				g_60792de &= ~0x100;
@@ -1888,22 +1896,30 @@ void f_dbe8(void)
 		} else if (b & 0x20) {
 			switch (sel) {
 			case 0:
-				c = ((g_60792de & 31) + 1) % 18;
+				c = g_60792de & 31;
+				c++;
+				c = c % 18;
 				g_60792de &= ~31;
 				g_60792de |= c;
 				break;
 			case 1:
-				c = (((g_60792de >> 5) & 3) + 1) % 3;
+				c = (g_60792de >> 5) & 3;
+				c++;
+				c = c % 3;
 				g_60792de &= ~0x60;
 				g_60792de |= c << 5;
 				break;
 			case 2:
-				c = (((g_60792de >> 7) & 1) + 1) % 2;
+				c = (g_60792de >> 7) & 1;
+				c++;
+				c = c % 2;
 				g_60792de &= ~0x80;
 				g_60792de |= c << 7;
 				break;
 			case 3:
-				c = (((g_60792de >> 8) & 1) + 1) % 2;
+				c = (g_60792de >> 8) & 1;
+				c++;
+				c = c % 2;
 				g_60792de &= ~0x100;
 				g_60792de |= c << 8;
 				break;
@@ -1919,7 +1935,6 @@ void f_e074(void)
 	short h[2];
 	short i, j, sel, c, k;
 	long run;
-	unsigned char b;
 
 	run = 1;
 	while (g_6064750)
@@ -1931,7 +1946,7 @@ void f_e074(void)
 	while (run) {
 		f_2b4e8();
 		f_9ede();
-		f_2bf58(g_6032ff8, 10, (320 - f_2c0d0(g_6032ff8)) >> 1);
+		cprint(g_6032ff8, 10);
 		for (i = 0; i < 3; i++) {
 			k = f_2bf58(d_3aa9c[i].s, d_3aa9c[i].w2, d_3aa9c[i].w0);
 			if (i != sel)
@@ -1943,22 +1958,21 @@ void f_e074(void)
 			if (j != sel)
 				g_606006c[h[j]].b1c = 64;
 		}
-		f_2bf58(g_6032f84, 200, (320 - f_2c0d0(g_6032f84)) >> 1);
+		cprint(g_6032f84, 200);
 		if (sel == 2)
-			f_2bf58(g_6032fa4, 210, (320 - f_2c0d0(g_6032fa4)) >> 1);
+			cprint(g_6032fa4, 210);
 		else
-			f_2bf58(g_6032fd4, 210, (320 - f_2c0d0(g_6032fd4)) >> 1);
+			cprint(g_6032fd4, 210);
 		g_606006c[g_60792ec].w4 = d_3aa9c[sel].w2;
-		b = g_6079304;
-		if (b & 0x80) {
+			if (g_6079304 & 0x80) {
 			if (sel-- == 0)
 				sel = 2;
 		}
-		if (b & 0x40) {
+		if (g_6079304 & 0x40) {
 			if (sel++ == 2)
 				sel = 0;
 		}
-		if (b & 0x10) {
+		if (g_6079304 & 0x10) {
 			switch (sel) {
 			case 0:
 				c = (g_60792dc & 1) - 1;
@@ -1975,15 +1989,19 @@ void f_e074(void)
 				g_60792dc |= c << 1;
 				break;
 			}
-		} else if (b & 0x20) {
+		} else if (g_6079304 & 0x20) {
 			switch (sel) {
 			case 0:
-				c = ((g_60792dc & 1) + 1) % 2;
+				c = g_60792dc & 1;
+				c++;
+				c = c % 2;
 				g_60792dc &= ~1;
 				g_60792dc |= c;
 				break;
 			case 1:
-				c = (((g_60792dc >> 1) & 3) + 1) % 3;
+				c = (g_60792dc >> 1) & 3;
+				c++;
+				c = c % 3;
 				g_60792dc &= ~6;
 				g_60792dc |= c << 1;
 				break;

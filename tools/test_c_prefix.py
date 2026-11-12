@@ -192,7 +192,7 @@ class PrefixCompileTests(unittest.TestCase):
         self.assertNotIn('_f_af8c', names)
         self.assertNotIn('_f_b352', names)
         self.assertEqual(reset['kept_bytes'], 94)
-        self.assertEqual(reset['context_bytes'], 19684)
+        self.assertEqual(reset['context_bytes'], 19040)
         self.assertEqual(reset['discarded_readonly_sections'], [
             dict(name='.rodata', size=1182)])
         self.assertEqual(len(reset['literal_dependencies']), 2)
