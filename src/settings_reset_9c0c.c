@@ -1925,8 +1925,13 @@ void f_dbe8(void)
 				break;
 			}
 		}
-		if ((g_6079304 & 14) && sel == 4)
-			run = 0;
+		if (g_6079304 & 14) {
+			switch (sel) {
+			case 4:
+				run = 0;
+				break;
+			}
+		}
 	}
 }
 
@@ -2007,8 +2012,13 @@ void f_e074(void)
 				break;
 			}
 		}
-		if ((g_6079304 & 14) && sel == 2)
-			run = 0;
+		if (g_6079304 & 14) {
+			switch (sel) {
+			case 2:
+				run = 0;
+				break;
+			}
+		}
 	}
 }
 
