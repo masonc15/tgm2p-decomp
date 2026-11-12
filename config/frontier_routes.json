@@ -555,9 +555,12 @@
       "state": "parked-until-genuine-one-and-cursor-storage",
       "class": "source-expression-and-table-address-lifetime",
       "evidence": "docs/research/2026-10-17-secret-menu-semantics.md",
-      "observation": "Native unsigned absolute-value expression reproduces original constant-zero R14 test and three syntactic RNG call sites with two runtime events. Recovered genuine initializer order/int-x/five explicit stores produce48byte frame versus52, w4R8 insteadSP4, and five address slots inwrongorder. Actualrootd2d8 remains188early; protected166exact; no coverage. 2026-10-31: ROM resets tab with five unrolled stores through hoisted &tab[k] stack pointers; five constant-index stores reproduce that (research/2026-10-31-settings-d394-clear, 8 stages, confirmed): f_d394 1328 (ROM 1356, was 1308). ROM also copies the tab initialiser (06032e40) as long,long,word where the draft copies five words. Initializer copy width follows the initializer's offset in the unit .rodata (research/2026-10-31-init-align-probe): ROM's long,long,word copy at 06032e40 needs the unit .rodata layout of research/2026-10-18-nephele-bg-resource-count. In the rebased unit (research/2026-10-31-settings-e074-literals, 1324 vs 1356, zero compiles) the remaining differences are allocation: ROM keeps run (@(36), stored from the constant-1 web r8), w4 (@(4), tab[w4] via mov.w @(4,r15)) and mode (@(32)) on the stack with frame 52; the draft keeps run/w4 in registers with frame 48. ROM f_d394's main loop is entered directly (no entry bra; bottom test d896..d89c reloads run @(36)), so unlike its menu siblings it is a syntactic loop; its run/w4/mode spills are not the goto-loop mechanism.",
+      "observation": "2026-11-12: no inlined-return label here: an unused label in the main loop drops alignment from 408 to 166 of 590 (mainloop_forms.py), and the ROM falls into the loop body with its invariants hoisted. ROM frame is 52 bytes against the draft's 32: w4 @(4), w8 @(8), mode @(32) and run @(36) live on the stack, &tab[0..4] are saved at @(12)..@(28) before the loop and used by the five-store clear at +4ee, and the 10-byte initialiser is copied from 0x6032e40 with two long moves and one word move. Seven struct and array declarations of tab (d394_tab.py) leave the frame at 32. Earlier: Native unsigned absolute-value expression reproduces original constant-zero R14 test and three syntactic RNG call sites with two runtime events. Recovered genuine initializer order/int-x/five explicit stores produce48byte frame versus52, w4R8 insteadSP4, and five address slots inwrongorder. Actualrootd2d8 remains188early; protected166exact; no coverage. 2026-10-31: ROM resets tab with five unrolled stores through hoisted &tab[k] stack pointers; five constant-index stores reproduce that (research/2026-10-31-settings-d394-clear, 8 stages, confirmed): f_d394 1328 (ROM 1356, was 1308). ROM also copies the tab initialiser (06032e40) as long,long,word where the draft copies five words. Initializer copy width follows the initializer's offset in the unit .rodata (research/2026-10-31-init-align-probe): ROM's long,long,word copy at 06032e40 needs the unit .rodata layout of research/2026-10-18-nephele-bg-resource-count. In the rebased unit (research/2026-10-31-settings-e074-literals, 1324 vs 1356, zero compiles) the remaining differences are allocation: ROM keeps run (@(36), stored from the constant-1 web r8), w4 (@(4), tab[w4] via mov.w @(4,r15)) and mode (@(32)) on the stack with frame 52; the draft keeps run/w4 in registers with frame 48. ROM f_d394's main loop is entered directly (no entry bra; bottom test d896..d89c reloads run @(36)), so unlike its menu siblings it is a syntactic loop; its run/w4/mode spills are not the goto-loop mechanism.",
       "do_not_repeat": "Unsigned RNG absolute-value expression, known reset loop/direct-store contrast, or historical five dead g_dummy statements. No initializer-address patch or context rebasing.",
-      "next_question": "Recover genuine constant1/R8 lifetime plus w4SP4/promotedSP0 and table slots12..28, retaining runSP36/tabSP40; original preceding unit roots and initializer pool6032e40 remain mandatory."
+      "next_question": "Recover genuine constant1/R8 lifetime plus w4SP4/promotedSP0 and table slots12..28, retaining runSP36/tabSP40; original preceding unit roots and initializer pool6032e40 remain mandatory.",
+      "supporting_docs": [
+        "docs/research/2026-11-12-inline-return-labels.md"
+      ]
     },
     {
       "address": "0x27862",
@@ -623,10 +626,11 @@
       "state": "parked-until-genuine-unreachable-error-producer",
       "class": "constant-condition-source-and-literal-ownership",
       "evidence": "tools/shc_probe/cases/session_coverage_gap18_review/menu_cac8_review/REVIEW.md",
-      "observation": "Prior originalCFG confirmsunreachableCB44-CB68 skippedbyBRAatCB40; historicalconstantfalseblockisnotadmissionevidence. Freshdataownerworkfindsmissing12byte Bg is Zero string at6032d98; actualdeadtextcallpassesfadeaddressR12 andwholeROMcontainsno6032d98addressliteral. Do notinferoriginalcondition fromthat alone. 2026-10-31 (zero compiles): ROM f_cac8 lays out init, bra cb98, an unreachable fragment cb44..cb66 (do { f_e3e0(10, r12, 0); f_2b4e8(); } while (--byte @(20)); run = 0; bra to the run test cbd6), then the sprite setup cb98..cbd4, the top run test cbd6, the main body and the bottom test cf00, exit cf0a (125 -> 0x6061944, f_25658(0), f_2b4e8). Nothing branches to cb44 except its own loop, so SHC kept dead source-order code; the draft's for(;;){ setup; while(run){...} break; } has no such block and is 80 bytes short (1104 vs 1184) in research/2026-10-31-settings-e074-transplant/e074.c. 2026-10-31: in the rebased unit (research/2026-10-31-settings-e074-literals) f_cac8 is 1214 (+30). ROM's dead fragment has no counter initialisation (counts down live h20 @(20)); dropping h20 = 120 from the BG_VIEW_COUNT error block (research/2026-10-31-settings-cac8-counter, 8 stages) leaves 1214 bytes: rejected. ROM layout (init, bra setup, dead error fragment to the run test, setup, run test, body, bottom test, exit; no back edge to setup) has no counterpart for the draft's for(;;){...break;} wrapper; removing it (research/2026-10-31-settings-cac8-nowrap, 8 stages, confirmed) gives 1210 (from 1214, ROM 1184). Dropping h20 = 120 on the unwrapped base (research/2026-10-31-settings-cac8-counter2) also leaves 1210: rejected. Remaining: pool dumped at the skip branch before the fragment (ROM after the fragment's bra), p->c/p->d stored through p+8 (ROM add #8,r4), stack slot order. A nested struct for the request's last two longs (research/2026-10-31-settings-cac8-nested) still compiles to @(8,p)/@(12,p): rejected.",
+      "observation": "2026-11-12: no inlined-return label in the main loop (label: 278 to 266 of 492 aligned). Draft is 39 instructions short of the ROM; its for (;;) wrapper around while (run) is a lever, not a reading. Earlier: Prior originalCFG confirmsunreachableCB44-CB68 skippedbyBRAatCB40; historicalconstantfalseblockisnotadmissionevidence. Freshdataownerworkfindsmissing12byte Bg is Zero string at6032d98; actualdeadtextcallpassesfadeaddressR12 andwholeROMcontainsno6032d98addressliteral. Do notinferoriginalcondition fromthat alone. 2026-10-31 (zero compiles): ROM f_cac8 lays out init, bra cb98, an unreachable fragment cb44..cb66 (do { f_e3e0(10, r12, 0); f_2b4e8(); } while (--byte @(20)); run = 0; bra to the run test cbd6), then the sprite setup cb98..cbd4, the top run test cbd6, the main body and the bottom test cf00, exit cf0a (125 -> 0x6061944, f_25658(0), f_2b4e8). Nothing branches to cb44 except its own loop, so SHC kept dead source-order code; the draft's for(;;){ setup; while(run){...} break; } has no such block and is 80 bytes short (1104 vs 1184) in research/2026-10-31-settings-e074-transplant/e074.c. 2026-10-31: in the rebased unit (research/2026-10-31-settings-e074-literals) f_cac8 is 1214 (+30). ROM's dead fragment has no counter initialisation (counts down live h20 @(20)); dropping h20 = 120 from the BG_VIEW_COUNT error block (research/2026-10-31-settings-cac8-counter, 8 stages) leaves 1214 bytes: rejected. ROM layout (init, bra setup, dead error fragment to the run test, setup, run test, body, bottom test, exit; no back edge to setup) has no counterpart for the draft's for(;;){...break;} wrapper; removing it (research/2026-10-31-settings-cac8-nowrap, 8 stages, confirmed) gives 1210 (from 1214, ROM 1184). Dropping h20 = 120 on the unwrapped base (research/2026-10-31-settings-cac8-counter2) also leaves 1210: rejected. Remaining: pool dumped at the skip branch before the fragment (ROM after the fragment's bra), p->c/p->d stored through p+8 (ROM add #8,r4), stack slot order. A nested struct for the request's last two longs (research/2026-10-31-settings-cac8-nested) still compiles to @(8,p)/@(12,p): rejected.",
       "next_question": "Recover the source form that leaves the cb44 countdown/display fragment in place (unreachable, between init and the setup reached by the entry bra) and then size f_cac8 to 1184.",
       "supporting_docs": [
-        "docs/research/2026-10-17-settings-data-owner.md"
+        "docs/research/2026-10-17-settings-data-owner.md",
+        "docs/research/2026-11-12-inline-return-labels.md"
       ]
     },
     {
@@ -698,6 +702,26 @@
       "observation": "2026-11-12: funcscore 569/578 in src/settings_reset_9c0c.c (was 38). cprint helper, local pad copy b, increments as c = x & K; c++; c = c % N; and decrements as c = x & K; c = c - 1;. Left: &g_6079304 (ROM r13) and the mask ~0x60 (ROM r8) have each other's registers, 0x80 and b use r4/r5 where the draft uses r6/r4. The exit is if (g_6079304 & 14) { switch (sel) { case 4: run = 0; break; } }, which gives the ROM's r2 at the loop test.",
       "do_not_repeat": "The 45 increment/decrement statement forms in incdec_battery.py.",
       "next_question": "What gives &g_6079304 a higher rank than the mask constant here?",
+      "supporting_docs": [
+        "docs/research/2026-11-12-inline-return-labels.md"
+      ]
+    },
+    {
+      "address": "0xc21a",
+      "state": "open-structure",
+      "class": "source-shape",
+      "evidence": "research/2026-11-12-first-principles/settings/",
+      "observation": "2026-11-12: no inlined-return label in the main loop (label: 596 to 386 of 963 aligned). Draft is 48 instructions short of the ROM.",
+      "supporting_docs": [
+        "docs/research/2026-11-12-inline-return-labels.md"
+      ]
+    },
+    {
+      "address": "0xa608",
+      "state": "open-structure",
+      "class": "source-shape",
+      "evidence": "research/2026-11-12-first-principles/settings/",
+      "observation": "2026-11-12: formsearch.py reaches 517 of 765 aligned from 379 with address-taken and retyped locals (walk2/f_a608.log, stopped at round 5); those are leads on which locals live on the stack, not a reading of the source.",
       "supporting_docs": [
         "docs/research/2026-11-12-inline-return-labels.md"
       ]
