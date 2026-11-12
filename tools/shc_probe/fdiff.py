@@ -81,6 +81,31 @@ def listing(get, start, end, pool, value_of):
         a += 2
     return out
 
+def rom_pool(start, end):
+    """Literal words inside ROM [start, end).
+
+    fn.all_pool() treats every ROM word as a possible load, so it also names
+    real instructions. Here a word counts as a literal when a load decoded in
+    this function reaches it, or when it follows an unconditional transfer and
+    all_pool() names it (a pool that only earlier functions read)."""
+    pool, after_jump, arm = set(), False, None
+    everything = fn.all_pool()
+    for a in range(start, end, 2):
+        if a == arm:
+            after_jump, arm = True, None
+        w = fn.hw(a)
+        if a in pool or (after_jump and (a in everything or (w in (0x0009, 0xFFFF, 0x0000) and a + 2 in everything))):
+            pool.add(a)
+            continue
+        after_jump = False
+        p = funcscore.pcrel(w, a)
+        if p and start <= p[0] < end:
+            pool.update(range(p[0], p[0] + p[1], 2))
+        if w >> 12 == 0xA or w in (0x000B, 0x002B) or w & 0xF0FF in (0x402B, 0x0023):  # bra, rts, rte, jmp, braf
+            arm = a + 4
+    return pool
+
+
 def analyse(draft, func, version="v5.0r32", flags=None, obj=None, end=None):
     """Compile draft (unless obj is given) and align func with the ROM.
 
@@ -123,9 +148,10 @@ def analyse(draft, func, version="v5.0r32", flags=None, obj=None, end=None):
         return f"{word:#x}"
     def rval(addr, size):
         return f"{int.from_bytes(fn.ROM[addr:addr + size], 'big'):#x}"
+    opool.update(x for x in range(ostart, oend, 2) if og(x) == 0xFFFF)  # alignment fill, never an instruction
     ours = listing(og, ostart, oend, opool, oval)
     while ours and ours[-1][1] in (".word ffff", "nop"): ours.pop()
-    theirs = listing(fn.hw, rom, rend, fn.all_pool(), rval)
+    theirs = listing(fn.hw, rom, rend, rom_pool(rom, rend), rval)
     sm = difflib.SequenceMatcher(None, [t[2] for t in theirs], [t[2] for t in ours], autojunk=False)
     nr = difflib.SequenceMatcher(None, [REG.sub("R", t[2]) for t in theirs], [REG.sub("R", t[2]) for t in ours], autojunk=False)
     return {"rom": rom, "rend": rend, "ostart": ostart, "oend": oend, "theirs": theirs, "ours": ours, "matcher": sm,
