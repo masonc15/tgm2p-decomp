@@ -670,9 +670,9 @@
       "state": "near-miss-two-sites",
       "class": "inlined-return-helper",
       "evidence": "research/2026-11-12-first-principles/settings/cp/e074id/",
-      "observation": "2026-11-12: funcscore 400/404 in src/settings_reset_9c0c.c (was 37). cprint helper, pad byte tested directly, increments as c = x & K; c++; c = c % N;, decrements as one expression. Left: the decrement's and is and #3,r0 / mov r0,r4 (ROM mov #3,r4 / and r0,r4) and the loop test reads run into r2 (draft r3). The two-statement decrement fixes the and but swaps r8/r9 and r10/r11 everywhere (alignment 353/354 ignoring registers). Earlier goto-loop and constant-priority readings of this function are superseded by the inlined-return mechanism.",
-      "next_question": "Same as 0xdbe8: one statement form for the option arithmetic that fits both functions, and the r2/r3 choice at the loop test.",
-      "do_not_repeat": "incdec_battery.py (45 forms), tie_battery.py (13 dead statements at 3 places), e074_tail.py (exit-test spellings), type and declaration-order changes via formsearch.",
+      "observation": "2026-11-12: funcscore 402/404 in src/settings_reset_9c0c.c (was 37). cprint helper, pad byte tested directly, increments as c = x & K; c++; c = c % N;, decrements as one expression. Left: the decrement's and is and #3,r0 / mov r0,r4 (ROM mov #3,r4 / and r0,r4). The exit is if (g_6079304 & 14) { switch (sel) { case 2: run = 0; break; } }, which gives the ROM's r2 at the loop test. The two-statement decrement fixes the and but swaps r8/r9 and r10/r11 everywhere (alignment 353/354 ignoring registers). Earlier goto-loop and constant-priority readings of this function are superseded by the inlined-return mechanism.",
+      "next_question": "One statement form for the option arithmetic that gives the two-statement decrement's and without swapping r8/r9 and r10/r11.",
+      "do_not_repeat": "incdec_battery.py (45 forms), tie_battery.py (13 dead statements at 3 places), e074_tail.py (exit-test spellings), type and declaration-order changes via formsearch. Also cvar_battery.py (one variable per branch, block scope, types) and incdec_pad.py (135 combinations).",
       "supporting_docs": [
         "docs/research/2026-11-12-inline-return-labels.md"
       ]
@@ -695,9 +695,9 @@
       "state": "near-miss-register-pair",
       "class": "inlined-return-helper",
       "evidence": "research/2026-11-12-first-principles/settings/cp/dbe8id/",
-      "observation": "2026-11-12: funcscore 567/578 in src/settings_reset_9c0c.c (was 38). cprint helper, local pad copy b, increments as c = x & K; c++; c = c % N; and decrements as c = x & K; c = c - 1;. Left: &g_6079304 (ROM r13) and the mask ~0x60 (ROM r8) have each other's registers, 0x80 and b use r4/r5 where the draft uses r6/r4, and the loop test reads run into r2 (draft r3).",
+      "observation": "2026-11-12: funcscore 569/578 in src/settings_reset_9c0c.c (was 38). cprint helper, local pad copy b, increments as c = x & K; c++; c = c % N; and decrements as c = x & K; c = c - 1;. Left: &g_6079304 (ROM r13) and the mask ~0x60 (ROM r8) have each other's registers, 0x80 and b use r4/r5 where the draft uses r6/r4. The exit is if (g_6079304 & 14) { switch (sel) { case 4: run = 0; break; } }, which gives the ROM's r2 at the loop test.",
       "do_not_repeat": "The 45 increment/decrement statement forms in incdec_battery.py.",
-      "next_question": "What gives &g_6079304 a higher rank than the mask constant here, and what leaves r3 busy at the loop test (f_e074 shares it, f_d962 does not)?",
+      "next_question": "What gives &g_6079304 a higher rank than the mask constant here?",
       "supporting_docs": [
         "docs/research/2026-11-12-inline-return-labels.md"
       ]

@@ -3977,7 +3977,7 @@ Coverage unchanged at 139,096 / 200,698. A `#pragma inline` function with a
 around it, hoisting into a preheader, unrolling a neighbouring loop and
 merging switch arms. With the centred print written that way
 (`cprint` in `src/settings_reset_9c0c.c`), `funcscore.py` gives `f_d962`
-310/310 (was 25), `f_dbe8` 567/578 (was 38), `f_e074` 400/404 (was 37) and
+310/310 (was 25), `f_dbe8` 569/578 (was 38), `f_e074` 402/404 (was 37) and
 `f_e412`, `f_e490` exact. None is at its ROM address yet. `make check` and the
 full suite pass. `tools/shc_probe/formsearch.py` is the search that led there.
 See docs/research/2026-11-12-inline-return-labels.md.

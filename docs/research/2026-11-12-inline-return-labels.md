@@ -7,8 +7,8 @@ Solo work on phrixus, 2026-11-12. Coverage is unchanged at **139,096 /
 | Function | Before | Now |
 |---|---|---|
 | `f_d962` | 25/310 | 310/310 |
-| `f_dbe8` | 38/578 | 567/578 |
-| `f_e074` | 37/404 | 400/404 |
+| `f_dbe8` | 38/578 | 569/578 |
+| `f_e074` | 37/404 | 402/404 |
 | `f_e412` | 11/63 | 63/63 |
 | `f_e490` | 43/65 | 65/65 |
 
@@ -70,18 +70,23 @@ option arithmetic as separate statements. `c = (g_60792de >> 5) & 3; c++;
 c = c % 3;` gives the ROM's `mov #3,r4 / and r0,r4 / add #1,r4` and puts the
 divisor in the `jsr` delay slot; the compound `c %= 3` loads the divisor first.
 Swapping the operands of `&` changes nothing. The pad byte is tested directly
-in `f_e074` and through a local copy in `f_dbe8`.
+in `f_e074` and through a local copy in `f_dbe8`. Both leave their menu the way
+`f_d962` does, `if (g_6079304 & 14) { switch (sel) { case N: run = 0; break; } }`;
+written as `if ((g_6079304 & 14) && sel == N) run = 0;` the loop test reads
+`run` into `r3` where the ROM uses `r2`.
 
 ## Open
 
-- `f_dbe8` (11 halfwords): `&g_6079304` and the mask `~0x60` have each other's
-  registers (`r13`/`r8`), and the loop test reads `run` into `r2`, not `r3`.
-- `f_e074` (4 halfwords): the decrement's `and` is `and #3,r0 / mov r0,r4`
-  where the ROM has `mov #3,r4 / and r0,r4`, and the same `r2`/`r3` choice at
-  the loop test. Writing the decrement as two statements fixes the `and` but
-  swaps two register pairs (`r8`/`r9`, `r10`/`r11`); thirteen dead-statement
-  levers did not swap them back, so the two functions' increments and
-  decrements are probably not yet in their common original form.
+- `f_dbe8` (9 halfwords): `&g_6079304` and the mask `~0x60` have each other's
+  registers (`r13`/`r8`), and `0x80` and the pad copy use `r4`/`r5` where the
+  draft uses `r6`/`r4`.
+- `f_e074` (2 halfwords): the decrement's `and` is `and #3,r0 / mov r0,r4`
+  where the ROM has `mov #3,r4 / and r0,r4`. Writing the decrement as two
+  statements fixes the `and` but swaps two register pairs (`r8`/`r9`,
+  `r10`/`r11`). Neither thirteen dead-statement levers, a separate or
+  block-scoped variable, nor 135 combinations of increment, decrement and pad
+  forms give both at once, so the two functions' option arithmetic is probably
+  not yet in its common original form.
 - The functions earlier in the unit (`f_a226`, `f_a608`, `f_b892`, `f_be28`,
   `f_c21a`, `f_cac8`, `f_cf68`, `f_d394`) have not been rewritten; `f_780` in
   the startup unit shows the same signs.
