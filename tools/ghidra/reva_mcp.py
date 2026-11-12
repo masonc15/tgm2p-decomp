@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """stdio MCP server for the TGM2+ Ghidra project, built on ReVa's headless mode.
 
-Runs on nuada; Claude Code on the Mac starts it per session over ssh (see
-`claude mcp get ghidra`). It copies $TGM2P_GHIDRA/proj-ram/tgm2p.{gpr,rep}
+Runs on nuada or phrixus; Claude Code on the Mac starts it per session over
+ssh (see `claude mcp get ghidra`). It copies $TGM2P_GHIDRA/proj-ram/tgm2p.{gpr,rep}
 to a temp dir, opens the copy in a headless Ghidra (2 GB heap) through ReVa's
 RevaHeadlessLauncher, and bridges ReVa's loopback HTTP MCP endpoint to stdio.
 Working on a copy lets any number of sessions run at once (a Ghidra project
@@ -26,7 +26,9 @@ import time
 import uuid
 from pathlib import Path
 
-TGM2P_GHIDRA = Path(os.environ.get("TGM2P_GHIDRA", "/drive2/tgm2p/ghidra"))
+# The same root rule as tools/toolchain.py: /drive2/tgm2p (nuada), else ~/tgm2p.
+_DEFAULT_ROOT = Path("/drive2/tgm2p") if Path("/drive2/tgm2p").is_dir() else Path.home() / "tgm2p"
+TGM2P_GHIDRA = Path(os.environ.get("TGM2P_GHIDRA", _DEFAULT_ROOT / "ghidra"))
 PROJ_DIR = TGM2P_GHIDRA / "proj-ram"
 PROJ_NAME = "tgm2p"
 INSTALL_DIR = Path(os.environ.get("GHIDRA_INSTALL_DIR", TGM2P_GHIDRA / "ghidra_12.1.4_PUBLIC"))
