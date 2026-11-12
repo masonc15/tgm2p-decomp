@@ -33,8 +33,23 @@ def load(obj):
                     rel[r["r_offset"]] = name + (f"+{add:#x}" if add else "")
     return data, funcs, rel
 
+def _symbols():
+    """symbols.txt: C name -> address, for names that do not carry their address."""
+    out = {}
+    for line in (ROOT / "symbols.txt").read_text().splitlines():
+        parts = line.split("#")[0].split()
+        if len(parts) == 2:
+            out[parts[0]] = int(parts[1], 16)
+    return out
+
+
+SYMBOLS = _symbols()
+
+
 def symval(name):
-    """Best-effort numeric address a symbol name stands for (f_<rom>, g_<ram>, d_<rom>)."""
+    """Best-effort numeric address a symbol name stands for (f_<rom>, g_<ram>, d_<rom>, symbols.txt)."""
+    if name[1:] in SYMBOLS:
+        return SYMBOLS[name[1:]]
     m = re.match(r"_?(f|g|d)_([0-9a-f]+)(?:\+(0x[0-9a-f]+))?$", name)
     if not m: return None
     v = int(m[2], 16) + (int(m[3], 16) if m[3] else 0)
@@ -66,29 +81,32 @@ def listing(get, start, end, pool, value_of):
         a += 2
     return out
 
-def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("draft"); ap.add_argument("func")
-    ap.add_argument("--version", default="v5.0r32"); ap.add_argument("--all", action="store_true")
-    ap.add_argument("--flags"); ap.add_argument("--obj"); ap.add_argument("--end", help="ROM end address override")
-    ap.add_argument("--summary", action="store_true")
-    a = ap.parse_args()
-    path = Path(a.draft).resolve()
+def analyse(draft, func, version="v5.0r32", flags=None, obj=None, end=None):
+    """Compile draft (unless obj is given) and align func with the ROM.
+
+    Returns a dict: rom, rend, ostart, oend, theirs, ours ([(addr, text, key)]),
+    eq, eq_noreg and matcher (difflib.SequenceMatcher over the keys).
+    Raises RuntimeError with the compiler output when the compile fails."""
+    path = Path(draft).resolve()
     with tempfile.TemporaryDirectory() as tmp:
-        obj = a.obj or str(Path(tmp) / "case.o")
-        if not a.obj:
-            flags = (a.flags or fs.header_flags(path)).split()
-            r = subprocess.run([str(fs.SHCC), "shc-" + a.version, obj, str(path), *flags], capture_output=True, text=True)
-            if r.returncode: sys.exit(r.stdout + r.stderr)
-        data, funcs, rel = load(obj)
+        o = obj or str(Path(tmp) / "case.o")
+        if not obj:
+            fl = (flags or fs.header_flags(path)).split()
+            r = subprocess.run([str(fs.SHCC), "shc-" + version, o, str(path), *fl], capture_output=True, text=True)
+            if r.returncode or not Path(o).exists():
+                raise RuntimeError((r.stdout + r.stderr).strip()[-400:])
+        data, funcs, rel = load(o)
     where = fs.function_map(path)
     def rom_of(sym):
         m = funcscore.AUTO.match(sym); return where.get(sym[1:], int(m[1], 16) if m else None)
-    i = next(k for k, (_, s) in enumerate(funcs) if s[1:] == a.func)
+    i = next((k for k, (_, s) in enumerate(funcs) if s[1:] == func), None)
+    if i is None:
+        raise RuntimeError(f"{func} is not defined in {path.name}")
     ostart = funcs[i][0]; oend = funcs[i + 1][0] if i + 1 < len(funcs) else len(data)
     rom = rom_of(funcs[i][1])
     starts = sorted(x for x in (rom_of(s) for _, s in funcs) if x)
     nxt = next((x for x in starts if x > rom), fn.TEXT_END)
-    rend = int(a.end, 16) if a.end else min(fn.extent(rom)[0], nxt)
+    rend = int(end, 16) if end else min(fn.extent(rom)[0], nxt)
     og = lambda x: data[x] << 8 | data[x + 1]
     opool = set()
     for x in range(ostart, oend, 2):
@@ -98,20 +116,34 @@ def main():
     for r in rel:
         if ostart <= r < oend: opool.update((r, r + 2))
     def oval(addr, size):
-        if addr in rel:
-            v = symval(rel[addr]); return f"{v:#x}" if v is not None else rel[addr]
-        b = data[addr:addr + size]
-        v = int.from_bytes(b, "big"); return f"{v:#x}"
+        word = int.from_bytes(data[addr:addr + size], "big")
+        if addr in rel:  # rof2elf leaves a symbol's offset in the word itself
+            v = symval(rel[addr])
+            return f"{(v + word) & 0xffffffff:#x}" if v is not None else rel[addr] + (f"+{word:#x}" if word else "")
+        return f"{word:#x}"
     def rval(addr, size):
         return f"{int.from_bytes(fn.ROM[addr:addr + size], 'big'):#x}"
     ours = listing(og, ostart, oend, opool, oval)
     while ours and ours[-1][1] in (".word ffff", "nop"): ours.pop()
     theirs = listing(fn.hw, rom, rend, fn.all_pool(), rval)
     sm = difflib.SequenceMatcher(None, [t[2] for t in theirs], [t[2] for t in ours], autojunk=False)
-    eq = sum(b.size for b in sm.get_matching_blocks())
     nr = difflib.SequenceMatcher(None, [REG.sub("R", t[2]) for t in theirs], [REG.sub("R", t[2]) for t in ours], autojunk=False)
-    eqr = sum(b.size for b in nr.get_matching_blocks())
-    print(f"{a.func}: ROM {rom:#x}-{rend:#x} {len(theirs)} insns ({rend-rom} bytes) | ours {len(ours)} insns ({oend-ostart} bytes incl. pool) | equal {eq} | equal ignoring regs {eqr}")
+    return {"rom": rom, "rend": rend, "ostart": ostart, "oend": oend, "theirs": theirs, "ours": ours, "matcher": sm,
+            "eq": sum(b.size for b in sm.get_matching_blocks()), "eq_noreg": sum(b.size for b in nr.get_matching_blocks())}
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0]); ap.add_argument("draft"); ap.add_argument("func")
+    ap.add_argument("--version", default="v5.0r32"); ap.add_argument("--all", action="store_true")
+    ap.add_argument("--flags"); ap.add_argument("--obj"); ap.add_argument("--end", help="ROM end address override")
+    ap.add_argument("--summary", action="store_true")
+    a = ap.parse_args()
+    try:
+        r = analyse(a.draft, a.func, a.version, a.flags, a.obj, a.end)
+    except RuntimeError as e:
+        sys.exit(str(e))
+    rom, rend, ostart, oend, theirs, ours, sm = (r[k] for k in ("rom", "rend", "ostart", "oend", "theirs", "ours", "matcher"))
+    print(f"{a.func}: ROM {rom:#x}-{rend:#x} {len(theirs)} insns ({rend-rom} bytes) | ours {len(ours)} insns ({oend-ostart} bytes incl. pool) | equal {r['eq']} | equal ignoring regs {r['eq_noreg']}")
     if a.summary: return
     for tag, i1, i2, j1, j2 in sm.get_opcodes():
         if tag == "equal":
@@ -124,9 +156,11 @@ def main():
         n = max(i2 - i1, j2 - j1)
         for k in range(n):
             l = theirs[i1 + k] if i1 + k < i2 else None
-            r = ours[j1 + k] if j1 + k < j2 else None
+            r_ = ours[j1 + k] if j1 + k < j2 else None
             ls = f"{l[0]-rom:4x} {l[1]:<30}" if l else " " * 35
-            rs = f"{r[0]-ostart:4x} {r[1]}" if r else ""
+            rs = f"{r_[0]-ostart:4x} {r_[1]}" if r_ else ""
             print(f"* {ls} | {rs}")
 
-main()
+
+if __name__ == "__main__":
+    main()
