@@ -3969,3 +3969,15 @@ source forms took `f_d962` from 118 to 233 of 269 aligned instructions (loop
 entered at its test, inlined centre-print helper, `run` on the stack); it is
 not exact and earns nothing. See
 docs/research/2026-11-12-first-principles-review.md.
+
+### 2026-11-12 phrixus: inlined-return helper in the settings menus (0 bytes)
+
+Coverage unchanged at 139,096 / 200,698. A `#pragma inline` function with a
+`return` leaves a label at each expansion, which stops SHC rotating the loop
+around it, hoisting into a preheader, unrolling a neighbouring loop and
+merging switch arms. With the centred print written that way
+(`cprint` in `src/settings_reset_9c0c.c`), `funcscore.py` gives `f_d962`
+310/310 (was 25), `f_dbe8` 567/578 (was 38), `f_e074` 400/404 (was 37) and
+`f_e412`, `f_e490` exact. None is at its ROM address yet. `make check` and the
+full suite pass. `tools/shc_probe/formsearch.py` is the search that led there.
+See docs/research/2026-11-12-inline-return-labels.md.
