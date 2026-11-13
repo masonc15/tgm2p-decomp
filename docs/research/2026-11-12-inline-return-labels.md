@@ -111,6 +111,27 @@ copies by words.
 `tools/shc_probe/leversearch.py` ran these as named levers; the specs are in
 `research/2026-11-12-first-principles/specs/d394*.py`.
 
+## f_c21a: three readings
+
+`f_c21a` (the sound test) went from 81 to 967 of 1,080 halfwords in place, and
+its eleven stack slots now carry exactly the ROM's loads and stores.
+
+- **The numbers beside Music and Effect are `music` and `effect`.** The ROM
+  reads `@(32,r15)` and `@(28,r15)` after three pushes, which are slots 20 and
+  16. The draft printed the key-repeat counters there, so every spilled
+  variable had the wrong reference count and landed in the wrong slot.
+- **The voice row is four explicit calls,** `if (i < 8) { if (f_2ee0c(i) == 0)
+  f_e520(.., "Y", 0); else f_e520(.., "N", 0); } else { ... }`, not a `?:`
+  inside one call. SHC then unrolls the loop by four as the ROM does and keeps
+  both strings in registers.
+- **44 bytes of the 88-byte frame are never touched:** an unused local. The
+  draft carries `char pad[44];`; its type and position do not change the code.
+
+Left: the pad bytes and repeat values sit in `r4`..`r7` in the other order
+(ROM `rep1` in `r7`, `rep2` in `r6`, pads in `r4`, `r5`), which swapping the
+operands of `|` does not fix, and the third unrolled copy of the row computes
+one coordinate through `r2` where the draft uses `r0`.
+
 ## Open
 
 - `f_dbe8` (9 halfwords): `&g_6079304` and the mask `~0x60` have each other's
@@ -124,10 +145,11 @@ copies by words.
   forms give both at once, so the two functions' option arithmetic is probably
   not yet in its common original form.
 - The functions earlier in the unit (`f_a226`, `f_a608`, `f_b892`, `f_be28`,
-  `f_c21a`, `f_cac8`, `f_cf68`) have not been rewritten. In `f_c21a` the ROM
-  keeps the "Y" and "N" strings in `r10`/`r11` and a copy of `sel` on the
-  stack, the reverse of the draft, so it wants the same reference-count reading
-  `f_d394` got.
+  `f_cac8`, `f_cf68`) have not been reread.
+- The same kind of residue is now left in five functions: two values of
+  near-equal rank holding each other's registers or slots. Spellings do not
+  settle these. The next tool should print SHCMDL's candidate list with
+  priorities for one function, so the missing reference can be computed.
 - Other inlined helpers with returns probably exist. A cheap test for one:
   `formsearch.py --kinds lab` on a function, since an unused label in the right
   loop reproduces the effect.

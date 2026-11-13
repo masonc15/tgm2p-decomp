@@ -3990,3 +3990,11 @@ tests, an ABS expression on an unsigned call, signed table bytes, `int x`.
 One constant tie (1 against the pad mask 8 for `r8`) and the genuine `.rodata`
 offset remain. `tools/shc_probe/leversearch.py` added. See the f_d394 section
 of docs/research/2026-11-12-inline-return-labels.md.
+
+### 2026-11-12 phrixus: f_c21a readings (0 bytes)
+
+Coverage unchanged at 139,096 / 200,698. `f_c21a` is at 967/1080 halfwords in
+place (was 81) with every stack slot matching: the sound test prints `music`
+and `effect` (the draft printed the repeat counters), the voice row is four
+explicit calls, and 44 bytes of its frame are an unused local. See the f_c21a
+section of docs/research/2026-11-12-inline-return-labels.md.

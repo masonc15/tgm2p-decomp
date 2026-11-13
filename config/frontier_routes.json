@@ -708,13 +708,15 @@
     },
     {
       "address": "0xc21a",
-      "state": "open-structure",
-      "class": "source-shape",
-      "evidence": "research/2026-11-12-first-principles/settings/",
-      "observation": "2026-11-12 (later): ROM keeps the \"Y\"/\"N\" string addresses in r10/r11 and an extended copy of sel at @(4,r15); the draft has sel in r9 and reloads the strings. Same kind of ranking gap f_d394 had before its pre-increment reading. 2026-11-12: no inlined-return label in the main loop (label: 596 to 386 of 963 aligned). Draft is 48 instructions short of the ROM.",
+      "state": "near-miss-scratch-order",
+      "class": "reference-counts",
+      "evidence": "research/2026-11-12-first-principles/specs/",
+      "observation": "2026-11-12 (later): funcscore 967/1080 (was 81) and all eleven stack slots match the ROM. f_e63a prints music and effect (ROM @(32,r15)/@(28,r15) after three pushes = slots 20/16), the voice row is four explicit f_e520 calls under nested ifs, and an unused 44-byte local fills the 88-byte frame. Left: rep1/rep2 and the two pad bytes sit in r4..r7 in the other order, and the third unrolled row copy uses r2 where the draft uses r0. 2026-11-12 (later): ROM keeps the \"Y\"/\"N\" string addresses in r10/r11 and an extended copy of sel at @(4,r15); the draft has sel in r9 and reloads the strings. Same kind of ranking gap f_d394 had before its pre-increment reading. 2026-11-12: no inlined-return label in the main loop (label: 596 to 386 of 963 aligned). Draft is 48 instructions short of the ROM.",
       "supporting_docs": [
         "docs/research/2026-11-12-inline-return-labels.md"
-      ]
+      ],
+      "do_not_repeat": "specs/c21a*.py: ternary row forms, string pointers, counter types, pad type and position, declaration order, operand order of the two-pad tests.",
+      "next_question": "What orders the four values loaded before the switch (pad1, pad2, rep2, rep1 in the ROM)?"
     },
     {
       "address": "0xa608",
