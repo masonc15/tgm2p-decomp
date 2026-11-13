@@ -1342,13 +1342,13 @@ extern void f_b352(void);
 extern void f_b36e(void);
 extern void f_211a2(void);
 extern void f_21206(void);
-extern short f_2beca(int);
+extern unsigned long f_2beca(int);
 extern char g_6032da4[], g_6032db0[], g_6032a18[], g_6032a24[], g_6032a28[], g_6032db8[], g_6032dc0[], g_6032a2c[];
 extern char g_6032dc8[], g_6032dd8[], g_6032de4[], g_6032df0[], g_6032dfc[], g_6032e0c[], g_6032e1c[], g_6032e20[], g_6032e30[];
 extern char g_6032e4c[], g_6032e64[], g_6032e74[], g_6032e88[], g_6032e9c[], g_6032eb4[], g_6032eb8[], g_6032ecc[], g_6032ee0[];
 extern char g_6032eec[], g_6032f04[], g_6032f1c[], g_6032f34[], g_6032f4c[];
 extern char g_6032f64[], g_6032f84[], g_6032fa4[], g_6032fd4[], g_6032ff8[];
-extern unsigned char g_603290c[4][5], g_6032925[];
+extern char g_603290c[4][5], g_6032925[];
 struct pl { char pad[48]; unsigned long a48; unsigned long a52; unsigned short w56, w58, w60; };
 extern struct pl g_6065650;
 extern long g_6065640;
@@ -1608,11 +1608,10 @@ void f_d394(void)
 	short tab[5] = {0, 0, 0, 0, 0};
 	long run;
 	short w4, w8, mode;
-	short i, x, row, col, found;
-	long neg;
+	short i, row, col, found;
+	int x;
 
 	run = 1;
-	neg = 0;
 	while (g_6064750)
 		f_2b4e8();
 	f_29cc6(0, 4, 0, -0x7ffa);
@@ -1638,23 +1637,19 @@ void f_d394(void)
 		switch (mode) {
 		case 128:
 			if ((g_6079304 & 0x80) || (g_6079305 & 0x80)) {
-				tab[w4]++;
-				if (tab[w4] > 9)
+				if (++tab[w4] > 9)
 					tab[w4] = 0;
 			}
 			if ((g_6079304 & 0x40) || (g_6079305 & 0x40)) {
-				tab[w4]--;
-				if (tab[w4] < 0)
+				if (--tab[w4] < 0)
 					tab[w4] = 9;
 			}
 			if ((g_6079304 & 0x20) || (g_6079305 & 0x20)) {
-				w4++;
-				if (w4 > 4)
+				if (++w4 > 4)
 					w4 = 0;
 			}
 			if ((g_6079304 & 0x10) || (g_6079305 & 0x10)) {
-				w4--;
-				if (w4 < 0)
+				if (--w4 < 0)
 					w4 = 4;
 			}
 			if ((g_6079304 & 8) || (g_6079305 & 8)) {
@@ -1710,14 +1705,13 @@ void f_d394(void)
 				w8++;
 			else {
 				w8 = 0;
-				f_2beca(5);
-				if (neg)
-					w4 = -f_2beca(5);
-				else
-					w4 = f_2beca(5);
+				w4 = f_2beca(5) < 0 ? -f_2beca(5) : f_2beca(5);
 				mode = 128;
-				for (i = 0; i < 5; i++)
-					tab[i] = 0;
+				tab[0] = 0;
+				tab[1] = 0;
+				tab[2] = 0;
+				tab[3] = 0;
+				tab[4] = 0;
 			}
 			break;
 		}
