@@ -1125,6 +1125,7 @@ void f_c21a(void)
 	short voice = 0;
 	short rep1, rep2;
 	short i;
+	char pad[44];
 
 	while (g_6064750)
 		f_2b4e8();
@@ -1255,10 +1256,17 @@ void f_c21a(void)
 		f_e412(80, 134, "All Off", sel == 4 ? 0 : 1);
 		f_e412(80, 148, "Exit", sel == 5 ? 0 : 1);
 		for (i = 0; i < 16; i++) {
-			if (i < 8)
-				f_e520(i * 17 + 114, 92, f_2ee0c(i) == 0 ? "Y" : "N", 0);
-			else
-				f_e520((i - 8) * 17 + 114, 106, f_2ee0c(i) == 0 ? "Y" : "N", 0);
+			if (i < 8) {
+				if (f_2ee0c(i) == 0)
+					f_e520(i * 17 + 114, 92, "Y", 0);
+				else
+					f_e520(i * 17 + 114, 92, "N", 0);
+			} else {
+				if (f_2ee0c(i) == 0)
+					f_e520((i - 8) * 17 + 114, 106, "Y", 0);
+				else
+					f_e520((i - 8) * 17 + 114, 106, "N", 0);
+			}
 		}
 		if (sel == 2) {
 			if (voice < 8)
@@ -1266,8 +1274,8 @@ void f_c21a(void)
 			else
 				f_e520((voice - 8) * 17 + 114, 106, "W", 0);
 		}
-		f_e63a(cnt1, 50, 200, 2, 0, 1, sel == 0 ? 0 : 1);
-		f_e63a(cnt2, 64, 200, 3, 0, 1, sel == 1 ? 0 : 1);
+		f_e63a(music, 50, 200, 2, 0, 1, sel == 0 ? 0 : 1);
+		f_e63a(effect, 64, 200, 3, 0, 1, sel == 1 ? 0 : 1);
 		f_e63a(voice, 78, 200, 2, 0, 1, sel == 2 ? 0 : 1);
 		switch (sel) {
 		case 2:
