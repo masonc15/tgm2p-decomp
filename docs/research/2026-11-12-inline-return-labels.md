@@ -75,6 +75,42 @@ in `f_e074` and through a local copy in `f_dbe8`. Both leave their menu the way
 written as `if ((g_6079304 & 14) && sel == N) run = 0;` the loop test reads
 `run` into `r3` where the ROM uses `r2`.
 
+## f_d394: four ordinary forms
+
+`f_d394` (the five-digit code entry) has no inlined-return label; its loops are
+rotated, hoisted and unrolled. Its tracked draft went from 408 to 590 of 590
+instructions in number, and from 53 to 248 of 659 halfwords in place
+(`funcscore.py`), with four changes that are plain readings of the ROM:
+
+- **Pre-increment inside the test.** `if (++w4 > 4) w4 = 0;`, `if (--w4 < 0)
+  w4 = 4;`, `if (++tab[w4] > 9) tab[w4] = 0;` and `if (--tab[w4] < 0)
+  tab[w4] = 9;`. The ROM compares the value it just stored without reloading
+  it. With one reference fewer each, `w4` loses its register to the constants,
+  which is why the ROM keeps `w4`, `w8`, `mode` and `run` on the stack.
+- **An ABS macro around an unsigned call.** `w4 = f_2beca(5) < 0 ?
+  -f_2beca(5) : f_2beca(5);` with `f_2beca` returning `unsigned long`. SHC
+  reduces the comparison to the constant 0 after branch folding has run, so
+  the ROM calls `f_2beca` three times and tests the zero register (`tst
+  r14,r14`). The old draft imitated this with a `neg` variable.
+- **Signed table bytes.** `g_603290c` and `g_6032925` are `char`: the ROM
+  compares them without `extu.b`.
+- **`x` is an `int`,** and the digits are cleared with five statements, which
+  gives the five element pointers the ROM saves at `@(12,r15)`..`@(28,r15)`.
+
+What is left is one tie and one layout fact. With the ABS form the pad mask 8
+takes `r8` and the constant 1 does not, the reverse of the ROM; once 1 is not
+in a register SHC folds the unrolled digit loop's guard (`tst r8,r8`) and the
+function shifts. Any dead use of 1 (`if (0) run = 1;`) puts 1 back, and the
+`neg` form had it there, so the two are tied and the original list of
+candidates still differs from the draft's by something small. Two of the five
+saved element pointers also swap slots. Separately, the ROM copies the digit
+initialiser with long moves because its template sits at a 4-aligned `.rodata`
+offset (0x404); this context's `.rodata` is not the genuine one, so the draft
+copies by words.
+
+`tools/shc_probe/leversearch.py` ran these as named levers; the specs are in
+`research/2026-11-12-first-principles/specs/d394*.py`.
+
 ## Open
 
 - `f_dbe8` (9 halfwords): `&g_6079304` and the mask `~0x60` have each other's
@@ -88,8 +124,10 @@ written as `if ((g_6079304 & 14) && sel == N) run = 0;` the loop test reads
   forms give both at once, so the two functions' option arithmetic is probably
   not yet in its common original form.
 - The functions earlier in the unit (`f_a226`, `f_a608`, `f_b892`, `f_be28`,
-  `f_c21a`, `f_cac8`, `f_cf68`, `f_d394`) have not been rewritten; `f_780` in
-  the startup unit shows the same signs.
+  `f_c21a`, `f_cac8`, `f_cf68`) have not been rewritten. In `f_c21a` the ROM
+  keeps the "Y" and "N" strings in `r10`/`r11` and a copy of `sel` on the
+  stack, the reverse of the draft, so it wants the same reference-count reading
+  `f_d394` got.
 - Other inlined helpers with returns probably exist. A cheap test for one:
   `formsearch.py --kinds lab` on a function, since an unused label in the right
   loop reproduces the effect.

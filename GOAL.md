@@ -3981,3 +3981,12 @@ merging switch arms. With the centred print written that way
 `f_e412`, `f_e490` exact. None is at its ROM address yet. `make check` and the
 full suite pass. `tools/shc_probe/formsearch.py` is the search that led there.
 See docs/research/2026-11-12-inline-return-labels.md.
+
+### 2026-11-12 phrixus: f_d394 structure (0 bytes)
+
+Coverage unchanged at 139,096 / 200,698. `f_d394` is at 590 of 590
+instructions in number and 248/659 halfwords in place (was 53): pre-increment
+tests, an ABS expression on an unsigned call, signed table bytes, `int x`.
+One constant tie (1 against the pad mask 8 for `r8`) and the genuine `.rodata`
+offset remain. `tools/shc_probe/leversearch.py` added. See the f_d394 section
+of docs/research/2026-11-12-inline-return-labels.md.
