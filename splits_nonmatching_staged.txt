@@ -1,0 +1,35 @@
+# Staged non-matching units: <start> <end> c-nonmatching <source>, as in splits_nonmatching.txt.
+# Functionally equivalent C for the unresolved asm ranges that the recorded replays execute.
+# Every function passes tools/nonmatching_check.py, and a build with these units passes the
+# pinned replay (tools/replay_check.sh --pin-idle) with the game's frame counter identical to
+# the original's. They are not accepted yet: the check used to read a missed frame from idle
+# counts, and by that reading the same build fails in three frames. Whether the frame counter
+# is the test is Colin's decision; docs/research/2026-11-17-mod-build.md has the evidence.
+# Until then only the mod build links this list (make mod, make mod-check). make shiftable
+# NONMATCHING=1, make check and the coverage figures never read it.
+0x000780 0x001108 c-nonmatching src/nonmatching/main_780.c
+0x0012e2 0x001896 c-nonmatching src/nonmatching/field_setup_12e2.c
+0x0020be 0x002e4c c-nonmatching src/nonmatching/field_step_20be.c
+0x003c88 0x003e2e c-nonmatching src/nonmatching/field_3c88.c
+0x004044 0x0044d4 c-nonmatching src/nonmatching/field_4044.c
+0x0057d4 0x005b80 c-nonmatching src/nonmatching/allclear_57d4.c
+0x005b80 0x00601a c-nonmatching src/nonmatching/field_5b80.c
+0x0061d0 0x007004 c-nonmatching src/nonmatching/field_61d0.c
+0x007324 0x007658 c-nonmatching src/nonmatching/field_7324.c
+0x007658 0x007956 c-nonmatching src/nonmatching/speed_7658.c
+0x007c08 0x007f38 c-nonmatching src/nonmatching/field_7c08.c
+0x009180 0x0095b8 c-nonmatching src/nonmatching/field_flag_9180.c
+0x0096ac 0x009b90 c-nonmatching src/nonmatching/field_96ac.c
+0x00e39c 0x00e3b8 c-nonmatching src/nonmatching/text_width_e39c.c
+0x00e3e0 0x00e520 c-nonmatching src/nonmatching/text_e3e0.c
+0x01050e 0x0105ba c-nonmatching src/nonmatching/hud_1050e.c
+0x010788 0x010942 c-nonmatching src/nonmatching/hud_10788.c
+0x012fa8 0x0131e8 c-nonmatching src/nonmatching/rank_display_12fa8.c
+0x013380 0x013484 c-nonmatching src/nonmatching/save_13380.c
+0x014d50 0x015104 c-nonmatching src/nonmatching/rank_14d50.c
+0x015104 0x015794 c-nonmatching src/nonmatching/rank_15104.c
+0x015794 0x015f10 c-nonmatching src/nonmatching/rank_15794.c
+0x015fae 0x0163fc c-nonmatching src/nonmatching/draw_15fae.c
+0x0163fc 0x01715c c-nonmatching src/nonmatching/draw_163fc.c
+0x026264 0x02631a c-nonmatching src/nonmatching/board_26264.c
+0x026ff0 0x027310 c-nonmatching src/nonmatching/board_26ff0.c
