@@ -80,6 +80,24 @@ class DelaySlotTests(unittest.TestCase):
             c.run(0x1000, 1)
         self.assertEqual(c.R[1], 0)
 
+    def test_step_limit_in_a_call_counts_like_one_in_the_code(self):
+        # nonmatching_check.py reads "hit the limit" as a count above the
+        # limit, wherever the limit was hit
+        class Counting(TinyCPU):
+            def on_call(self, target, ret, at):
+                self.steps += 1
+                if self.steps > self.limit:
+                    raise emu.StepLimit("step limit in calls")
+                return ret
+
+        loop = {0x1000: 0xB002, 0x1002: 0x0009, 0x1004: 0xAFFC, 0x1006: 0x0009}   # bsr; nop; bra 0x1000; nop
+        for limit in (2, 3, 4, 5, 6, 7):
+            c = Counting(loop)
+            c.limit = limit
+            with self.assertRaises(emu.StepLimit):
+                c.run(0x1000, limit)
+            self.assertEqual(c.steps, limit + 1, limit)
+
     def test_unsupported_instruction(self):
         c = TinyCPU({0x1000: 0x001B})  # sleep is not modeled
         with self.assertRaises(emu.Unsupported):

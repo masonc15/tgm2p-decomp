@@ -918,7 +918,9 @@ class CPU:
                         nxt = tgt
                 pc = nxt
         finally:
-            self.steps = steps
+            # a hook that raised (the step limit, inside a call) has counted
+            # its own steps into self.steps; the local count is behind it
+            self.steps = max(self.steps, steps)
 
 
 # ---------------------------------------------------------------- self-test
