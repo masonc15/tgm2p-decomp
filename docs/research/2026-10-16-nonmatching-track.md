@@ -46,11 +46,17 @@ A unit is accepted only when both of these hold, as Colin set them on
    - A unit they execute passes with `--pin-idle`. The frame wait's idle
      counter reads as 40,000 in both images, so the random sequence no longer
      depends on cycle counts, and the check also records the real idle count
-     of every frame. A frame in which the candidate has none while the
-     original waited means the replacement overran the frame time: the game
-     missed a frame, and the check fails. `tools/idle_report.py` gives each
-     unit's smallest idle count over the frames its code ran in, against the
-     original's over the same frames.
+     of every frame, and the game's own frame counter `g_6065644`. A
+     replacement that overruns the frame time makes the game miss a frame,
+     and the check fails. Until 2026-11-17 a missed frame was read as "the
+     candidate ran no idle loops in a frame where the original did". That
+     test also fires on the original's own code moved by padding, so the
+     check now compares the frame counter instead, which falls behind the
+     original's when a frame is missed
+     ([mod-build.md](2026-11-17-mod-build.md)). Colin has not yet agreed to
+     that change. `tools/idle_report.py` gives each unit's smallest idle
+     count over the frames its code ran in, against the original's over the
+     same frames, and the frames it missed.
 
 Accepted units are logged in `GOAL.md` under a separate "Non-matching track"
 heading.
@@ -133,8 +139,14 @@ themselves behave alike; difftest covers that part.
 | `board_queue_274c0.c` | 0x274c0–0x2769e | 478 | f_274c0 | context in src/board_queue_2733a.c |
 | `gfx_2ac4c.c` | 0x2ac4c–0x2af5e | 786 | f_2ac4c | wip/gfx_2ac4c.c |
 | `rankcode_238a8.c` | 0x238a8–0x23e3e | 1,430 | f_238a8, f_238fc | drafted from the disassembly and src/rankcode_draw_23e3e.c |
+| `settings_a226.c` | 0xa226–0xb2f4 | 4,302 | f_a226, f_a608, f_acdc, f_ad80, f_af8c | settings packet of 2026-10-16 |
+| `settings_b3c0.c` | 0xb3c0–0xbd8a | 2,506 | f_b3c0, f_b892, f_bc02 | settings packet of 2026-10-16 |
+| `settings_be28.c` | 0xbe28–0xd28c | 5,220 | f_be28, f_c21a, f_cac8, f_cf68 | settings packet of 2026-10-16 |
+| `checksum_30880.c` | 0x30880–0x30a44 | 452 | f_30880 | staged packet of 2026-10-16 |
 
-11,074 bytes of unresolved assembly in all. Evidence, from the first nine
+23,554 bytes of unresolved assembly in all. The last four were accepted on
+2026-11-17 ([mod-build.md](2026-11-17-mod-build.md)); their image is sha1
+`ed4d3dd3`. Evidence for the first fourteen, from the first nine
 (`251d8b2`), the four after them (`251cb6e`) and `rankcode_238a8.c`:
 
 ```
@@ -169,19 +181,17 @@ else. With it, the pilot matched over the full 12,000 + 24,000 frames.
 Colin accepted the pinned replay for units the replays execute on
 2026-10-16, with the condition that no frame is missed (see Acceptance).
 
-Status of the executed units, staged but not yet committed (the sources and
-logs are in the tgm2p-private research packet
-`research/2026-10-16-nonmatching-staged/`): a shiftable build with the 14
-accepted units and 27 executed ones (41 units) passes the full pinned replay.
-All 360 checkpoints are identical; the candidate never misses a frame, and
-its smallest idle count is 1, as is the original's. 40 of the 27 units' 41
-functions pass difftest, `f_2722c` under the non-returning rule. `f_5b80`
-still needs its non-returning check at 20M steps. At 2M steps one random
-field takes longer than the limit but returns.
-`tools/idle_report.py` gives per-unit minimums within a few hundred idle
-loops of the original's over the same frames. The marks also show that
-`gfx_2ac4c` runs in 1,237 frames. The entry-fetch trace had missed it, but it
-passed the strict replay anyway.
+Status of the executed units on 2026-11-17: 26 of them are in the tree,
+listed in `splits_nonmatching_staged.txt`, which only the mod build links
+(`video_init_1108.c`'s range has since become matching C). All 40 of their
+functions pass difftest, and a build with them and the 14 accepted units
+passes the full pinned replay with the frame counter identical to the
+original's. By the older reading of a missed frame the same build fails in
+three attract frames, so they stay staged until Colin decides which reading
+counts. [mod-build.md](2026-11-17-mod-build.md) has the evidence. The first
+run of the 41 units, on 2026-10-16 in the cloud session, had passed the older
+reading too: the marks showed `gfx_2ac4c` running in 1,237 frames, which the
+entry-fetch trace had missed, and it had passed the strict replay anyway.
 
 The pinned replay also catches real differences that difftest misses. With
 all 28 difftest-clean units linked it diverged in attract mode at frame

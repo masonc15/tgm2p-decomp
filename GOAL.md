@@ -3957,6 +3957,38 @@ context in src/rankcode_draw_23e3e.c). 14 units, 11,074 asm bytes in all.
 attract 12,000 and gameplay 24,000 frames, all 360 checkpoints identical
 without idle pinning. Neither replay executes these functions.
 
+### 2026-11-17 phrixus: three settings units and the ROM check accepted (12,480 asm bytes)
+
+Accepted: `settings_a226.c` (f_a226, f_a608, f_acdc, f_ad80, f_af8c),
+`settings_b3c0.c` (f_b3c0, f_b892, f_bc02), `settings_be28.c` (f_be28,
+f_c21a, f_cac8, f_cf68) and `checksum_30880.c` (f_30880). 18 units, 23,554
+asm bytes in all. `tools/nonmatching_check.py`: 13/13 functions pass, eleven
+of them under the non-returning rule with their listed inputs. `make
+shiftable NONMATCHING=1` (sha1 ed4d3dd3) with `tools/replay_check.sh`:
+attract 12,000 and gameplay 24,000 frames, all 360 checkpoints identical
+without idle pinning. Neither replay executes these functions.
+
+Five of the functions had failed with "only the original hit the step limit".
+That was a miscount in `tools/difftest/sh2emu.py`: a step limit hit inside a
+stubbed call was reported one step short, so it read as a return. The
+miscount could fail a function but not pass one. Fixed, with a test.
+
+`settings_d394.c` is not accepted and not linked: f_d394 and f_dbe8 get
+DIFFERENT on inputs where a stubbed call returns a value the game cannot
+produce and the original then writes into its own frame or literal pool.
+
+### 2026-11-17 phrixus: 26 executed units staged, not accepted
+
+`splits_nonmatching_staged.txt` lists the 26 units the replays execute. All
+40 functions pass `tools/nonmatching_check.py` (`f_5b80` with a 1,000M step
+limit), and the 40-unit build (sha1 2f0c7dc4) passes the pinned replay with
+the game frame counter identical to the original's. They are staged because
+the pinned replay's missed-frame test changed: it now compares the game's
+frame counter instead of looking for frames without idle loops, which also
+fires on padding alone. By the old reading the build fails in three attract
+frames. Colin decides whether the new reading counts. Only `make mod` links
+the staged list. See docs/research/2026-11-17-mod-build.md.
+
 ### 2026-11-12 phrixus: first-principles review (0 bytes)
 
 Coverage unchanged at 139,096 / 200,698. Host and release checks: wibo 1.2.0
@@ -3998,3 +4030,15 @@ place (was 81) with every stack slot matching: the sound test prints `music`
 and `effect` (the draft printed the repeat counters), the voice row is four
 explicit calls, and 44 bytes of its frame are an unused local. See the f_c21a
 section of docs/research/2026-11-12-inline-return-labels.md.
+
+### 2026-11-17 phrixus: mod build (0 bytes)
+
+Coverage unchanged at 139,096 / 200,698. `make mod` links the game from its C
+sources by symbol instead of by original offset, so functions can grow and a
+mod directory can replace files and add code and variables; it writes a MAME
+ROM set. With unedited sources and the code padded into the original's boot
+phase, the source-linked image (sha1 0b95c72a) plays both replays identically
+to the original without pinning. `make mod-check` repeats that with the
+non-matching C under the pinned replay. `mods/example` is a worked example.
+`make check`, `make shiftable` and the full suite pass unchanged. See
+docs/MODDING.md and docs/research/2026-11-17-mod-build.md.
