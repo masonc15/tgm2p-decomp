@@ -6,7 +6,7 @@ SHC_COMPILERS ?= $(TGM2P_TOOLCHAIN)/compilers
 export TGM2P_TOOLCHAIN SHC_COMPILERS
 export PATH := $(TGM2P_TOOLCHAIN)/bin:$(PATH)
 
-.PHONY: all split build check report status clean shiftable
+.PHONY: all split build check report status clean shiftable mod mod-check
 all: check
 
 build/prog.bin:
@@ -54,6 +54,20 @@ else ifeq ($(strip $(SHIFT_PAD)),)
 else
 	$(PY) tools/shiftable.py build --out build/shiftable-pad $(foreach p,$(SHIFT_PAD),--pad $(p))
 endif
+
+# Links the program from source as it compiles now, by symbol, so that it can
+# be changed (tools/mod.py, docs/MODDING.md): the matching C, the non-matching
+# C of splits_nonmatching.txt and splits_nonmatching_staged.txt and, with
+# MOD=DIR, that directory's replacement
+# and new files. Writes build/mod/tgm2p.bin and a MAME ROM set in
+# build/mod/roms. mod-check builds the tree as it is and replays it against
+# the original ROM. Neither touches the matching build or its figures.
+MOD ?=
+mod: build/prog.bin
+	$(PY) tools/mod.py build $(if $(strip $(MOD)),--mod $(MOD))
+
+mod-check: build/prog.bin
+	$(PY) tools/mod.py check
 
 clean:
 	rm -rf asm build/obj build/bin build/roms build/rom.ld build/tgm2p.elf build/tgm2p.bin build/report build/report.json objdiff.json

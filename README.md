@@ -165,6 +165,10 @@ To move a function into C, write the source with the usual `/* rom: ... flags: .
 
 CI (`.github/workflows/build.yml`) runs `make check` and `make report` on every push to `main` and uploads the report as the `tgm2p_report` artifact, which is what decomp.dev picks up. The ROM can't live in the repo, so the job runs inside a private container image, `ghcr.io/masonc15/tgm2p-build`, that holds the two program ROM halves plus the toolchain. `tools/ci/Dockerfile` builds it, with every download pinned by hash to the copies used on nuada. Pull requests from forks can't pull that image, so their builds are skipped. decomp.dev has no platform for arcade games yet; [decomp.dev#50](https://github.com/encounter/decomp.dev/pull/50) adds one, and the project can be registered once that's live.
 
+### Changing the game
+
+`make mod` builds a version of the game that can be changed. It compiles every C source as it stands now and links the program by symbol, so a function can grow, and new functions, files and variables can be added; `make mod MOD=mods/example` builds a small example. The result is a MAME ROM set under `build/mod/roms`. This build is separate from the matching one: it reproduces the game's behaviour (`make mod-check` replays recorded input against the original), not its bytes, and nothing in it counts as coverage. [docs/MODDING.md](docs/MODDING.md) is the guide.
+
 ### Verified compiler prefixes
 
 A `c-prefix` entry uses the same start/end boundaries as other segments, but compiles a larger contextual C source. `tools/c_prefix.py` links the complete compiler output at its real address, resolves its symbols, and compares the retained prefix byte for byte against the original ROM. It then follows control flow from the retained function entries and verifies the compiler-generated values of literal loads into the discarded tail. Unsupported indirect jumps, table-address generation, PC-relative delay-slot loads, and unverified control-flow exits fail the build rather than guessing.
@@ -404,6 +408,7 @@ pass. Detailed source/test pins and preserved interim receipts are in
 
 Builds run on phrixus (toolchain in `~/tgm2p`) or nuada (`/drive2/tgm2p`). Each toolchain root holds the SHC compilers, wibo, `rof2elf`, objdiff-cli, the permuter, the Python venv and Ghidra 12.1.4. [docs/WORKSPACE.md](docs/WORKSPACE.md) covers both hosts; `. tools/env.sh` sets up a shell and `make status` prints where things stand.
 
+- `tools/mod.py build|check` is the mod build behind `make mod` and `make mod-check`; `tools/srcunit.py` turns a compiled source into a unit linked by name, and `tools/shiftable.py build --source` links them ([docs/research/2026-11-17-mod-build.md](docs/research/2026-11-17-mod-build.md)).
 - `tools/interleave.py` joins the two EPROM halves into `build/prog.bin` and splits a rebuilt image back apart, checking SHA-1s.
 - `tools/fn.py` prints annotated listings with function extents and literal pools, and `--scan` classifies every call target.
 - `tools/cuts.py` lists the smallest ranges that can move into C on their own: runs between function starts that no pc-relative load, branch or `bsr` crosses. `--opt-only` skips units with unoptimized code, `--c` includes the ones already in C.
