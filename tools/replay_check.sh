@@ -14,11 +14,12 @@
 #   --pin-idle     pin the frame wait's idle counter (REPLAY_PIN_IDLE), so
 #                  the game's random sequence no longer depends on cycle
 #                  timing; implies --nodrc. Both images also record the real
-#                  idle count of every frame (REPLAY_IDLE), and the check fails
-#                  if the candidate has none in a frame where the reference
-#                  waited, i.e. it missed a frame; REPLAY_MARKS ("lo-hi,..."
-#                  hex code ranges, see tools/idle_report.py) records which
-#                  frames ran which code
+#                  idle count of every frame and the game's own frame counter
+#                  (REPLAY_IDLE), and the check fails if the candidate's
+#                  counter ever differs from the reference's, i.e. it missed
+#                  a frame (tools/idle_report.py explains why a zero idle
+#                  count alone is not that test); REPLAY_MARKS ("lo-hi,..."
+#                  hex code ranges) records which frames ran which code
 #   --out DIR      work directory                 (default build/replay)
 #
 # REFERENCE defaults to build/prog.bin, the original program image. Images are
@@ -102,9 +103,12 @@ for scenario in attract:$attract gameplay:$gameplay; do
 	else
 		run "ref-$mode" "$ref" "$mode" "$frames" &
 		run "cand-$mode" "$cand" "$mode" "$frames" &
-		wait -n || status=1
-		wait -n || status=1
-		[ $status = 0 ] || exit 1
+		# a MAME failure stops the check; an earlier scenario's mismatch
+		# must not, or this scenario would run and never be compared
+		ran=0
+		wait -n || ran=1
+		wait -n || ran=1
+		[ $ran = 0 ] || exit 1
 		if [ "$reads" = 0 ]; then
 			mkdir -p "$(dirname "$cache")" && cp "$out/ref-$mode/hashes.txt" "$cache"
 			[ "$pin" = 0 ] || cp "$out/ref-$mode/idle.txt" "${cache%.txt}.idle"
@@ -128,8 +132,10 @@ for scenario in attract:$attract gameplay:$gameplay; do
 			$1 != "mark" && ($1 in r) && r[$1] > 0 { n++; if (cmin == "" || $2 < cmin) cmin = $2
 				if (rmin == "" || r[$1] < rmin) rmin = r[$1]; if ($2 == 0) z++ }
 			END { print n + 0, cmin + 0, rmin + 0, z + 0 }' "$out/ref-$mode/idle.txt" "$out/cand-$mode/idle.txt")"
-		echo "  idle loops per frame over the $waited frames the original waits in: candidate minimum $cmin, original minimum $rmin; frames missed: $missed"
-		[ "$missed" = 0 ] && [ "$waited" -gt 0 ] || status=1
+		echo "  idle loops per frame over the $waited frames the original waits in: candidate minimum $cmin, original minimum $rmin; frames with none: $missed"
+		[ "$waited" -gt 0 ] || status=1
+		line=$("$PY" "$ROOT/tools/idle_report.py" frames "$out/ref-$mode/idle.txt" "$out/cand-$mode/idle.txt") || status=1
+		echo "  $line"
 	fi
 done
 exit $status
