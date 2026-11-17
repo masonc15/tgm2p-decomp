@@ -62,6 +62,9 @@ ROM = fn.ROM
 ROM_SIZE = 0x100000
 AS = ["sh-elf-as", "--isa=sh2", "--big"]
 OVERRIDES = ROOT / "config" / "shiftable_pointers.json"
+NAMES = ROOT / "config" / "function_names.txt"
+NONMATCHING = ROOT / "splits_nonmatching.txt"          # accepted non-matching units
+STAGED = ROOT / "splits_nonmatching_staged.txt"        # not accepted: linked by the mod build only
 
 
 def u32(a: int) -> int:
@@ -114,6 +117,8 @@ def filler_start() -> int:
 
 
 MAP = Map()
+STACK_TOP = u32(4)     # the reset vector's stack pointer, 0x060d0000
+STACK_ROOM = 0x10000   # kept free below it in a build that adds variables
 
 
 # ---------------------------------------------------------------- units
@@ -123,6 +128,12 @@ class Unit:
         self.start, self.end, self.kind, self.section, self.arg = start, end, kind, section, arg
         self.pad_before = 0
         self.obj = None
+        self.source = False   # mod build: linked from freshly compiled C, by symbol
+
+    @property
+    def by_symbol(self):
+        """The unit's code is new, so only its function entries exist, by name."""
+        return self.kind == "c-nonmatching" or self.source
 
     @property
     def sym(self):
@@ -164,7 +175,7 @@ def apply_nonmatching(segs, entries):
 
 
 def read_nonmatching(path=None):
-    path = path or ROOT / "splits_nonmatching.txt"
+    path = path or NONMATCHING
     out = []
     if path.exists():
         for line in path.read_text().splitlines():
@@ -218,13 +229,32 @@ def loc(us, a: int, rom=False) -> str:
     if MAP.copytab <= a < MAP.data_lma:
         return f"__copytab+{a - MAP.copytab}"
     u = unit_of(us, a)
-    if u.kind == "c-nonmatching":
+    if u.by_symbol:
         # a replaced range has new code: only its function entries exist,
         # by name (an undefined name fails the link)
-        return f"_f_{a:x}"
+        return entry_symbol(u, a)
     off = a - u.start
     sym = u.sym + ("_lma" if rom and u.section in (".text", ".data") else "")
     return f"{sym}+{off}" if off else sym
+
+
+# rom offset -> symbol of every function the source units define (mod build)
+ENTRIES = {}
+SOURCE_BUILD = False
+
+
+class NotAnEntry(SystemExit):
+    """A reference into a source unit that is not one of its function entries."""
+
+
+def entry_symbol(u, a):
+    name = ENTRIES.get(a)
+    if name is None and u.kind == "c-nonmatching":
+        name = f"_f_{a:x}"
+    if name is None:
+        raise NotAnEntry(f"{a:#x} is inside {u.arg} ({u.start:#x}-{u.end:#x}), which is linked from source, "
+                         "but no function of it starts there")
+    return name
 
 
 def expr_for_value(us, v: int):
@@ -239,11 +269,19 @@ def expr_for_value(us, v: int):
 
 # ---------------------------------------------------------------- code discovery
 
+def c_entries() -> dict:
+    """{ROM offset: name} of the functions the C units define: read from the
+    matching build's ELF, or in a source build from the sources themselves,
+    which need not match any more."""
+    import asm_scan
+    return dict(ENTRIES) if SOURCE_BUILD else asm_scan.c_entries()
+
+
 def code_coverage():
     """Instruction halfwords reached by recursive descent from every entry,
     switch-table words and their targets (asm_scan's decoder)."""
     import asm_scan
-    entries = asm_scan.entry_points() | set(asm_scan.c_entries()) | set(asm_scan.runtime_entries())
+    entries = asm_scan.entry_points() | set(c_entries()) | set(asm_scan.runtime_entries())
     insns, tables = {}, {}
     for lo, hi in ((0x400, MAP.text_lma), (MAP.text_lma, MAP.copytab)):
         for e in sorted(x for x in entries if lo <= x < hi):
@@ -277,7 +315,7 @@ def known_targets(pool):
     """ROM offsets the code names: targets of pointer-classified literal
     pool words and every function entry."""
     import asm_scan
-    out = set(asm_scan.entry_points()) | set(asm_scan.c_entries())
+    out = set(asm_scan.entry_points()) | set(c_entries())
     for p in pool:
         if p % 4 == 0 and p + 4 <= MAP.copytab:
             v = u32(p)
@@ -650,16 +688,67 @@ def plan(pads, nonmatching):
     return us
 
 
-def build_shiftable(pads, out: Path, nonmatching=False, keep_size=False, nm_file=None, text_size=None):
+def build_shiftable(pads, out: Path, nonmatching=False, keep_size=False, nm_file=None, text_size=None,
+                    source=False, mod=None):
+    """Link the image into out. With source, every C unit is linked from its
+    source as it compiles now (tools/srcunit.py); mod is then a directory
+    whose C files replace the files of the same path in the tree or, where
+    there is none, are new code."""
     out.mkdir(parents=True, exist_ok=True)
-    nm_entries = read_nonmatching(nm_file) if nonmatching else None
+    global OVERLAY
+    OVERLAY = mod.resolve() if source and mod else None
+    # nm_file: one list, or several (the mod build adds the staged units)
+    lists = nm_file if isinstance(nm_file, (list, tuple)) else [nm_file]
+    nm_entries = sorted(e for f in lists for e in read_nonmatching(f)) if nonmatching else None
     us = plan(pads, nm_entries)
     for u in us:
         u.keep_size = keep_size and u.kind == "c-nonmatching"
+    global SOURCE_BUILD
+    SOURCE_BUILD = source
+    ENTRIES.clear()
+    plans = plan_sources(us, out) if source else {}
     insns, tables = code_coverage()
     want_ptr, want_int = load_overrides()
     fixups = []
     objs = []
+    dropped = []  # (where, value): address-shaped words left as integers
+    # pool words the assembly that stays still loads
+    live = {i.pool[0] for pc, i in insns.items() if i.pool is not None and unit_of(us, pc).kind == "asm"}
+
+    def pointer_expr(a, v):
+        try:
+            return expr_for_value(us, v)
+        except NotAnEntry as e:
+            # Only in a source build: the word names a place inside a source
+            # unit that is not a function entry. Compiled C has no other
+            # place data could point to, so a data word of that value is a
+            # number the pointer rule mistook (the sprite frame records at
+            # 0xaf030 hold 0x06019790). In a pool that only the replaced code
+            # loaded (the tail the matching proof could not retain with its
+            # function) the word is dead. Either way it stays a number.
+            k = unit_of(us, a).kind
+            if k not in ("asm", "data") or (k == "asm" and a in live):
+                raise SystemExit(f"the word at {a:#x} is still used and points to {v:#x}: {e}")
+            dropped.append((a, v))
+            return None
+
+    # A constant in compiled C is a bare number. One that could be an address
+    # is taken as one only when the original program loads that same value
+    # from a literal pool: an address the game already used. Any other is
+    # kept as the number it may well be (300000 is 0x493e0, inside the ROM
+    # data) and reported.
+    original = {u32(i.pool[0]) for i in insns.values() if i.pool is not None and i.pool[1] == 4}
+    numbers = []  # (source, value): address-shaped constants kept as numbers
+
+    def addr_expr_for(arg):
+        def addr_expr(v):
+            if not pool_pointer(v):
+                return None
+            if v not in original:
+                numbers.append((arg, v))
+                return None
+            return expr_for_value(us, v)
+        return addr_expr
     # pointers in code pools (asm units) and data
     pool = fn.all_pool()
     code_words = set()
@@ -685,8 +774,10 @@ def build_shiftable(pads, out: Path, nonmatching=False, keep_size=False, nm_file
                 if t is None or a in want_int:
                     continue
                 if a in want_ptr or (a in pool and pool_pointer(v)) or t[2] in ("ram-text", "ram-data"):
-                    pointers[a] = expr_for_value(us, v)
-                    ptr_report["asm " + t[2]] += 1
+                    e = pointer_expr(a, v)
+                    if e is not None:
+                        pointers[a] = e
+                        ptr_report["asm " + t[2]] += 1
             src.write_text(render_asm(u, us, insns, tables, fixups, pointers))
         elif u.kind == "vectors":
             pointers = {}
@@ -695,20 +786,32 @@ def build_shiftable(pads, out: Path, nonmatching=False, keep_size=False, nm_file
                 if 0x400 <= v < MAP.text_lma:
                     pointers[a] = loc(us, v)
                 elif MAP.target(v) and MAP.target(v)[2] == "ram-text":
-                    pointers[a] = expr_for_value(us, v)
+                    e = pointer_expr(a, v)
+                    if e is not None:
+                        pointers[a] = e
             src.write_text(render_data(u, pointers))
         elif u.kind == "data":
             found = [a for a in data_ptrs if u.start <= a < u.end]
             pointers = {}
             for a in found:
-                pointers[a] = expr_for_value(us, u32(a))
-                ptr_report[f"data {MAP.target(u32(a))[2]}"] += 1
+                e = pointer_expr(a, u32(a))
+                if e is not None:
+                    pointers[a] = e
+                    ptr_report[f"data {MAP.target(u32(a))[2]}"] += 1
             src.write_text(render_data(u, pointers))
         elif u.kind == "filler":
             # sized after the first link; start with the original filler
             src.write_text(render_raw(u, filler_bytes(u.end - u.start)))
         elif u.kind == "bin":
             src.write_text(render_raw(u, ROM[u.start:u.end]))
+        elif u.source:
+            import srcunit
+            p = plans[u.start]
+            text, fx, u.sections = srcunit.render(p, addr_expr_for(u.arg))
+            src = out / f"src_{u.start:06x}.s"
+            src.write_text(text)
+            fixups += fx
+            u.align4 = p.lo % 4
         elif u.kind == "c":
             u.obj = build.c_object(u.start, u.kind, u.arg)
             for a, v in c_literal_words(u, insns).items():
@@ -721,7 +824,7 @@ def build_shiftable(pads, out: Path, nonmatching=False, keep_size=False, nm_file
             ptr_report["c literal"] += len(lits)
             src.write_text(wrap_prefix(u, us, insns, fixups, lits))
         elif u.kind == "c-nonmatching":
-            u.obj = compile_nonmatching(u, out)
+            u.obj = compile_nonmatching(u, out, source, original, numbers)
             objs.append(u)
             continue
         else:
@@ -733,7 +836,8 @@ def build_shiftable(pads, out: Path, nonmatching=False, keep_size=False, nm_file
         u.obj = o
         objs.append(u)
     make_islands(us, fixups, out)
-    script = linker_script(us, out, text_size)
+    mods = compile_mods(out, original, numbers) if OVERLAY else []
+    script = linker_script(us, out, text_size, source, mods)
     elf = out / "tgm2p.elf"
     image = out / "tgm2p.bin"
 
@@ -763,7 +867,12 @@ def build_shiftable(pads, out: Path, nonmatching=False, keep_size=False, nm_file
               "units": [{"start": u.start, "end": u.end, "kind": u.kind, "sym": u.sym,
                          "vma": symbols.get(u.sym), "lma": lma_of(symbols.get(u.sym), sections),
                          "arg": u.arg} for u in us],
-              "fixups": len(fixups), "fixups_changed": applied,
+              "fixups": len(fixups), "fixups_changed": applied, "source": source,
+              "mod": str(OVERLAY) if OVERLAY else None, "new_objects": [str(m) for m in mods],
+              "functions": function_map(us, symbols) if source else None,
+              "dropped_pointers": [[f"0x{a:06x}", f"0x{v:08x}"] for a, v in dropped],
+              "numbers": [list(x) for x in sorted({(a, f"0x{v:08x}") for a, v in numbers})],
+              "sections": {name: [v, l, size] for name, v, l, size in sections},
               "pointers": dict(ptr_report), "sha1": hashlib.sha1(bytes(data)).hexdigest(),
               "size": len(data)}
     (out / "layout.json").write_text(json.dumps(layout, indent=1) + "\n")
@@ -780,7 +889,7 @@ def make_islands(us, fixups, out):
         if f.get("target") is None or f["kind"] not in ("mov.l", "mov.w", "mova"):
             continue
         tu = unit_of(us, f["target"])
-        if tu is None or tu.kind != "c-nonmatching":
+        if tu is None or not tu.by_symbol:
             continue
         if f["kind"] == "mova":
             raise SystemExit(f"{f['at']:#x} takes the address of {f['target']:#x} inside the replaced range "
@@ -788,7 +897,7 @@ def make_islands(us, fixups, out):
         need[tu.start][f["target"]] = 4 if f["kind"] == "mov.l" else 2
     for u in us:
         u.island = None
-        if u.kind != "c-nonmatching" or u.start not in need:
+        if not u.by_symbol or u.start not in need:
             continue
         lines = ["\t.text", "\t.align 2"]
         for a, n in sorted(need[u.start].items(), key=lambda x: -x[1]):
@@ -808,21 +917,145 @@ def make_islands(us, fixups, out):
         u.island = o
 
 
-def compile_nonmatching(u, out):
+# mod directory of the build in progress (build_shiftable)
+OVERLAY = None
+
+
+def source_path(arg) -> Path:
+    """A source of the tree, or the mod directory's file of the same path."""
+    if OVERLAY is not None and (OVERLAY / arg).is_file():
+        return OVERLAY / arg
+    return ROOT / arg
+
+
+def function_map(us, symbols):
+    """[name, original ROM offset, address, source] of every function the
+    source and replacement units define by address name."""
+    names = dict(ENTRIES)
+    for u in us:
+        if u.kind == "c-nonmatching":
+            for n in symbols:
+                m = re.fullmatch(r"_f_([0-9a-f]+)", n)
+                if m and u.start <= int(m[1], 16) < u.end:
+                    names.setdefault(int(m[1], 16), n)
+    out = []
+    for a, n in sorted(names.items()):
+        u = unit_of(us, a)
+        if n in symbols:
+            src = source_path(u.arg)
+            out.append([n[1:], a, symbols[n], str(src.relative_to(ROOT)) if src.is_relative_to(ROOT) else str(src)])
+    return out
+
+
+def symbols_txt() -> dict:
+    """{linker name: address} from symbols.txt."""
+    table = {}
+    for line in (ROOT / "symbols.txt").read_text().splitlines():
+        line = line.split("#", 1)[0].split()
+        if len(line) >= 2:
+            table["_" + line[0]] = int(line[1], 16)
+    return table
+
+
+def named_functions() -> dict:
+    """{linker name: original ROM offset} of the matching C functions whose
+    name is not f_<rom offset>, from the matching build's ELF."""
+    import asm_scan
+    return {n: a for a, n in asm_scan.c_entries().items() if not re.fullmatch(r"_f_[0-9a-f]+", n)}
+
+
+def names_text(names) -> str:
+    return ("# Original ROM offset of each matching C function whose name is not f_<rom offset>:\n"
+            "# <name> <offset>. The mod build (shiftable.py build --source) finds functions by\n"
+            "# name, so it needs these; generated by `tools/shiftable.py names` from the\n"
+            "# matching build and checked by tools/test_shiftable.py.\n" +
+            "".join(f"{n[1:]:<24}0x{a:06x}\n" for n, a in sorted(names.items(), key=lambda x: x[1])))
+
+
+def read_names() -> dict:
+    out = {}
+    for line in NAMES.read_text().splitlines():
+        line = line.split("#", 1)[0].split()
+        if len(line) >= 2:
+            out["_" + line[0]] = int(line[1], 16)
+    return out
+
+
+def plan_sources(us, out):
+    """Mod build: compile every matching C unit from its source as it is now
+    and find the functions each one owns (tools/srcunit.py). Fills ENTRIES."""
+    import srcunit
+    table = read_names()
+
+    def entry_of(name):
+        m = re.fullmatch(r"_f_([0-9a-f]+)", name)
+        return int(m[1], 16) if m else table.get(name)
+
+    mine = [u for u in us if u.kind in ("c", "c-prefix", "c-range")]
+    uses = defaultdict(int)
+    for u in mine:
+        uses[u.arg] += 1
+    objs, plans = {}, {}
+    for u in mine:
+        u.source = True
+        src = source_path(u.arg)
+        if u.arg not in objs:
+            o = srcunit.compile_cached(src, out / "obj" / (src.stem + ".o"),
+                                       build.c_flags(src) or srcunit.DEFAULT_FLAGS)
+            objs[u.arg] = srcunit.Obj(o)
+        # a file is linked whole only when one unit owns all of it
+        p = srcunit.Plan(u, objs[u.arg], u.kind == "c" and uses[u.arg] == 1, entry_of,
+                         [(v.start, v.end) for v in mine if v.arg == u.arg and v is not u])
+        for a, name in p.entries.items():
+            if ENTRIES.get(a, name) != name:
+                raise SystemExit(f"{u.arg}: {name[1:]} and {ENTRIES[a][1:]} both claim {a:#x}")
+            ENTRIES[a] = name
+        plans[u.start] = p
+    return plans
+
+
+def compile_mods(out: Path, original, numbers):
+    """Objects of the mod directory's new files (the C files with no file of
+    the same path in the tree): code, constants and variables of the mod."""
+    import srcunit
+    objs = []
+    if not OVERLAY.is_dir():
+        raise SystemExit(f"{OVERLAY}: no such mod directory")
+    for src in sorted(OVERLAY.rglob("*.c")):
+        rel = src.relative_to(OVERLAY)
+        if (ROOT / rel).exists():
+            continue
+        o = srcunit.compile_cached(src, out / "obj" / "new" / ("_".join(rel.with_suffix("").parts) + ".o"),
+                                   build.c_flags(src) or srcunit.DEFAULT_FLAGS)
+        check_address_literals(o, str(rel), original, numbers)
+        objs.append(o)
+    return objs
+
+
+def compile_nonmatching(u, out, allow_data=False, original=None, numbers=None):
     """Compile a c-nonmatching source. It may name addresses only through
     symbols (f_/d_/g_ or symbols.txt names): an address written as an integer
     would not move with the layout, so a literal-pool word that looks like a
-    movable address fails the build."""
-    src = ROOT / u.arg
+    movable address fails the build. Variables of its own are allowed only in
+    the mod build, which has a place for them and which gives `original`."""
+    src = source_path(u.arg)
     o = out / (Path(u.arg).stem + "_nm.o")
     flags = build.c_flags(src) or ["-macsave=1", "-optimize=1", "-speed"]
     subprocess.run([str(build.SHCC), build.SHC_VERSION, str(o), str(src), *flags], check=True)
     r = subprocess.run(["sh-elf-objdump", "-h", str(o)], capture_output=True, text=True, check=True)
     for line in r.stdout.splitlines():
         p = line.split()
-        if len(p) >= 7 and p[1] in (".data", ".bss") and int(p[2], 16):
+        if not allow_data and len(p) >= 7 and p[1] in (".data", ".bss") and int(p[2], 16):
             raise SystemExit(f"{u.arg}: defines writable {p[1]} data; the game's state lives at fixed "
                              "addresses, so declare it extern as g_ symbols")
+    check_address_literals(o, u.arg, original, numbers)
+    return o
+
+
+def check_address_literals(o: Path, name: str, original=None, numbers=None):
+    """Fail on a pool word of this object that holds a movable address as a
+    bare number. With `original` (the mod build), only a value the original
+    program used as an address counts; another is a number, noted in numbers."""
     data, syms, relocs, tidx = elf_text(o)
     for off in range(0, len(data) - 3, 2):
         w = data[off] << 8 | data[off + 1]
@@ -833,16 +1066,21 @@ def compile_nonmatching(u, out):
             continue
         v = int.from_bytes(data[t:t + 4], "big")
         if pool_pointer(v):
-            raise SystemExit(f"{u.arg}: literal {v:#010x} at +{t:#x} looks like an address this build moves; "
+            if original is not None and v not in original:
+                numbers.append((name, v))
+                continue
+            raise SystemExit(f"{name}: literal {v:#010x} at +{t:#x} looks like an address this build moves; "
                              "write it as an f_/d_/g_ symbol (or symbols.txt name)")
-    return o
 
 
-def linker_script(us, out, text_size=None):
+def linker_script(us, out, text_size=None, source=False, mods=()):
     ld = ["SECTIONS", "{"]
     by = defaultdict(list)
     for u in us:
         by[u.section].append(u)
+    # objects whose constants and variables this build places: replacement C,
+    # source units and the new files of the mod build
+    extra = [u.obj for u in us if u.kind == "c-nonmatching" or u.source] + list(mods)
 
     def body(sec):
         lines = []
@@ -850,12 +1088,21 @@ def linker_script(us, out, text_size=None):
             if u.kind == "filler":
                 # constants of the replacement C (string literals) go to ROM
                 # data, ahead of the filler that absorbs the size change
-                for v in us:
-                    if v.kind == "c-nonmatching":
-                        lines.append(f"\t\t. = ALIGN(4); {v.obj}(.rodata)")
+                for o in extra:
+                    lines.append(f"\t\t. = ALIGN(4); {o}(.rodata)")
             if u.pad_before:
                 fill = "0x0009" if sec in (".text", ".boot") else "0x00"
                 lines.append(f"\t\tFILL({fill}); . = . + {u.pad_before};")
+            if u.source:
+                # the cut starts where it did in its object modulo 4 (its pool
+                # loads round the pc down), and the unit after it starts where
+                # it did in the ROM modulo 4
+                if getattr(u, "island", None):
+                    lines += ["\t\tFILL(0x0009); . = ALIGN(4);", f"\t\t{u.island}(.text)"]
+                lines += [f"\t\tFILL(0x0009); . = . + ((0x{u.align4:x} - .) & 3);",
+                          f"\t\t{u.obj}(.text)",
+                          f"\t\tFILL(0x0009); . = . + ((0x{u.end:x} - .) & 3);"]
+                continue
             if u.kind in ("c", "c-nonmatching"):
                 lines.append(f"\t\t{u.sym} = .;")
             if getattr(u, "island", None):
@@ -873,30 +1120,47 @@ def linker_script(us, out, text_size=None):
         return lines
     ld += ["\t.boot 0 : AT(0)", "\t{"] + body(".boot") + ["\t}"]
     tail = []
+    if source:
+        # the code of the new files runs from RAM with the rest
+        tail += [f"\t\t. = ALIGN(4); {m}(.text)" for m in mods]
     if text_size is not None:
         # a fixed code size keeps the boot copy and checksum loops, and with
         # them the frame phase the game's random sequence depends on, as they
         # were for an image of that size
-        tail = ["\t\tFILL(0x0009); . = __text_start + 0x%x;" % text_size]
+        tail += ["\t\tFILL(0x0009); . = __text_start + 0x%x;" % text_size]
     ld += [f"\t.text 0x{MAP.text_vma:08x} : AT(LOADADDR(.boot) + SIZEOF(.boot))", "\t{", "\t\t__text_start = .;"] + \
         body(".text") + tail + ["\t}"]
     ld += ["\t.copytab LOADADDR(.text) + SIZEOF(.text) : AT(LOADADDR(.text) + SIZEOF(.text))", "\t{",
            "\t\t__copytab = .;",
-           f"\t\tLONG(0x{MAP.bss_lo:08x}) LONG(0x{MAP.bss_hi:08x})",
+           f"\t\tLONG(0x{MAP.bss_lo:08x}) LONG({'__bss_end' if source else f'0x{MAP.bss_hi:08x}'})",
            "\t\tLONG(LOADADDR(.text)) LONG(ADDR(.text)) LONG(SIZEOF(.text))",
            "\t\tLONG(LOADADDR(.data)) LONG(ADDR(.data)) LONG(SIZEOF(.data))", "\t}"]
+    # variables with initial values join the RAM data image the boot code copies
+    # (ahead of the game's own, which then keeps its alignment and its odd end)
+    more_data = [f"\t\t. = ALIGN(4); {o}(.data)" for o in extra] + ["\t\t. = ALIGN(4);"] if source else []
     ld += ["\t.data ADDR(.text) + SIZEOF(.text) : AT(LOADADDR(.copytab) + SIZEOF(.copytab))", "\t{"] + \
-        body(".data") + ["\t}"]
+        more_data + body(".data") + ["\t}"]
     ld += ["\t.rodata LOADADDR(.data) + SIZEOF(.data) : AT(LOADADDR(.data) + SIZEOF(.data))", "\t{"] + \
         body(".rodata") + ["\t}"]
+    if source:
+        # new variables follow the game's own, inside the range the boot code
+        # clears; the stack comes down from STACK_TOP
+        ld += [f"\t.bss 0x{MAP.bss_hi:08x} (NOLOAD) :", "\t{", "\t\t. = ALIGN(4);"] + \
+            [f"\t\t. = ALIGN(4); {o}(.bss COMMON)" for o in extra] + \
+            ["\t\t. = ALIGN(4);", "\t\t__bss_end = .;", "\t}",
+             f"\tASSERT(ADDR(.data) + SIZEOF(.data) <= 0x{MAP.bss_lo:08x}, "
+             "\"code and initialized data no longer fit below the game's variables\")",
+             f"\tASSERT(__bss_end <= 0x{STACK_TOP - STACK_ROOM:08x}, "
+             "\"new variables leave too little room for the stack\")"]
     ld += ["\t/DISCARD/ : { *(.comment) }", "}"]
     # names the C objects leave undefined: f_/d_/g_ by address, symbols.txt by table
     for u in us:
         if u.section in (".text", ".data"):
             ld.append(f"{u.sym}_lma = LOADADDR({u.section}) + ({u.sym} - ADDR({u.section}));")
-    names = c_undefined(us)
+    names = c_undefined(us, mods)
+    table = symbols_txt()
     for name in sorted(names):
-        e = symbol_expr(us, name)
+        e = symbol_expr(us, name, table)
         if e is not None:
             ld.append(f"PROVIDE({name} = {e});")
     script = out / "rom.ld"
@@ -904,18 +1168,14 @@ def linker_script(us, out, text_size=None):
     return script
 
 
-def c_undefined(us):
-    objs = [str(u.obj) for u in us if u.obj is not None]
+def c_undefined(us, mods=()):
+    objs = [str(u.obj) for u in us if u.obj is not None] + [str(m) for m in mods]
     r = subprocess.run(["sh-elf-nm", "--undefined-only", *objs], capture_output=True, text=True, check=True)
     return {line.split()[-1] for line in r.stdout.splitlines() if line.strip() and not line.endswith(":")}
 
 
-def symbol_expr(us, name):
-    table = {}
-    for line in (ROOT / "symbols.txt").read_text().splitlines():
-        line = line.split("#", 1)[0].split()
-        if len(line) >= 2:
-            table["_" + line[0]] = int(line[1], 16)
+def symbol_expr(us, name, table=None):
+    table = symbols_txt() if table is None else table
     if name in table:
         v = table[name]
     else:
@@ -928,7 +1188,7 @@ def symbol_expr(us, name):
     t = MAP.target(v)
     if t is not None or m_boot(v):
         u = unit_of(us, t[0] if t is not None else v)
-        if u is not None and u.kind == "c-nonmatching":
+        if u is not None and u.by_symbol:
             return None  # the replacement object must define it
     e = expr_for_value(us, v)
     if e is None and m_boot(v):
@@ -973,8 +1233,8 @@ def resolve(us, symbols, a, rom=False):
     if MAP.copytab <= a < MAP.data_lma:
         return symbols["__copytab"] + a - MAP.copytab
     u = unit_of(us, a)
-    if u.kind == "c-nonmatching":
-        name = f"__isl_{a:x}" if f"__isl_{a:x}" in symbols else f"_f_{a:x}"
+    if u.by_symbol:
+        name = f"__isl_{a:x}" if f"__isl_{a:x}" in symbols else ENTRIES.get(a, f"_f_{a:x}")
         if name not in symbols:
             raise SystemExit(f"{u.arg}: nothing defines {name}, which other code references")
         return symbols[name]
@@ -984,8 +1244,18 @@ def resolve(us, symbols, a, rom=False):
 
 def apply_fixups(data, fixups, us, symbols, sections):
     changed = 0
+
+    def reach(ok, f, d):
+        if not ok:
+            src = f.get("at_sym") or hex(f["at"])
+            dst = f.get("target_sym") or hex(f["target"])
+            raise SystemExit(f"{f['kind']} at {src}+{f.get('at_off', 0):#x} cannot reach {dst}: "
+                             f"displacement {d} is out of range in this layout")
     for f in fixups:
-        at = resolve(us, symbols, f["at"])
+        if "at_sym" in f:
+            at = symbols[f["at_sym"]] + f["at_off"]
+        else:
+            at = resolve(us, symbols, f["at"])
         pos = lma_of(at, sections)
         if f["kind"] == "abs32":
             t = MAP.target(f["value"])
@@ -994,24 +1264,28 @@ def apply_fixups(data, fixups, us, symbols, sections):
             data[pos:pos + 4] = new.to_bytes(4, "big")
             changed += old != new
             continue
-        tgt = resolve(us, symbols, f["target"])
+        if f.get("target_sym") in symbols:
+            tgt = symbols[f["target_sym"]]
+        else:
+            # (a function that is still assembly has no symbol of its own)
+            tgt = resolve(us, symbols, f["target"])
         w = f["insn"]
         k = f["kind"]
         if k in ("bra", "bsr"):
             d = (tgt - (at + 4)) // 2
-            assert (tgt - at) % 2 == 0 and -2048 <= d < 2048, (hex(f["at"]), d)
+            reach((tgt - at) % 2 == 0 and -2048 <= d < 2048, f, d)
             new = (w & 0xF000) | (d & 0xFFF)
         elif k in ("bt", "bf", "bt/s", "bf/s"):
             d = (tgt - (at + 4)) // 2
-            assert -128 <= d < 128, (hex(f["at"]), d)
+            reach(-128 <= d < 128, f, d)
             new = (w & 0xFF00) | (d & 0xFF)
         elif k in ("mov.l", "mova"):
             d = tgt - ((at + 4) & ~3)
-            assert d % 4 == 0 and 0 <= d < 1024, (hex(f["at"]), d)
+            reach(d % 4 == 0 and 0 <= d < 1024, f, d)
             new = (w & 0xFF00) | (d // 4)
         elif k == "mov.w":
             d = tgt - (at + 4)
-            assert d % 2 == 0 and 0 <= d < 512, (hex(f["at"]), d)
+            reach(d % 2 == 0 and 0 <= d < 512, f, d)
             new = (w & 0xFF00) | (d // 2)
         else:
             raise SystemExit(f"fixup kind {k}")
@@ -1074,6 +1348,13 @@ def main():
     b.add_argument("--text-size", type=lambda x: int(x, 0),
                    help="pad .text with nop to this size (fails if the code is larger)")
     b.add_argument("--check", action="store_true", help="fail unless the image equals the original ROM")
+    b.add_argument("--source", action="store_true",
+                   help="link every matching C unit from its source as it compiles now, by symbol "
+                        "(tools/srcunit.py), so the source can be changed")
+    b.add_argument("--mod", type=Path,
+                   help="with --source: a directory whose C files replace the files of the same path in "
+                        "the tree or, where there is none, are new code")
+    sub.add_parser("names", help="write config/function_names.txt from the matching build")
     c = sub.add_parser("classify", help="derive config/shiftable_pointers.json from MAME read logs")
     c.add_argument("reads", nargs="+", type=Path)
     m = sub.add_parser("mapreads")
@@ -1088,7 +1369,8 @@ def main():
             a, n = p.split(":")
             pads.append((int(a, 0), int(n, 0)))
         data, layout = build_shiftable(pads, args.out, args.nonmatching or bool(args.nonmatching_file),
-                                       args.keep_size, args.nonmatching_file, args.text_size)
+                                       args.keep_size, args.nonmatching_file, args.text_size,
+                                       args.source, args.mod)
         same = bytes(data) == ROM
         print(f"shiftable: {len(data):#x} bytes sha1 {layout['sha1']} "
               f"{'identical to the original ROM' if same else 'differs from the original ROM'}; "
@@ -1099,6 +1381,10 @@ def main():
         if args.check and not same:
             first = next(i for i in range(len(ROM)) if data[i] != ROM[i])
             sys.exit(f"first difference at {first:#x}")
+    elif args.cmd == "names":
+        names = named_functions()
+        NAMES.write_text(names_text(names))
+        print(f"{len(names)} named functions -> {NAMES.relative_to(ROOT)}")
     elif args.cmd == "classify":
         pointer, integer = classify(args.reads)
         doc = {"scope": "Run-time evidence for shiftable.py's data pointer rule, from MAME read logs of the "
