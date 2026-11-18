@@ -149,6 +149,34 @@ def fill_value(h: int, size: int, prof: int = 0) -> int:
     return r & 0xFF
 
 
+RETURNS = {}        # call target -> (lo, hi): the results a stub may give (--returns)
+
+
+def in_range(r0: int, h: int, rng) -> int:
+    """r0 if it lies in the callee's result range, else a value of the range
+    picked by the call's hash. Values already inside stay, so the common 0 and
+    1 and the mutations that land inside are kept."""
+    lo, hi = rng
+    if lo <= emu.s32(r0) <= hi:
+        return r0
+    return (lo + (h >> 8) % (hi - lo + 1)) & MASK
+
+
+def parse_returns(specs, resolve) -> dict:
+    """{target: (lo, hi)} from NAME=LO..HI items."""
+    out = {}
+    for s in specs:
+        m = re.fullmatch(r"(\w+)=(-?\w+)\.\.(-?\w+)", s)
+        a = resolve(m[1]) if m else None
+        if a is None:
+            raise ValueError(f"--returns {s}: want NAME=LO..HI with a function the ROM defines")
+        lo, hi = int(m[2], 0), int(m[3], 0)
+        if not -(1 << 31) <= lo <= hi < (1 << 31):
+            raise ValueError(f"--returns {s}: empty or out of 32-bit range")
+        out[a] = (lo, hi)
+    return out
+
+
 def call_result(h: int) -> int:
     """What a stubbed call returns: mostly 0 or 1, so both ways out of
     `if (f(...))` get taken."""
@@ -391,6 +419,8 @@ class Run(emu.CPU):
         r0 = self.call_ovr.get(self.ncalls)
         if r0 is None:
             r0 = call_result(h)
+        if tgt in RETURNS:
+            r0 = in_range(r0, h, RETURNS[tgt])
         self.call_inputs.append((self.ncalls, r0))
         self.ncalls += 1
         R[0] = r0
@@ -1179,6 +1209,9 @@ def main() -> int:
     ap.add_argument("--input", action="append", default=[], metavar="INPUT",
                     help="run exactly these inputs (seed or seed/overrides, as --trace takes) as the trials, "
                     "compared as any trial is; repeatable")
+    ap.add_argument("--returns", action="append", default=[], metavar="NAME=LO..HI",
+                    help="keep the stubbed results of calls to NAME within LO..HI, the range the real "
+                         "function returns (repeatable)")
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args()
     if args.input:
@@ -1216,6 +1249,11 @@ def main() -> int:
         print(f"INCONCLUSIVE: {e}")
         return 2
     resolve = Resolver(where)
+    try:
+        RETURNS.clear()
+        RETURNS.update(parse_returns(args.returns, resolve))
+    except ValueError as e:
+        ap.error(str(e))
     spans = spans_of(funcs, labels, text, resolve, where)
     if args.rom_end is not None:
         target = args.func or (hdr["func"] if hdr and hdr["func"] else args.case.stem)
@@ -1269,6 +1307,8 @@ def main() -> int:
                   f"compiled {cend - cstart} bytes, r0 compared: {ret_bits or 'no (void)'} bits")
             for nt in notes + fnotes:
                 print("  note:", nt)
+            for s in args.returns:
+                print(f"  stub results kept in range: {s}")
         if args.trace is not None:
             print_trace(rprog, cprog, ctx, args.trace, args.steps)
             ctx.save()

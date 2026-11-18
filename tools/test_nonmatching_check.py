@@ -46,6 +46,26 @@ class VerdictTests(unittest.TestCase):
             self.assertEqual(nc.step_limits(p), {"f_16938": 30000000, "f_163fc": 30000000})
 
 
+class ResultRangeTests(unittest.TestCase):
+    def write(self, td, text):
+        p = Path(td) / "x.c"
+        p.write_text(text)
+        return p
+
+    def test_annotation(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = self.write(td, "/* difftest-returns f_d394: f_2beca=0..4 (why: f_2beca(5) is a value % 5) */\n"
+                               "/* difftest-returns f_dbe8: f_2bf58=0..63 f_2bfca=0..0x3f (why: sprite slots) */\n")
+            self.assertEqual(nc.result_ranges(p), {"f_d394": ["f_2beca=0..4"],
+                                                   "f_dbe8": ["f_2bf58=0..63", "f_2bfca=0..0x3f"]})
+
+    def test_a_range_needs_its_reason(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = self.write(td, "/* difftest-returns f_d394: f_2beca=0..4 */\n")
+            with self.assertRaises(SystemExit):
+                nc.result_ranges(p)
+
+
 HANG = """  input 1: ok (120/118 steps)
   input 2: ok (2000001/2000001 steps, truncated)
   input 3/m6064750.4=0: ok (300/290 steps)

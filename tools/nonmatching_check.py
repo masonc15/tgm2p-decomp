@@ -59,6 +59,21 @@ def nonreturning_functions(src: Path) -> set:
     return out
 
 
+def result_ranges(src: Path) -> dict:
+    """{function: [callee=LO..HI, ...]} from `difftest-returns f_x: f_y=LO..HI
+    ... (why: ...)`: while f_x is checked, the stubbed results of its calls to
+    f_y stay within the range the real f_y returns. The reason is required."""
+    out = {}
+    for m in re.finditer(r"difftest-returns (f_[0-9a-f]+):([^\n]*)", src.read_text()):
+        if "(why:" not in m[2]:
+            raise SystemExit(f"{src}: difftest-returns {m[1]} gives no (why: ...)")
+        specs = re.findall(r"\bf_[0-9a-f]+=-?\w+\.\.-?\w+", m[2].split("(why:")[0])
+        if not specs:
+            raise SystemExit(f"{src}: difftest-returns {m[1]} names no f_y=LO..HI")
+        out.setdefault(m[1], []).extend(specs)
+    return out
+
+
 def returning_inputs(src: Path) -> dict:
     """`difftest-inputs f_a: SPEC SPEC ...`: inputs on which the original
     returns, to be run as trials (difftest --input)."""
@@ -89,10 +104,12 @@ def verdict(log: str, trials: int):
     return ok, v or (log.strip().splitlines() or ["no output"])[-1], t
 
 
-def difftest(src, fn, home, steps, rom_end, extra):
+def difftest(src, fn, home, steps, rom_end, ranges, extra):
     cmd = [sys.executable, str(ROOT / "tools" / "difftest" / "difftest.py"), str(src), fn, "--steps", str(steps)]
     if rom_end:
         cmd += ["--rom-end", f"0x{rom_end:x}"]
+    for r in ranges:
+        cmd += ["--returns", r]
     cmd += extra
     r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, env={**os.environ, "HOME": str(home)})
     return " ".join(cmd[1:]) + "\n" + r.stdout + r.stderr
@@ -130,11 +147,11 @@ def trace_status(log):
 
 
 def run(job, args):
-    unit, fn, src, rom_end, steps, nonret, inputs = job
+    unit, fn, src, rom_end, steps, nonret, inputs, ranges = job
     steps = steps or args.steps
     home = OUT / "home" / fn
     home.mkdir(parents=True, exist_ok=True)
-    log = difftest(src, fn, home, steps, rom_end, ["--trials", str(args.trials), "--time", str(args.time), "-v"])
+    log = difftest(src, fn, home, steps, rom_end, ranges, ["--trials", str(args.trials), "--time", str(args.time), "-v"])
     ok, v, t = verdict(log, args.trials)
     notes = []
     if not ok and nonret:
@@ -142,7 +159,7 @@ def run(job, args):
         if ok:
             # the original still hangs, and the C with it, at ten times the limit
             for spec in hang[:args.hang_samples]:
-                tl = difftest(src, fn, home, 10 * steps, rom_end, ["--status", spec])
+                tl = difftest(src, fn, home, 10 * steps, rom_end, ranges, ["--status", spec])
                 log += "\n" + tl
                 st = trace_status(tl)
                 if st.get("ROM") != "limit" or st.get("candidate") != "limit":
@@ -152,7 +169,7 @@ def run(job, args):
                 notes.append(f"{min(len(hang), args.hang_samples)} hanging inputs still hang on both sides "
                              f"at {10 * steps} steps")
         if ok and inputs:
-            il = difftest(src, fn, home, steps, rom_end, [x for spec in inputs for x in ("--input", spec)])
+            il = difftest(src, fn, home, steps, rom_end, ranges, [x for spec in inputs for x in ("--input", spec)])
             log += "\n" + il
             iok, iv, it = verdict(il, len(inputs))
             if not iok:
@@ -163,6 +180,8 @@ def run(job, args):
             ok, why = False, "no input returned"
         v = ("non-returning: " if ok else "") + why
     (OUT / f"{fn}.log").write_text(log)
+    if ranges:
+        notes.insert(0, "stub results kept in range: " + " ".join(ranges))
     return {"unit": unit, "function": fn, "ok": ok, "verdict": v, "trials": t,
             "rom_end": f"0x{rom_end:x}" if rom_end else None, "steps": steps, "notes": notes}
 
@@ -186,9 +205,11 @@ def main():
         obj = shiftable.compile_nonmatching(u, OUT)
         ends, steps = rom_ends(ROOT / src), step_limits(ROOT / src)
         nonret, inputs = nonreturning_functions(ROOT / src), returning_inputs(ROOT / src)
+        ranges = result_ranges(ROOT / src)
         for fn in defined_functions(obj, start, end):
             if not args.only or fn in args.only:
-                jobs.append((src, fn, ROOT / src, ends.get(fn), steps.get(fn), fn in nonret, inputs.get(fn, [])))
+                jobs.append((src, fn, ROOT / src, ends.get(fn), steps.get(fn), fn in nonret, inputs.get(fn, []),
+                             ranges.get(fn, [])))
     with ThreadPoolExecutor(args.j) as ex:
         results = list(ex.map(lambda j: run(j, args), jobs))
     for r in results:

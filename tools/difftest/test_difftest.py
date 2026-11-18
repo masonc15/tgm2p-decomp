@@ -210,6 +210,25 @@ class BootTargetArityTests(unittest.TestCase):
         self.assertEqual(dt.Ctx()._measure(0x686), (1, 0))
 
 
+class ResultRangeTests(unittest.TestCase):
+    def test_values_inside_stay_and_the_rest_are_mapped_in(self):
+        for h in range(0, 1 << 20, 4099):
+            self.assertEqual(dt.in_range(3, h, (0, 4)), 3)
+            self.assertEqual(dt.in_range(0xFFFFFFFF, h, (-1, 4)), 0xFFFFFFFF)
+            for r0 in (5, 0xFFFFFFF5, 0x0612EB58):
+                self.assertIn(dt.in_range(r0, h, (0, 4)), range(5))
+                self.assertIn(emu.s32(dt.in_range(r0, h, (-3, -1))), (-3, -2, -1))
+        self.assertEqual({dt.in_range(99, h << 8, (0, 4)) for h in range(50)}, set(range(5)))
+
+    def test_spec(self):
+        resolve = {"f_2beca": 0x0602B74A}.get
+        self.assertEqual(dt.parse_returns(["f_2beca=0..4"], resolve), {0x0602B74A: (0, 4)})
+        self.assertEqual(dt.parse_returns(["f_2beca=-1..0x3f"], resolve), {0x0602B74A: (-1, 63)})
+        for bad in ("f_2beca=4..0", "f_2beca=0-4", "nothing=0..4", "f_2beca=0..0x100000000"):
+            with self.assertRaises(ValueError, msg=bad):
+                dt.parse_returns([bad], resolve)
+
+
 class StatusRunTests(unittest.TestCase):
     def test_discarding_log_keeps_nothing(self):
         log = dt._Discard()

@@ -34,6 +34,16 @@ checks every mapped function in the case. `--at name=0xADDR` supplies a ROM
 address for a differently named function. `--ret none|8|16|32` overrides the
 source-based return-type guess.
 
+`--returns NAME=LO..HI` (repeatable) keeps the stubbed results of calls to
+NAME within the range the real function returns. A stub's result is otherwise
+arbitrary, and a function that indexes its own frame or a table with it then
+writes wherever that index points. The original and the candidate lay their
+frames and literal pools out differently, so such a trial can differ without
+the functions differing (`f_d394` with `f_2beca(5)` returning -11, `f_dbe8`
+with a sprite slot of -5,288 that lands in its own pool). Results already in
+the range are kept; the others are mapped into it by the call's hash, the
+same on both sides. Give a range only where the callee's code proves it.
+
 ## Function boundaries
 
 The default ROM end comes from `fn.py`, whose heuristic can stop at an internal
