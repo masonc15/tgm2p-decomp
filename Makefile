@@ -57,8 +57,7 @@ endif
 
 # Links the program from source as it compiles now, by symbol, so that it can
 # be changed (tools/mod.py, docs/MODDING.md): the matching C, the non-matching
-# C of splits_nonmatching.txt and splits_nonmatching_staged.txt and, with
-# MOD=DIR, that directory's replacement
+# C of splits_nonmatching.txt and, with MOD=DIR, that directory's replacement
 # and new files. Writes build/mod/tgm2p.bin and a MAME ROM set in
 # build/mod/roms. mod-check builds the tree as it is and replays it against
 # the original ROM. Neither touches the matching build or its figures.

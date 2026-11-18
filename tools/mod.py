@@ -6,10 +6,9 @@
 
 `build` links every C source as it compiles now (tools/shiftable.py build
 --source --nonmatching): the matching C of src/, the functionally equivalent C
-of src/nonmatching/ for the ranges that are still unresolved (the accepted
-units of splits_nonmatching.txt and the staged ones of
-splits_nonmatching_staged.txt), and the files of the mod directory. A C file in the mod directory replaces the file of the same
-path in the tree; a file with no counterpart is new code, and may define
+of src/nonmatching/ for the ranges that are still unresolved (the units of
+splits_nonmatching.txt), and the files of the mod directory. A C file in the
+mod directory replaces the file of the same path in the tree; a file with no counterpart is new code, and may define
 variables. Sources edited in place are picked up the same way. Code may grow:
 every address is a symbol, and the image keeps its 1 MB by giving up filler.
 
@@ -81,8 +80,7 @@ def report(layout, out: Path):
 
 
 def build(mod, out: Path, text_size=None):
-    data, layout = shiftable.build_shiftable([], out, nonmatching=True, text_size=text_size, source=True, mod=mod,
-                                             nm_file=[shiftable.NONMATCHING, shiftable.STAGED])
+    data, layout = shiftable.build_shiftable([], out, nonmatching=True, text_size=text_size, source=True, mod=mod)
     if len(data) != shiftable.ROM_SIZE:
         sys.exit(f"image is {len(data):#x} bytes, not {shiftable.ROM_SIZE:#x}")
     return layout

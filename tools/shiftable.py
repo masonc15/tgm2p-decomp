@@ -64,7 +64,6 @@ AS = ["sh-elf-as", "--isa=sh2", "--big"]
 OVERRIDES = ROOT / "config" / "shiftable_pointers.json"
 NAMES = ROOT / "config" / "function_names.txt"
 NONMATCHING = ROOT / "splits_nonmatching.txt"          # accepted non-matching units
-STAGED = ROOT / "splits_nonmatching_staged.txt"        # not accepted: linked by the mod build only
 
 
 def u32(a: int) -> int:
@@ -697,7 +696,7 @@ def build_shiftable(pads, out: Path, nonmatching=False, keep_size=False, nm_file
     out.mkdir(parents=True, exist_ok=True)
     global OVERLAY
     OVERLAY = mod.resolve() if source and mod else None
-    # nm_file: one list, or several (the mod build adds the staged units)
+    # nm_file: one list, or several
     lists = nm_file if isinstance(nm_file, (list, tuple)) else [nm_file]
     nm_entries = sorted(e for f in lists for e in read_nonmatching(f)) if nonmatching else None
     us = plan(pads, nm_entries)

@@ -82,16 +82,13 @@ how much of that is left, about 170 KB for the unmodified game.
 
 ## What stays assembly
 
-The boot code at `0x400`, the SHC runtime helpers at the end of the code,
-three literal pool tails and the code-entry and option menus of the service
-mode (`0xd394`-`0xe39c`) are still assembly. They are relinked symbolically
-and move with everything else, but can't be edited as C. The other ranges the
+The boot code at `0x400`, the SHC runtime helpers at the end of the code and
+three literal pool tails are still assembly. They are relinked symbolically
+and move with everything else, but can't be edited as C. The ranges the
 matching decompilation has not resolved are linked from the functionally
-equivalent C in `src/nonmatching/`, which is ordinary C and can be edited like
-the rest. That C is not byte-matching and never counts as matching coverage.
-`splits_nonmatching.txt` lists the units that are accepted, and
-`splits_nonmatching_staged.txt` those that pass their checks but wait for a
-decision on how one of them is measured.
+equivalent C in `src/nonmatching/` (`splits_nonmatching.txt`), which is
+ordinary C and can be edited like the rest. That C is not byte-matching and
+never counts as matching coverage.
 
 ## Checking that nothing changed
 
