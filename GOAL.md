@@ -4042,3 +4042,28 @@ to the original without pinning. `make mod-check` repeats that with the
 non-matching C under the pinned replay. `mods/example` is a worked example.
 `make check`, `make shiftable` and the full suite pass unchanged. See
 docs/MODDING.md and docs/research/2026-11-17-mod-build.md.
+
+### 2026-11-17 phrixus: non-matching track complete, 45 units (0 matching bytes)
+
+Colin left two open decisions to this session. Both were answered yes:
+
+- The pinned replay reads a missed frame from the game's frame counter
+  `g_6065644`, which all four frame drivers increment once per wait. The
+  older zero-idle reading also fired on padding alone.
+- A stub may be held to its callee's result range where the callee's code
+  proves it (`difftest.py --returns`, `difftest-returns ... (why: ...)` in
+  the source). Used twice, in `settings_d394.c`: `f_2beca=0..4` and
+  `f_2bf58=0..63`.
+
+Accepted with those: the 26 units the replays execute (31,298 asm bytes, 40
+functions) and `settings_d394.c` (4,104 bytes, 5 functions). 45 units,
+58,956 asm bytes in all; `splits_nonmatching_staged.txt` is gone.
+`tools/nonmatching_check.py`: 77/77 functions pass. `make shiftable
+NONMATCHING=1` (sha1 60f22cbe) with `tools/replay_check.sh --pin-idle`:
+attract 12,000 and gameplay 24,000 frames, all 360 checkpoints identical,
+frame counter identical, no frame missed. The 19 never-executed units
+(sha1 bd8ad056) pass the strict replay unpinned. Every compiler-generated
+unresolved range now has functionally equivalent C in the shiftable and mod
+builds; the boot code, three pool tails and the exempt runtime helpers stay
+assembly. Matching coverage is unchanged at 139,096 / 200,698. See
+docs/research/2026-11-17-mod-build.md.

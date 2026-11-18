@@ -37,6 +37,10 @@ A unit is accepted only when both of these hold, as Colin set them on
    function with its own HOME, and exits 0 only if all of them pass.
    `difftest-rom-end` and `difftest-steps` give a verified function end, or a
    larger step limit for an original that needs it on large random inputs.
+   `difftest-returns f_x: f_y=LO..HI (why: ...)` keeps the stubbed results of
+   f_x's calls to f_y within the range the real f_y returns, where its code
+   proves that range and f_x indexes its frame or a table with the result
+   (2026-11-17, [mod-build.md](2026-11-17-mod-build.md)).
 2. The MAME replay check. `make shiftable NONMATCHING=1` and then
    `tools/replay_check.sh build/shiftable-nm/tgm2p.bin` run a 12,000-frame
    attract run and a 24,000-frame scripted gameplay replay, comparing screen
@@ -53,8 +57,8 @@ A unit is accepted only when both of these hold, as Colin set them on
      test also fires on the original's own code moved by padding, so the
      check now compares the frame counter instead, which falls behind the
      original's when a frame is missed
-     ([mod-build.md](2026-11-17-mod-build.md)). Colin has not yet agreed to
-     that change. `tools/idle_report.py` gives each unit's smallest idle
+     ([mod-build.md](2026-11-17-mod-build.md); Colin left the decision to
+     that session, which adopted it). `tools/idle_report.py` gives each unit's smallest idle
      count over the frames its code ran in, against the original's over the
      same frames, and the frames it missed.
 
@@ -118,7 +122,7 @@ Functions without a passing draft are drafted from the disassembly.
 
 ## Accepted units
 
-The accepted units are those whose functions neither replay executes (from the instruction-fetch trace of both runs; `gfx_2ac4c` turned out to run, see below, and passed this replay all the same). For them the replay
+The first eighteen accepted units, and `settings_d394.c`, are those whose functions neither replay executes (from the instruction-fetch trace of both runs; `gfx_2ac4c` turned out to run, see below, and passed this replay all the same). For them the replay
 shows that linking the replacement C, its islands and the moved code leaves
 the rest of the game frame-identical. It cannot show that the functions
 themselves behave alike; difftest covers that part.
@@ -143,10 +147,41 @@ themselves behave alike; difftest covers that part.
 | `settings_b3c0.c` | 0xb3c0–0xbd8a | 2,506 | f_b3c0, f_b892, f_bc02 | settings packet of 2026-10-16 |
 | `settings_be28.c` | 0xbe28–0xd28c | 5,220 | f_be28, f_c21a, f_cac8, f_cf68 | settings packet of 2026-10-16 |
 | `checksum_30880.c` | 0x30880–0x30a44 | 452 | f_30880 | staged packet of 2026-10-16 |
+| `main_780.c` | 0x780–0x1108 | 2,440 | f_780 | packet of 2026-10-16 |
+| `field_setup_12e2.c` | 0x12e2–0x1896 | 1,460 | f_12e2, f_1340 | packet of 2026-10-16 |
+| `field_step_20be.c` | 0x20be–0x2e4c | 3,470 | f_20be, f_29ea, f_2a92, f_2c0a, f_2d06, f_2d54 | packet of 2026-10-16 |
+| `field_3c88.c` | 0x3c88–0x3e2e | 422 | f_3c88 | packet of 2026-10-16 |
+| `field_4044.c` | 0x4044–0x44d4 | 1,168 | f_4044 | packet of 2026-10-16 |
+| `allclear_57d4.c` | 0x57d4–0x5b80 | 940 | f_57d4 | packet of 2026-10-16 |
+| `field_5b80.c` | 0x5b80–0x601a | 1,178 | f_5b80 | packet of 2026-10-16 |
+| `field_61d0.c` | 0x61d0–0x7004 | 3,636 | f_61d0, f_667c, f_67f4 | packet of 2026-10-16 |
+| `field_7324.c` | 0x7324–0x7658 | 820 | f_7324 | packet of 2026-10-16 |
+| `speed_7658.c` | 0x7658–0x7956 | 766 | f_7658 | packet of 2026-10-16 |
+| `field_7c08.c` | 0x7c08–0x7f38 | 816 | f_7c08 | packet of 2026-10-16 |
+| `field_flag_9180.c` | 0x9180–0x95b8 | 1,080 | f_9180 | packet of 2026-10-16 |
+| `field_96ac.c` | 0x96ac–0x9b90 | 1,252 | f_96ac | packet of 2026-10-16 |
+| `settings_d394.c` | 0xd394–0xe39c | 4,104 | f_d394, f_d8e0, f_d962, f_dbe8, f_e074 | packet of 2026-10-16 |
+| `text_width_e39c.c` | 0xe39c–0xe3b8 | 28 | f_e39c | packet of 2026-10-16 |
+| `text_e3e0.c` | 0xe3e0–0xe520 | 320 | f_e3e0, f_e412, f_e490 | packet of 2026-10-16 |
+| `hud_1050e.c` | 0x1050e–0x105ba | 172 | f_1050e | packet of 2026-10-16 |
+| `hud_10788.c` | 0x10788–0x10942 | 442 | f_10788 | packet of 2026-10-16 |
+| `rank_display_12fa8.c` | 0x12fa8–0x131e8 | 576 | f_12fa8 | packet of 2026-10-16 |
+| `save_13380.c` | 0x13380–0x13484 | 260 | f_13380 | packet of 2026-10-16 |
+| `rank_14d50.c` | 0x14d50–0x15104 | 948 | f_14d50, f_14f1c | packet of 2026-10-16 |
+| `rank_15104.c` | 0x15104–0x15794 | 1,680 | f_15104, f_152d4 | packet of 2026-10-16 |
+| `rank_15794.c` | 0x15794–0x15f10 | 1,916 | f_15794 | packet of 2026-10-16 |
+| `draw_15fae.c` | 0x15fae–0x163fc | 1,102 | f_15fae | packet of 2026-10-16 |
+| `draw_163fc.c` | 0x163fc–0x1715c | 3,424 | f_163fc, f_16938 | packet of 2026-10-16 |
+| `board_26264.c` | 0x26264–0x2631a | 182 | f_26264 | packet of 2026-10-16 |
+| `board_26ff0.c` | 0x26ff0–0x27310 | 800 | f_26ff0, f_2722c | packet of 2026-10-16 |
 
-23,554 bytes of unresolved assembly in all. The last four were accepted on
-2026-11-17 ([mod-build.md](2026-11-17-mod-build.md)); their image is sha1
-`ed4d3dd3`. Evidence for the first fourteen, from the first nine
+45 units and 58,956 bytes of unresolved assembly in all. Everything after
+`rankcode_238a8.c` was accepted on 2026-11-17
+([mod-build.md](2026-11-17-mod-build.md)): the three settings units and
+`checksum_30880.c` by the strict replay (sha1 `ed4d3dd3`), `settings_d394.c`
+likewise (`bd8ad056`), and the 26 units the replays execute by the pinned
+replay of the whole list (`60f22cbe`, which is what `make shiftable
+NONMATCHING=1` builds now). Evidence for the first fourteen, from the first nine
 (`251d8b2`), the four after them (`251cb6e`) and `rankcode_238a8.c`:
 
 ```
@@ -181,17 +216,14 @@ else. With it, the pilot matched over the full 12,000 + 24,000 frames.
 Colin accepted the pinned replay for units the replays execute on
 2026-10-16, with the condition that no frame is missed (see Acceptance).
 
-Status of the executed units on 2026-11-17: 26 of them are in the tree,
-listed in `splits_nonmatching_staged.txt`, which only the mod build links
-(`video_init_1108.c`'s range has since become matching C). All 40 of their
-functions pass difftest, and a build with them and the 14 accepted units
-passes the full pinned replay with the frame counter identical to the
-original's. By the older reading of a missed frame the same build fails in
-three attract frames, so they stay staged until Colin decides which reading
-counts. [mod-build.md](2026-11-17-mod-build.md) has the evidence. The first
-run of the 41 units, on 2026-10-16 in the cloud session, had passed the older
-reading too: the marks showed `gfx_2ac4c` running in 1,237 frames, which the
-entry-fetch trace had missed, and it had passed the strict replay anyway.
+The executed units were accepted on 2026-11-17, once the missed-frame test
+read the frame counter: 26 units (`video_init_1108.c`'s range had become
+matching C), all 40 functions passing difftest, and the 45-unit image
+passing the full pinned replay with the frame counter identical to the
+original's. [mod-build.md](2026-11-17-mod-build.md) has the evidence. In the
+first run of the 41 units, on 2026-10-16 in the cloud session, the marks
+showed `gfx_2ac4c` running in 1,237 frames, which the entry-fetch trace had
+missed, and it had passed the strict replay anyway.
 
 The pinned replay also catches real differences that difftest misses. With
 all 28 difftest-clean units linked it diverged in attract mode at frame
