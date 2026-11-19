@@ -13,6 +13,9 @@ _sftra          0x06030a04  # variable arithmetic right shift
 _slow_mvn       0x060308ec  # SHC block-copy helper
 _quick_mvn      0x060308ec  # SHC block-copy helper alias selected for 76-byte copies
 
+# Boot ROM (runs in place, not copied to RAM)
+soft_reset      0x00000686  # clears VBR, masks interrupts and restarts; the test menu leaves through it
+
 # ROM header, read through the cache-through mirror
 rom_hdr_ptr     0x2004002c
 

@@ -106,5 +106,14 @@
       "sha256": "0070c55beb3a9a8df14c781233ec9b939ab1f4ee13566a5dde2a88a5084d9577",
       "evidence": "Defined GLOBAL/FUNC _f_2b4e8 at retained whole-C frame_2b4e8.o .text+0, ROM 0x2b4e8; the next export _f_2b64a is at .text+0x162, so all 354 bytes in this reviewed span are compiler-verified C. The int(void) per-frame driver is called from main_loop.c and the VS unit. Genuine VS setup f_85d8 terminally transfers to it after its sound byte stores through a unique external zero-addend R_SH_DIR32 relocation at pool 0x8878 (context .text+0x2a0). Review in research/2026-10-16-85d8-fixed-lvalue/."
     }
+  ],
+  "boot_entries": [
+    {
+      "symbol": "_soft_reset",
+      "start": 1670,
+      "end": 1708,
+      "sha256": "877fb2f49c18dc39b6bab9b59cdf90b59eac30c96715c7f46db0dad56f5d6ce1",
+      "evidence": "Boot ROM routine that runs in place: 0x686 follows the bra-to-self trap handlers at 0x674-0x684, clears VBR (xor r3,r3; ldc r3,vbr), sets the SR interrupt mask, writes 1 to 0xfffffe10, reloads r15 from the reset vector's stack pointer at 0x4 and branches through 0x6a8 to the reset entry 0x400; its pool is 0x69e-0x6a8. Its only caller is the test-mode menu f_a226, whose final call loads 0x00000686 from 0xa604 and jumps there."
+    }
   ]
 }
