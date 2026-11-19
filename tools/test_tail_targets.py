@@ -162,5 +162,61 @@ class TailTargetTests(unittest.TestCase):
                                                         0x2c6fc, 0x2e6fc, 0x3036e]})
 
 
+    def boot_fixture(self):
+        rom, registry = self.fixture()
+        registry['boot_entries'] = [dict(
+            symbol='_soft_reset', start=0x686, end=0x6ac,
+            sha256=hashlib.sha256(rom[0x686:0x6ac]).hexdigest(),
+            evidence='Reviewed in-place boot routine.')]
+        return rom, registry
+
+    def load_boot(self, rom, registry):
+        module = importlib.import_module('tail_targets')
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / 'targets.json'
+            p.write_text(json.dumps(registry))
+            return module.load_boot_tail_targets(p, rom)
+
+    def test_boot_entries_load_separately(self):
+        rom, registry = self.boot_fixture()
+        self.assertEqual(self.load(rom, registry), {'_f_2000': 0x2000})
+        self.assertEqual(self.load_boot(rom, registry), {'_soft_reset': 0x686})
+
+    def test_boot_entries_are_checked_even_by_the_main_loader(self):
+        rom, registry = self.boot_fixture()
+        registry['boot_entries'][0]['sha256'] = '0' * 64
+        self.reject(rom, registry)
+
+    def test_boot_entries_reject_bad_identity_span_and_bytes(self):
+        module = importlib.import_module('tail_targets')
+        for change in [dict(symbol='_f_686'), dict(symbol='soft_reset'), dict(symbol='_Reset'),
+                       dict(start=0x3fe), dict(start=0x687), dict(end=0x782),
+                       dict(start=0x780, end=0x7a0), dict(evidence=' '),
+                       dict(sha256='0' * 64), dict(extra=1)]:
+            rom, registry = self.boot_fixture()
+            entry = registry['boot_entries'][0]
+            entry.update(change)
+            if 'start' in change or 'end' in change:
+                entry['sha256'] = hashlib.sha256(rom[entry['start']:entry['end']]).hexdigest()
+            with self.subTest(change=change), self.assertRaises(module.TailTargetError):
+                self.load_boot(rom, registry)
+
+    def test_boot_entries_required_and_unique(self):
+        module = importlib.import_module('tail_targets')
+        rom, registry = self.fixture()
+        with self.assertRaises(module.TailTargetError):
+            self.load_boot(rom, registry)
+        rom, registry = self.boot_fixture()
+        registry['boot_entries'].append(dict(registry['boot_entries'][0]))
+        with self.assertRaises(module.TailTargetError):
+            self.load_boot(rom, registry)
+
+    def test_real_registry_boot_targets(self):
+        import build
+        module = importlib.import_module('tail_targets')
+        self.assertEqual(module.load_boot_tail_targets(build.ROOT / 'tail_targets.json', build.fn.ROM),
+                         {'_soft_reset': 0x686})
+
+
 if __name__ == '__main__':
     unittest.main()

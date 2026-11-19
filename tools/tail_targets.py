@@ -27,7 +27,7 @@ def load_tail_targets(path, rom):
         registry = json.loads(path.read_text(), object_pairs_hook=unique_object)
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         raise TailTargetError(f'cannot read reviewed tail-target registry: {path}') from exc
-    if not isinstance(registry, dict) or set(registry) != {'rom_sha256', 'entries'}:
+    if not isinstance(registry, dict) or set(registry) - {'boot_entries'} != {'rom_sha256', 'entries'}:
         raise TailTargetError('invalid tail-target registry schema')
     if registry['rom_sha256'] != hashlib.sha256(rom).hexdigest():
         raise TailTargetError('reviewed tail targets belong to a different ROM')
@@ -53,5 +53,45 @@ def load_tail_targets(path, rom):
             raise TailTargetError(f'reviewed function bytes changed: {symbol}')
         if not isinstance(entry['evidence'], str) or not entry['evidence'].strip():
             raise TailTargetError(f'missing function-entry evidence: {symbol}')
+        result[symbol] = start
+    if 'boot_entries' in registry:
+        load_boot_tail_targets(path, rom)
+    return result
+
+
+def load_boot_tail_targets(path, rom):
+    """Reviewed boot ROM routines that run in place (below 0x780, never copied).
+
+    A literal to one of these holds its ROM address itself, so a tail proof
+    must see that exact value and never the RAM-copy delta. The symbol is the
+    routine's name in symbols.txt, never an _f_hex discovery label.
+    """
+    try:
+        registry = json.loads(path.read_text(), object_pairs_hook=unique_object)
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise TailTargetError(f'cannot read reviewed tail-target registry: {path}') from exc
+    if not isinstance(registry, dict) or registry.get('rom_sha256') != hashlib.sha256(rom).hexdigest():
+        raise TailTargetError('reviewed tail targets belong to a different ROM')
+    entries = registry.get('boot_entries')
+    if not isinstance(entries, list) or not entries:
+        raise TailTargetError('boot tail targets require reviewed boot_entries')
+    result = {}
+    for entry in entries:
+        if not isinstance(entry, dict) or set(entry) != {'symbol', 'start', 'end', 'sha256', 'evidence'}:
+            raise TailTargetError('invalid reviewed boot entry schema')
+        start, end = entry['start'], entry['end']
+        if (type(start) is not int or type(end) is not int or
+                not 0x400 <= start < end <= 0x780 or start % 2 or end % 2):
+            raise TailTargetError('invalid reviewed boot routine span')
+        symbol = entry['symbol']
+        if (not isinstance(symbol, str) or not re.fullmatch(r'_[a-z][a-z0-9_]*', symbol) or
+                symbol.startswith('_f_') or symbol in result):
+            raise TailTargetError(f'invalid boot routine identity: {symbol}')
+        digest = entry['sha256']
+        if (not isinstance(digest, str) or not re.fullmatch('[0-9a-f]{64}', digest) or
+                digest != hashlib.sha256(rom[start:end]).hexdigest()):
+            raise TailTargetError(f'reviewed boot routine bytes changed: {symbol}')
+        if not isinstance(entry['evidence'], str) or not entry['evidence'].strip():
+            raise TailTargetError(f'missing boot routine evidence: {symbol}')
         result[symbol] = start
     return result

@@ -29,7 +29,7 @@ def validate_prefix(compiled, rom, start, end, entries, *, context_start=None,
                     leaf_argument_tails=False, guarded_switches=False,
                     switch_original=None, switch_proofs=None, local_loop_jumps=False,
                     loop_original=None, loop_proofs=None, field_flag_tails=False,
-                    startup_reset_tails=False, function_code_range=False,
+                    startup_reset_tails=False, function_code_range=False, boot_functions=None,
                     function_code_proofs=None, callback_tails=False, callback_original=None,
                     callback_provenance=None, callback_proofs=None):
     """Verify linked bytes and reachable cross-boundary literal dependencies.
@@ -398,7 +398,14 @@ def validate_prefix(compiled, rom, start, end, entries, *, context_start=None,
                           base_updates=[dict(register=15, increment=4)],
                           memory=dict(access='read', size=4, base=15, index=None,
                                       destination_special=special, postincrement=4))
-        elif w in (0x69f6, 0x6af6, 0x6bf6, 0x6cf6, 0x6df6, 0x6ef6):
+        elif w >> 8 == 0x7f:
+            # ADD #imm,R15 releasing locals; a reservation or odd size is not an epilogue.
+            if not 0 < w & 255 < 128 or w & 3:
+                raise PrefixError(f'unsupported long-tail frame release at {pc:#x}')
+            effect.update(operation='release_frame', reads=[15], writes=[15],
+                          immediate=w & 255, stack_increment=w & 255,
+                          base_updates=[dict(register=15, increment=w & 255)])
+        elif w in (0x68f6, 0x69f6, 0x6af6, 0x6bf6, 0x6cf6, 0x6df6, 0x6ef6):
             destination = (w >> 8) & 15
             effect.update(operation='restore_register', reads=[15], writes=[destination, 15],
                           stack_increment=4, base_updates=[dict(register=15, increment=4)],
@@ -418,13 +425,21 @@ def validate_prefix(compiled, rom, start, end, entries, *, context_start=None,
         return effect
 
     def long_tail_shape(jump, register):
-        # Three exact SHC setup/restore forms, never a generic enlarged opcode
+        # Exact SHC setup/restore forms, never a generic enlarged opcode
         # window. Form C ends a three-register frame after two byte stores.
+        # Forms D-F are the plain epilogue of a full seven-register frame
+        # (r8-r14 and PR), after MACL and/or a positive local-frame release:
+        # `return f();` with nothing else between the load and the jump.
+        full = (0x4f26, 0x68f6, 0x69f6, 0x6af6, 0x6bf6, 0x6cf6, 0x6df6)
         forms = [
             (3, 'A', (0x314c, 0x2100, 'e4', 0x4f16, 0x4f26,
                       0x69f6, 0x6af6, 0x6bf6, 0x6cf6, 0x6df6)),
             (1, 'B', ('e5', 0x02ed, 0x64e3, 0x223b, 0x0e25, 0x4f16, 0x4f26)),
             (3, 'C', ('e1', 0x2010, 'd1', 0x2120, 0x4f26, 0x6cf6, 0x6df6)),
+            (3, 'D', (0x4f16,) + full),
+            (3, 'E', ('7f',) + full),
+            (3, 'F', ('7f', 0x4f16) + full),
+            (1, 'G', full),
         ]
         slot = jump + 2
 
@@ -756,12 +771,25 @@ def validate_prefix(compiled, rom, start, end, entries, *, context_start=None,
         if (flag_facts is not None or startup_facts is not None or paired_facts is not None) and provenance.get('embedded_addend') != 0:
             raise PrefixError(f'specialized tail target has nonzero or missing original embedded addend at {target:#x}')
         symbol = provenance.get('symbol', '')
-        match = re.fullmatch(r'_f_([0-9a-f]+)', symbol)
-        canonical = canonical_functions.get(symbol)
-        if (not match or not isinstance(canonical, int) or
-                canonical != int(match[1], 16) or canonical % 2 or
-                not 0x780 <= canonical < 0x313fc or start <= canonical < end):
-            raise PrefixError(f'noncanonical literal tail function at {target:#x}')
+        boot = (boot_functions or {}).get(symbol)
+        if boot is not None:
+            # A reviewed boot ROM routine runs in place: only the plain
+            # full-frame epilogue may lead to it, and the literal is its ROM
+            # address with no RAM-copy delta.
+            if (long_shape is None or form not in ('D', 'E', 'F', 'G') or leaf_facts is not None or
+                    flag_facts is not None or startup_facts is not None or
+                    code_tail_facts is not None or paired_facts is not None or
+                    not isinstance(boot, int) or boot % 2 or not 0x400 <= boot < 0x780):
+                raise PrefixError(f'unproven boot ROM tail at {jump:#x}')
+            canonical, expected_value = boot, boot
+        else:
+            match = re.fullmatch(r'_f_([0-9a-f]+)', symbol)
+            canonical = canonical_functions.get(symbol)
+            if (not match or not isinstance(canonical, int) or
+                    canonical != int(match[1], 16) or canonical % 2 or
+                    not 0x780 <= canonical < 0x313fc or start <= canonical < end):
+                raise PrefixError(f'noncanonical literal tail function at {target:#x}')
+            expected_value = canonical + 0x5fff880
         value = int.from_bytes(literal_bytes, 'big')
         if (provenance.get('relocation_type') != 'R_SH_DIR32' or
                 provenance.get('addend') != 0 or
@@ -769,7 +797,7 @@ def validate_prefix(compiled, rom, start, end, entries, *, context_start=None,
                 provenance.get('section') != 'SHN_UNDEF' or
                 provenance.get('relocation_count', 1) != 1 or
                 provenance.get('overlap', False) or
-                provenance.get('value') != value or value != canonical + 0x5fff880):
+                provenance.get('value') != value or value != expected_value):
             raise PrefixError(f'invalid literal tail relocation at {target:#x}')
         spine = list(range(load, jump + 2, 2))
         function_root = max(a for a in roots if a <= load)
@@ -785,6 +813,8 @@ def validate_prefix(compiled, rom, start, end, entries, *, context_start=None,
                            provenance_relocation_count=provenance.get('relocation_count', 1),
                            target_rom=canonical, target_ram=value,
                            load_dominates_jump=True, single_entry_spine=True))
+        if boot is not None:
+            proofs[-1].update(boot_rom_target=True)
         if long_shape is not None:
             proofs[-1].update(form=form, effects=effects,
                               stack_increment=sum(effect['stack_increment'] for effect in effects))
@@ -833,7 +863,7 @@ def validate_prefix(compiled, rom, start, end, entries, *, context_start=None,
 def compile_prefix(src, out, start, end, *, rom, shcc, version, flags, symbols, assembler,
                    context_start=None, literal_tail_calls=False, canonical_functions=None,
                    leaf_argument_tails=False, guarded_switches=False, local_loop_jumps=False,
-                   field_flag_tails=False, startup_reset_tails=False,
+                   field_flag_tails=False, startup_reset_tails=False, boot_functions=None,
                    function_code_range=False, callback_tails=False, genuine_rodata=None):
     """Produce a relocation-free object with only verified compiler bytes.
 
@@ -1017,7 +1047,7 @@ def compile_prefix(src, out, start, end, *, rom, shcc, version, flags, symbols, 
                            switch_proofs=switch_results, local_loop_jumps=local_loop_jumps,
                            loop_original=loop_original, loop_proofs=loop_results,
                            field_flag_tails=field_flag_tails, startup_reset_tails=startup_reset_tails,
-                           function_code_range=function_code_range,
+                           function_code_range=function_code_range, boot_functions=boot_functions,
                            function_code_proofs=code_results, callback_tails=callback_tails,
                            callback_original=original if callback_tails else None,
                            callback_provenance=provenance if callback_tails else None,
@@ -1062,6 +1092,8 @@ def compile_prefix(src, out, start, end, *, rom, shcc, version, flags, symbols, 
         manifest['field_flag_tails'] = True
     if startup_reset_tails:
         manifest['startup_reset_tails'] = True
+    if boot_functions:
+        manifest['boot_rom_tails'] = sorted(boot_functions)
     if leaf_argument_tails:
         manifest['leaf_argument_tails'] = True
     if guarded_switches:

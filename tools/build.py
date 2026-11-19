@@ -328,6 +328,21 @@ def c_guarded_switches(src: Path) -> bool:
     return True
 
 
+def c_boot_rom_tails(src: Path) -> bool:
+    header = src.read_text().split('\n', 1)[0]
+    if 'boot-rom-tails:' not in header:
+        return False
+    markers = re.findall(r'\bboot-rom-tails:\s*([^\s*]+)', header)
+    if markers != ['1'] or not c_literal_tail_calls(src):
+        raise ValueError(f'{src}: boot-rom-tails requires one explicit 1 and literal-tail-calls')
+    return True
+
+
+def reviewed_boot_functions():
+    from tail_targets import load_boot_tail_targets
+    return load_boot_tail_targets(ROOT / "tail_targets.json", fn.ROM)
+
+
 def reviewed_tail_functions():
     # Discovery can mistake literal-pool halfwords for BSR instructions.
     # Tail proofs require independently reviewed entries pinned to this ROM.
@@ -413,6 +428,8 @@ def build() -> Path:
                                local_loop_jumps=c_local_loop_jumps(src),
                                function_code_range=c_function_code_range(src, start),
                                genuine_rodata=c_genuine_rodata(src),
+                               boot_functions=reviewed_boot_functions()
+                               if c_boot_rom_tails(src) else None,
                                canonical_functions=reviewed_tail_functions()
                                if c_literal_tail_calls(src) else None)
             elif not o.exists() or o.stat().st_mtime < src.stat().st_mtime:
