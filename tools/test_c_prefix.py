@@ -155,7 +155,7 @@ class PrefixValidationTests(unittest.TestCase):
 class PrefixCompileTests(unittest.TestCase):
     def run_case(self, filename, start, end, mutation=None, context_start=None,
                  literal_tail_calls=False, canonical_functions=None, leaf_argument_tails=False,
-                 function_code_range=False):
+                 function_code_range=False, genuine_rodata=False, boot_rom_tails=False):
         import build
         from elftools.elf.elffile import ELFFile
         with tempfile.TemporaryDirectory() as td:
@@ -173,6 +173,8 @@ class PrefixCompileTests(unittest.TestCase):
                            symbols=build.read_symbols(), assembler=build.AS,
                            context_start=context_start,
                            function_code_range=function_code_range,
+                           **(dict(genuine_rodata=build.c_genuine_rodata(src)) if genuine_rodata else {}),
+                           **(dict(boot_functions=build.reviewed_boot_functions()) if boot_rom_tails else {}),
                            **(dict(leaf_argument_tails=True) if leaf_argument_tails else {}),
                            **(dict(literal_tail_calls=True,
                                    canonical_functions=(build.reviewed_tail_functions() if canonical_functions is None
@@ -186,26 +188,28 @@ class PrefixCompileTests(unittest.TestCase):
 
     def test_settings_helpers_keep_readonly_predecessor_context_outside_package(self):
         names, reset = self.run_case('settings_reset_9c0c.c', 0xb2f4, 0xb352,
-                                     context_start=0x9c0c)
+                                     context_start=0x9c0c, literal_tail_calls=True,
+                                     genuine_rodata=True, boot_rom_tails=True)
         self.assertEqual(reset['functions'], ['_f_b2f4'])
         self.assertIn('_f_b2f4', names)
         self.assertNotIn('_f_af8c', names)
         self.assertNotIn('_f_b352', names)
         self.assertEqual(reset['kept_bytes'], 94)
-        self.assertEqual(reset['context_bytes'], 19192)
+        self.assertEqual(reset['context_bytes'], 19268)
         self.assertEqual(reset['discarded_readonly_sections'], [
-            dict(name='.rodata', size=1182)])
+            dict(name='.rodata', size=2402)])
         self.assertEqual(len(reset['literal_dependencies']), 2)
 
         names, copy = self.run_case('settings_reset_9c0c.c', 0xb352, 0xb36e,
-                                    context_start=0x9c0c)
+                                    context_start=0x9c0c, literal_tail_calls=True,
+                                    genuine_rodata=True, boot_rom_tails=True)
         self.assertEqual(copy['functions'], ['_f_b352'])
         self.assertIn('_f_b352', names)
         self.assertNotIn('_f_b2f4', names)
         self.assertNotIn('_f_b36e', names)
         self.assertEqual(copy['kept_bytes'], 28)
         self.assertEqual(copy['discarded_readonly_sections'], [
-            dict(name='.rodata', size=1182)])
+            dict(name='.rodata', size=2402)])
         self.assertEqual(copy['literal_dependencies'], [
             dict(pc=0xb354, target=0xb3b8, size=4, value='06032b6a'),
             dict(pc=0xb358, target=0xb3b0, size=4, value='06060034')])
