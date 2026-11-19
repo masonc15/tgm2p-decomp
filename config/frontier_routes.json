@@ -573,7 +573,7 @@
     "scope": "hypotheses from tools/asm_scan.py; routing only, not an authorship proof or an exemption. See docs/research/2026-10-16-handwritten-asm-scan.md.",
     "program_sha256": "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7",
     "controls": {
-      "negatives": 527,
+      "negatives": 522,
       "positives": 9,
       "true_positive": 9,
       "false_positive": 0,
@@ -628,13 +628,6 @@
         "end": "0x0044d4",
         "verdict": "shc-shaped",
         "observation": "1 functions decoded; no strong hand-written evidence. 162 bytes are pools, tables or unreached.",
-        "hand_written_functions": []
-      },
-      {
-        "start": "0x0057d4",
-        "end": "0x00601a",
-        "verdict": "shc-shaped",
-        "observation": "2 functions decoded; no strong hand-written evidence. 280 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
