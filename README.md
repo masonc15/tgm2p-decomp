@@ -272,7 +272,8 @@ Other verified spans use the unchanged range checks:
 | `src/hud_ranges_f958.c` | `0x1065e`–`0x10788` | 298 | `0xf958` |
 | `src/hud_ranges_f958.c` | `0x10942`–`0x10b28` | 486 | `0xf958` |
 | `src/hud_ranges_f958.c` | `0x10d94`–`0x11254` | 1,216 | `0xf958` |
-| `src/rank_tail_149b4.c` | `0x14bce`–`0x14d50` | 386 | `0x149b4` |
+| `src/rank_tail_149b4.c` | `0x14bce`–`0x14f1c` | 846 | `0x149b4` |
+| `src/rank_tail_149b4.c` | `0x15104`–`0x152d4` | 464 | `0x149b4` |
 | `src/medal_tail.c` | `0x21862`–`0x2190c` | 170 | `0x216d0` |
 | `src/board_255dc.c` | `0x25f6e`–`0x26264` | 758 | `0x255dc` |
 | `src/board_255dc.c` | `0x2631a`–`0x2635c` | 66 | `0x255dc` |

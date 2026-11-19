@@ -1,6 +1,7 @@
 /* rom: 0x14bce len: 0x182 func: f_14bce context-rom: 0x149b4 literal-tail-calls: 1 flags: -macsave=1 -optimize=1 -speed */
-/* Verified middle range 0x14bce-0x14d50. All other genuine functions are
- * unlinked compiler context. One short r3 tail requires CFG/ELF proof. */
+/* Verified middle ranges 0x14bce-0x14f1c (f_14bce, f_14d50) and
+ * 0x15104-0x152d4 (f_15104). All other genuine functions are unlinked
+ * compiler context. One short r3 tail requires CFG/ELF proof. */
 struct field { char pad[0x308]; unsigned long flags308; unsigned short mode; char pad2[0x3b4 - 0x30e]; };
 extern char g_60b161c[], g_60b1620[], g_60b1630;
 extern unsigned char g_6064758, g_6064759;
@@ -243,11 +244,11 @@ int f_14d50(void)
 	short timer;
 	int done;
 	short i;
-	short j;
+	struct frame *fr;
+	int j;
 
 	timer = 300;
 	done = 0;
-    if (0) g_6079538 = 10; /* SHC constant-ranking hint; emits no code. */
 	f_2b1cc();
 	if (f_2b4e8())
 		return 11;
@@ -288,30 +289,33 @@ int f_14d50(void)
 			f_247ee();
 			return 12;
 		}
-		f_185f0(d_aa928, 0, 0, 160, 40);
+		fr = d_aa928;
+		f_185f0(fr, 0, 0, 160, 40);
 		if (timer)
 			timer--;
 		else
 			done = 1;
-	} while (!done);
-	if (g_6064750) {
-		do {
-			if (f_2b4e8())
-				return 11;
-		} while (g_6064750);
-	}
-	f_2b4e8();
-	f_247ee();
-	f_29cc6(2, 10, 0, 6);
-	j = 0;
-	do {
-		if (f_2b4e8()) {
+		if (done) {
+			if (g_6064750) {
+				do {
+					if (f_2b4e8())
+						return 11;
+				} while (g_6064750);
+			}
+			f_2b4e8();
 			f_247ee();
-			return 11;
+			f_29cc6(2, 10, 0, 6);
+			j = 0;
+			do {
+				if (f_2b4e8()) {
+					f_247ee();
+					return 11;
+				}
+				j++;
+			} while ((short)j < 10);
+			return 3;
 		}
-		j++;
-	} while (j < 10);
-	return 3;
+	} while (1);
 }
 
 int f_14f1c(void)
@@ -319,7 +323,7 @@ int f_14f1c(void)
 	short timer;
 	int done;
 	short i;
-	short j;
+	int j;
 	short k;
 
 	timer = 300;
@@ -347,7 +351,7 @@ int f_14f1c(void)
 	do {
 		if (f_2b4e8())
 			return 11;
-		i++;
+		i = i + 1;
 	} while (i < 3);
 	*(char *)0x2405ffe8 = 19;
 	*(char *)0x2405ffe9 = 102;
@@ -370,25 +374,27 @@ int f_14f1c(void)
 			timer--;
 		else
 			done = 1;
-	} while (!done);
-	if (g_6064750) {
-		do {
-			if (f_2b4e8())
-				return 11;
-		} while (g_6064750);
-	}
-	f_2b4e8();
-	f_247ee();
-	f_29cc6(2, 10, 0, 6);
-	j = 0;
-	do {
-		if (f_2b4e8()) {
+		if (done) {
+			if (g_6064750) {
+				do {
+					if (f_2b4e8())
+						return 11;
+				} while (g_6064750);
+			}
+			f_2b4e8();
 			f_247ee();
-			return 11;
+			f_29cc6(2, 10, 0, 6);
+			j = 0;
+			do {
+				if (f_2b4e8()) {
+					f_247ee();
+					return 11;
+				}
+				j++;
+			} while ((short)j < 10);
+			return 3;
 		}
-		j++;
-	} while (j < 10);
-	return 3;
+	} while (1);
 }
 
 int f_15104(void)
@@ -396,7 +402,8 @@ int f_15104(void)
 	short timer;
 	int done;
 	short i;
-	short j;
+	struct frame *fr;
+	int j;
 
 	timer = 300;
 	done = 0;
@@ -440,40 +447,43 @@ int f_15104(void)
 			f_247ee();
 			return 12;
 		}
-		f_185f0(d_aacb8, 0, 0, 160, 40);
+		fr = d_aacb8;
+		f_185f0(fr, 0, 0, 160, 40);
 		if (timer)
 			timer--;
 		else
 			done = 1;
-	} while (!done);
-	if (g_6064750) {
-		do {
-			if (f_2b4e8())
-				return 11;
-		} while (g_6064750);
-	}
-	f_2b4e8();
-	f_247ee();
-	f_29cc6(2, 10, 0, 6);
-	j = 0;
-	do {
-		if (f_2b4e8()) {
+		if (done) {
+			if (g_6064750) {
+				do {
+					if (f_2b4e8())
+						return 11;
+				} while (g_6064750);
+			}
+			f_2b4e8();
 			f_247ee();
-			return 11;
+			f_29cc6(2, 10, 0, 6);
+			j = 0;
+			do {
+				if (f_2b4e8()) {
+					f_247ee();
+					return 11;
+				}
+				j++;
+			} while ((short)j < 10);
+			return 12;
 		}
-		j++;
-	} while (j < 10);
-	return 12;
+	} while (1);
 }
 
 int f_152d4(void)
 {
 	short timer;
-	int done;
+	short done;
 	short i;
 	short k;
 	short anim;
-	short tog;
+	char tog;
 	short cnt;
 	int sum;
 	char *q;
@@ -576,7 +586,8 @@ int f_152d4(void)
 		cnt++;
 		if ((unsigned short)cnt % 64 == 0) {
 			tog = !tog;
-			f_2a576(159, q, d_67910, 1, tog ? 68 : 64, 1, 63);
+			if (tog) f_2a576(159, q, d_67910, 1, 68, 1, 63);
+			else f_2a576(159, q, d_67910, 1, 64, 1, 63);
 		}
 		if (done) {
 			if (g_6064750) {
