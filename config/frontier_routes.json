@@ -485,21 +485,21 @@
     },
     {
       "address": "0x14f1c",
-      "state": "parked-source-families",
+      "state": "open-structure",
       "class": "countdown-lifetime-and-global-allocation",
-      "evidence": "tools/shc_probe/cases/session_rank14f1c_next/HANDOFF.md",
-      "observation": "Archived145controls reduce341to86rawdifferences,all9roots/protected924bytes exact; no strict match. ROMtable stride12 is correct,unlike152d4.",
-      "do_not_repeat": "Archived type,stickycountdown,register,constant,init/declaration families. Do not propagate152d4 stride24 here.",
-      "next_question": "Recover new native lifetime evidence explaining early constant10 and original short-index storage without repeating the archived86difference control."
+      "evidence": "docs/research/2026-11-19-rank-screen-match.md",
+      "observation": "Sibling source of the matched f_14d50/f_15104 plus i = i + 1 leaves 8 raw differences: #160 in r9 not r11, i and #10 in r11 not r9. g_60661a6/d_67d90 temporaries fix the rotation but schedule one literal 2 bytes early (4).",
+      "do_not_repeat": "Declaration permutations, if(0) dead lines at every boundary, fr local, pal local, loop/increment forms, k types, timer/done placement.",
+      "next_question": "Find the source form that ranks #160 ahead of i without moving the d_67d90 literal load."
     },
     {
       "address": "0x14d50",
-      "state": "parked-until-genuine-loop-context",
+      "state": "accepted",
       "class": "constant-hoisting-and-global-allocation",
-      "evidence": "tools/shc_probe/cases/session_rank14d50_next/STATUS.md",
-      "observation": "Archived best215 has10rawdifferences but contains inert if(0)done=10 history shaping. Not a fresh admissible source candidate. Extensive countdown,loopbound,type,ABI and inlinehelper controls already recorded.",
-      "do_not_repeat": "Archived inert-AST and allocation sweeps; no new dummy/dead statements to manufacture compiler history.",
-      "next_question": "Recover genuine source loop/lifetime context explaining constant10 placement and timer/done/160 register cycle."
+      "evidence": "docs/research/2026-11-19-rank-screen-match.md",
+      "observation": "Exact with no dead lines: done test inside the polling loop, short timer with else done = 1, int j compared as (short)j < 10, and a struct frame *fr local for the f_185f0 argument, which ranks #160 ahead of done and timer. Retained as a verified range of src/rank_tail_149b4.c.",
+      "do_not_repeat": "Done.",
+      "next_question": "None; matched."
     },
     {
       "address": "0x27862",
@@ -539,12 +539,12 @@
     },
     {
       "address": "0x15104",
-      "state": "parked-process-reset",
+      "state": "accepted",
       "class": "loop-placement-and-constant-allocation",
-      "evidence": "research/2026-10-17-rank15104-native-loop/STOPPED.md",
-      "observation": "Hint-free native sequential/nested controls have 72/419 nominal raw differences, next roots 152d8/152dc, and two retained-dispatcher differences. Both fail strict boundaries. Nested constant10 dominator changes but remains unallocated. Zero accepted bytes.",
-      "do_not_repeat": "Loop nesting, declaration/type permutations or inert predecessor hints.",
-      "next_question": "No further tuning under the superseded per-target loop; qualify a source-to-output mechanism through the active campaign first."
+      "evidence": "docs/research/2026-11-19-rank-screen-match.md",
+      "observation": "Exact with no dead lines: done test inside the polling loop, short timer with else done = 1, int j compared as (short)j < 10, and a struct frame *fr local for the f_185f0 argument, which ranks #160 ahead of done and timer. Retained as a verified range of src/rank_tail_149b4.c.",
+      "do_not_repeat": "Done.",
+      "next_question": "None; matched."
     },
     {
       "address": "0x1108",
@@ -573,7 +573,7 @@
     "scope": "hypotheses from tools/asm_scan.py; routing only, not an authorship proof or an exemption. See docs/research/2026-10-16-handwritten-asm-scan.md.",
     "program_sha256": "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7",
     "controls": {
-      "negatives": 522,
+      "negatives": 524,
       "positives": 9,
       "true_positive": 9,
       "false_positive": 0,
@@ -743,10 +743,17 @@
         "hand_written_functions": []
       },
       {
-        "start": "0x014d50",
+        "start": "0x014f1c",
+        "end": "0x015104",
+        "verdict": "shc-shaped",
+        "observation": "1 functions decoded; no strong hand-written evidence. 102 bytes are pools, tables or unreached.",
+        "hand_written_functions": []
+      },
+      {
+        "start": "0x0152d4",
         "end": "0x015f10",
         "verdict": "shc-shaped",
-        "observation": "5 functions decoded; no strong hand-written evidence. 1014 bytes are pools, tables or unreached.",
+        "observation": "2 functions decoded; no strong hand-written evidence. 716 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
