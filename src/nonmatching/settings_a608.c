@@ -1,31 +1,39 @@
-/* rom: 0xb3c0 len: 0xa44 func: f_b3c0 flags: -macsave=1 -optimize=1 -speed */
-/* difftest-nonreturning: f_b3c0 f_bc02 (why: the settings menu and its yes/no dialog loop until a button byte (g_6079304/5) selects the exit, and f_b3c0 first waits for g_6064750 to clear) */
-/* difftest-inputs f_b3c0: 1/m6064750.4=0,m6079304.1=80,m6079305.1=8,m6060034.2=0 2/m6064750.4=0,m6079304.1=8,m6079305.1=80,m6060034.2=1 3/m6064750.4=0,m6079304.1=80,m6079305.1=c,m6060034.2=1 4/m6064750.4=0,m6079304.1=e,m6079305.1=80,m6060034.2=0 5/m6064750.4=0,m6079304.1=80,m6079305.1=88,m6060034.2=2 6/m6064750.4=0,m6079304.1=88,m6079305.1=80,m6060034.2=1 7/m6064750.4=0,m6079304.1=80,m6079305.1=18,m6060034.2=0 */
-/* difftest-inputs f_bc02: 1/m6064750.4=0,m6079304.1=8,m6079305.1=0 2/m6064750.4=0,m6079304.1=0,m6079305.1=8 3/m6064750.4=0,m6079304.1=10,m6079305.1=8 4/m6064750.4=0,m6079304.1=8,m6079305.1=20 5/m6064750.4=0,m6079304.1=20,m6079305.1=8 6/m6064750.4=0,m6079304.1=18,m6079305.1=10 7/m6064750.4=0,m6079304.1=28,m6079305.1=0 8/m6064750.4=0,m6079304.1=ff,m6079305.1=ff 9/m6064750.4=0,m6079304.1=8,m6079305.1=8 10/m6064750.4=0,m6079304.1=c,m6079305.1=20 */
-/* Non-matching: functionally equivalent C for [0xb3c0, 0xbd8a) (f_b3c0, f_b892, f_bc02),
+/* rom: 0xa608 len: 0x6d4 func: f_a608 flags: -macsave=1 -optimize=1 -speed */
+/* difftest-nonreturning: f_a608 (why: the object test loops until g_6064750 is clear and a button byte (g_6079304/5, g_6064754/5) selects the exit; the tester never changes memory between stubbed calls, so on most random inputs the original never returns) */
+/* difftest-inputs f_a608: 1/m6064750.4=0,m6064754.1=1,m6064755.1=0,m6079304.1=0,m6079305.1=0 2/m6064750.4=0,m6064754.1=81,m6064755.1=0,m6079304.1=2,m6079305.1=0 3/m6064750.4=0,m6064754.1=41,m6064755.1=10,m6079304.1=0,m6079305.1=2 4/m6064750.4=0,m6064754.1=11,m6064755.1=20,m6079304.1=2,m6079305.1=2 5/m6064750.4=0,m6064754.1=21,m6064755.1=80,m6079304.1=0,m6079305.1=0 6/m6064750.4=0,m6064754.1=ff,m6064755.1=ff,m6079304.1=ff,m6079305.1=ff 7/m6064750.4=0,m6064754.1=3,m6064755.1=40,m6079304.1=0,m6079305.1=0 8/m6064750.4=0,m6064754.1=9,m6064755.1=4,m6079304.1=2,m6079305.1=0 9/m6064750.4=0,m6064754.1=5,m6064755.1=8,m6079304.1=0,m6079305.1=2 10/m6064750.4=0,m6064754.1=d1,m6064755.1=22,m6079304.1=2,m6079305.1=3 */
+/* Non-matching: functionally equivalent C for [0xa608, 0xacdc) (f_a608),
  * linked only by the shiftable build (splits_nonmatching.txt). Not matching coverage.
  * From src/settings_reset_9c0c.c. */
 /* the original strings */
-extern char g_6032c28[];
-extern char g_6032c34[];
-extern char g_6032c3c[];
-extern char g_6032c44[];
-extern char g_6032c58[];
-extern char g_6032c60[];
-extern char g_6032c6c[];
-extern char g_6032c78[];
-extern char g_6032c84[];
-extern char g_6032c90[];
+extern char g_6032ad4[];
+extern char g_6032ae4[];
+extern char g_6032b00[];
+extern char g_6032b04[];
+extern char g_6032b08[];
+extern char g_6032b10[];
+extern char g_6032b14[];
+extern char g_6032b1c[];
+extern char g_6032b24[];
+extern char g_6032b2c[];
+extern char g_6032b34[];
+extern char g_6032b3c[];
+extern char g_6032b44[];
+extern char g_6032b4c[];
 extern char g_6032b54[];
 extern char g_6032b5c[];
-extern char g_6032c9c[];
-extern char g_6032ca4[];
-extern char g_6032cb4[];
-extern char g_6032cbc[];
-extern char g_6032cd0[];
-extern char g_6032ce0[];
-extern char g_6032cf8[];
-extern char g_6032cfc[];
+extern char g_6032b64[];
+extern char g_6032b68[];
+extern char d_62d10[];
+extern char d_62e50[];
+extern char d_62f90[];
+extern char d_63090[];
+extern char d_678d0[];
+extern char d_a79f4[];
+extern char d_a7a0c[];
+extern char d_a7a18[];
+extern char d_a7a30[];
+extern char d_2004001c[];
+extern char d_20040030[];
 struct rom_hdr {
 	char pad0[48];
 	long l30;
@@ -114,8 +122,8 @@ struct font {
 	long n;
 	short *seq[1];
 };
-#define HDR_COUNT (*(short *)0x2004001c)
-#define HDR_ANIM (*(struct anim **)0x20040030)
+#define HDR_COUNT (*(short *)((long)d_2004001c))
+#define HDR_ANIM (*(struct anim **)((long)d_20040030))
 extern short g_6064870, g_6064872, g_6064874;
 extern short g_6061944;
 extern char g_60329ec[], g_60329fc[], g_6032a0c[], g_6032a18[], g_6032a24[], g_6032a28[], g_6032a2c[];
@@ -138,27 +146,244 @@ void f_9ea4(unsigned char m);
 
 void f_9ede(void);
 
-void f_a226(void);
+void f_a608(void)
+{
+	short spr2;
+	short sprite_id;
+	short sel;
+	struct anim *tbl;
+	short total;
+	short spr1;
+	short x, y;
+	unsigned char c2, c0, c1;
+	char wait;
+	long lastpos;
+	short show;
+	char rep1;
+	int run;
+	short last;
+	unsigned char prev0, prev1, prev2, prev3;
+	short cnt;
+	char rep2, rep3, rep4;
+	unsigned char bri0, bri1;
+	char vis;
+	short n, hold;
+	long pos;
+	unsigned long k, step;
+	unsigned char a, b;
+	int kk;
 
-void f_a608(void);
-
-void f_acdc(short *sel);
-
-
-#define IN3 (*(unsigned char *)0x23000003)
-extern short g_6060034[11];
-extern void f_2f36e(void), f_b352(void), f_b36e(void);
-extern void f_3036e(void);
-/* Genuine screen-test predecessor reconstructed from ROM AD80-AF8C.
- * Private analysis source. All five drawing arguments include the pushed125. */
-struct frame;
-extern void f_29bf8(void);
-void f_2af5e(unsigned char, unsigned char, long *);
-extern void f_185f0(struct frame *, short, short, char, short);
-
-void f_ad80(void);
-
-void f_af8c(void);
+	pos = 0;
+	tbl = HDR_ANIM;
+	n = HDR_COUNT;
+	run = 1;
+	total = 0;
+	sel = 0;
+	y = 0;
+	x = 0;
+	vis = 0;
+	wait = 0;
+	show = 1;
+	bri0 = 63;
+	bri1 = 63;
+	f_2c3d0(0);
+	while (g_6064750)
+		f_2b4e8();
+	lastpos = 0;
+	cnt = n;
+	for (kk = 0; kk < cnt - 1; kk++)
+		lastpos += tbl[lastpos].w2 >> 10;
+	f_29cc6(0, 4, 0, -0x7ffa);
+	f_2b3e8((short *)g_607926c[70]);
+	if (n == 0) {
+		rep1 = 120;
+		while (--rep1) {
+			f_e3e0(100, g_60329ec, 0);
+			f_2b4e8();
+		}
+		run = 0;
+	} else {
+		g_606006c[g_60792ec].w2c |= 0x8000;
+		spr1 = f_2528c();
+		spr2 = f_2528c();
+		f_253bc(spr1, 0, 0, tbl);
+		f_253bc(spr2, 112, 160, (struct anim *)g_60792f0->l10);
+		sprite_id = spr2;
+		{
+			short *sprite_arg = &sprite_id;
+			g_606006c[*sprite_arg].b2a = 0;
+		}
+		sprite_id = spr2;
+		{
+			short *sprite_arg = &sprite_id;
+			g_606006c[*sprite_arg].w18 &= 0xfffc;
+		}
+		g_606006c[spr2].b1c = 64;
+		rep4 = 16;
+		rep2 = 16;
+		rep3 = 16;
+		rep1 = 16;
+		sprite_id = spr2;
+		{
+			short *sprite_arg = &sprite_id;
+			g_606006c[*sprite_arg].w2c |= 0x8000;
+		}
+		g_606006c[spr1].w2c &= 0x7fff;
+		g_6064870 = 34;
+		g_6064872 = 48;
+		g_6064874 = -48;
+		f_acdc(&sel);
+	}
+	hold = last = n - 1;
+	if (run) {
+		do {
+			f_2b4e8();
+			f_9ede();
+			if (wait < 18)
+				wait++;
+			if (wait > 16) {
+				a = g_6064754;
+				c0 = a;
+				c2 = c1 = g_6064755;
+				if (prev0 == (c0 & 15)) {
+					if (--rep1 < 0)
+						rep1 = 1;
+					else
+						c0 &= 0xf0;
+					hold++; hold &= 0xfff;
+				} else {
+					hold = 0;
+					prev0 = c0 & 15;
+					rep1 = 16;
+				}
+				if (prev1 == (a & 15)) {
+					if (--rep3 < 0)
+						rep3 = 1;
+					hold++; hold &= 0xfff;
+				} else {
+					hold = 0;
+					prev1 = a & 15;
+					rep3 = 16;
+				}
+				if (prev2 == (c2 & 15)) {
+					if (--rep2 < 0)
+						rep2 = 1;
+					else
+						c2 &= 0xf0;
+				} else {
+					prev2 = c2 & 15;
+					rep2 = 16;
+				}
+				if (prev3 == (c1 & 15)) {
+					if (--rep4 < 0)
+						rep4 = 1;
+					else
+						c1 &= 0xf0;
+				} else {
+					prev3 = c1 & 15;
+					rep4 = 16;
+				}
+			} else {
+				c1 = 0;
+				c2 = 0;
+				c0 = 0;
+			}
+			if (show) {
+				f_e3e0(10, g_60329fc, 0);
+				f_e412(10, 20, g_6032a0c, 0);
+				f_e412(10, 34, g_6032a18, 0);
+				f_e63a(total, 20, 90, 1, 0, 1, 0);
+				f_e63a(sel, 34, 90, 1, 0, 1, 0);
+				f_e412(250, 20, g_6032a24, 0);
+				f_e412(250, 34, g_6032a28, 0);
+				f_e63a(x, 20, 275, 3, 0, 1, 0);
+				f_e63a(y, 34, 275, 3, 0, 1, 0);
+				f_e3e0(214, g_6032a2c, 0);
+			}
+			if (c0 & 8) {
+				if (hold / 240 == 0)
+					step = 1;
+				else if (hold / 360 == 0)
+					step = 2;
+				else
+					step = hold / 480 == 0 ? 5 : 5;
+				total += step;
+				for (k = 0; k < step; k++)
+					pos += tbl[pos].w2 >> 10;
+				if (total >= cnt) {
+					total = 0;
+					pos = 0;
+					hold = 0;
+				}
+			}
+			if (c0 & 4) {
+				if (hold / 240 == 0)
+					step = 1;
+				else if (hold / 360 == 0)
+					step = 2;
+				else
+					step = hold / 480 == 0 ? 5 : 5;
+				pos--;
+				total -= step;
+				for (k = 0; k < step; k++)
+					pos -= tbl[pos].w2 >> 10;
+				pos++;
+				if (total < 0) {
+					hold = 0;
+					total = last;
+					pos = lastpos;
+				}
+			}
+			if (c0 & 12)
+				bri0 = bri1 = 63;
+			b = g_6064754 | g_6064755;
+			if (b & 0x80)
+				y++;
+			else if (b & 0x40)
+				y--;
+			if (b & 0x10)
+				x--;
+			else if (b & 0x20)
+				x++;
+			if (c2 & 8) {
+				sel++;
+				f_acdc(&sel);
+			}
+			if (c1 & 4) {
+				sel--;
+				f_acdc(&sel);
+			}
+			if (g_6079304 & 2) {
+				if (vis) {
+					long sprite_offset = spr2;
+					sprite_offset *= 64;
+					((struct spr *)((char *)g_606006c + sprite_offset))->w2c |= 0x8000;
+					vis = 0;
+				} else {
+					long sprite_offset = spr2;
+					sprite_offset *= 64;
+					((struct spr *)((char *)g_606006c + sprite_offset))->w2c &= 0x7fff;
+					vis = 1;
+				}
+			}
+			if (g_6079305 & 2)
+				show ^= 1;
+			{
+				long sprite_offset = spr1;
+				struct spr *sprite;
+				sprite_offset *= 64;
+				sprite = (struct spr *)((char *)g_606006c + sprite_offset);
+				sprite->b14 = bri0;
+				sprite->b15 = bri1;
+			}
+			f_253bc(spr1, x, y, &tbl[pos]);
+			if ((g_6064754 & 1) == 1)
+				run = 0;
+		} while (run);
+	}
+	g_6061944 = 125;
+	f_2b4e8();
+}
 
 extern const short g_6032b6a[11];
 extern const unsigned char g_6032b80[10];
@@ -178,7 +403,7 @@ void f_b36e(void);
 
 void f_b892(short *,short);
 unsigned char f_bc02(char *,short *,char);
-extern void f_21206(void);
+extern void f_20206(void);
 /* the original tables, in the RAM data image */
 extern const char *const g_6032b8c[30];
 #define names g_6032b8c
@@ -187,229 +412,13 @@ extern const unsigned char g_6032c04[9];
 extern const short g_6032c0e[12];
 #define ypos g_6032c0e
 
-void f_b3c0(void)
-{
-	short buf[19];
-	int changed = 0;
-	int run = 1;
-	int dirty = 0;
-	short cur = 0;
-	int i, j, n;
-	short k;
-	short *cfg = g_6060034;
+void f_b3c0(void);
 
-	while (g_6064750)
-		f_2b4e8();
-	f_29cc6(0, 4, 0, -0x7ffa);
-	g_606006c[g_60792ec].w4 = 30;
-	g_606006c[g_60792ec].w8 = 30;
-	f_b2f4();
-	for (i = 0; i < 11; i++)
-		buf[i] = cfg[i];
-	for (;;) {
-		f_2b4e8();
-		f_9ede();
-		g_606006c[g_60792ec].w8 = 30;
-		if ((g_6079304 == 0x80) | (g_6079305 == 0x80)) {
-			cur--;
-			if (cur < 0)
-				cur = 10;
-			if (cur == 3)
-				cur = 2;
-			if (buf[6] == 2) {
-				if (cur == 8)
-					cur = 6;
-			} else if (buf[5] == 1) {
-				if (cur == 8)
-					cur--;
-			}
-		}
-		if ((g_6079304 == 0x40) | (g_6079305 == 0x40)) {
-			cur++;
-			if (cur > 10)
-				cur = 0;
-			if (cur == 3)
-				cur = 4;
-			if (buf[6] == 2) {
-				if (cur == 7)
-					cur = 9;
-			} else if (buf[5] == 1) {
-				if (cur == 8)
-					cur++;
-			}
-		}
-		if ((g_6079304 == 0x10) | (g_6079305 == 0x10)) {
-			if (cur < 9) {
-				if (--buf[cur] < 0) {
-					if ((cur == 7) | (cur == 8))
-						buf[cur] = 0;
-					else
-						buf[cur] = g_6032b80[cur];
-				}
-				if (buf[6] == 1)
-					buf[6] = 0;
-			}
-		}
-		if ((g_6079304 == 0x20) | (g_6079305 == 0x20)) {
-			if (cur < 9) {
-				if (++buf[cur] > g_6032b80[cur]) {
-					if ((cur == 7) | (cur == 8))
-						buf[cur] = g_6032b80[cur];
-					else
-						buf[cur] = 0;
-				}
-				if (buf[6] == 1)
-					buf[6] = 2;
-			}
-		}
-		if (buf[0] == 1)
-			*(unsigned char *)0x2405ffee |= 0xc0;
-		else
-			*(unsigned char *)0x2405ffee &= 0x3f;
-		g_606006c[g_60792ec].w4 = ypos[cur];
-		f_b892(buf, cur);
-		f_e520(30, ypos[cur], g_6032960, 0);
-		if ((g_6079304 & 8) | (g_6079305 & 8)) {
-		switch (cur) {
-		case 9:
-			if (f_bc02(g_6032c28, buf, 1))
-				break;
-			for (i = 0; i < 10; i++)
-				buf[i] = g_6032b6a[i];
-			if (~IN3 & 0x40)
-				dirty = 1;
-			break;
-		case 10:
-			for (i = 0; i < 10; i++) {
-				if (buf[i] != cfg[i])
-					changed = 1;
-			}
-			if (changed == 0 && dirty == 0)
-				;
-			else if (f_bc02(g_6032c34, buf, 0) == 0) {
-				f_2b4e8();
-				f_b892(buf, 11);
-				f_e3e0(200, g_6032c3c, 0);
-				k = g_60792ec;
-				g_606006c[k].w2c |= 0x8000;
-				f_2b4e8();
-				for (i = 0, j = 0; i < 10; i++)
-					j += (short)(k = buf[i]), cfg[i] = k;
-				cfg[10] = j;
-				f_3036e();
-				f_21206();
-				f_b892(buf, 11);
-				f_e3e0(200, g_6032c3c, 0);
-				k = g_60792ec;
-				g_606006c[k].w2c |= 0x8000;
-				for (n = 20; n > 0; n--) {
-					f_2b4e8();
-					f_9ede();
-					f_b892(buf, 11);
-					f_e3e0(200, g_6032c3c, 0);
-				}
-			}
-			run = 0;
-			break;
-		}
-		}
-		if (!run)
-			break;
-	}
-}
+void f_b892(short *buf, short cur);
 
-void f_b892(register short *buf, short cur)
-{
-	short tmp[12];
-	short unused[12];
-	short j, idx;
-	int f;
+unsigned char f_bc02(char *title, short *buf, char sel);
 
-	f_e3e0(10, g_6032c44, 0);
-	f_e412(50, ypos[0], g_6032c58, cur == 0 ? 0 : 1);
-	f_e412(50, ypos[1], g_6032c60, cur == 1 ? 0 : 1);
-	f_e412(50, ypos[2], g_6032c6c, cur == 2 ? 0 : 1);
-	f_e412(50, ypos[4], g_6032c78, cur == 4 ? 0 : 1);
-	f_e412(50, ypos[5], g_6032c84, cur == 5 ? 0 : 1);
-	f_e412(50, ypos[6], g_6032c90, cur == 6 ? 0 : 1);
-	if (buf[6] == 0) {
-		if (buf[5] == 0) {
-			f_e412(70, ypos[7], g_6032b54, cur == 7 ? 0 : 1);
-			f_e412(70, ypos[8], g_6032b5c, cur == 8 ? 0 : 1);
-		} else
-			f_e412(70, ypos[7], g_6032c9c, cur == 7 ? 0 : 1);
-	}
-	f_e412(50, ypos[9], g_6032ca4, cur == 9 ? 0 : 1);
-	f_e412(50, ypos[10], g_6032cb4, cur == 10 ? 0 : 1);
-	if (cur <= 10) {
-		g_606006c[tmp[cur]].b1c = 0;
-		switch (cur) {
-		case 9:
-			f_e3e0(200, g_6032cbc, 0);
-			break;
-		case 10:
-			f_e3e0(200, g_6032cd0, 0);
-			break;
-		default:
-			f_e3e0(200, g_6032ce0, 0);
-		}
-	}
-	for (j = 0; j < 6; j++) {
-		idx = buf[j] + off9[j];
-		f_e412(180, ypos[j], names[idx], cur == j ? 0 : 1);
-	}
-	if (buf[6] == 2) {
-		idx = off9[6] + buf[6] - 1;
-		f_e412(180, ypos[6], names[idx], cur == 6 ? 0 : 1);
-	} else {
-		idx = off9[6] + buf[6];
-		f_e412(180, ypos[6], names[idx], cur == 6 ? 0 : 1);
-	}
-	if (buf[6] == 0) {
-		f = (cur == 7 || cur == 6) ? 0 : 1;
-		f_e412(160, ypos[7], names[off9[7] + buf[7]], f);
-		if (buf[5] == 0) {
-			f = (cur == 8 || cur == 6) ? 0 : 1;
-			f_e412(160, ypos[8], names[off9[8] + buf[8]], f);
-		}
-	}
-}
-
-unsigned char f_bc02(char *title, short *buf, char sel)
-{
-	short *b = buf;
-	short t[2];
-	int run = 1;
-	int x;
-
-	do {
-		f_2b4e8();
-		f_9ede();
-		f_b892(b, 11);
-		f_e412(100, 200, title, 0);
-		f_e412(200, 200, g_6032cf8, sel == 0 ? 0 : 1);
-		f_e412(240, 200, g_6032cfc, sel == 1 ? 0 : 1);
-		g_606006c[g_60792ec].w4 = 200;
-		if ((g_6079304 == 0x10) | (g_6079305 == 0x10))
-			sel = 0;
-		if ((g_6079304 == 0x20) | (g_6079305 == 0x20))
-			sel = 1;
-		if ((g_6079304 & 8) | (g_6079305 & 8))
-			run = 0;
-		if (sel == 0) {
-			g_606006c[t[0]].b1c = 0;
-			g_606006c[t[1]].b1c = 64;
-		} else {
-			g_606006c[t[0]].b1c = 64;
-			g_606006c[t[1]].b1c = 0;
-		}
-		g_606006c[g_60792ec].w8 = x = sel * 40 + 188;
-		f_e520(x, 200, g_6032960, 0);
-	} while (run);
-	return sel;
-}
-
-extern void f_bd8a(void);
+void f_bd8a(void);
 
 extern unsigned short d_3a8e8[];
 extern void f_2f2cc(void);

@@ -143,9 +143,9 @@ themselves behave alike; difftest covers that part.
 | `board_queue_274c0.c` | 0x274c0–0x2769e | 478 | f_274c0 | context in src/board_queue_2733a.c |
 | `gfx_2ac4c.c` | 0x2ac4c–0x2af5e | 786 | f_2ac4c | wip/gfx_2ac4c.c |
 | `rankcode_238a8.c` | 0x238a8–0x23e3e | 1,430 | f_238a8, f_238fc | drafted from the disassembly and src/rankcode_draw_23e3e.c |
-| `settings_a226.c` | 0xa226–0xb2f4 | 4,302 | f_a226, f_a608, f_acdc, f_ad80, f_af8c | settings packet of 2026-10-16 |
-| `settings_b3c0.c` | 0xb3c0–0xbd8a | 2,506 | f_b3c0, f_b892, f_bc02 | settings packet of 2026-10-16 |
-| `settings_be28.c` | 0xbe28–0xd28c | 5,220 | f_be28, f_c21a, f_cac8, f_cf68 | settings packet of 2026-10-16 |
+| `settings_a608.c` (was `settings_a226.c`) | 0xa608–0xacdc | 1,748 | f_a608 (f_a226, f_acdc, f_ad80, f_af8c matched 2026-11-18) | settings packet of 2026-10-16 |
+| `settings_b3c0.c` | 0xb3c0–0xbd8a | 2,506 | f_b3c0, f_b892, f_bc02 | settings packet of 2026-10-16 (retired 2026-11-18: now matching C in src/settings_reset_9c0c.c) |
+| `settings_be28.c` | 0xbe28–0xd28c | 5,220 | f_be28, f_c21a, f_cac8, f_cf68 | settings packet of 2026-10-16 (retired 2026-11-18: now matching C in src/settings_reset_9c0c.c) |
 | `checksum_30880.c` | 0x30880–0x30a44 | 452 | f_30880 | staged packet of 2026-10-16 |
 | `main_780.c` | 0x780–0x1108 | 2,440 | f_780 | packet of 2026-10-16 |
 | `field_setup_12e2.c` | 0x12e2–0x1896 | 1,460 | f_12e2, f_1340 | packet of 2026-10-16 |
@@ -160,9 +160,9 @@ themselves behave alike; difftest covers that part.
 | `field_7c08.c` | 0x7c08–0x7f38 | 816 | f_7c08 | packet of 2026-10-16 |
 | `field_flag_9180.c` | 0x9180–0x95b8 | 1,080 | f_9180 | packet of 2026-10-16 |
 | `field_96ac.c` | 0x96ac–0x9b90 | 1,252 | f_96ac | packet of 2026-10-16 |
-| `settings_d394.c` | 0xd394–0xe39c | 4,104 | f_d394, f_d8e0, f_d962, f_dbe8, f_e074 | packet of 2026-10-16 |
-| `text_width_e39c.c` | 0xe39c–0xe3b8 | 28 | f_e39c | packet of 2026-10-16 |
-| `text_e3e0.c` | 0xe3e0–0xe520 | 320 | f_e3e0, f_e412, f_e490 | packet of 2026-10-16 |
+| `settings_d394.c` | 0xd394–0xe39c | 4,104 | f_d394, f_d8e0, f_d962, f_dbe8, f_e074 | packet of 2026-10-16 (retired 2026-11-18: now matching C in src/settings_reset_9c0c.c) |
+| `text_width_e39c.c` | 0xe39c–0xe3b8 | 28 | f_e39c | packet of 2026-10-16 (retired 2026-11-18: now matching C in src/settings_reset_9c0c.c) |
+| `text_e3e0.c` | 0xe3e0–0xe520 | 320 | f_e3e0, f_e412, f_e490 | packet of 2026-10-16 (retired 2026-11-18: now matching C in src/settings_reset_9c0c.c) |
 | `hud_1050e.c` | 0x1050e–0x105ba | 172 | f_1050e | packet of 2026-10-16 |
 | `hud_10788.c` | 0x10788–0x10942 | 442 | f_10788 | packet of 2026-10-16 |
 | `rank_display_12fa8.c` | 0x12fa8–0x131e8 | 576 | f_12fa8 | packet of 2026-10-16 |
