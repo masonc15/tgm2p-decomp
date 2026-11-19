@@ -1,5 +1,34 @@
 # TGM2+ matching decompilation goal
 
+## Line-clear unit matches — 2026-11-19
+
+Coverage increased **153,868 → 155,986 / 200,698 C bytes, 76.6664% →
+77.7218%** (+2,118 bytes). 43,074 non-exempt bytes remain to the
+199,060-byte goal; the goal is still open.
+
+`src/field_51f4.c` is the compiler unit 0x51f4-0x61d0, from the row tests
+through the line-clear handler f_57d4, the line-collapse step f_5b80 and the
+randomizer helpers f_601a, f_608c and f_60e8. Every function compiles
+byte-identical at its ROM address, with no dead `if (0)` lines, so one `c` row
+replaces the old 0x51f4 `c`, 0x541c `c-prefix` and 0x601a `c-range` rows and
+the 0x57d4 asm row. f_57d4's last 13 bytes were pool displacements caused by
+f_5b80's size and went away when f_5b80 matched. f_5b80 needed the row copy
+written with `(y + 1) * f->width` rather than a `next` local, the owner's
+piece kind read into an `unsigned char` inside the `g_6064880 & 4` test, the
+position as `union fixed pos[2]`, and the time bonus without a `remain`
+local. `make split check report` passes both chip hashes, all 377 tool tests
+pass with `PREFIX_COMPILE_TESTS=1` (the settings prefix test, stale since the
+settings unit, now passes the options its rows use), `make shiftable` is
+identical to the ROM and `make mod-check` plays the replays like the
+original. `allclear_57d4.c` and `field_5b80.c` are retired from the
+non-matching track, and `make shiftable NONMATCHING=1` (sha1 ddc315d2) with
+`tools/replay_check.sh --pin-idle` is identical over attract 12,000 and
+gameplay 24,000 frames with no frame missed. Details:
+[docs/research/2026-11-19-line-clear-unit-match.md](docs/research/2026-11-19-line-clear-unit-match.md).
+
+Next in this file: f_61d0, f_667c and f_67f4 (0x61d0-0x7004), which call
+f_601a and f_60e8 with `bsr` and belong to the same unit.
+
 ## Settings unit matches — 2026-11-18
 
 Coverage increased **139,096 → 153,868 / 200,698 C bytes, 69.3061% →
