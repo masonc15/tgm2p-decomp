@@ -1,5 +1,34 @@
 # TGM2+ matching decompilation goal
 
+## Rank screens f_14d50 and f_15104 match — 2026-11-19
+
+Coverage increased **155,986 → 156,910 / 200,698 C bytes, 77.7218% →
+78.1821%** (+924 bytes). 42,150 non-exempt bytes remain to the
+199,060-byte goal; the goal is still open.
+
+f_14d50 and f_15104, two of the three near-identical rank result screens in
+the 0x149b4 unit, now compile byte-identical at their ROM addresses with no
+dead `if (0)` lines. `src/rank_tail_149b4.c` retains them as verified ranges
+0x14bce-0x14f1c (f_14bce plus f_14d50) and 0x15104-0x152d4. The old
+`if (0) g_6079538 = 10;` ranking hint in the context body is gone. The
+forms that matter are a `done` test inside the polling loop (the wait for
+`g_6064750`, the ten-frame fade and the return sit inside `if (done)` rather
+than after `while (!done)`), `short timer` counting down with
+`else done = 1;`, an `int j` fade counter compared as `(short)j < 10`, and
+the frame pointer for `f_185f0` held in a `struct frame *fr` local. The
+local fixes the last 4-byte swap of the 160 load. f_14f1c, the third
+screen, is 8 bytes off: the same source plus `i = i + 1;` in its first loop
+leaves only #160 and the `i`/#10 register pair rotated. `rank_14d50.c` and
+`rank_15104.c` shrink to `rank_14f1c.c` (0x14f1c-0x15104) and
+`rank_152d4.c` (0x152d4-0x15794) on the non-matching track; both pass
+difftest over 500 trials. `make split check report` passes both chip
+hashes, all 377 tool tests pass with `PREFIX_COMPILE_TESTS=1`, `make
+shiftable` is identical to the ROM, `make mod-check` plays the replays like
+the original, and `make shiftable NONMATCHING=1` (sha1 2f817e76) with
+`tools/replay_check.sh --pin-idle` is identical over attract 12,000 and
+gameplay 24,000 frames. Details:
+[docs/research/2026-11-19-rank-screen-match.md](docs/research/2026-11-19-rank-screen-match.md).
+
 ## Line-clear unit matches — 2026-11-19
 
 Coverage increased **153,868 → 155,986 / 200,698 C bytes, 76.6664% →
