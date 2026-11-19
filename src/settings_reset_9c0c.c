@@ -1,5 +1,12 @@
-/* rom: 0xb2f4 len: 0x7a func: f_b2f4 context-rom: 0x9c0c literal-tail-calls: 1 function-code-range: 0xb36e flags: -macsave=1 -optimize=1 -speed */
-/* Only f_b2f4 and f_b352 are retained. The other genuine bodies preserve the original optimized compiler state and remain unlinked context. */
+/* rom: 0xacdc func: settings unit context-rom: 0x9c0c literal-tail-calls: 1 boot-rom-tails: 1 function-code-range: 0xb36e genuine-rodata: 0x603290c flags: -macsave=1 -optimize=1 -speed */
+/* The test-mode and settings unit, 0x9c0c-0xe74f, in original function order.
+ * Every function compiles byte-identical except f_a608 (the object test), so
+ * the splits retain the ranges around it; f_a226 also stays assembly until
+ * its tail jump into the boot ROM reset has a reviewed proof. The unit's
+ * tables and strings form one .rodata that is linked at its original RAM
+ * address and compared with the ROM copy. A few `if (0)` statements are
+ * inert and emit nothing; like those in hud_ranges_f958.c they restore the
+ * original register choices. */
 struct rom_hdr {
 	char pad0[48];
 	long l30;
@@ -15,7 +22,7 @@ struct spr {
 	unsigned char b14;
 	unsigned char b15;
 	char pad1[0x18 - 0x16];
-	short w18;
+	unsigned short w18;
 	short w1a;
 	char b1c;
 	char pad2[0x22 - 0x1d];
@@ -46,10 +53,25 @@ extern unsigned char g_6064754, g_6064755;
 extern int g_6064750;
 extern unsigned char g_6079304, g_6079305, g_6079306, g_6079307;
 extern short g_6079308;
-extern char g_6032960[], g_6032964[], g_6032974[], g_6032980[], g_603298c[];
-extern char g_6032998[], g_60329a8[], g_60329bc[], g_60329cc[], g_60329d8[], g_60329e0[];
-extern void (*g_603294c[])(void);
-extern void (*g_603292c[])(void);
+void f_a608(void);
+void f_ad80(void);
+void f_af8c(void);
+void f_b3c0(void);
+void f_be28(void);
+void f_c21a(void);
+void f_cac8(void);
+void f_cf68(void);
+void f_d394(void);
+static const char g_603290c[5][5] = {
+	{4, 1, 7, 6, 5},
+	{4, 1, 5, 7, 3},
+	{1, 3, 5, 7, 9},
+	{0, 2, 4, 6, 8},
+	{4, 1, 3, 7, 3},
+};
+static const char g_6032925[5] = {5, 0, 2, 1, 3};
+static void (*const g_603292c[8])(void) = {f_a608, f_cac8, f_ad80, f_af8c, f_c21a, f_cf68, f_b3c0, f_d394};
+static void (*const g_603294c[5])(void) = {f_ad80, f_af8c, f_be28, f_b3c0, f_d394};
 
 extern void f_2b1cc(void);
 extern void f_2521e(void);
@@ -62,7 +84,7 @@ extern void f_2b3e8(short *);
 extern void f_2c3d0(unsigned char);
 extern void f_2c03c(short);
 extern short f_2528c(void);
-void f_29cc6(short, short, long, long);
+void f_29cc6(short, short, short, short);
 extern void f_bd8a(void);
 extern void f_2b4e8(void);
 extern void f_2f2cc(void);
@@ -74,7 +96,7 @@ void f_2774a(short, int);
 extern void f_e3b8(void);
 void f_e3e0(short, char *, char);
 void f_e412(short, short, char *, char);
-void f_e520(short, short, char *, int);
+void f_e520(short, short, char *, short);
 
 struct anim {
 	short w0;
@@ -92,10 +114,8 @@ struct font {
 #define HDR_ANIM (*(struct anim **)0x20040030)
 extern short g_6064870, g_6064872, g_6064874;
 extern short g_6061944;
-extern char g_60329ec[], g_60329fc[], g_6032a0c[], g_6032a18[], g_6032a24[], g_6032a28[], g_6032a2c[];
-extern char g_6032a3c[], g_6032a4c[], g_6032a5c[];
 extern void f_253bc();
-extern void f_2b0ea(short, long);
+extern void f_2b0ea(int, long);
 void f_e63a(int, short, int, short, long, unsigned char, char);
 void f_acdc(short *);
 extern void f_2c28c(void);
@@ -212,54 +232,62 @@ void f_9ede(void)
 	f_9ea4(0x01);
 }
 
+extern void soft_reset(void);                /* 0x686, boot ROM */
+#pragma inline(hide)
+static void hide(short k)
+{
+	g_606006c[k].w2c |= 0x8000;
+}
+
 void f_a226(void)
 {
 	short i = 0;
 	int run = 1;
 	unsigned short n = 6;
-	short y;
-	unsigned char a, b;
+	int a, b;
+	char pad[32];
 
-	g_6079307 = 0;
-	g_6079306 = 0;
+	g_6079306 = g_6079307 = 0;
 	g_6079308 = 0x200;
 	f_9c0c();
 	do {
-		y = i * 12 + 55;
-		g_606006c[g_60792ec].w4 = y;
+		g_606006c[g_60792ec].w4 = i * 12 + 55;
 		f_2b4e8();
 		f_9ede();
-		f_e520(90, y, g_6032960, 0);
-		f_e3e0(15, g_6032964, 0);
+		f_e520(90, i * 12 + 55, ">", 0);
+		f_e3e0(15, "- Test Mode -", 0);
 		if (g_6079308 == 0x200) {
-			f_e412(120, 55, g_6032974, i == 0 ? 0 : 1);
-			f_e412(120, 67, g_6032980, i == 1 ? 0 : 1);
-			f_e412(120, 79, g_603298c, i == 2 ? 0 : 1);
-			f_e412(120, 91, g_6032998, i == 3 ? 0 : 1);
-			f_e412(120, 103, g_60329a8, i == 4 ? 0 : 1);
-			f_e412(120, 115, g_60329bc, i == 5 ? 0 : 1);
+			f_e412(120, 55, "Screen Test", i == 0 ? 0 : 1);
+			f_e412(120, 67, "Input Test", i == 1 ? 0 : 1);
+			f_e412(120, 79, "Sound Test", i == 2 ? 0 : 1);
+			f_e412(120, 91, "Game Setting", i == 3 ? 0 : 1);
+			f_e412(120, 103, "Maintenance Code", i == 4 ? 0 : 1);
+			f_e412(120, 115, "Exit (Reset)", i == 5 ? 0 : 1);
 		} else {
-			f_e412(120, 55, g_60329cc, i == 0 ? 0 : 1);
-			f_e412(120, 67, g_60329d8, i == 1 ? 0 : 1);
-			f_e412(120, 79, g_6032974, i == 2 ? 0 : 1);
-			f_e412(120, 91, g_6032980, i == 3 ? 0 : 1);
-			f_e412(120, 103, g_603298c, i == 4 ? 0 : 1);
-			f_e412(120, 115, g_60329e0, i == 5 ? 0 : 1);
-			f_e412(120, 127, g_6032998, i == 6 ? 0 : 1);
-			f_e412(120, 139, g_60329a8, i == 7 ? 0 : 1);
-			f_e412(120, 151, g_60329bc, i == 8 ? 0 : 1);
+			f_e412(120, 55, "Obj Test", i == 0 ? 0 : 1);
+			f_e412(120, 67, "Bg Test", i == 1 ? 0 : 1);
+			f_e412(120, 79, "Screen Test", i == 2 ? 0 : 1);
+			f_e412(120, 91, "Input Test", i == 3 ? 0 : 1);
+			f_e412(120, 103, "Sound Test", i == 4 ? 0 : 1);
+			f_e412(120, 115, "Play Status", i == 5 ? 0 : 1);
+			f_e412(120, 127, "Game Setting", i == 6 ? 0 : 1);
+			f_e412(120, 139, "Maintenance Code", i == 7 ? 0 : 1);
+			f_e412(120, 151, "Exit (Reset)", i == 8 ? 0 : 1);
 		}
 		a = g_6079304;
 		b = g_6079305;
 		if ((a == 0x80) | (b == 0x80)) {
-			if (--i < 0)
+			i--;
+			if (i < 0)
 				i = n - 1;
 		}
-		if ((b == 0x40) | (a == 0x40)) {
-			if (++i > n - 1)
+		if ((a == 0x40) | (b == 0x40)) {
+			i++;
+			if (i > n - 1)
 				i = 0;
 		}
-		if (((a & 14) | (b & 14)) && !g_6064750) {
+		if ((a & 14) | (b & 14)) {
+		if (!g_6064750) {
 			f_29cc6(2, 2, 0, 6);
 			if (i == n - 1)
 				run = 0;
@@ -277,16 +305,17 @@ void f_a226(void)
 				f_29cc6(4, 10, 0, 6);
 				f_29cc6(2, 4, 0, 6);
 				f_2b4e8();
-				g_606006c[g_60792ec].w2c |= 0x8000;
+				hide(g_60792ec);
 				while (g_6064750)
 					f_2b4e8();
 				f_9c0c();
 			}
 		}
+		}
 	} while (run);
 	f_2c28c();
 	f_2c326();
-	g_606006c[g_60792ec].w2c |= 0x8000;
+	hide(g_60792ec);
 	f_2b4e8();
 	f_29cc6(4, 10, 0, 6);
 	f_29f94(0, 0, 0, 0xe0);
@@ -294,13 +323,39 @@ void f_a226(void)
 	f_2774a(g_6066198.we, 1);
 	f_2b4e8();
 	f_2b4e8();
-	((void (*)(void))0x686)();
+	soft_reset();
+}
+
+void f_a5d4(void)
+{
+}
+
+#pragma inline(spr_b2a, spr_w18, spr_hide, spr_show, spr_bri)
+static void spr_b2a(short k, char v)
+{
+	g_606006c[k].b2a = v;
+}
+static void spr_w18(short k, int m)
+{
+	g_606006c[k].w18 = g_606006c[k].w18 & m;
+}
+static void spr_hide(short k)
+{
+	g_606006c[k].w2c |= 0x8000;
+}
+static void spr_show(short k)
+{
+	g_606006c[k].w2c &= 0x7fff;
+}
+static void spr_bri(short k, unsigned char a, unsigned char b)
+{
+	g_606006c[k].b14 = a;
+	g_606006c[k].b15 = b;
 }
 
 void f_a608(void)
 {
 	short spr2;
-	short sprite_id;
 	short sel;
 	struct anim *tbl;
 	short total;
@@ -321,12 +376,13 @@ void f_a608(void)
 	short n, hold;
 	long pos;
 	unsigned long k, step;
-	unsigned char a, b;
+	unsigned char a;
+	int b;
 	int kk;
 
-	pos = 0;
 	tbl = HDR_ANIM;
 	n = HDR_COUNT;
+	pos = 0;
 	run = 1;
 	total = 0;
 	sel = 0;
@@ -346,211 +402,196 @@ void f_a608(void)
 		lastpos += tbl[lastpos].w2 >> 10;
 	f_29cc6(0, 4, 0, -0x7ffa);
 	f_2b3e8((short *)g_607926c[70]);
-	if (n == 0) {
+	if (!n) {
 		rep1 = 120;
-		while (--rep1) {
-			f_e3e0(100, g_60329ec, 0);
+		while (rep1 = rep1 - 1) {
+			f_e3e0(100, "Object is Zero", 0);
 			f_2b4e8();
 		}
 		run = 0;
 	} else {
-		g_606006c[g_60792ec].w2c |= 0x8000;
+		hide(g_60792ec);
 		spr1 = f_2528c();
 		spr2 = f_2528c();
 		f_253bc(spr1, 0, 0, tbl);
-		f_253bc(spr2, 112, 160, (struct anim *)g_60792f0->l10);
-		sprite_id = spr2;
-		{
-			short *sprite_arg = &sprite_id;
-			g_606006c[*sprite_arg].b2a = 0;
-		}
-		sprite_id = spr2;
-		{
-			short *sprite_arg = &sprite_id;
-			g_606006c[*sprite_arg].w18 &= 0xfffc;
-		}
+		f_253bc(spr2, 112, 160, (struct anim *)((long *)g_60792f0)[4]);
+		spr_b2a(spr2, 0);
+		spr_w18(spr2, 0xfffc);
 		g_606006c[spr2].b1c = 64;
 		rep4 = 16;
 		rep2 = 16;
 		rep3 = 16;
 		rep1 = 16;
-		sprite_id = spr2;
-		{
-			short *sprite_arg = &sprite_id;
-			g_606006c[*sprite_arg].w2c |= 0x8000;
-		}
-		g_606006c[spr1].w2c &= 0x7fff;
+		spr_hide(spr2);
+		spr_show(spr1);
 		g_6064870 = 34;
 		g_6064872 = 48;
 		g_6064874 = -48;
 		f_acdc(&sel);
 	}
-	hold = last = n - 1;
-	if (run) {
-		do {
-			f_2b4e8();
-			f_9ede();
-			if (wait < 18)
-				wait++;
-			if (wait > 16) {
-				a = g_6064754;
-				c0 = a;
-				c2 = c1 = g_6064755;
-				if (prev0 == (c0 & 15)) {
-					if (--rep1 < 0)
-						rep1 = 1;
-					else
-						c0 &= 0xf0;
-					hold++; hold &= 0xfff;
-				} else {
-					hold = 0;
-					prev0 = c0 & 15;
-					rep1 = 16;
-				}
-				if (prev1 == (a & 15)) {
-					if (--rep3 < 0)
-						rep3 = 1;
-					hold++; hold &= 0xfff;
-				} else {
-					hold = 0;
-					prev1 = a & 15;
-					rep3 = 16;
-				}
-				if (prev2 == (c2 & 15)) {
-					if (--rep2 < 0)
-						rep2 = 1;
-					else
-						c2 &= 0xf0;
-				} else {
-					prev2 = c2 & 15;
-					rep2 = 16;
-				}
-				if (prev3 == (c1 & 15)) {
-					if (--rep4 < 0)
-						rep4 = 1;
-					else
-						c1 &= 0xf0;
-				} else {
-					prev3 = c1 & 15;
-					rep4 = 16;
-				}
+	hold = n - 1;
+	last = hold;
+	while (run) {
+		f_2b4e8();
+		f_9ede();
+		if (wait < 18)
+			wait++;
+		if (wait > 16) {
+			a = g_6064754;
+			c0 = a;
+			c2 = c1 = g_6064755;
+			if (prev0 == (c0 & 15)) {
+				if (--rep1 < 0)
+					rep1 = 1;
+				else
+					c0 &= 0xf0;
+				hold++; hold &= 0xfff;
 			} else {
-				c1 = 0;
-				c2 = 0;
-				c0 = 0;
+				prev0 = c0 & 15;
+				hold = 0;
+				rep1 = 16;
 			}
-			if (show) {
-				f_e3e0(10, g_60329fc, 0);
-				f_e412(10, 20, g_6032a0c, 0);
-				f_e412(10, 34, g_6032a18, 0);
-				f_e63a(total, 20, 90, 1, 0, 1, 0);
-				f_e63a(sel, 34, 90, 1, 0, 1, 0);
-				f_e412(250, 20, g_6032a24, 0);
-				f_e412(250, 34, g_6032a28, 0);
-				f_e63a(x, 20, 275, 3, 0, 1, 0);
-				f_e63a(y, 34, 275, 3, 0, 1, 0);
-				f_e3e0(214, g_6032a2c, 0);
-			}
-			if (c0 & 8) {
-				if (hold / 240 == 0)
-					step = 1;
-				else if (hold / 360 == 0)
-					step = 2;
+			if (prev1 == (a & 15)) {
+				if (--rep3 < 0)
+					rep3 = 1;
 				else
-					step = hold / 480 == 0 ? 5 : 5;
-				total += step;
-				for (k = 0; k < step; k++)
-					pos += tbl[pos].w2 >> 10;
-				if (total >= cnt) {
-					total = 0;
-					pos = 0;
-					hold = 0;
-				}
+					a &= 0xf0;
+				hold++; hold &= 0xfff;
+			} else {
+				prev1 = a & 15;
+				hold = 0;
+				rep3 = 16;
 			}
-			if (c0 & 4) {
-				if (hold / 240 == 0)
-					step = 1;
-				else if (hold / 360 == 0)
-					step = 2;
+			if (prev2 == (c2 & 15)) {
+				if (--rep2 < 0)
+					rep2 = 1;
 				else
-					step = hold / 480 == 0 ? 5 : 5;
-				pos--;
-				total -= step;
-				for (k = 0; k < step; k++)
-					pos -= tbl[pos].w2 >> 10;
-				pos++;
-				if (total < 0) {
-					hold = 0;
-					total = last;
-					pos = lastpos;
-				}
+					c2 &= 0xf0;
+			} else {
+				prev2 = c2 & 15;
+				rep2 = 16;
 			}
-			if (c0 & 12)
-				bri0 = bri1 = 63;
-			b = g_6064754 | g_6064755;
-			if (b & 0x80)
-				y++;
-			else if (b & 0x40)
-				y--;
-			if (b & 0x10)
-				x--;
-			else if (b & 0x20)
-				x++;
-			if (c2 & 8) {
-				sel++;
-				f_acdc(&sel);
+			if (prev3 == (c1 & 15)) {
+				if (--rep4 < 0)
+					rep4 = 1;
+				else
+					c1 &= 0xf0;
+			} else {
+				prev3 = c1 & 15;
+				rep4 = 16;
 			}
-			if (c1 & 4) {
-				sel--;
-				f_acdc(&sel);
+		} else {
+			c1 = 0;
+			c2 = 0;
+			c0 = 0;
+		}
+		if (show) {
+			f_e3e0(10, "- Obj Test -", 0);
+			f_e412(10, 20, "ObjDt No.", 0);
+			f_e412(10, 34, "Palette No.", 0);
+			f_e63a(total, 20, 90, 1, 0, 1, 0);
+			f_e63a(sel, 34, 90, 1, 0, 1, 0);
+			f_e412(250, 20, "v =", 0);
+			f_e412(250, 34, "h =", 0);
+			f_e63a(x, 20, 275, 3, 0, 1, 0);
+			f_e63a(y, 34, 275, 3, 0, 1, 0);
+			f_e3e0(214, "Exit = 1P-Start", 0);
+		}
+		if (c0 & 8) {
+			if (hold / 240 == 0)
+				step = 1;
+			else if (hold / 360 == 0)
+				step = 2;
+			else {
+				if (hold / 480 == 0)
+					;
+				step = 5;
 			}
-			if (g_6079304 & 2) {
-				if (vis) {
-					long sprite_offset = spr2;
-					sprite_offset *= 64;
-					((struct spr *)((char *)g_606006c + sprite_offset))->w2c |= 0x8000;
-					vis = 0;
-				} else {
-					long sprite_offset = spr2;
-					sprite_offset *= 64;
-					((struct spr *)((char *)g_606006c + sprite_offset))->w2c &= 0x7fff;
-					vis = 1;
-				}
+			total += step;
+			for (k = 0; k < step; k++)
+				pos += tbl[pos].w2 >> 10;
+			if (total >= cnt) {
+				total = 0;
+				pos = 0;
+				hold = 0;
 			}
-			if (g_6079305 & 2)
-				show ^= 1;
-			{
-				long sprite_offset = spr1;
-				struct spr *sprite;
-				sprite_offset *= 64;
-				sprite = (struct spr *)((char *)g_606006c + sprite_offset);
-				sprite->b14 = bri0;
-				sprite->b15 = bri1;
+			bri0 = bri1 = 63;
+		}
+		if (c0 & 4) {
+			if (hold / 240 == 0)
+				step = 1;
+			else if (hold / 360 == 0)
+				step = 2;
+			else {
+				if (hold / 480 == 0)
+					;
+				step = 5;
 			}
-			f_253bc(spr1, x, y, &tbl[pos]);
-			if ((g_6064754 & 1) == 1)
-				run = 0;
-		} while (run);
+			pos--;
+			total -= step;
+			for (k = 0; k < step; k++)
+				pos -= tbl[pos].w2 >> 10;
+			pos++;
+			if (total < 0) {
+				total = last;
+				pos = lastpos;
+				hold = 0;
+			}
+			bri0 = bri1 = 63;
+		}
+		b = g_6064754 | g_6064755;
+		if (b & 0x80)
+			y++;
+		else if (b & 0x40)
+			y--;
+		if (b & 0x10)
+			x--;
+		else if (b & 0x20)
+			x++;
+		if (c2 & 8) {
+			sel++;
+			f_acdc(&sel);
+		}
+		if (c1 & 4) {
+			sel--;
+			f_acdc(&sel);
+		}
+		if (g_6079304 & 2) {
+			if (vis) {
+				spr_hide(spr2);
+				vis = 0;
+			} else {
+				spr_show(spr2);
+				vis = 1;
+			}
+		}
+		if (g_6079305 & 2)
+			show ^= 1;
+		spr_bri(spr1, bri0, bri1);
+		f_253bc(spr1, x, y, &tbl[pos]);
+		if ((g_6064754 & 1) == 1)
+			run = 0;
 	}
 	g_6061944 = 125;
 	f_2b4e8();
+	if (0) g_6061944 = wait;
 }
 
 void f_acdc(short *sel)
 {
 	short *p;
 	short a;
-	long v;
+	unsigned long v;
 
-	if (g_60792f0->n == 0) {
+	if (((long *)g_60792f0)[5] == 0) {
 		*sel = 0;
 		return;
 	}
-	if (*sel >= g_60792f0->n)
+	if (*sel >= ((long *)g_60792f0)[5])
 		*sel = 0;
 	if (*sel < 0)
-		*sel = g_60792f0->n - 1;
-	p = g_60792f0->seq[*sel];
+		*sel = ((long *)g_60792f0)[5] - 1;
+	p = (short *)((long *)g_60792f0)[*sel + 6];
 	while (*p == 0xa1) {
 		p++;
 		a = *p++;
@@ -563,14 +604,14 @@ void f_acdc(short *sel)
 }
 
 
+
 #define IN3 (*(unsigned char *)0x23000003)
 extern short g_6060034[11];
 extern void f_2f36e(void), f_b352(void), f_b36e(void);
 extern void f_3036e(void);
-/* Genuine screen-test predecessor reconstructed from ROM AD80-AF8C.
- * Private analysis source. All five drawing arguments include the pushed125. */
+/* Screen test. */
 struct frame;
-extern void f_29bf8(void);
+extern void f_29bf8();
 void f_2af5e(unsigned char, unsigned char, long *);
 extern void f_185f0(struct frame *, short, short, char, short);
 
@@ -583,8 +624,8 @@ void f_ad80(void)
     }
     f_29f94(0, 0, 0, 224);
     f_29cc6(0, 4, 0, -0x7ffa);
-    f_29bf8();
-    g_606006c[g_60792ec].w2c |= 0x8000;
+    f_29bf8(0);
+    hide(g_60792ec);
     f_2af5e(80, 1, (long *)0x678d0);
     f_2af5e(32, 4, (long *)0x63090);
     f_2af5e(48, 4, (long *)0x62f90);
@@ -618,7 +659,7 @@ void f_ad80(void)
         }
         if ((g_6079304 & 15) | (g_6079305 & 15)) run = 0;
     } while (run);
-    g_606006c[g_60792ec].w2c &= 0x7fff;
+    spr_show(g_60792ec);
 }
 
 void f_af8c(void)
@@ -671,8 +712,8 @@ void f_af8c(void)
 	} while (run);
 }
 
-extern const short g_6032b6a[11];
-extern const unsigned char g_6032b80[10];
+static const short g_6032b6a[11] = {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2};
+static const unsigned char g_6032b80[10] = {1, 2, 9, 0, 1, 1, 2, 8, 8, 0};
 
 
 int f_b2f4(void)
@@ -720,7 +761,7 @@ void f_b36e(void)
 }
 
 
-/* Genuine settings and sound-test drafts; no artificial stack objects. */
+/* Game settings and sound test. */
 
 void f_b892(short *,short);
 unsigned char f_bc02(char *,short *,char);
@@ -739,8 +780,8 @@ static const short ypos[12] = {40, 53, 66, -100, 79, 92, 105, 118, 131, 144, 157
 void f_b3c0(void)
 {
 	short buf[19];
-	int changed = 0;
 	int run = 1;
+	int changed = 0;
 	int dirty = 0;
 	short cur = 0;
 	int i, j, n;
@@ -817,7 +858,7 @@ void f_b3c0(void)
 			*(unsigned char *)0x2405ffee &= 0x3f;
 		g_606006c[g_60792ec].w4 = ypos[cur];
 		f_b892(buf, cur);
-		f_e520(30, ypos[cur], g_6032960, 0);
+		f_e520(30, ypos[cur], ">", 0);
 		if ((g_6079304 & 8) | (g_6079305 & 8)) {
 		switch (cur) {
 		case 9:
@@ -833,9 +874,8 @@ void f_b3c0(void)
 				if (buf[i] != cfg[i])
 					changed = 1;
 			}
-			if (changed == 0 && dirty == 0)
-				;
-			else if (f_bc02("Save?", buf, 0) == 0) {
+			if (changed || dirty)
+			if (f_bc02("Save?", buf, 0) == 0) {
 				f_2b4e8();
 				f_b892(buf, 11);
 				f_e3e0(200, "Saved", 0);
@@ -859,7 +899,6 @@ void f_b3c0(void)
 				}
 			}
 			run = 0;
-			break;
 		}
 		}
 		if (!run)
@@ -870,6 +909,7 @@ void f_b3c0(void)
 void f_b892(short *buf, short cur)
 {
 	short tmp[12];
+	char pad[20];
 	short j, idx;
 	int f;
 
@@ -902,6 +942,7 @@ void f_b892(short *buf, short cur)
 			f_e3e0(200, "Select = Left or Right", 0);
 		}
 	}
+	if (0) tmp[0] = 0;
 	for (j = 0; j < 6; j++) {
 		idx = buf[j] + off9[j];
 		f_e412(180, ypos[j], names[idx], cur == j ? 0 : 1);
@@ -914,10 +955,16 @@ void f_b892(short *buf, short cur)
 		f_e412(180, ypos[6], names[idx], cur == 6 ? 0 : 1);
 	}
 	if (buf[6] == 0) {
-		f = (cur == 7 || cur == 6) ? 0 : 1;
+		if (cur == 7 || cur == 6)
+			f = 0;
+		else
+			f = 1;
 		f_e412(160, ypos[7], names[off9[7] + buf[7]], f);
 		if (buf[5] == 0) {
-			f = (cur == 8 || cur == 6) ? 0 : 1;
+			if (cur == 8 || cur == 6)
+				f = 0;
+			else
+				f = 1;
 			f_e412(160, ypos[8], names[off9[8] + buf[8]], f);
 		}
 	}
@@ -928,7 +975,7 @@ unsigned char f_bc02(char *title, short *buf, char sel)
 	short *b = buf;
 	short t[2];
 	int run = 1;
-	int x;
+	short x;
 
 	do {
 		f_2b4e8();
@@ -952,27 +999,18 @@ unsigned char f_bc02(char *title, short *buf, char sel)
 			g_606006c[t[1]].b1c = 0;
 		}
 		g_606006c[g_60792ec].w8 = x = sel * 40 + 188;
-		f_e520(x, 200, g_6032960, 0);
+		f_e520(x, 200, ">", 0);
 	} while (run);
 	return sel;
 }
 
 void f_bd8a(void)
 {
-	long i;
-	long a, b;
-	unsigned long *q;
-
-	a = 0x1c00;
-	b = 0x1c00;
-	q = (unsigned long *)0x2400437c;
-	for (i = 0; i < 112; i++) {
-		((volatile unsigned long *)0x24004000)[i] = a | 0x7f;
-		a += 0x100;
-		*q = b | 0x7f;
-		q--;
-		b += 0x100;
-	}
+    long i;
+    for (i = 0; i < 112; i++) {
+        ((unsigned long *)0x24004000)[i] = (0x1c00 + i * 0x100) | 0x7f;
+        ((unsigned long *)0x24004000)[223 - i] = (0x1c00 + i * 0x100) | 0x7f;
+    }
 }
 
 extern unsigned short d_3a8e8[];
@@ -999,14 +1037,15 @@ void f_be28(void)
 	short effect = 0;
 	short sel = 0;
 	short music = 0;
+	short prev1 = 0;
 	int run = 1;
 	short cnt1 = 0;
 	short prev2 = 0;
 	short cnt2 = 0;
-	short prev1 = 0;
 	short rep1, rep2;
-	int y;
+	short y;
 	int k;
+	short t[4];
 
 	while (g_6064750)
 		f_2b4e8();
@@ -1091,7 +1130,7 @@ void f_be28(void)
 		f_e412(80, 64, "Effect", sel == 1 ? 0 : 1);
 		f_e412(80, 78, "Exit", sel == 2 ? 0 : 1);
 		g_606006c[g_60792ec].w4 = y = sel * 14 + 50;
-		f_e520(60, y, g_6032960, 0);
+		f_e520(60, y, ">", 0);
 		f_e63a(music, 50, 200, 2, 0, 1, sel == 0 ? 0 : 1);
 		f_e63a(effect, 64, 200, 3, 0, 1, sel == 1 ? 0 : 1);
 		if (sel == 2)
@@ -1152,6 +1191,7 @@ void f_c21a(void)
 		}
 		if (prev2 != g_6064755) {
 			prev2 = g_6064755;
+			if (0) g_6079306 = sel;
 			cnt2 = 0;
 			rep2 = prev2;
 		} else {
@@ -1195,7 +1235,7 @@ void f_c21a(void)
 			if ((g_6079304 == 4) | (g_6079305 == 4))
 				f_2ed3e();
 			g_606006c[g_60792ec].w4 = 50;
-			f_e520(60, 50, g_6032960, 0);
+			f_e520(60, 50, ">", 0);
 			break;
 		case 1:
 			if ((rep1 == 0x20) | (rep2 == 0x20)) {
@@ -1213,7 +1253,7 @@ void f_c21a(void)
 			if ((g_6079304 == 4) | (g_6079305 == 4))
 				f_2ed06();
 			g_606006c[g_60792ec].w4 = 64;
-			f_e520(60, 64, g_6032960, 0);
+			f_e520(60, 64, ">", 0);
 			break;
 		case 2:
 			if ((g_6079304 == 0x20) | (g_6079305 == 0x20)) {
@@ -1227,25 +1267,25 @@ void f_c21a(void)
 			if ((g_6079304 == 8) | (g_6079305 == 8))
 				f_2edcc(voice, (f_2ee0c(voice) + 1) & 1);
 			g_606006c[g_60792ec].w4 = 78;
-			f_e520(60, 78, g_6032960, 0);
+			f_e520(60, 78, ">", 0);
 			break;
 		case 3:
 			if ((g_6079304 == 8) | (g_6079305 == 8))
 				f_2ee38();
 			g_606006c[g_60792ec].w4 = 120;
-			f_e520(60, 120, g_6032960, 0);
+			f_e520(60, 120, ">", 0);
 			break;
 		case 4:
 			if ((g_6079304 == 8) | (g_6079305 == 8))
 				f_2ee74();
 			g_606006c[g_60792ec].w4 = 134;
-			f_e520(60, 134, g_6032960, 0);
+			f_e520(60, 134, ">", 0);
 			break;
 		case 5:
 			if ((g_6079304 == 8) | (g_6079305 == 8))
 				run = 0;
 			g_606006c[g_60792ec].w4 = 148;
-			f_e520(60, 148, g_6032960, 0);
+			f_e520(60, 148, ">", 0);
 			break;
 		}
 		f_e3e0(10, "- Sound Test -", 0);
@@ -1295,7 +1335,6 @@ void f_c21a(void)
 			f_e3e0(208, "Play = Button1", 0);
 			f_e3e0(194, "Stop = Button2", 0);
 			f_e3e0(180, "Select = Left or Right", 0);
-			break;
 		}
 	} while (run);
 	f_2f2cc();
@@ -1304,7 +1343,7 @@ void f_c21a(void)
 }
 
 
-/* Genuine later menu and renderer drafts. */
+/* BG test, play status, maintenance code and the text helpers. */
 
 struct st {
 	long l0, l4, l8, lc;
@@ -1324,11 +1363,10 @@ extern struct st g_6066188;
 #define S g_6066188
 extern unsigned char g_6064754, g_6064755, g_6079304, g_6079305;
 extern short g_60792ec, g_60792de, g_60792dc;
-extern short g_6033014[];
 extern long d_3ab1c[];
-extern char d_67910[];
+extern long d_67910[];
 extern void f_2b4e8(void);
-void f_29cc6(short, short, long, long);
+void f_29cc6(short, short, short, short);
 extern void f_9ede(void);
 extern void f_acdc(short *);
 extern void f_25658(short);
@@ -1351,15 +1389,9 @@ extern void f_b36e(void);
 extern void f_211a2(void);
 extern void f_21206(void);
 extern unsigned long f_2beca(int);
-extern char g_6032da4[], g_6032db0[], g_6032a18[], g_6032a24[], g_6032a28[], g_6032db8[], g_6032dc0[], g_6032a2c[];
-extern char g_6032dc8[], g_6032dd8[], g_6032de4[], g_6032df0[], g_6032dfc[], g_6032e0c[], g_6032e1c[], g_6032e20[], g_6032e30[];
-extern char g_6032e4c[], g_6032e64[], g_6032e74[], g_6032e88[], g_6032e9c[], g_6032eb4[], g_6032eb8[], g_6032ecc[], g_6032ee0[];
-extern char g_6032eec[], g_6032f04[], g_6032f1c[], g_6032f34[], g_6032f4c[];
-extern char g_6032f64[], g_6032f84[], g_6032fa4[], g_6032fd4[], g_6032ff8[];
-extern char g_603290c[4][5], g_6032925[];
 struct pl { char pad[48]; unsigned long a48; unsigned long a52; unsigned short w56, w58, w60; };
 extern struct pl g_6065650;
-extern long g_6065640;
+extern unsigned long g_6065640;
 extern struct rec d_3a8f4[4], d_3a984[5], d_3aa9c[3];
 extern void *d_3aa38[], *d_3aa80[], *d_3aa8c[], *d_3aa94[], *d_3ab08[], *d_3ab10[];
 extern char d_a7afc[], d_a7b08[], d_a7b14[], d_a7b2c[], d_a7bec[], d_a7bf8[], d_a7c04[], d_a7c10[], d_a7da8[];
@@ -1382,8 +1414,9 @@ void f_cac8(void)
 	unsigned char h36, h40;
 	short w24, w28;
 	long run;
-	struct s2t s2;
-	struct s2t *p;
+	struct aet { struct preview_sprite *a; long n; } ae[2];
+	struct aet *p;
+	struct aet *q;
 	short idx;
 	long id;
 	long hold;
@@ -1405,20 +1438,30 @@ void f_cac8(void)
 		g_606006c[v].w2c |= 0x8000;
 		f_25658(v);
 	}
-	for (;;) {
-	
-	p = &s2;
-	p->spr = tbl[0];
-	p->b = 1;
-	p->c = 0;
-	p->d = 1;
-	S.b10 |= 1;
-	S.b11 = 0;
-	id = f_25f6e();
-	f_2616a(id, p);
-	f_26f64(id, 1);
-	f_2774a(id, 1);
-	
+	q = ae;
+	if (0) {
+		h20 = 125;
+		q = 0;
+		h40 = 0;
+		while (--h20) {
+			f_e3e0(10, "Bg is Zero", 0);
+			f_2b4e8();
+		}
+		run = 0;
+	} else {
+		p = q;
+		p[0].a = tbl[0];
+		p[0].n = 1;
+		p[1].a = 0;
+		p[1].n = 1;
+		S.b10 |= 1;
+		S.b11 = 0;
+		id = f_25f6e();
+		f_2616a(id, p);
+		f_26f64(id, 1);
+		f_2774a(id, 1);
+	}
+	p = q;
 	while (run) {
 		f_2b4e8();
 		f_9ede();
@@ -1430,7 +1473,9 @@ void f_cac8(void)
 			if (h40 == (a & 15)) {
 				if (--h20 < 0)
 					h20 = 1;
-				hold = (hold + 1) & 0xfff;
+				else
+					a &= 0xf0;
+				hold++; hold &= 0xfff;
 			} else {
 				h40 = a & 15;
 				h20 = 16;
@@ -1439,7 +1484,9 @@ void f_cac8(void)
 			if (h36 == (b & 15)) {
 				if (--h44 < 0)
 					h44 = 1;
-				hold = (hold + 1) & 0xfff;
+				else
+					b &= 0xf0;
+				hold++; hold &= 0xfff;
 			} else {
 				h36 = b & 15;
 				h44 = 16;
@@ -1456,7 +1503,7 @@ void f_cac8(void)
 			w28 = 0;
 			f_25fde(id);
 			id = f_25f6e();
-			p->spr = tbl[idx];
+			p->a = tbl[idx];
 			f_2616a(id, p);
 			f_26f64(id, 1);
 			f_2774a(id, 1);
@@ -1471,7 +1518,7 @@ void f_cac8(void)
 			w28 = 0;
 			f_25fde(id);
 			id = f_25f6e();
-			p->spr = tbl[idx];
+			p->a = tbl[idx];
 			f_2616a(id, p);
 			f_26f64(id, 1);
 			f_2774a(id, 1);
@@ -1487,29 +1534,31 @@ void f_cac8(void)
 		if (g_6079305 & 2)
 			show ^= 1;
 		if (show) {
-			f_e3e0(10, g_6032da4, 0);
-			f_e412(10, 20, g_6032db0, 0);
-			f_e412(10, 34, g_6032a18, 0);
+			f_e3e0(10, "- BG Test -", 0);
+			f_e412(10, 20, "BgNo", 0);
+			f_e412(10, 34, "Palette No.", 0);
 			f_e63a(idx, 20, 90, 1, 1, 1, 0);
 			f_e63a(s0, 34, 90, 1, 0, 1, 0);
-			f_e412(250, 20, g_6032a24, 0);
-			f_e412(250, 34, g_6032a28, 0);
-			f_e63a(t4 = -w24, 20, 275, 3, 1, 1, 0);
-			f_e63a(t4 = -w28, 34, 275, 3, 1, 1, 0);
-			f_e412(220, 48, g_6032db8, 0);
-			f_e63a(t4 = p->spr->w4, 48, 280, 3, 1, 1, 0);
-			f_e412(220, 62, g_6032dc0, 0);
-			f_e63a(t4 = p->spr->w6, 62, 280, 3, 1, 1, 0);
-			f_e3e0(214, g_6032a2c, 0);
+			f_e412(250, 20, "v =", 0);
+			f_e412(250, 34, "h =", 0);
+			t4 = -w24;
+			f_e63a(t4, 20, 275, 3, 1, 1, 0);
+			t4 = -w28;
+			f_e63a(t4, 34, 275, 3, 1, 1, 0);
+			f_e412(220, 48, "SizeV =", 0);
+			t4 = p->a->w4;
+			f_e63a(t4, 48, 280, 3, 1, 1, 0);
+			f_e412(220, 62, "SizeH =", 0);
+			t4 = p->a->w6;
+			f_e63a(t4, 62, 280, 3, 1, 1, 0);
+			f_e3e0(214, "Exit = 1P-Start", 0);
 		}
 		if ((g_6064754 & 1) == 1)
 			run = 0;
 		f_2639e(id, w24, w28);
 	}
-	break;
-	}
 	*(short *)0x6061944 = 125;
-	f_25658(0);
+	((void (*)(void))f_25658)();
 	f_2b4e8();
 }
 
@@ -1526,19 +1575,17 @@ void f_cf68(void)
 	do {
 		f_2b4e8();
 		f_9ede();
-		f_e3e0(20, g_6032dc8, 0);
+		f_e3e0(20, "- Play Status -", 0);
 		h = g_6065650.a48 / 216000;
-		r = g_6065650.a48 - h * 216000;
-		m = r / 3600;
-		r = r - m * 3600;
-		s = r / 60;
-		f_e412(60, 60, g_6032dd8, 0);
-		f_e412(60, 74, g_6032de4, 0);
-		f_e412(60, 88, g_6032df0, 0);
-		f_e412(60, 102, g_6032dfc, 0);
-		f_e412(60, 130, g_6032e0c, 0);
-		f_e412(200, 130, g_6032e1c, 0);
-		f_e412(224, 130, g_6032e1c, 0);
+		m = (g_6065650.a48 - h * 216000) / 3600;
+		s = (g_6065650.a48 - h * 216000 - m * 3600) / 60;
+		f_e412(60, 60, "Coin Count", 0);
+		f_e412(60, 74, "Play Count", 0);
+		f_e412(60, 88, "Twin Count", 0);
+		f_e412(60, 102, "Versus Count", 0);
+		f_e412(60, 130, "Demo Wait Time", 0);
+		f_e412(200, 130, ":", 0);
+		f_e412(224, 130, ":", 0);
 		f_e63a(g_6065640, 60, 200, 6, 0, 2, 0);
 		f_e63a(g_6065650.w56, 74, 200, 6, 0, 2, 0);
 		f_e63a(g_6065650.w58, 88, 200, 6, 0, 2, 0);
@@ -1548,24 +1595,21 @@ void f_cf68(void)
 		f_e63a(s, 130, 232, 2, 1, 2, 0);
 		q = g_6065650.a52 / g_6065650.w56;
 		h = q / 216000;
-		r = q - h * 216000;
-		m = r / 3600;
-		r = r - m * 3600;
-		s = r / 60;
-		f_e412(60, 144, g_6032e20, 0);
-		f_e412(200, 144, g_6032e1c, 0);
-		f_e412(224, 144, g_6032e1c, 0);
+		m = (q - h * 216000) / 3600;
+		s = (q - h * 216000 - m * 3600) / 60;
+		f_e412(60, 144, "Average Time", 0);
+		f_e412(200, 144, ":", 0);
+		f_e412(224, 144, ":", 0);
 		f_e63a(h, 144, 160, 5, 0, 2, 0);
 		f_e63a(m, 144, 208, 2, 1, 2, 0);
 		f_e63a(s, 144, 232, 2, 1, 2, 0);
-		f_e3e0(214, g_6032e30, 0);
+		f_e3e0(214, "Exit = Button-1", 0);
 		if ((g_6079304 & 8) || (g_6079305 & 8))
 			run = 0;
 	} while (run);
 	f_2b4e8();
 }
 
-/* rom: 0xd28c len: 0x108 func: f_d28c flags: -macsave=1 -optimize=1 -speed */
 void f_d28c(unsigned long t, char *s)
 {
 	unsigned short sec, min, hour;
@@ -1613,33 +1657,33 @@ void f_d37c(void)
 
 void f_d394(void)
 {
+	long run = 1;
 	short tab[5] = {0, 0, 0, 0, 0};
-	long run;
 	short w4, w8, mode;
-	short i, row, col, found;
+	short i;
+	short row, col, found;
 	int x;
 
-	run = 1;
 	while (g_6064750)
 		f_2b4e8();
 	f_29cc6(0, 4, 0, -0x7ffa);
-	g_606006c[g_60792ec].w2c |= 0x8000;
+	hide(g_60792ec);
 	w4 = 0;
 	mode = 128;
 	w8 = 0;
 	while (run) {
 		f_2b4e8();
 		f_9ede();
-		f_e3e0(10, g_6032e4c, 0);
-		f_e3e0(202, g_6032e64, 0);
-		f_e3e0(188, g_6032e74, 0);
-		f_e3e0(174, g_6032e88, 0);
-		f_e3e0(160, g_6032e9c, 0);
+		f_e3e0(10, "- Maintenance Code - ", 0);
+		f_e3e0(202, "Exit = Start", 0);
+		f_e3e0(188, "Decision = Button1", 0);
+		f_e3e0(174, "Value = Up or Down", 0);
+		f_e3e0(160, "Place = Left or Right", 0);
 		x = 135;
 		for (i = 0; i < 5; i++) {
 			f_e63a(tab[i], 80, x, 1, 0, 0, 0);
 			if (i == w4)
-				f_e412(x, 84, g_6032eb4, 0);
+				f_e412(x, 84, "_", 0);
 			x += 10;
 		}
 		switch (mode) {
@@ -1678,7 +1722,7 @@ void f_d394(void)
 				run = 0;
 			break;
 		case 0:
-			f_e3e0(120, g_6032eb8, 0);
+			f_e3e0(120, "All data erased.", 0);
 			if (w8 == 1) {
 				f_b352();
 				f_211a2();
@@ -1694,7 +1738,7 @@ void f_d394(void)
 			w8++;
 			break;
 		case 5:
-			f_e3e0(120, g_6032ecc, 0);
+			f_e3e0(120, "Best score erased.", 0);
 			if (w8 == 2) {
 				f_11fe8();
 				f_13378();
@@ -1708,7 +1752,7 @@ void f_d394(void)
 		case 1:
 		case 2:
 		case 100:
-			f_e3e0(120, g_6032ee0, 0);
+			f_e3e0(120, "Code Error", 0);
 			if (w8 < 120)
 				w8++;
 			else {
@@ -1738,7 +1782,7 @@ void f_d8e0(void)
 		f_2b4e8();
 		f_9ede();
 		f_11fc4();
-		f_e3e0(214, g_6032e30, 0);
+		f_e3e0(214, "Exit = Button-1", 0);
 		if ((g_6079304 & 8) || (g_6079305 & 8))
 			run = 0;
 	} while (run);
@@ -1765,22 +1809,22 @@ void f_d962(void)
 	while (run) {
 		f_2b4e8();
 		f_9ede();
-		cprint(g_6032eec, 10);
+		cprint("- Configuration Menu -", 10);
 		for (i = 0; i < 4; i++) {
 			k = f_2bf58(d_3a8f4[i].s, d_3a8f4[i].w2, d_3a8f4[i].w0);
 			if (i != sel)
 				g_606006c[k].b1c = 64;
 		}
-		cprint(g_6032f04, 200);
+		cprint("Select : 1P Up or Down", 200);
 		switch (sel) {
 		case 2:
-			cprint(g_6032f1c, 210);
+			cprint("Reset : 1P Shot Button", 210);
 			break;
 		case 3:
-			cprint(g_6032f34, 210);
+			cprint("Exit : 1P Shot Button", 210);
 			break;
 		default:
-			cprint(g_6032f4c, 210);
+			cprint("Start : 1P Shot Button", 210);
 			break;
 		}
 		g_606006c[g_60792ec].w4 = d_3a8f4[sel].w2;
@@ -1819,7 +1863,6 @@ void f_dbe8(void)
 	short h[4];
 	short i, j, sel, c, k;
 	long run;
-	unsigned char b;
 
 	run = 1;
 	while (g_6064750)
@@ -1831,7 +1874,7 @@ void f_dbe8(void)
 	while (run) {
 		f_2b4e8();
 		f_9ede();
-		cprint(g_6032f64, 10);
+		cprint("- System Configuration Menu -", 10);
 		for (i = 0; i < 5; i++) {
 			k = f_2bf58(d_3a984[i].s, d_3a984[i].w2, d_3a984[i].w0);
 			if (i != sel)
@@ -1845,22 +1888,21 @@ void f_dbe8(void)
 			if (j != sel)
 				g_606006c[h[j]].b1c = 64;
 		}
-		cprint(g_6032f84, 200);
+		cprint("Select Option : 1P Up or Down", 200);
 		if (sel == 4)
-			cprint(g_6032fa4, 210);
+			cprint("Return to Configuration Menu : 1P Shot Button", 210);
 		else
-			cprint(g_6032fd4, 210);
+			cprint("Modify Setting : 1P Right or Left", 210);
 		g_606006c[g_60792ec].w4 = d_3a984[sel].w2;
-		b = g_6079304;
-		if (b & 0x80) {
+		if (g_6079304 & 0x80) {
 			if (sel-- == 0)
 				sel = 4;
 		}
-		if (b & 0x40) {
+		if (g_6079304 & 0x40) {
 			if (sel++ == 4)
 				sel = 0;
 		}
-		if (b & 0x10) {
+		if (g_6079304 & 0x10) {
 			switch (sel) {
 			case 0:
 				c = g_60792de & 31;
@@ -1895,7 +1937,7 @@ void f_dbe8(void)
 				g_60792de |= c << 8;
 				break;
 			}
-		} else if (b & 0x20) {
+		} else if (g_6079304 & 0x20) {
 			switch (sel) {
 			case 0:
 				c = g_60792de & 31;
@@ -1906,7 +1948,7 @@ void f_dbe8(void)
 				break;
 			case 1:
 				c = (g_60792de >> 5) & 3;
-				c++;
+				c = c + 1;
 				c = c % 3;
 				g_60792de &= ~0x60;
 				g_60792de |= c << 5;
@@ -1953,7 +1995,7 @@ void f_e074(void)
 	while (run) {
 		f_2b4e8();
 		f_9ede();
-		cprint(g_6032ff8, 10);
+		cprint("- Game Configuration Menu -", 10);
 		for (i = 0; i < 3; i++) {
 			k = f_2bf58(d_3aa9c[i].s, d_3aa9c[i].w2, d_3aa9c[i].w0);
 			if (i != sel)
@@ -1965,11 +2007,11 @@ void f_e074(void)
 			if (j != sel)
 				g_606006c[h[j]].b1c = 64;
 		}
-		cprint(g_6032f84, 200);
+		cprint("Select Option : 1P Up or Down", 200);
 		if (sel == 2)
-			cprint(g_6032fa4, 210);
+			cprint("Return to Configuration Menu : 1P Shot Button", 210);
 		else
-			cprint(g_6032fd4, 210);
+			cprint("Modify Setting : 1P Right or Left", 210);
 		g_606006c[g_60792ec].w4 = d_3aa9c[sel].w2;
 			if (g_6079304 & 0x80) {
 			if (sel-- == 0)
@@ -1989,7 +2031,8 @@ void f_e074(void)
 				g_60792dc |= c;
 				break;
 			case 1:
-				c = ((g_60792dc >> 1) & 3) - 1;
+				c = (g_60792dc >> 1) & 3;
+				c--;
 				if (c < 0)
 					c = 2;
 				g_60792dc &= ~6;
@@ -2024,24 +2067,36 @@ void f_e074(void)
 	}
 }
 
+static const short g_6033014[128] = {
+	5, 16, 16, 16, 13, 13, 16, 16, 16, 7, 11, 13, 16, 16, 16, 16,
+	12, 12, 12, 12, 12, 12, 12, 12, 16, 16, 16, 16, 16, 16, 16, 11,
+	5, 8, 8, 8, 8, 8, 8, 6, 8, 8, 8, 8, 7, 7, 7, 7,
+	8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 6, 6, 7, 7, 7, 8,
+	8, 8, 8, 8, 8, 8, 8, 8, 8, 5, 8, 9, 7, 10, 9, 8,
+	8, 8, 8, 8, 7, 8, 9, 10, 9, 9, 8, 8, 7, 8, 7, 7,
+	5, 7, 7, 7, 7, 7, 7, 7, 7, 3, 5, 8, 3, 9, 7, 7,
+	7, 7, 6, 7, 6, 7, 7, 9, 8, 7, 8, 8, 6, 8, 8, 8,
+};
 short f_e39c(char *s)
 {
 	int w = 0;
 
-	while (*s)
+	while (*s != 0)
 		w += g_6033014[*s++];
 	return w;
 }
 
 void f_e3b8(void)
 {
-	f_2af5e(81, 1, (long *)d_67910);
-	f_2af5e(82, 1, (long *)d_67910);
+	f_2af5e(81, 1, d_67910);
+	f_2af5e(82, 1, d_67910);
 }
 
 void f_e3e0(short y, char *s, char flag)
 {
-	f_e412((320 - f_e39c(s)) / 2, y, s, flag);
+	short x = (320 - f_e39c(s)) / 2;
+
+	f_e412(x, y, s, flag);
 }
 
 void f_e412(short x, short y, char *s, char flag)
@@ -2084,13 +2139,11 @@ void f_e490(short x, short y, char *s, short w, char flag)
 	}
 }
 
-/* rom: 0xe520 len: 0x230 func: f_e520 flags: -macsave=1 -optimize=1 -speed */
 void f_1865e(long, short, short, short, short, short, short, short);
-extern short g_6033014[];
 extern long d_3ad1c[];
 extern char d_a7c04[], d_a7c10[], d_a7bf8[], d_a7bec[], d_a7afc[], d_a7b08[], d_a7b14[], d_a7b2c[], d_a7da8[];
 
-void f_e520(short x, short y, char *s, int h)
+void f_e520(short x, short y, char *s, short h)
 {
 	while (*s != 0) {
 		switch (*s) {
