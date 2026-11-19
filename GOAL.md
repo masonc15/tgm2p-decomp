@@ -1,5 +1,34 @@
 # TGM2+ matching decompilation goal
 
+## Settings unit matches — 2026-11-18
+
+Coverage increased **139,096 → 153,868 / 200,698 C bytes, 69.3061% →
+76.6664%** (+14,772 bytes). 45,192 non-exempt bytes remain to the
+199,060-byte goal; the goal is still open.
+
+`src/settings_reset_9c0c.c`, the whole test-mode and settings unit
+(0x9c0c-0xe74f), compiles every function byte-identical at its ROM address
+except f_a608 (31 bytes), and its `.rodata` matches the ROM copy, so it is
+linked with `genuine-rodata: 0x603290c`. New retained rows: 0xa226-0xa608, 0xacdc-0xb36e,
+0xb3c0-0xbd8a, 0xbe28-0xd28c, 0xd394-0xe3b8 and 0xe3e0-0xe520, and
+0xbd8a now comes from the same source. Three full-frame epilogues
+ending in a tail call to f_2b4e8 needed new exact long-tail forms D-F in `tools/c_prefix.py`, and
+f_a226's exit into the boot ROM reset at 0x686 is proven by form G and a new
+SHA-pinned `boot_entries` list in `tail_targets.json` (header flag
+`boot-rom-tails: 1`), with tests in `tools/test_long_tail.py` and
+`tools/test_tail_targets.py`. `make split check report` passes both
+chip hashes, all 377 tool tests pass, `make shiftable` is identical to the
+ROM and `make mod-check` plays the replays like the original. Five
+non-matching units these ranges replace are retired and `settings_a226.c`
+becomes `settings_a608.c` with f_a608 alone; `tools/nonmatching_check.py`
+passes it, and `make shiftable NONMATCHING=1` (sha1 06eb895f) with
+`tools/replay_check.sh --pin-idle` is identical over attract 12,000 and
+gameplay 24,000 frames with no frame missed. Details:
+[docs/research/2026-11-18-settings-unit-match.md](docs/research/2026-11-18-settings-unit-match.md).
+
+Still open in this unit: f_a608 (1,748 bytes), whose stack slots and one
+register rotation still differ, and the 38-byte pool at 0xb39a.
+
 ## Another verified coverage increase — 2026-10-13
 
 Accepted 70 additional bytes at [26f64,26faa). The combined 140-byte retained
