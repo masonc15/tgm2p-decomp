@@ -209,15 +209,6 @@
       ]
     },
     {
-      "address": "0xe39c",
-      "state": "parked-until-pool-and-schedule-evidence",
-      "class": "predecessor-literal-pool-and-loop-delay-slot",
-      "evidence": "research/2026-10-13-gain-width/REPORT.md",
-      "observation": "Shared-test label removes delayed ADD but shifts palette entry; realguard restores all876baselinebytes and6byte residual. Stop these forms. Prior nospeedpair also fails and lacks real modulo pool literal.",
-      "do_not_repeat": "The215 archived basic/predecessor/type/address controls under session_texthelpers_parent. Do not mistake broad context scores for width-helper raw differences or delete real accesses merely to remove a pool entry.",
-      "next_question": "Recover genuine predecessor pool ownership and the native condition selecting ADD before TST/BF versus ADD in BF/S delay slot. Require a causal prediction before a new source control."
-    },
-    {
       "address": "0x61d0",
       "state": "parked-frame-and-id-source-families",
       "class": "genuine-predecessor-context-and-local-lifetimes",
@@ -262,30 +253,6 @@
       ]
     },
     {
-      "address": "0xe3e0",
-      "state": "parked-until-producer-partition-evidence",
-      "class": "shared-pool-flush-and-local-call-identity",
-      "evidence": "research/2026-10-13-gain-textwrappers/REPORT.md",
-      "observation": "Real frame-pointer table/callee contract improves e412 register asymmetry but not pool. One section defers preceding pool; separate genuine section flushes it but emits longer indirect widthcall. Original ELF only has DIR32 relocations, insufficient GNU SH call relaxation metadata. Fresh original ROF has33 DIR32-equivalent records and no omitted call-relaxation record. Native historical optimizer reads it but leaves both sections/relocs/roots unchanged with corrected original placement; externals unresolved, so no fully resolved optimization claim. Fully resolved5.1r13 goptimize control with genuine shciop/src.iop changes width JSR to BSR but replaces load with NOP: wrapper remains52 vs50 bytes; PPREFIX892 shifts retained palette and wrappers16 bytes. P328 to324 removes literal only; actual roots unchanged by optimizer.21 executable stages, zero gain.",
-      "do_not_repeat": "Archived width/type/storage matrices, default-section reset, namedsection flush as exactness claim, or rebase/patch workarounds. Per-file -inline=80 (Colin-approved test, 2026-10-16): retained f_e3b8 stays exact, but SHC inlines f_e412 into f_e3e0 (25 to 73-79 insns), so f_e412 compiles 96-112 bytes late and the strict [e412,e520) proof fails; ROM f_e3e0 is 0x32 bytes with BSR f_e39c and a fall-through into f_e412, which rules this inlining out.",
-      "next_question": "Recover genuine producer evidence predicting e3d0 pool flush plus compact50-byte wrapper and retained neighbors. Native metadata prerequisite now established:5.1 goptimize sidecar enables BSR but does not delete load-site NOP or restore roots. Do not repeat absent-sidecar controls or blind optimizer matrices.",
-      "supporting_evidence": [
-        "research/2026-10-16-e3e0-helpers/REPORT.md",
-        "research/2026-10-16-e3e0-inline80/REPORT.md",
-        "docs/research/2026-10-17-text-native-object.md",
-        "docs/research/2026-10-17-text-native-gopt.md"
-      ]
-    },
-    {
-      "address": "0xb39a",
-      "state": "parked-until-exact-producer-and-pool-proof",
-      "class": "shared-literal-pool-ownership",
-      "evidence": "research/2026-10-13-percentage-push/settings-pool-review/REPORT.md",
-      "observation": "38byte pool differs only Y/N data addresses and local displacedE520callee, but genuine context truncation plus original data references shifts helper roots. Existing single-root complete-code tail proof excludes trailingpool.",
-      "do_not_repeat": "Short or throughE490 context with Y/N extern replacements; manualpool patches or arbitrary data extraction.",
-      "next_question": "Recover exact nominal settings producer first; only then evaluate narrow argument-tail plus ownedpool proof with adversarial controls."
-    },
-    {
       "address": "0x26faa",
       "state": "accepted",
       "class": "incoming-width-callee-binding-and-shared-pool",
@@ -327,7 +294,7 @@
       "address": "0x7c08",
       "state": "parked-until-relative-priority-evidence",
       "evidence": "research/2026-10-13-announcement-priority-review/REPORT.md",
-      "observation": "Separate selectedpointer lowersbasepriority but retains wrongpair. Lateactualregisterindex recoversindexR4/baseR5 but demotesfieldR14→R9/globalR11→R12; gated3stages stop beforeordinarycompile. Wholefunctionregisterid already8failedcases. Actual eight-stage native driver now exactly reproduces archived REG/ILB. Original object root7c08/extent816 is correct but129 raw differences versus baseline24; the earlier gate is authenticated, not a stale-CMN artifact.",
+      "observation": "Separate selectedpointer lowersbasepriority but retains wrongpair. Lateactualregisterindex recoversindexR4/baseR5 but demotesfieldR14\u2192R9/globalR11\u2192R12; gated3stages stop beforeordinarycompile. Wholefunctionregisterid already8failedcases. Actual eight-stage native driver now exactly reproduces archived REG/ILB. Original object root7c08/extent816 is correct but129 raw differences versus baseline24; the earlier gate is authenticated, not a stale-CMN artifact.",
       "next_question": "Need genuine relativepriority change without highprioritylateweb demoting persistentfields. No wholeid or lateindex register repeats.",
       "class": "native-pointer-web-allocation",
       "supporting_evidence": [
@@ -376,13 +343,6 @@
       ]
     },
     {
-      "state": "parked-until-genuine-pool-producer",
-      "evidence": "research/2026-10-13-text-callback-history/REPORT.md",
-      "observation": "Three130-code differences areallPCdisplacements. Exacttyped023prefix truncationthroughE490 isnewbutnegative:full14415diff,tailffff/callee/width/frame,320alreadyflushedatE434. Rootnominal. Ordinary8stageandoriginalELFrelocs authenticated.",
-      "next_question": "Recovergenuineproducerpoolplacement preservingcodeandexternalliterals; neithercompletecodeproof norcallbackscratchlesson fixesactualdisplacementdifferences. No repeatedtruncation/poolspellingcontrols.",
-      "address": "0xe490"
-    },
-    {
       "address": "0x96ac",
       "state": "parked-until-joint-clamp-and-address-lifetime-evidence",
       "evidence": "docs/research/2026-10-17-abi-and-clamp-controls.md",
@@ -409,7 +369,7 @@
       "address": "0x1326c",
       "state": "parked-until-genuine-seed-interference",
       "evidence": "research/2026-10-13-save-writer-review/REPORT.md",
-      "observation": "Native PEP40c0c0 retargets immediate1 R4→R0 and deletes R4→R0 at40c2e4 after both417cc0 reference checks returnzero. Native outputs authenticated,668context,writer88diff,protected140exact,eightstages.",
+      "observation": "Native PEP40c0c0 retargets immediate1 R4\u2192R0 and deletes R4\u2192R0 at40c2e4 after both417cc0 reference checks returnzero. Native outputs authenticated,668context,writer88diff,protected140exact,eightstages.",
       "next_question": "Require a genuine consumed register-reference/lifetime difference blocking observed destination propagation without extra argument bindings; prior seed/formal families closed."
     },
     {
@@ -475,22 +435,13 @@
       ]
     },
     {
-      "address": "0xa226",
-      "state": "blocked-by-unit-layout",
-      "class": "same-unit-callee-literal",
-      "evidence": "research/2026-10-16-ad80-screen-test/REPORT.md",
-      "observation": "0x9c0c unit runs to 0xe63a (f_ad80 reloads f_e3e0 per call; f_d8e0 bsr f_e3e0). Retention needs the whole unit length-exact plus ROM pool flush at e3d0; unit drafts differ in ~4000 normalized instructions. Truncated contexts change earlier functions.",
-      "do_not_repeat": "Truncating the unit or declaring later helpers extern.",
-      "next_question": "Explain the e3d0 pool flush (see 0xe3e0 route) before investing in unit-wide length fixes."
-    },
-    {
-      "address": "0xbe28",
-      "state": "blocked-by-unit-layout",
-      "class": "same-unit-callee-literal",
-      "evidence": "research/2026-10-16-ad80-screen-test/REPORT.md",
-      "observation": "Same 0x9c0c unit as 0xa226; f_be28/f_c21a/f_cac8/f_cf68 drafts differ in 63/717/368/121 normalized instructions and reference f_e3e0/f_e412/f_e520/f_e63a. 2026-10-31: f_be28 differs structurally only near c120..c178: ROM computes the cursor row sel*14+50 into r5 and stores from it (draft spills int y to @(12)), and keeps constant 0 in r14 for f_e63a stack arguments. Assigning the row inside the f_e520 argument (research/2026-10-31-settings-be28-row, 8 stages) leaves 1018 bytes and raw 281 (from 245): rejected. f_be28 capture inside the unit (research/2026-10-31-c21a-sort mdl, fn 428, 1 stage): const 0 holds r14 (39 refs) but the f_e63a 0/ternary arguments are materialised (mov #0) where ROM uses r14. Unprototyped f_e63a declarations (research/2026-10-31-settings-e63a-unproto, 8 stages) make f_be28 1026 and shrink the f_a608 region by 36: rejected. int-typed fifth/seventh f_e63a parameters (research/2026-10-31-settings-e63a-int) reproduce the unprototyped layout exactly (f_be28 1026, f_a608 region -36): the long/char parameter types are original; rejected. Giving only the declaration before f_be28 int fifth/seventh parameters (research/2026-10-31-settings-e63a-middecl, 1 stage) is refused by SHC (2118 prototype mismatch): one unit cannot carry per-region f_e63a prototypes, so the r14 zero arguments need another explanation; rejected.",
-      "do_not_repeat": "Truncated contexts.",
-      "next_question": "As 0xa226."
+      "address": "0xb39a",
+      "state": "parked-until-exact-producer-and-pool-proof",
+      "class": "shared-literal-pool-ownership",
+      "evidence": "research/2026-10-13-percentage-push/settings-pool-review/REPORT.md",
+      "observation": "2026-11-18: the 38-byte literal pool after f_b36e. The bytes now compile exactly in the full unit (src/settings_reset_9c0c.c), but f_b36e's argument-setup tail is proven only by the function-code-range mode, which by design retains code and no trailing pool.",
+      "do_not_repeat": "Short or throughE490 context with Y/N extern replacements; manualpool patches or arbitrary data extraction.",
+      "next_question": "A reviewed proof that admits a function's own trailing pool after a complete function-code tail."
     },
     {
       "address": "0x9180",
@@ -551,18 +502,6 @@
       "next_question": "Recover genuine source loop/lifetime context explaining constant10 placement and timer/done/160 register cycle."
     },
     {
-      "address": "0xd394",
-      "state": "near-miss-constant-tie",
-      "class": "reference-counts",
-      "evidence": "research/2026-11-12-first-principles/specs/",
-      "observation": "2026-11-12 (later): 590/590 instructions in number, funcscore 248/659 (was 53), from pre-increment tests (if (++w4 > 4) w4 = 0; and the like), an ABS expression on f_2beca declared unsigned long (three calls and tst r14,r14), signed table bytes, int x and five clear statements. Left: constant 1 and pad mask 8 are tied for r8 (ROM has 1; draft has 8, which folds the digit loop's guard), two saved element pointers swap slots, and the initialiser copy needs the genuine .rodata offset. The neg-variable form (lev_d394d) aligns 559/659 but is the wrong reading. 2026-11-12: no inlined-return label here: an unused label in the main loop drops alignment from 408 to 166 of 590 (mainloop_forms.py), and the ROM falls into the loop body with its invariants hoisted. ROM frame is 52 bytes against the draft's 32: w4 @(4), w8 @(8), mode @(32) and run @(36) live on the stack, &tab[0..4] are saved at @(12)..@(28) before the loop and used by the five-store clear at +4ee, and the 10-byte initialiser is copied from 0x6032e40 with two long moves and one word move. Seven struct and array declarations of tab (d394_tab.py) leave the frame at 32. Earlier: Native unsigned absolute-value expression reproduces original constant-zero R14 test and three syntactic RNG call sites with two runtime events. Recovered genuine initializer order/int-x/five explicit stores produce48byte frame versus52, w4R8 insteadSP4, and five address slots inwrongorder. Actualrootd2d8 remains188early; protected166exact; no coverage. 2026-10-31: ROM resets tab with five unrolled stores through hoisted &tab[k] stack pointers; five constant-index stores reproduce that (research/2026-10-31-settings-d394-clear, 8 stages, confirmed): f_d394 1328 (ROM 1356, was 1308). ROM also copies the tab initialiser (06032e40) as long,long,word where the draft copies five words. Initializer copy width follows the initializer's offset in the unit .rodata (research/2026-10-31-init-align-probe): ROM's long,long,word copy at 06032e40 needs the unit .rodata layout of research/2026-10-18-nephele-bg-resource-count. In the rebased unit (research/2026-10-31-settings-e074-literals, 1324 vs 1356, zero compiles) the remaining differences are allocation: ROM keeps run (@(36), stored from the constant-1 web r8), w4 (@(4), tab[w4] via mov.w @(4,r15)) and mode (@(32)) on the stack with frame 52; the draft keeps run/w4 in registers with frame 48. ROM f_d394's main loop is entered directly (no entry bra; bottom test d896..d89c reloads run @(36)), so unlike its menu siblings it is a syntactic loop; its run/w4/mode spills are not the goto-loop mechanism.",
-      "do_not_repeat": "specs/d394*.py: neg as a variable in ten spellings, chained clears, address-taken w4/w8/mode, loop-header forms, exit-test spellings, fourteen dead statements (any dead use of 1 restores r8=1).",
-      "next_question": "Which candidate does the original have that the draft lacks, so that 1 outranks 8 without a lever? Needs the allocator's list (profits), not more spellings.",
-      "supporting_docs": [
-        "docs/research/2026-11-12-inline-return-labels.md"
-      ]
-    },
-    {
       "address": "0x27862",
       "state": "parked-until-real-predecessor-and-pointer-lifetime-evidence",
       "class": "genuine-local-call-context-and-member-addressing",
@@ -588,18 +527,6 @@
       ]
     },
     {
-      "address": "0xad80",
-      "state": "parked-until-input-global-and-text-data-context-evidence",
-      "class": "actual-call-argument-and-source-data-ownership",
-      "evidence": "research/2026-10-17-screen-test-call-abi/VERIFICATION.json",
-      "observation": "One8stage full-context control restores actualR4zero supplied to29bf8; sole19684text changeadca0009toe400. Targetraw32to30,rootsad80/af8cexact,166acceptedbytes/dependenciespreserved. InputR9/R10 andlateR2/R3 remainwrong. First302rodatabytesmatchoriginalowner but full1182layoutnotexact. Zeroacceptedgain.",
-      "next_question": "Recover genuine input-global allocation and text-callee/data owner context. Before any admission reconcile actual zero argument with unused callee formals. Do not repeat argument width/count controls without evidence.",
-      "supporting_docs": [
-        "docs/research/2026-10-17-helper-storage-and-screen-call.md",
-        "docs/research/2026-10-17-settings-data-owner.md"
-      ]
-    },
-    {
       "address": "0x7324",
       "state": "parked-archived-array-and-cache-controls",
       "class": "array-argument-binding-and-coordinate-storage",
@@ -608,29 +535,6 @@
       "next_question": "Read complete array243 native binding/ordinal evidence before fresh source prediction; do not repeat cachedstate or broadregister sweeps.",
       "supporting_docs": [
         "docs/research/2026-10-17-helper-storage-and-screen-call.md"
-      ]
-    },
-    {
-      "address": "0xb3c0",
-      "state": "parked-until-error-message-owner-and-scalar-allocation-evidence",
-      "class": "genuine-readonly-data-owner-and-initializer-scheduling",
-      "evidence": "research/2026-10-17-settings-data-owner/VERIFICATION.json",
-      "observation": "Two8stage nativecontrols restore genuine default11short andlimit10byte definitions atoriginal addresses; later32strings/52uses and128fontwidths emitted. Full19684text size/rootsstable,166acceptedbytes/dependenciesexact. Fixedtarget39canonical,32ownerlinkedbaseline,27newownedcontrols,stillstrictrejectb3db. Data2086vs2098knownspan; all laterstrings/font/namepointers12early, missingoriginalBg is Zero message. Zeroacceptedgain.",
-      "next_question": "Require genuine error-check/configuration producer for missing12byte message and native evidence for initialstore/zero/scratch allocation; no unusedstringpadding, constantfalsehint, declarationorder orbuffersize sweep.",
-      "supporting_docs": [
-        "docs/research/2026-10-17-settings-data-owner.md"
-      ]
-    },
-    {
-      "address": "0xcac8",
-      "state": "parked-until-genuine-unreachable-error-producer",
-      "class": "constant-condition-source-and-literal-ownership",
-      "evidence": "tools/shc_probe/cases/session_coverage_gap18_review/menu_cac8_review/REVIEW.md",
-      "observation": "2026-11-12: no inlined-return label in the main loop (label: 278 to 266 of 492 aligned). Draft is 39 instructions short of the ROM; its for (;;) wrapper around while (run) is a lever, not a reading. Earlier: Prior originalCFG confirmsunreachableCB44-CB68 skippedbyBRAatCB40; historicalconstantfalseblockisnotadmissionevidence. Freshdataownerworkfindsmissing12byte Bg is Zero string at6032d98; actualdeadtextcallpassesfadeaddressR12 andwholeROMcontainsno6032d98addressliteral. Do notinferoriginalcondition fromthat alone. 2026-10-31 (zero compiles): ROM f_cac8 lays out init, bra cb98, an unreachable fragment cb44..cb66 (do { f_e3e0(10, r12, 0); f_2b4e8(); } while (--byte @(20)); run = 0; bra to the run test cbd6), then the sprite setup cb98..cbd4, the top run test cbd6, the main body and the bottom test cf00, exit cf0a (125 -> 0x6061944, f_25658(0), f_2b4e8). Nothing branches to cb44 except its own loop, so SHC kept dead source-order code; the draft's for(;;){ setup; while(run){...} break; } has no such block and is 80 bytes short (1104 vs 1184) in research/2026-10-31-settings-e074-transplant/e074.c. 2026-10-31: in the rebased unit (research/2026-10-31-settings-e074-literals) f_cac8 is 1214 (+30). ROM's dead fragment has no counter initialisation (counts down live h20 @(20)); dropping h20 = 120 from the BG_VIEW_COUNT error block (research/2026-10-31-settings-cac8-counter, 8 stages) leaves 1214 bytes: rejected. ROM layout (init, bra setup, dead error fragment to the run test, setup, run test, body, bottom test, exit; no back edge to setup) has no counterpart for the draft's for(;;){...break;} wrapper; removing it (research/2026-10-31-settings-cac8-nowrap, 8 stages, confirmed) gives 1210 (from 1214, ROM 1184). Dropping h20 = 120 on the unwrapped base (research/2026-10-31-settings-cac8-counter2) also leaves 1210: rejected. Remaining: pool dumped at the skip branch before the fragment (ROM after the fragment's bra), p->c/p->d stored through p+8 (ROM add #8,r4), stack slot order. A nested struct for the request's last two longs (research/2026-10-31-settings-cac8-nested) still compiles to @(8,p)/@(12,p): rejected.",
-      "next_question": "Recover the source form that leaves the cb44 countdown/display fragment in place (unreachable, between init and the setup reached by the entry bra) and then size f_cac8 to 1184.",
-      "supporting_docs": [
-        "docs/research/2026-10-17-settings-data-owner.md",
-        "docs/research/2026-11-12-inline-return-labels.md"
       ]
     },
     {
@@ -643,24 +547,6 @@
       "next_question": "No further tuning under the superseded per-target loop; qualify a source-to-output mechanism through the active campaign first."
     },
     {
-      "address": "0xbd8a",
-      "state": "accepted",
-      "class": "compiler-created-index-recurrences",
-      "evidence": "docs/research/2026-10-17-mirrored-table-match.md",
-      "observation": "82 exact bytes [bd8a,bddc), actual root bd8a and successor be04, four original literal dependencies, 166 protected neighboring bytes exact; ordinary SHC, existing proof and two cold whole-ROM replays pass.",
-      "do_not_repeat": "504 archived explicit descending-pointer bodies and closed pointer/register/counter sweeps. Shared trailing pool remains excluded.",
-      "next_question": "Identify another genuine indexed operation before interpreting compiler-created recurrences as source locals; require new evidence before compiling."
-    },
-    {
-      "address": "0xbc02",
-      "state": "blocked-by-unit-layout",
-      "class": "same-unit-callee-identity-and-rodata-ownership",
-      "evidence": "docs/research/2026-10-31-settings-unit-callees.md",
-      "observation": "In the full settings context every f_bc02 instruction matches; only literals f_e412 (bc7c,bde8), f_e520 (bdf8) and the Yes/No labels (bc90,bde4) differ. Shared literal strings prove the unit spans 9c0c..~e74f. Ending the unit after f_be04 with Yes/No as ROM-text externs changed f_a226 allocation and 165 f_bc02 instruction halfwords (entries -28..-126): SHC uses same-unit callee knowledge. One driver, 8 stages, zero gain. 2026-10-31: ROM f_ad80 passes r4=0 to f_29bf8 at adc8 (first f_ad80 code difference), matching the startup unit's confirmed f_29bf8(0) calls; settings-unit calls of f_29bf8 should take 0 when the layout chain is reopened. 2026-10-31 measurement (canonical settings_reset_9c0c/settings_mirror_bd8a contexts, zero compiles): f_ad80 (524), f_af8c (872), f_b3c0 (1234) and f_bc02 (392) sit at nominal roots and differ from ROM almost only in literal identities (.rodata strings/initializers at 06032xxx placed after code in context, and f_e3e0/f_e412/f_e520 addresses shifted by later bodies). f_af8c's only code differences are four words at af8e..afab (constant 1 and block-move helper r2/r3 swap); f_b3c0 also calls two callee names 0x1000 off (0602ebee vs ROM 0602fbee, 0601fa86 vs 06020a86) and has a few register words; f_ad80 has r9/r10 swaps and a g_6079304/g_6079305 pool order swap. The truncated-unit control (research/2026-10-31-bc02-literal-owner) also changes f_af8c (860 vs 872), so these ~3,022 bytes depend on size-correct be28..e490 bodies plus .rodata ownership; function-code-range cannot admit them piecewise because their literal pools sit inside the function. 2026-10-31 pool-deferral step (research/2026-10-31-settings-d962-goto, 8 stages, confirmed): f_d8e0's code was already exact; its 38-byte excess was its literal pool, which ROM defers to the first dump point inside f_d962 (bra at d9ec). Rebuilding f_d962 as f_e074's sibling (goto outer and i loops, static #pragma inline centring helper) restores that deferral (f_d8e0 130 bytes) and brings f_d962 to 582 (ROM 646, was 796); retained bd8a still passes. f_dbe8 written in the f_e074 forms (research/2026-10-31-settings-dbe8-sibling, confirmed) is 1134 bytes (ROM 1164, was 1576); transplanting modshort f_e074 (research/2026-10-31-settings-e074-transplant, confirmed) gives 794 and makes f_e3e0/f_e412/f_e490/f_e520 ROM-sized, leaving the unit -356 bytes at f_e3e0 (be28 +8, c21a -108, cac8 -80, cf68 -12, d394 -48, d962 -78, dbe8 -30, e074 -14, e3b8 +6). A per-use block macro for centring does not stop the tail merges (research/2026-10-31-settings-center-macro, rejected). f_cf68 (-12, zero compiles): ROM 402 vs draft 396 instructions; ROM dumps the d0c2 pool between the f_e63a argument setup and its jsr (bra d118), reloads m from its @(84) spill before m*3600 (mov #84,r0; mov.w @(r0,r15),r2; mulu.w) where the draft reuses r0, and keeps g_6032e1c-class pointers in r12 where the draft uses r11. Tail-merge probes (research/2026-10-31-tailmerge-probe, -nospeed, -ir; 24 stages, all predictions failed): SHC v5.0r32 factors identical centring statements in if/else (shared f_2bf58 statement) and switch arms (label selected into a register, one call pair) for the static inline helper, explicit expressions, a local temp, a pointer local, a per-use block macro, a non-static helper and mixed label types, with or without -speed. ROM f_d962/f_dbe8/f_e074 keep every arm separate, so their arms differed in IR in a way not yet identified. Further tail-merge probes (research/2026-10-31-tailmerge-{literal,twoif,goto}, 24 stages): string-literal labels are factored too; two complementary ifs keep complete sequences but re-test sel (ROM does not); a goto-built else and goto-terminated switch cases are still merged (switchgoto: cases 2/3 merged, default separate). The unmerged ROM arms remain unexplained. f_c21a (2222, ROM frame 88 with only ~44 bytes of slots touched, an unused-local trait like f_780): ROM unrolls the 16-entry Y/N loop by two and its second copy computes i*17+114 and (i-8)*17+114 before the i<8 test into stack slots. Short position locals (research/2026-10-31-settings-c21a-positions, 8 stages) reproduce that copy shape and reach 2166 bytes (from 2114) but SHC unrolls by four: prediction partly failed. Returning centring helper in the unit context (research/2026-10-31-settings-return-helper, 8 stages): f_d962 630 (from 568), f_e074 810, f_dbe8 1132 (from 1134, prediction failed on dbe8). research/2026-10-18-nephele-bg-resource-count/resource_count.c already has the exact 2,098-byte initialised data, f_d962 646 (292/323 normalised equal), f_e074 808 and f_dbe8 1156, with its own dead-block f_cac8 (+30): it is the better base for unit sizing; its remaining errors at f_e3e0 are be28 +8, c21a -162, cac8 +30, cf68 -12, d394 -52, dbe8 -8, e3b8 -16. Rebased on resource_count.c with the c21a position locals and d394 constant-index clears (research/2026-10-31-settings-rebase, 8 stages, confirmed): unit -140 at f_e3e0 (be28 +8, c21a -110, cac8 +30, cf68 -12, d394 -32, dbe8 -8, e3b8 -16); with .rodata linked at 0x6032a3c the 2,098 data bytes and b2f4-b39a are exact and bc02/af8c/ad80/b3c0 differ in 1/12/23/26 bytes. ROM pool e3d0..e3e0 holds f_e074's modulo-helper literal, f_e39c's table and f_e3b8's literals (f_e074's pool deferred and flushed after f_e3b8). The rethelper f_e074 with string-literal labels (research/2026-10-31-settings-e074-swap, -literals, 16 stages) restores that flush with the exact 2,098-byte .rodata: unit -120 at f_e3e0, f_e412/f_e490/f_e520 ROM-sized, f_e3b8 42 = 40 + 2 alignment bytes from the upstream misalignment. f_c21a in the rebased unit (2112, -110; zero compiles): ROM holds the Y/N label leaves in r10/r11 across the unrolled Y/N loop (mov r10,r6 / mov r11,r6) where the draft reloads them per use, and ROM's 88-byte frame keeps scalars at @(32)/@(36) (r0-indexed stores) where the draft's frame is 40 with lower offsets. An unused char work[44] in f_c21a (research/2026-10-31-settings-c21a-frame, 8 stages) gives frame 84, not ROM 88: ROM spills one more 4-byte scalar than the draft (44-byte scalar area vs 40); size unchanged, rejected. f_c21a native sort capture inside the unit (research/2026-10-31-c21a-sort, 13 stages, native-equal, fn 465): draft registers 0, a leaf, 8, two variables, a temp and constant 200; ROM instead loads Y (r10), N (r11), 8 (r9) and f_2ee0c (r12) at entry, keeps 0 in r13 and voice in r8, and leaves 200 unregistered. The draft's unroll factor (4 vs ROM 2) changes these weights, so the Y/N loop shape comes first. Correction (zero compiles): ROM f_c21a also unrolls the 16-entry Y/N loop four times (copies c78e, c800, c87e, c8e2; back-branch c94e, exit test 16 at c948); the earlier 'unrolled by two' reading and the unroll-factor explanation for the Y/N ranking were wrong. The copies differ only in where the two x positions are computed (before the i<8 test with stack spills in some copies, inside the arms in others); the Y/N label leaves' ranking remains the open allocation difference. Constant trace of f_c21a in the unit (research/2026-10-31-c21a-sort/run): leaf priorities are counted before unrolling; the Y/N labels are two-reference call-argument leaves (c1:50, c1:54) at priority 6 (2 x m3), far below const 200 (24), while ROM keeps them in r10/r11 from entry, so ROM's source references the Y/N labels much more often than the draft's single ternary per arm. f_dbe8 (unit, 1156 vs 1164): remaining structural differences are the b&0x20 modulo cases (ROM mov #m,r4; and r0,r4; add #1; exts.w r4,r1) and r13/r10 register roles; the f_e074 short-modulo form applied to the unit's older-context f_dbe8 (research/2026-10-31-settings-dbe8-modshort, 8 stages) gives 1148: rejected. A hand-unrolled four-copy Y/N body in f_c21a (research/2026-10-31-settings-c21a-unroll, 8 stages) gives 2060 bytes (from 2112; ROM 2222), register-blind 808/1111 (from 782): rejected on size. Moving the other base's f_c21a/f_d394 bodies (2166/1328 there) into the exact-.rodata unit (research/2026-10-31-settings-body-merge, 8 stages) leaves them at 2112/1324 and breaks .rodata (extern labels): body sizes depend on the surrounding unit and string representation; rejected. Unprototyped f_29bf8(0) in f_ad80 and f_3036e/f_21206 in f_b3c0 (research/2026-10-31-settings-known-fixes, 8 stages, confirmed): exactly 5 bytes change, ad80 raw 21, b3c0 raw 23, sizes unchanged (new unit base). A goto-built f_c21a outer loop (research/2026-10-31-settings-c21a-goto, 8 stages) gives f_c21a 2122 but keeps 200 in r14 and the Y/N labels unregistered, and shrinks f_cac8 by 50 with unchanged source (unit -164): prediction failed, rejected. Zero-compile follow-up: the best draft defers f_c21a's tail pool (200, short table, f_e63a, strings, tail callees) into f_cac8, while ROM dumps it at f_c21a's end, so about 50 bytes of f_cac8's +26 belong to f_c21a. ROM preloads Y/N/8/f_2ee0c before the back-edge target c2a8, so its outer loop is syntactic. Its extra stack slot is the sign-extended sel temp (@4, nine mov.l reloads). The rejected hand-unroll build re-read with that attribution still reloads Y/N per use and keeps 200 in r8 (eight label refs, about 24, do not outrank 200), so that rejection stands on registers as well as size.",
-      "do_not_repeat": "Truncating the settings unit or making same-unit callees external to fix literal values; it changes caller code generation.",
-      "next_question": "Recover f_c21a's Y/N display form in which the Y/N labels gain enough references to outrank const 200 and the draft's variables, preserving the four-copy unrolled loop."
-    },
-    {
       "address": "0x1108",
       "state": "accepted",
       "class": "genuine-predecessor-layout",
@@ -670,70 +556,24 @@
       "next_question": "Recover f_780 bytes (size-exact before 0xbda; remaining differences are register/slot naming and the mode-switch hoisted-invariant set)."
     },
     {
-      "address": "0xe074",
-      "state": "near-miss-two-sites",
-      "class": "inlined-return-helper",
-      "evidence": "research/2026-11-12-first-principles/settings/cp/e074id/",
-      "observation": "2026-11-12: funcscore 402/404 in src/settings_reset_9c0c.c (was 37). cprint helper, pad byte tested directly, increments as c = x & K; c++; c = c % N;, decrements as one expression. Left: the decrement's and is and #3,r0 / mov r0,r4 (ROM mov #3,r4 / and r0,r4). The exit is if (g_6079304 & 14) { switch (sel) { case 2: run = 0; break; } }, which gives the ROM's r2 at the loop test. The two-statement decrement fixes the and but swaps r8/r9 and r10/r11 everywhere (alignment 353/354 ignoring registers). Earlier goto-loop and constant-priority readings of this function are superseded by the inlined-return mechanism.",
-      "next_question": "One statement form for the option arithmetic that gives the two-statement decrement's and without swapping r8/r9 and r10/r11.",
-      "do_not_repeat": "incdec_battery.py (45 forms), tie_battery.py (13 dead statements at 3 places), e074_tail.py (exit-test spellings), type and declaration-order changes via formsearch. Also cvar_battery.py (one variable per branch, block scope, types) and incdec_pad.py (135 combinations).",
-      "supporting_docs": [
-        "docs/research/2026-11-12-inline-return-labels.md"
-      ]
-    },
-    {
-      "address": "0xd962",
-      "state": "body-exact-layout-gated",
-      "class": "inlined-return-helper",
-      "evidence": "research/2026-11-12-first-principles/d962/f_d962_natural.c",
-      "observation": "2026-11-12: funcscore 310/310 in src/settings_reset_9c0c.c. Plain while (run) loop and plain switch once the centred print is a #pragma inline function with a return (cprint); each expansion leaves a label that stops loop rotation, preheader hoisting, unrolling and switch-arm merging. run needs no (void)&run; the pad byte is tested directly.",
-      "do_not_repeat": "Goto-entered do-while loops, hand-expanded centre prints, address-taken locals.",
-      "next_question": "Not at its ROM address until f_a226..f_d394 have their genuine sizes; apply the same helper form to them.",
-      "supporting_docs": [
-        "docs/research/2026-11-12-first-principles-review.md",
-        "docs/research/2026-11-12-inline-return-labels.md"
-      ]
-    },
-    {
-      "address": "0xdbe8",
-      "state": "near-miss-register-pair",
-      "class": "inlined-return-helper",
-      "evidence": "research/2026-11-12-first-principles/settings/cp/dbe8id/",
-      "observation": "2026-11-12: funcscore 569/578 in src/settings_reset_9c0c.c (was 38). cprint helper, local pad copy b, increments as c = x & K; c++; c = c % N; and decrements as c = x & K; c = c - 1;. Left: &g_6079304 (ROM r13) and the mask ~0x60 (ROM r8) have each other's registers, 0x80 and b use r4/r5 where the draft uses r6/r4. The exit is if (g_6079304 & 14) { switch (sel) { case 4: run = 0; break; } }, which gives the ROM's r2 at the loop test.",
-      "do_not_repeat": "The 45 increment/decrement statement forms in incdec_battery.py.",
-      "next_question": "What gives &g_6079304 a higher rank than the mask constant here?",
-      "supporting_docs": [
-        "docs/research/2026-11-12-inline-return-labels.md"
-      ]
-    },
-    {
-      "address": "0xc21a",
-      "state": "near-miss-scratch-order",
-      "class": "reference-counts",
-      "evidence": "research/2026-11-12-first-principles/specs/",
-      "observation": "2026-11-12 (later): funcscore 967/1080 (was 81) and all eleven stack slots match the ROM. f_e63a prints music and effect (ROM @(32,r15)/@(28,r15) after three pushes = slots 20/16), the voice row is four explicit f_e520 calls under nested ifs, and an unused 44-byte local fills the 88-byte frame. Left: rep1/rep2 and the two pad bytes sit in r4..r7 in the other order, and the third unrolled row copy uses r2 where the draft uses r0. 2026-11-12 (later): ROM keeps the \"Y\"/\"N\" string addresses in r10/r11 and an extended copy of sel at @(4,r15); the draft has sel in r9 and reloads the strings. Same kind of ranking gap f_d394 had before its pre-increment reading. 2026-11-12: no inlined-return label in the main loop (label: 596 to 386 of 963 aligned). Draft is 48 instructions short of the ROM.",
-      "supporting_docs": [
-        "docs/research/2026-11-12-inline-return-labels.md"
-      ],
-      "do_not_repeat": "specs/c21a*.py: ternary row forms, string pointers, counter types, pad type and position, declaration order, operand order of the two-pad tests.",
-      "next_question": "What orders the four values loaded before the switch (pad1, pad2, rep2, rep1 in the ROM)?"
-    },
-    {
       "address": "0xa608",
       "state": "open-structure",
       "class": "source-shape",
       "evidence": "research/2026-11-12-first-principles/settings/",
-      "observation": "2026-11-12: formsearch.py reaches 517 of 765 aligned from 379 with address-taken and retyped locals (walk2/f_a608.log, stopped at round 5); those are leads on which locals live on the stack, not a reading of the source.",
+      "observation": "2026-11-18: in the full unit (src/settings_reset_9c0c.c) f_a608 is the only function not byte-identical, 31 bytes: cnt home 72 vs 80, c0/c1 key-byte slots, prev/rep slots, spr_bri r4/r5/r6 rotation. Earlier: 2026-11-12: formsearch.py reaches 517 of 765 aligned from 379 with address-taken and retyped locals (walk2/f_a608.log, stopped at round 5); those are leads on which locals live on the stack, not a reading of the source.",
       "supporting_docs": [
-        "docs/research/2026-11-12-inline-return-labels.md"
-      ]
+        "docs/research/2026-11-12-inline-return-labels.md",
+        "docs/research/2026-11-18-settings-unit-match.md"
+      ],
+      "do_not_repeat": "Truncating the unit; cnt type/placement, wait init, rep/xy chaining, increment/compound forms (depth 1-3), declaration placement, key-repeat compare orientation, dead sweeps (jobs j175-j184, j193 in ~/tmp/tgm-dec).",
+      "next_question": "Find the natural f_a608 form reproducing both the c1/c0 slot swap and the prev 27/24/39 rotation; the rank model finds no 2-edit solution."
     }
   ],
   "asm_scan": {
     "scope": "hypotheses from tools/asm_scan.py; routing only, not an authorship proof or an exemption. See docs/research/2026-10-16-handwritten-asm-scan.md.",
     "program_sha256": "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7",
     "controls": {
-      "negatives": 507,
+      "negatives": 527,
       "positives": 9,
       "true_positive": 9,
       "false_positive": 0,
@@ -757,9 +597,9 @@
       },
       {
         "start": "0x000780",
-        "end": "0x001260",
+        "end": "0x001108",
         "verdict": "shc-shaped",
-        "observation": "2 functions decoded; no strong hand-written evidence. 654 bytes are pools, tables or unreached.",
+        "observation": "1 functions decoded; no strong hand-written evidence. 562 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
@@ -826,13 +666,6 @@
         "hand_written_functions": []
       },
       {
-        "start": "0x0085d8",
-        "end": "0x0087b8",
-        "verdict": "shc-shaped",
-        "observation": "1 functions decoded; no strong hand-written evidence. 168 bytes are pools, tables or unreached.",
-        "hand_written_functions": []
-      },
-      {
         "start": "0x008b86",
         "end": "0x00907c",
         "verdict": "shc-shaped",
@@ -854,38 +687,17 @@
         "hand_written_functions": []
       },
       {
-        "start": "0x00a226",
-        "end": "0x00b2f4",
+        "start": "0x00a608",
+        "end": "0x00acdc",
         "verdict": "shc-shaped",
-        "observation": "5 functions decoded; no strong hand-written evidence. 710 bytes are pools, tables or unreached.",
+        "observation": "1 functions decoded; no strong hand-written evidence. 194 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
         "start": "0x00b39a",
-        "end": "0x00be04",
-        "verdict": "shc-shaped",
-        "observation": "4 functions decoded; no strong hand-written evidence. 358 bytes are pools, tables or unreached.",
-        "hand_written_functions": []
-      },
-      {
-        "start": "0x00be28",
-        "end": "0x00d28c",
-        "verdict": "shc-shaped",
-        "observation": "5 functions decoded; no strong hand-written evidence. 770 bytes are pools, tables or unreached.",
-        "hand_written_functions": []
-      },
-      {
-        "start": "0x00d394",
-        "end": "0x00e3b8",
-        "verdict": "shc-shaped",
-        "observation": "6 functions decoded; no strong hand-written evidence. 508 bytes are pools, tables or unreached.",
-        "hand_written_functions": []
-      },
-      {
-        "start": "0x00e3e0",
-        "end": "0x00e520",
-        "verdict": "shc-shaped",
-        "observation": "3 functions decoded; no strong hand-written evidence. 14 bytes are pools, tables or unreached.",
+        "end": "0x00b3c0",
+        "verdict": "pool-data",
+        "observation": "No code: 38 bytes of literal pool or table data, covered with the functions that load them.",
         "hand_written_functions": []
       },
       {
