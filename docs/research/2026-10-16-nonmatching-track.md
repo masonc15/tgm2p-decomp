@@ -152,8 +152,8 @@ themselves behave alike; difftest covers that part.
 | `field_step_20be.c` | 0x20be–0x2e4c | 3,470 | f_20be, f_29ea, f_2a92, f_2c0a, f_2d06, f_2d54 | packet of 2026-10-16 |
 | `field_3c88.c` | 0x3c88–0x3e2e | 422 | f_3c88 | packet of 2026-10-16 |
 | `field_4044.c` | 0x4044–0x44d4 | 1,168 | f_4044 | packet of 2026-10-16 |
-| `allclear_57d4.c` | 0x57d4–0x5b80 | 940 | f_57d4 | packet of 2026-10-16 |
-| `field_5b80.c` | 0x5b80–0x601a | 1,178 | f_5b80 | packet of 2026-10-16 |
+| `allclear_57d4.c` | 0x57d4–0x5b80 | 940 | f_57d4 | packet of 2026-10-16 (retired 2026-11-19: now matching C in src/field_51f4.c) |
+| `field_5b80.c` | 0x5b80–0x601a | 1,178 | f_5b80 | packet of 2026-10-16 (retired 2026-11-19: now matching C in src/field_51f4.c) |
 | `field_61d0.c` | 0x61d0–0x7004 | 3,636 | f_61d0, f_667c, f_67f4 | packet of 2026-10-16 |
 | `field_7324.c` | 0x7324–0x7658 | 820 | f_7324 | packet of 2026-10-16 |
 | `speed_7658.c` | 0x7658–0x7956 | 766 | f_7658 | packet of 2026-10-16 |
