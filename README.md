@@ -258,8 +258,6 @@ Other verified spans use the unchanged range checks:
 
 | Source | Retained range | Bytes | Context origin |
 |---|---|---:|---|
-| `src/f_541c.c` | `0x541c`–`0x57d4` | 952 | `0x541c` |
-| `src/field_helpers_601a.c` | `0x601a`–`0x61d0` | 438 | `0x5b80` |
 | `src/field_81cc.c` | `0x8314`–`0x8518` | 516 | `0x81cc` |
 | `src/field_7004.c` | `0x7004`–`0x7324` | 800 | `0x7004` |
 | `src/vm_empty_f292.c` | `0xf292`–`0xf29a` | 8 | `0xf200` |

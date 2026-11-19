@@ -19,10 +19,7 @@
 0x004044 asm
 0x0044d4 c    src/piece_44d4.c
 0x0050e0 c    src/f_50e0.c
-0x0051f4 c src/f_51f4.c
-0x00541c c-prefix src/f_541c.c
-0x0057d4 asm
-0x00601a c-range src/field_helpers_601a.c
+0x0051f4 c src/field_51f4.c
 0x0061d0 asm
 0x007004 c-prefix src/field_7004.c
 0x007324 asm
