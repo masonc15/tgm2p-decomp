@@ -1,5 +1,21 @@
 # TGM2+ matching decompilation goal
 
+## Rank screen f_14f1c matches — 2026-11-19
+
+Coverage increased **157,004 → 157,492 / 200,698 C bytes, 78.2290% →
+78.4721%** (+488 bytes). 41,568 non-exempt bytes remain to the
+199,060-byte goal. f_14f1c (0x14f1c-0x15104) joins `src/rank_tail_149b4.c`,
+whose two verified spans merge into 0x14bce-0x152d4. A labelled dead
+`if (0) done = 160;` before `f_2af5e(160, 16, d_67d90);` ranks the 160
+constant's web ahead of `done` and `i`, the ROM's r11/r10/r9 homes.
+`rank_14f1c.c` leaves the non-matching track. `make split check report`
+passes both chip hashes, all 377 tool tests pass with
+`PREFIX_COMPILE_TESTS=1`, `make shiftable` is identical to the ROM, `make
+mod-check` plays the replays like the original, and `make shiftable
+NONMATCHING=1` (sha1 698b1877) with `tools/replay_check.sh --pin-idle` is identical over
+attract 12,000 and gameplay 24,000 frames. Details:
+[docs/research/2026-11-19-rank-screen-match.md](docs/research/2026-11-19-rank-screen-match.md).
+
 ## Field setup f_12e2 matches — 2026-11-19
 
 Coverage increased **156,910 → 157,004 / 200,698 C bytes, 78.1821% →

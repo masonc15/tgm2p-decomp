@@ -167,7 +167,7 @@ themselves behave alike; difftest covers that part.
 | `hud_10788.c` | 0x10788–0x10942 | 442 | f_10788 | packet of 2026-10-16 |
 | `rank_display_12fa8.c` | 0x12fa8–0x131e8 | 576 | f_12fa8 | packet of 2026-10-16 |
 | `save_13380.c` | 0x13380–0x13484 | 260 | f_13380 | packet of 2026-10-16 |
-| `rank_14d50.c` | 0x14d50–0x15104 | 948 | f_14d50, f_14f1c | packet of 2026-10-16 (2026-11-19: f_14d50 now matching C in src/rank_tail_149b4.c; f_14f1c remains as `rank_14f1c.c`, 0x14f1c–0x15104) |
+| `rank_14d50.c` | 0x14d50–0x15104 | 948 | f_14d50, f_14f1c | packet of 2026-10-16 (2026-11-19: f_14d50 now matching C in src/rank_tail_149b4.c; f_14f1c remained as `rank_14f1c.c`, 0x14f1c–0x15104, until it matched later that day) |
 | `rank_15104.c` | 0x15104–0x15794 | 1,680 | f_15104, f_152d4 | packet of 2026-10-16 (2026-11-19: f_15104 now matching C in src/rank_tail_149b4.c; f_152d4 remains as `rank_152d4.c`, 0x152d4–0x15794) |
 | `rank_15794.c` | 0x15794–0x15f10 | 1,916 | f_15794 | packet of 2026-10-16 |
 | `draw_15fae.c` | 0x15fae–0x163fc | 1,102 | f_15fae | packet of 2026-10-16 |

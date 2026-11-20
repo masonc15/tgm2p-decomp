@@ -29,7 +29,22 @@ Negative controls for the rotation, all at 10 or worse: a `pal` local for
 value temporaries, `id`/`p` temporaries for the setup calls, and
 declaration permutations.
 
-## f_14f1c (8 bytes off)
+## f_14f1c (matched later the same day)
+
+A dead `if (0) done = 160;` just before `f_2af5e(160, 16, d_67d90);` gives
+the 160 constant one more use, which ranks its web ahead of `done` and `i`
+and produces the ROM's r11/r10/r9 homes with no scheduling change. It came
+from a sweep of 160-using dead lines at all 66 statement boundaries: only
+`done = 160` at this spot and two later spots (before `f_29c50(0)` and
+before the polling loop) match; `k = 160`, `i = 160`, `timer = 160` and
+global stores don't. The line is labelled in the source. The verified range
+becomes one span, 0x14bce-0x152d4 (1,798 bytes), and `rank_14f1c.c` is
+retired. Verification as below, rerun after the change: both chip hashes,
+377 tool tests, `make shiftable`, `make mod-check`, and the
+`NONMATCHING=1` replay (identical over attract 12,000 and gameplay 24,000
+frames).
+
+The 8-byte state before that, for the record:
 
 The `fr` form is worse for f_14f1c (the `k` index changes which webs exist),
 so it keeps the direct `&d_aa7a8[k]` argument. `i = i + 1;` in the first
