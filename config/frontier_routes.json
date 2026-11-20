@@ -52,12 +52,12 @@
     },
     {
       "address": "0x277d0",
-      "state": "parked-until-pep-prefix-mechanism",
+      "state": "accepted",
       "class": "peephole-branch-prefix-and-copy-elimination",
-      "evidence": "docs/research/2026-10-10-toggle-peephole.md",
-      "observation": "Middle pass and GEN retain reload. PEP deletes it at caller409611; first result copies delete at40c2cf/40c2e4. Explicit goto improves20 to18 differing bytes, protects134 setter bytes and all roots. No accepted bytes.",
-      "do_not_repeat": "Recorded branch-sharing, pointer casts, result widths, explicit-else, branch-local results, direct-store and scaled-address controls without changed PEP/GEN evidence.",
-      "next_question": "Which genuine source operation places stride104 before the occupied reload or changes PEP409450 prefix eligibility, while preserving both calls, raw pool, roots and protected setters?",
+      "evidence": "docs/research/2026-11-19-board-toggle-277d0-match.md",
+      "observation": "Exact 146 bytes; src/board_setters_2774a.c now verifies 0x276e8-0x27862. A short id copy of t->w8 before indexing, call results stored straight into t->w8 and an !t->w8 empty test give the ROM r6 scaling and r3 call address.",
+      "do_not_repeat": "t->w8 == 0 with the same body (20 bytes) and (id = t->w8) != 0 in the else branch (11 bytes).",
+      "next_question": "f_27862 remains: its BSR to f_26f64 needs the unit from <=26f64 (see unit_extent).",
       "unit_extent": "ROM 2789c is BSR f_26f64 (-0x938), so f_27862 shares a unit with 26f64; 2668c..27100 BSRs tie 2657c..27310 together. Contexts starting at 276e8 compile that call as a pooled JSR. Admitting f_27862 needs the unit from <=26f64 with size-correct bodies: measured drift f_26ff0 -46, f_2722c -2, f_274c0 -2, f_2769e -2, f_277d0 -2 (2026-10-31, docs/research/2026-10-31-settings-unit-callees.md)."
     },
     {
@@ -573,7 +573,7 @@
     "scope": "hypotheses from tools/asm_scan.py; routing only, not an authorship proof or an exemption. See docs/research/2026-10-16-handwritten-asm-scan.md.",
     "program_sha256": "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7",
     "controls": {
-      "negatives": 523,
+      "negatives": 524,
       "positives": 9,
       "true_positive": 9,
       "false_positive": 0,
@@ -820,10 +820,10 @@
         "hand_written_functions": []
       },
       {
-        "start": "0x0277d0",
+        "start": "0x027862",
         "end": "0x0278c0",
         "verdict": "shc-shaped",
-        "observation": "2 functions decoded; no strong hand-written evidence. 64 bytes are pools, tables or unreached.",
+        "observation": "1 functions decoded; no strong hand-written evidence. 18 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
