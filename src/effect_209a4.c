@@ -1,6 +1,6 @@
-/* rom: 0x209a4 len: 0xf8 func: f_209a4 literal-tail-calls: 1 flags: -macsave=1 -optimize=1 -speed */
-/* c-prefix: f_209a4 and f_20a32 are retained (0x209a4-0x20a9c).
- * f_20a9c is genuine unlinked following compiler context.
+/* rom: 0x209a4 len: 0x180 func: f_209a4 flags: -macsave=1 -optimize=1 -speed */
+/* Three effect sprites sharing one literal pool after f_20a9c's rts.
+ * f_1159c takes short coordinates here, as in the HUD units.
  */
 struct frame { char pad[12]; };
 struct sprite {
@@ -29,7 +29,7 @@ struct field {
 };
 extern struct task *f_17614(void);
 extern void f_17638(struct task *);
-extern void f_1159c(struct frame *, int, int, int, int);
+extern void f_1159c(long, short, short, unsigned char, short);
 extern unsigned short g_6060000;
 extern struct frame d_a887c[], d_a8bdc[];
 
@@ -59,11 +59,11 @@ void f_209a4(struct field *f, short y)
 void f_20a32(struct task *t)
 {
 	struct sprite *s = &t->spr;
-	int y, x;
+	short y, x;
 
 	y = s->y;
 	x = s->x;
-	f_1159c(&s->frames[t->n], y, x, s->w4, 124);
+	f_1159c((long)&s->frames[t->n], y, x, s->w4, 124);
 	if (g_6060000 >= 40)
 		return;
 	if (t->tick & 1)
@@ -76,11 +76,13 @@ void f_20a32(struct task *t)
 /* Unlinked compiler context below this point. */
 void f_20a9c(struct field *f, short x)
 {
-	struct point *d = &f->shake;
+	struct point *d;
 	short sx;
-	int sy;
+	short sy;
 
-	sx = x * 8 + d->x - (f->width / 2) * 8;
-	sy = (f->height - 20 - 1) * 8 + d->y; sy -= (f->height - 1) * 8; sy -= 6;
-	f_1159c(d_a8bdc, sy, sx, 0xba, 115);
+	x *= 8;
+	d = &f->shake;
+	sx = x + d->x - (f->width / 2) * 8;
+	sy = (f->height - 20 - 1) * 8 + d->y - (f->height - 1) * 8 - 6;
+	f_1159c((long)d_a8bdc, sy, sx, 0xba, 115);
 }

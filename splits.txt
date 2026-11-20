@@ -143,8 +143,7 @@
 0x0206e0 c    src/effect_206e0.c
 0x0207d0 c    src/effect_207d0.c
 0x02090c c    src/draw_2090c.c
-0x0209a4 c-prefix src/effect_209a4.c
-0x020a9c asm
+0x0209a4 c    src/effect_209a4.c
 0x020b24 c    src/effect_20b24.c
 0x020c14 c    src/effect_20c14.c
 0x020d60 c    src/effect_20d60.c
