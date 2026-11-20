@@ -1,5 +1,20 @@
 # TGM2+ matching decompilation goal
 
+## Board toggle f_277d0 matches — 2026-11-19
+
+Coverage increased **158,258 → 158,404 / 200,698 C bytes, 78.8538% →
+78.9265%** (+146 bytes). 40,656 non-exempt bytes remain to the
+199,060-byte goal. f_277d0 (0x277d0-0x27862) joins `src/board_setters_2774a.c`,
+whose verified span grows to 0x276e8-0x27862. A `short id` copy of `t->w8`
+before indexing and an `!t->w8` empty test give the ROM's r6 scaling and
+r3 call address. The non-matching packet shrinks to
+`board_setters_27862.c`. `make split check report` passes both chip hashes,
+all 377 tool tests pass with `PREFIX_COMPILE_TESTS=1`, `make shiftable` is
+identical to the ROM, `make mod-check` plays the replays like the original,
+and `make shiftable NONMATCHING=1` with `tools/replay_check.sh --pin-idle`
+is identical over attract 12,000 and gameplay 24,000 frames. Details:
+[docs/research/2026-11-19-board-toggle-277d0-match.md](docs/research/2026-11-19-board-toggle-277d0-match.md).
+
 ## Speed/level f_7658 matches — 2026-11-19
 
 Coverage increased **157,492 → 158,258 / 200,698 C bytes, 78.4721% →

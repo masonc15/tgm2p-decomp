@@ -265,7 +265,7 @@ Other verified spans use the unchanged range checks:
 | `src/item_8164.c` | `0x8164`–`0x81cc` | 104 | `0x7fa0` |
 | `src/gfx_2ab56.c` | `0x2ab56`–`0x2ac4c` | 246 | `0x2a0d4` |
 | `src/gfxblend_2af5e.c` | `0x2af5e`–`0x2afc0` | 98 | `0x2ac4c` |
-| `src/board_setters_2774a.c` | `0x2774a`–`0x277d0` | 134 | `0x276e8` |
+| `src/board_setters_2774a.c` | `0x276e8`–`0x27862` | 378 | `0x276e8` |
 | `src/savestats_211a2.c` | `0x211a2`–`0x21206` | 100 | `0x21170` |
 | `src/checksum_30c2e.c` | `0x30c2e`–`0x30d40` | 274 | `0x30880` |
 | `src/hud_ranges_f958.c` | `0x103d0`–`0x1050e` | 318 | `0xf958` |

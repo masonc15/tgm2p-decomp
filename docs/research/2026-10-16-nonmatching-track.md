@@ -137,7 +137,7 @@ themselves behave alike; difftest covers that part.
 | `draw_2090c.c` | 0x2090c–0x209a4 | 152 | f_2090c | wip/draw_2090c.c |
 | `effect_20a9c.c` | 0x20a9c–0x20b24 | 136 | f_20a9c | context in src/effect_209a4.c |
 | `shuffle_21d94.c` | 0x21d94–0x225e4 | 2,128 | f_21d94 | wip/shuffle_21d94.c |
-| `board_setters_277d0.c` | 0x277d0–0x278c0 | 240 | f_277d0, f_27862 | context in src/board_setters_2774a.c |
+| `board_setters_27862.c` | 0x27862–0x278c0 | 94 | f_27862 | context in src/board_setters_2774a.c (f_277d0 matched 2026-11-19 and left this packet) |
 | `field_8c96.c` | 0x8c96–0x907c | 998 | f_8c96 | drafted from the disassembly (old drafts differed) |
 | `board_2657c.c` | 0x2657c–0x26f64 | 2,536 | f_2657c, f_26cb0, f_26e18 | drafted from the disassembly |
 | `board_queue_274c0.c` | 0x274c0–0x2769e | 478 | f_274c0 | context in src/board_queue_2733a.c |
