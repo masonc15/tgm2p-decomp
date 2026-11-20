@@ -1,5 +1,22 @@
 # TGM2+ matching decompilation goal
 
+## Field setup f_12e2 matches — 2026-11-19
+
+Coverage increased **156,910 → 157,004 / 200,698 C bytes, 78.1821% →
+78.2290%** (+94 bytes). 42,056 non-exempt bytes remain to the
+199,060-byte goal. f_12e2 (0x12e2-0x1340) joins the c-prefix of
+`src/startup_setup_1278.c`. Its default branch reads x through an embedded
+`(p = &d_36304[id])->x`, and a labelled dead `if (0) f->w314 = g_6064880;`
+keeps the flag web live so the shared `&d_36304[id + 2]` temporary takes
+p's r5, the ROM's unfilled delay slot. `field_setup_12e2.c` shrinks to
+`field_setup_1340.c` (f_1340) on the non-matching track. `make split check
+report` passes both chip hashes, all tool tests pass with
+`PREFIX_COMPILE_TESTS=1`, `make shiftable` is identical to the ROM, `make
+mod-check` plays the replays like the original, and `make shiftable
+NONMATCHING=1` (sha1 ac5172da) with `tools/replay_check.sh --pin-idle` is
+identical over attract 12,000 and gameplay 24,000 frames. Details:
+[docs/research/2026-11-19-field-setup-12e2-match.md](docs/research/2026-11-19-field-setup-12e2-match.md).
+
 ## Rank screens f_14d50 and f_15104 match — 2026-11-19
 
 Coverage increased **155,986 → 156,910 / 200,698 C bytes, 77.7218% →

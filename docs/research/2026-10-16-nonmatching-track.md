@@ -148,7 +148,7 @@ themselves behave alike; difftest covers that part.
 | `settings_be28.c` | 0xbe28–0xd28c | 5,220 | f_be28, f_c21a, f_cac8, f_cf68 | settings packet of 2026-10-16 (retired 2026-11-18: now matching C in src/settings_reset_9c0c.c) |
 | `checksum_30880.c` | 0x30880–0x30a44 | 452 | f_30880 | staged packet of 2026-10-16 |
 | `main_780.c` | 0x780–0x1108 | 2,440 | f_780 | packet of 2026-10-16 |
-| `field_setup_12e2.c` | 0x12e2–0x1896 | 1,460 | f_12e2, f_1340 | packet of 2026-10-16 |
+| `field_setup_1340.c` (was `field_setup_12e2.c`) | 0x1340–0x1896 | 1,366 | f_1340 (f_12e2 matched 2026-11-19) | packet of 2026-10-16 |
 | `field_step_20be.c` | 0x20be–0x2e4c | 3,470 | f_20be, f_29ea, f_2a92, f_2c0a, f_2d06, f_2d54 | packet of 2026-10-16 |
 | `field_3c88.c` | 0x3c88–0x3e2e | 422 | f_3c88 | packet of 2026-10-16 |
 | `field_4044.c` | 0x4044–0x44d4 | 1,168 | f_4044 | packet of 2026-10-16 |
