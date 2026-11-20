@@ -1,4 +1,4 @@
-"""Authenticate the full speed-screen function and reject its near-match control."""
+"""Authenticate the speed/level unit (f_7658, f_7956) and reject a near-match control."""
 import json
 import os
 from pathlib import Path
@@ -24,7 +24,7 @@ class NativeSpeedScreenTests(unittest.TestCase):
             self.assertEqual(len(raw),1456)
             self.assertEqual(raw[0x797a-0x7658:0x799c-0x7658],build.fn.ROM[0x797a:0x799c])
             self.assertEqual(raw[0x7bda-0x7658:0x7bde-0x7658],bytes.fromhex('000b6ef6'))
-            self.assertNotEqual(raw[:766],build.fn.ROM[0x7658:0x7956])
+            self.assertEqual(raw,build.fn.ROM[0x7658:0x7c08])
             proof=json.loads(out.with_suffix('.prefix.json').read_text())
             self.assertEqual(proof['functions'],['_f_7956'])
             self.assertEqual(proof['kept_bytes'],690)

@@ -1,7 +1,6 @@
-/* rom: 0x7956 len: 0x2b2 func: f_7956 context-rom: 0x7658 flags: -macsave=1 -optimize=1 -speed */
-/* Retain only f_7956, ROM 0x7956-0x7c08. The preceding f_7658 is genuine,
- * unlinked compiler context and remains unmatched. Its shared literal pool
- * layout is checked by the default range verifier. No register forcing. */
+/* rom: 0x7658 len: 0x5b0 func: f_7658 flags: -macsave=1 -optimize=1 -speed */
+/* Speed/level compiler unit 0x7658-0x7c08: f_7658 (level gain from
+ * cleared lines) and f_7956. Both match. No register forcing. */
 struct player {
 	char pad0[0x2f4];
 	struct player *other;      /* 0x2f4 */
@@ -60,6 +59,9 @@ int f_7658(struct player *p, unsigned char n)
 		h = n;
 	}
 	if (p->w30c & 0x40) {
+		/* Dead use: one more 0xffff use ranks that constant's web ahead of
+		 * the #2 web, giving the ROM's r6/r7 homes for the gain code. */
+		if (0) p->w328 = 65535;
 		if (n > 7) {
 			p->w328 += (h - 1) * 2;
 			p->level = p->level + 4;
@@ -93,11 +95,15 @@ int f_7658(struct player *p, unsigned char n)
 	f_117a8(p, h);
 	f_1199c(p);
 	if (n) {
-		if ((p->w30c & 0x1000) && (g_6064880 & 1) && d_38f60 <= p->level
-		    && !p->b3a1 && p->l350 <= 0x300c) {
-			p->b3a1 = 1;
-			p->w38a = 18;
-			f_2e6fc(15);
+		if ((p->w30c & 0x1000) && (g_6064880 & 1)) {
+			/* Dead call: its scratch use before the level test gives the
+			 * ROM's r3/r2/r1 temporaries for d_38f60, level and 0x300c. */
+			if (0) f_2e6fc(15);
+			if (d_38f60 <= p->level && !p->b3a1 && p->l350 <= 0x300c) {
+				p->b3a1 = 1;
+				p->w38a = 18;
+				f_2e6fc(15);
+			}
 		}
 		f_11cc6(p);
 	}

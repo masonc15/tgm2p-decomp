@@ -23,7 +23,7 @@
 0x0061d0 asm
 0x007004 c-prefix src/field_7004.c
 0x007324 asm
-0x007956 c-range src/speed_7956.c
+0x007658 c    src/speed_7956.c
 0x007c08 asm
 0x007f38 c    src/f_7f38.c
 0x007fa0 asm
