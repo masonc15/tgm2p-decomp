@@ -98,11 +98,11 @@
     },
     {
       "address": "0x7658",
-      "state": "parked-until-web-construction-evidence",
-      "evidence": "docs/research/2026-10-10-lifetime-graph-round.md",
-      "observation": "Full/reduced2and65535 neighborhoods identical,10edges each. Priority sums92vs66 explain profits-7vs-4. Late TEMP3/TEMP4 do not directly interfere. All12 priority/edge/presence models retain wrong order. Baseline19diff,690following exact; zero compiles.",
-      "do_not_repeat": "n>=3 single/both boundary controls; documented priority162 named-minimum/literal-suffix/coefficient families; guard Boolean and comparison sweeps through175. The two register-r/d controls, single local-only record transpositions under the frozen graph, and+1/+2 q/r/d/s priority models; no source prediction emerged from the latter. Twelve isolated priority/common-edge/missing-web models and reductions supply no source fix.",
-      "next_question": "Observe genuine definition-web construction/splitting with a source-backed prediction preserving early homes and real third constant4 use. Choose another owner until new evidence.",
+      "state": "accepted",
+      "evidence": "docs/research/2026-11-19-speed-level-7658-match.md",
+      "observation": "Exact 766 bytes; src/speed_7956.c is now a whole c unit 0x7658-0x7c08. A labelled dead if (0) p->w328 = 65535; ranks 0xffff ahead of #2 (ROM r6/r7), and splitting the level test after (g_6064880 & 1) with a labelled dead if (0) f_2e6fc(15); between the levels gives the ROM r3/r2/r1 scratch temporaries.",
+      "do_not_repeat": "Nesting alone at any split point (15-29 bytes) and the other 447 nested dead-line variants are recorded in the research note.",
+      "next_question": "None for this owner.",
       "class": "constant-priority-and-traversal"
     },
     {
@@ -573,7 +573,7 @@
     "scope": "hypotheses from tools/asm_scan.py; routing only, not an authorship proof or an exemption. See docs/research/2026-10-16-handwritten-asm-scan.md.",
     "program_sha256": "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7",
     "controls": {
-      "negatives": 526,
+      "negatives": 523,
       "positives": 9,
       "true_positive": 9,
       "false_positive": 0,
@@ -639,9 +639,9 @@
       },
       {
         "start": "0x007324",
-        "end": "0x007956",
+        "end": "0x007658",
         "verdict": "shc-shaped",
-        "observation": "2 functions decoded; no strong hand-written evidence. 218 bytes are pools, tables or unreached.",
+        "observation": "1 functions decoded; no strong hand-written evidence. 152 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
