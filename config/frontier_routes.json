@@ -241,12 +241,12 @@
     },
     {
       "address": "0x12e2",
-      "state": "parked-until-joined-pointer-lifetime-evidence",
+      "state": "accepted",
       "class": "selected-coordinate-pointer-and-branch-merging",
-      "evidence": "research/2026-10-13-startup-graph-review/REPORT.md",
-      "observation": "Joined-pointer goto control preserves pR5 but emits backward branch and wrong trueR2/falseR3 scratches; nextroot+4,72targetdiff and8protected. Elevenstages. Bestfive remains unchanged. Fresh native branch-Y capture proves false pointer self-binds/merges with base and maps R14; register keyword does not remove binding. Best five unchanged. 2026-10-31: unprototyped callee declarations across startup_setup_1278 leave [12e2,1896) at 643 raw differences (f_12e2 9) with the retained prefix passing (research/2026-10-31-setup-oldstyle): no effect; this unit passes only full-width arguments.",
-      "do_not_repeat": "Closed pointer/cast/earlydefinition, inlineformal, cursorincrement and late metadata families without a new native source mechanism. No patchedcompiler output for admission.",
-      "next_question": "New callback finding identifies 0x40182f as nonempty-else emission scratch, already active in this helper. Transfer review authenticates861 selections/200archivedbodies; no duplicate commonreturn control. Require a genuine joined-pointer graph changing branch scratch history while preserving final layout.",
+      "evidence": "docs/research/2026-11-19-field-setup-12e2-match.md",
+      "observation": "Exact 94 bytes in the c-prefix of startup_setup_1278.c (0x1278-0x1340). The default branch is f->w314 = (p = &d_36304[id])->x; a labelled dead if (0) f->w314 = g_6064880; at the end of the mode-bit branch keeps the flag web in r7 so the shared &d_36304[id + 2] temporary takes p's r5 (the ROM's unfilled delay slot).",
+      "do_not_repeat": "Do not count the following f_1340/f_1896 context or move the dead line; elsewhere it has no effect.",
+      "next_question": "f_1340 (0x1340-0x1896) remains on the non-matching track as field_setup_1340.c.",
       "supporting_evidence": [
         "research/2026-10-13-startup-callback-mechanism/REPORT.md",
         "research/2026-10-13-startup-branch-y-binding/REPORT.md"
@@ -573,7 +573,7 @@
     "scope": "hypotheses from tools/asm_scan.py; routing only, not an authorship proof or an exemption. See docs/research/2026-10-16-handwritten-asm-scan.md.",
     "program_sha256": "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7",
     "controls": {
-      "negatives": 524,
+      "negatives": 525,
       "positives": 9,
       "true_positive": 9,
       "false_positive": 0,
@@ -603,10 +603,10 @@
         "hand_written_functions": []
       },
       {
-        "start": "0x0012e2",
+        "start": "0x001340",
         "end": "0x001896",
         "verdict": "shc-shaped",
-        "observation": "2 functions decoded; no strong hand-written evidence. 166 bytes are pools, tables or unreached.",
+        "observation": "1 functions decoded; no strong hand-written evidence. 166 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
