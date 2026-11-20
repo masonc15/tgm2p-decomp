@@ -1,5 +1,5 @@
-/* rom: 0x277d0 len: 0xf0 func: f_277d0 flags: -macsave=1 -optimize=1 -speed */
-/* Non-matching: functionally equivalent C for [0x277d0, 0x278c0) (f_277d0, f_27862),
+/* rom: 0x27862 len: 0x5e func: f_27862 flags: -macsave=1 -optimize=1 -speed */
+/* Non-matching: functionally equivalent C for [0x27862, 0x278c0) (f_27862),
  * linked only by the shiftable build (splits_nonmatching.txt). Not matching coverage.
  * From src/board_setters_2774a.c. */
 struct field {
@@ -120,13 +120,7 @@ void f_277ac(short i, short v);
 
 void f_277be(short i, short v);
 
-void f_277d0(struct tsk *t)
-{
-	int id;
-	t->w16 = (t->w16 + 1) & 1;
-	if (t->w16) { if (t->w8 == 0) { id = f_26098(); t->w8 = id; return; } g_60ad228[t->w8].w0 = 0; id = f_26098(); t->w8 = id; return; }
-	if (t->w8) { g_60ad228[t->w8].w0 = 0; t->w8 = 0; }
-}
+void f_277d0(struct tsk *t);
 
 void f_27862(int idx)
 {

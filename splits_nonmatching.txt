@@ -35,6 +35,6 @@
 0x02657c 0x026f64 c-nonmatching src/nonmatching/board_2657c.c
 0x026ff0 0x027310 c-nonmatching src/nonmatching/board_26ff0.c
 0x0274c0 0x02769e c-nonmatching src/nonmatching/board_queue_274c0.c
-0x0277d0 0x0278c0 c-nonmatching src/nonmatching/board_setters_277d0.c
+0x027862 0x0278c0 c-nonmatching src/nonmatching/board_setters_27862.c
 0x02ac4c 0x02af5e c-nonmatching src/nonmatching/gfx_2ac4c.c
 0x030880 0x030a44 c-nonmatching src/nonmatching/checksum_30880.c

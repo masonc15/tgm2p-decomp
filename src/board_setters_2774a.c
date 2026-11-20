@@ -1,8 +1,10 @@
-/* rom: 0x276e8 len: 0xe8 func: f_276e8 context-rom: 0x276e8 flags: -macsave=1 -optimize=1 -speed */
-/* Retain the callback setter and seven word setters, 276e8-277d0.
+/* rom: 0x276e8 len: 0x17a func: f_276e8 context-rom: 0x276e8 flags: -macsave=1 -optimize=1 -speed */
+/* Retain the callback setter, seven word setters and the f_277d0 toggle,
+ * 276e8-27862.
  * The callback identifiers are signed low words. A named converted first
  * argument and one promoted second value recover the original allocation.
- * Genuine toggle/cache bodies supply the shared literals and remain excluded.
+ * The genuine cache-update body (f_27862) supplies shared literals and
+ * remains excluded.
  * Evidence: docs/research/2026-10-13-callback-setter-match.md.
  */
 struct field {
@@ -160,10 +162,24 @@ void f_277be(short i, short v)
 
 void f_277d0(struct tsk *t)
 {
-	int id;
+	short id;
+
 	t->w16 = (t->w16 + 1) & 1;
-	if (t->w16) { if (t->w8 == 0) { id = f_26098(); t->w8 = id; return; } g_60ad228[t->w8].w0 = 0; id = f_26098(); t->w8 = id; return; }
-	if (t->w8) { g_60ad228[t->w8].w0 = 0; t->w8 = 0; }
+	if (t->w16) {
+		if (!t->w8) {
+			t->w8 = f_26098();
+			return;
+		}
+		id = t->w8;
+		g_60ad228[id].w0 = 0;
+		t->w8 = f_26098();
+		return;
+	}
+	if (t->w8) {
+		id = t->w8;
+		g_60ad228[id].w0 = 0;
+		t->w8 = 0;
+	}
 }
 
 void f_27862(int idx)

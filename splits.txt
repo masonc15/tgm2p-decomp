@@ -196,7 +196,7 @@
 0x0274c0 asm
 0x02769e c-range src/board_callback_dispatch_2769e.c
 0x0276e8 c-range src/board_setters_2774a.c
-0x0277d0 asm
+0x027862 asm
 0x0278c0 c-range src/board_clear_278c0.c
 0x027b50 c-range src/board_scroll_27b50.c
 0x027e70 c-prefix src/wave_27e70.c
