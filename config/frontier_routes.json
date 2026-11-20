@@ -34,12 +34,12 @@
     },
     {
       "address": "0x2090c",
-      "state": "parked-source-families",
+      "state": "accepted",
       "class": "arithmetic-liveness-and-call-abi",
-      "evidence": "tools/shc_probe/cases/session_effectrow_next/HANDOFF.md",
-      "observation": "The independent unit is 152 bytes. Prior 15+80 source controls and genuine following context failed; the context moves internal roots and breaks the accepted following interval.",
-      "do_not_repeat": "The documented arithmetic/type/assignment/height/helper/prototype families or the combined following context without a new compiler mechanism.",
-      "next_question": "Identify a new source-allocation mechanism that explains the missing scratch history while preserving short x, clamped short n, and the genuine shake pointer."
+      "evidence": "docs/research/2026-11-20-cell-sprite-2090c-match.md",
+      "observation": "Exact 152 bytes as its own unit, src/draw_2090c.c. The HUD units' f_1159c(long, short, short, unsigned char, short) prototype with a short row passes the row unnarrowed and sums it in r0.",
+      "do_not_repeat": "Int-prototype casts: y = (short)(... - 10) stops at 4 bytes (add #-10,r0; exts.w r0,r5); term order is canonicalized.",
+      "next_question": "f_20a9c in effect_209a4.c reaches 4 bytes with the same prototype; which source order puts #0x314 before add #-4,r15 in its prologue?"
     },
     {
       "address": "0x23e3e",
@@ -754,13 +754,6 @@
         "end": "0x01715c",
         "verdict": "shc-shaped",
         "observation": "3 functions decoded; no strong hand-written evidence. 578 bytes are pools, tables or unreached.",
-        "hand_written_functions": []
-      },
-      {
-        "start": "0x02090c",
-        "end": "0x0209a4",
-        "verdict": "shc-shaped",
-        "observation": "1 functions decoded; no strong hand-written evidence. 18 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
