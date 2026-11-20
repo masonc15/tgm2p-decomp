@@ -134,7 +134,6 @@ themselves behave alike; difftest covers that part.
 | `vm_ec0c.c` | 0xec0c–0xee9c | 656 | f_ec0c | context in src/vm_tail_ee9c.c |
 | `vm_f29a.c` | 0xf29a–0xf4c6 | 556 | f_f29a, f_f3a2 | context in src/vm_empty_f292.c |
 | `save_1326c.c` | 0x1326c–0x13378 | 268 | f_1326c | context in src/save_checksum_131e8.c |
-| `effect_20a9c.c` | 0x20a9c–0x20b24 | 136 | f_20a9c | context in src/effect_209a4.c |
 | `shuffle_21d94.c` | 0x21d94–0x225e4 | 2,128 | f_21d94 | wip/shuffle_21d94.c |
 | `board_setters_27862.c` | 0x27862–0x278c0 | 94 | f_27862 | context in src/board_setters_2774a.c (f_277d0 matched 2026-11-19 and left this packet) |
 | `field_8c96.c` | 0x8c96–0x907c | 998 | f_8c96 | drafted from the disassembly (old drafts differed) |

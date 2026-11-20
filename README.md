@@ -241,9 +241,12 @@ canonical target. Every build recompiles and recomputes these proofs;
 saved manifests cannot authorize reuse. Negative tests include original
 ELF relocation mutations with unchanged compiler-byte comparison fixtures.
 
-The same proof covers the effect tail in `src/effect_209a4.c`, now retaining
-`0x209a4`–`0x20a9c` (248 bytes). Its r1 target is checked under the same
-register-write, dominance, delay, and external-relocation restrictions.
+The same proof covers the effect tail in `src/effect_209a4.c` when that
+source is compiled as a prefix ending at `0x20a9c` (248 bytes), which the
+tests still do. Its r1 target is checked under the same
+register-write, dominance, delay, and external-relocation restrictions. The
+build itself now links that file as a whole `c` unit, since all three of its
+functions match.
 Two additional exact ordered SHC epilogues are supported: an r3 form with
 argument setup, a byte store and seven restores, and an r1 form with indexed
 word setup and two restores. Both end with a uniquely owned r14-pop delay

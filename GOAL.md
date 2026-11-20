@@ -1,5 +1,20 @@
 # TGM2+ matching decompilation goal
 
+## Effect sprite f_20a9c matches — 2026-11-20
+
+Coverage increased **158,556 → 158,692 / 200,698 C bytes, 79.0023% →
+79.0700%** (+136 bytes). 40,368 non-exempt bytes remain to the
+199,060-byte goal. `src/effect_209a4.c` changes from a c-prefix to an
+ordinary `c` unit for 0x209a4-0x20b24 and covers f_20a9c. It uses the short
+`f_1159c` prototype that fixed f_2090c, and f_20a9c scales its column
+parameter (`x *= 8;`) before taking the shake pointer, which gives the ROM's
+prologue order. `make split check report` passes both chip hashes, all 377
+tool tests pass with `PREFIX_COMPILE_TESTS=1`, `make shiftable` is identical
+to the ROM, `make mod-check` plays the replays like the original, and
+`make shiftable NONMATCHING=1` with `tools/replay_check.sh --pin-idle` is
+identical over attract 12,000 and gameplay 24,000 frames. Details:
+[docs/research/2026-11-20-effect-sprite-20a9c-match.md](docs/research/2026-11-20-effect-sprite-20a9c-match.md).
+
 ## Cell sprite f_2090c matches — 2026-11-20
 
 Coverage increased **158,404 → 158,556 / 200,698 C bytes, 78.9265% →
