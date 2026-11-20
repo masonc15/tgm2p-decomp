@@ -39,7 +39,7 @@
       "evidence": "docs/research/2026-11-20-cell-sprite-2090c-match.md",
       "observation": "Exact 152 bytes as its own unit, src/draw_2090c.c. The HUD units' f_1159c(long, short, short, unsigned char, short) prototype with a short row passes the row unnarrowed and sums it in r0.",
       "do_not_repeat": "Int-prototype casts: y = (short)(... - 10) stops at 4 bytes (add #-10,r0; exts.w r0,r5); term order is canonicalized.",
-      "next_question": "f_20a9c in effect_209a4.c reaches 4 bytes with the same prototype; which source order puts #0x314 before add #-4,r15 in its prologue?"
+      "next_question": "None; f_20a9c, the same sprite shape in effect_209a4.c, matched next (docs/research/2026-11-20-effect-sprite-20a9c-match.md)."
     },
     {
       "address": "0x23e3e",
@@ -62,12 +62,12 @@
     },
     {
       "address": "0x20a9c",
-      "state": "parked-expression-boundaries",
+      "state": "accepted",
       "class": "operand-recipe-scratch-planning",
-      "evidence": "docs/research/2026-10-10-effect-recipe-planning.md",
-      "observation": "Fresh best remains13 raw differing bytes,248 protected exact. Both product scratches are planned before emission20 using recipe4510a0. First selectsR3; last/recent ranking makes secondR2. Split controls defer second planning but forceR14/R4 accumulator homes and worsen raw output.",
-      "do_not_repeat": "Prior callee/array binding, signedness, first-sum grouping, or the six recorded subtotal/statement-boundary controls without new IR/recipe evidence.",
-      "next_question": "Which target-backed producer/IR structure gives the accumulator preferredR0 while preventing both products from being reserved together? Reopen only with a reduced compiler mechanism that predicts that change."
+      "evidence": "docs/research/2026-11-20-effect-sprite-20a9c-match.md",
+      "observation": "Exact 136 bytes; src/effect_209a4.c is now a c unit for 0x209a4-0x20b24. Short f_1159c prototype, then x *= 8 before d = &f->shake gives the ROM prologue order (#0x314 before add #-4,r15).",
+      "do_not_repeat": "x reused for the whole sum, or d's initializer kept with x *= 8 after it (both 4 bytes).",
+      "next_question": "None."
     },
     {
       "address": "0x15794",
@@ -754,13 +754,6 @@
         "end": "0x01715c",
         "verdict": "shc-shaped",
         "observation": "3 functions decoded; no strong hand-written evidence. 578 bytes are pools, tables or unreached.",
-        "hand_written_functions": []
-      },
-      {
-        "start": "0x020a9c",
-        "end": "0x020b24",
-        "verdict": "shc-shaped",
-        "observation": "1 functions decoded; no strong hand-written evidence. 42 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
