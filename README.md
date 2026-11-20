@@ -125,7 +125,7 @@ These are historical drafts in `tools/shc_probe/cases/wip/`, not a current cover
 - **The board file at `0x255dc` (97.9%, `board_255dc.c`).** 13 of 15 functions match; `f_259ea` has 19 temp-register swaps and `f_26264` needs a dead load in the ROM's `mov #24,rN; add rB,rN; mov.w @rN,rN` form, which only a `volatile` read produces here, and that breaks the scheduling around it.
 - **The rest of `0x120c0`–`0x131e8` (99.0%, `f_120c0_full.c`).** `f_12ad4` swaps the registers of `y` and `rank` in one unrolled loop (about 250 variants failed) and `f_12fa8` has a two-instruction prologue swap. Using this unit as a predecessor didn't change the `0x131e8` save/load functions.
 - **`f_26f64`/`f_26faa` and `0x60e8`.** The `0x2657c`–`0x278ae` file they sit in is one unit of about 20 functions tied together by `bsr`, and its shared pool at `0x27812` changes the scheduling of the setters around it, so it has to be matched whole.
-- **The secret-code checker at `0x23828` (93.8%, `code_23828.c`) and a sprite draw at `0x2090c` (80.3%, `draw_2090c.c`).** Register choice only in the first. Its score moves with the file state, so it probably needs the effect functions before it in the same file.
+- **The secret-code checker at `0x23828` (93.8%, `code_23828.c`).** Register choice only. The sprite draw at `0x2090c` beside it now matches as `src/draw_2090c.c`, once it uses the HUD units' short-argument `f_1159c` prototype.
 - **`0xec0c` (`vm_ec0c.c`).** `f_ec0c` is about 52%; the small functions after it match. `char buf[2] = {0}` reproduces the ROM's copy from RAM `0x603343c`, an SHC initializer constant, so linking it would need that data placed there.
 
 ### Random-column item handler

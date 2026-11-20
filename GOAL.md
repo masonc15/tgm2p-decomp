@@ -1,5 +1,24 @@
 # TGM2+ matching decompilation goal
 
+## Cell sprite f_2090c matches — 2026-11-20
+
+Coverage increased **158,404 → 158,556 / 200,698 C bytes, 78.9265% →
+79.0023%** (+152 bytes). 40,504 non-exempt bytes remain to the
+199,060-byte goal. f_2090c (0x2090c-0x209a4) is now its own `c` unit,
+`src/draw_2090c.c`. The fix is the callee prototype: with the HUD units'
+`f_1159c(long, short, short, unsigned char, short)` and a `short` row, SHC
+passes the row unnarrowed and sums it in r0 as the ROM does. The int prototype
+of the neighbouring effect units costs 22 bytes. Its pool sits after its own
+`rts`, outside both neighbours' shared pools, so it is a separate unit. The
+same change brings f_20a9c in `src/effect_209a4.c` from 26 to 4 differing
+bytes (a prologue constant order), not admitted. `make split check report`
+passes both chip hashes, all 377 tool tests pass with
+`PREFIX_COMPILE_TESTS=1`, `make shiftable` is identical to the ROM,
+`make mod-check` plays the replays like the original, and
+`make shiftable NONMATCHING=1` with `tools/replay_check.sh --pin-idle` is
+identical over attract 12,000 and gameplay 24,000 frames. Details:
+[docs/research/2026-11-20-cell-sprite-2090c-match.md](docs/research/2026-11-20-cell-sprite-2090c-match.md).
+
 ## Board toggle f_277d0 matches — 2026-11-19
 
 Coverage increased **158,258 → 158,404 / 200,698 C bytes, 78.8538% →
