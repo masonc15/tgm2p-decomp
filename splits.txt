@@ -102,8 +102,6 @@
 0x0149b4 c    src/rank_149b4.c
 0x014b10 c-range src/rank_switch_14b10.c
 0x014bce c-range src/rank_tail_149b4.c
-0x014f1c asm
-0x015104 c-range src/rank_tail_149b4.c
 0x0152d4 asm
 0x015f10 c-prefix src/draw_15f10.c
 0x015fae asm

@@ -1,7 +1,7 @@
 /* rom: 0x14bce len: 0x182 func: f_14bce context-rom: 0x149b4 literal-tail-calls: 1 flags: -macsave=1 -optimize=1 -speed */
-/* Verified middle ranges 0x14bce-0x14f1c (f_14bce, f_14d50) and
- * 0x15104-0x152d4 (f_15104). All other genuine functions are unlinked
- * compiler context. One short r3 tail requires CFG/ELF proof. */
+/* Verified middle range 0x14bce-0x152d4 (f_14bce, f_14d50, f_14f1c,
+ * f_15104). All other genuine functions are unlinked compiler context.
+ * One short r3 tail requires CFG/ELF proof. */
 struct field { char pad[0x308]; unsigned long flags308; unsigned short mode; char pad2[0x3b4 - 0x30e]; };
 extern char g_60b161c[], g_60b1620[], g_60b1630;
 extern unsigned char g_6064758, g_6064759;
@@ -346,6 +346,9 @@ int f_14f1c(void)
 	f_247ee();
 	f_175c4();
 	f_2774a(g_60661a6, 0);
+	/* Dead use: one more #160 use ranks the constant's web ahead of
+	 * done and i, giving the ROM's r11/r10/r9 homes. */
+	if (0) done = 160;
 	f_2af5e(160, 16, d_67d90);
 	i = 0;
 	do {
