@@ -156,7 +156,7 @@ themselves behave alike; difftest covers that part.
 | `field_5b80.c` | 0x5b80–0x601a | 1,178 | f_5b80 | packet of 2026-10-16 (retired 2026-11-19: now matching C in src/field_51f4.c) |
 | `field_61d0.c` | 0x61d0–0x7004 | 3,636 | f_61d0, f_667c, f_67f4 | packet of 2026-10-16 |
 | `field_7324.c` | 0x7324–0x7658 | 820 | f_7324 | packet of 2026-10-16 |
-| `speed_7658.c` | 0x7658–0x7956 | 766 | f_7658 | packet of 2026-10-16 |
+| `speed_7658.c` | 0x7658–0x7956 | 766 | f_7658 | packet of 2026-10-16 (retired 2026-11-19: now matching C in src/speed_7956.c) |
 | `field_7c08.c` | 0x7c08–0x7f38 | 816 | f_7c08 | packet of 2026-10-16 |
 | `field_flag_9180.c` | 0x9180–0x95b8 | 1,080 | f_9180 | packet of 2026-10-16 |
 | `field_96ac.c` | 0x96ac–0x9b90 | 1,252 | f_96ac | packet of 2026-10-16 |

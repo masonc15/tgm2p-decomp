@@ -1,5 +1,22 @@
 # TGM2+ matching decompilation goal
 
+## Speed/level f_7658 matches — 2026-11-19
+
+Coverage increased **157,492 → 158,258 / 200,698 C bytes, 78.4721% →
+78.8538%** (+766 bytes). 40,802 non-exempt bytes remain to the
+199,060-byte goal. f_7658 (0x7658-0x7956) matches, so `src/speed_7956.c`
+becomes a whole `c` unit for 0x7658-0x7c08 and `speed_7658.c` leaves the
+non-matching track. A labelled dead `if (0) p->w328 = 65535;` ranks the
+0xffff constant ahead of the #2 web, and splitting the level test after its
+second term with a labelled dead `if (0) f_2e6fc(15);` between the levels
+gives the ROM's r3/r2/r1 scratch temporaries. `make split check report`
+passes both chip hashes, all 377 tool tests pass with
+`PREFIX_COMPILE_TESTS=1`, `make shiftable` is identical to the ROM, `make
+mod-check` plays the replays like the original, and `make shiftable
+NONMATCHING=1` with `tools/replay_check.sh --pin-idle` is identical over
+attract 12,000 and gameplay 24,000 frames. Details:
+[docs/research/2026-11-19-speed-level-7658-match.md](docs/research/2026-11-19-speed-level-7658-match.md).
+
 ## Rank screen f_14f1c matches — 2026-11-19
 
 Coverage increased **157,004 → 157,492 / 200,698 C bytes, 78.2290% →
