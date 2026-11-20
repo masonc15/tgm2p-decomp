@@ -6,7 +6,7 @@
 0x001108 c-range src/startup_video_1108.c
 0x001260 c    src/rom_header.c
 0x001278 c-prefix src/startup_setup_1278.c
-0x0012e2 asm
+0x001340 asm
 0x001896 c-range src/startup_reset_1896.c
 0x001914 c-range src/startup_dispatch_1914.c
 0x001c8c c-range src/startup_tail.c

@@ -1,6 +1,7 @@
 /* rom: 0x1278 len: 0x6a func: f_1278 flags: -macsave=1 -optimize=1 -speed */
-/* Retain only 1278-12e2. Complete following setup/reset bodies supply native
- * call and literal context; their differing bytes remain unlinked. */
+/* Retain only 1278-1340 (f_1278, f_12e2). Complete following setup/reset
+ * bodies supply native call and literal context; their differing bytes remain
+ * unlinked. */
 struct cell {
 	short w0;
 	char b2;
@@ -221,9 +222,12 @@ void f_12e2(struct field *f, unsigned char a)
 		if ((g_6064880 & 2) && a) {
 			f->w314 = d_36304[id + 2].x;
 			p = &d_36304[id + 2];
+			/* Dead use: keeps the g_6064880 value web live through this
+			 * branch, so the shared &d_36304[id + 2] temporary takes p's
+			 * R5 and its copy becomes the ROM's unfilled delay slot. */
+			if (0) f->w314 = g_6064880;
 		} else {
-			p = &d_36304[id];
-			f->w314 = p->x;
+			f->w314 = (p = &d_36304[id])->x;
 		}
 		f->w316 = p->y;
 	}

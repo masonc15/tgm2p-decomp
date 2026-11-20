@@ -3,7 +3,7 @@
 # unresolved asm range with functionally equivalent C from src/nonmatching/. These never
 # count as matching coverage and the matching build (make check) never reads this file.
 0x000780 0x001108 c-nonmatching src/nonmatching/main_780.c
-0x0012e2 0x001896 c-nonmatching src/nonmatching/field_setup_12e2.c
+0x001340 0x001896 c-nonmatching src/nonmatching/field_setup_1340.c
 0x0020be 0x002e4c c-nonmatching src/nonmatching/field_step_20be.c
 0x003c88 0x003e2e c-nonmatching src/nonmatching/field_3c88.c
 0x004044 0x0044d4 c-nonmatching src/nonmatching/field_4044.c

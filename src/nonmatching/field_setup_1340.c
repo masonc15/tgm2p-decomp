@@ -1,5 +1,5 @@
-/* rom: 0x12e2 len: 0x5b4 func: f_12e2 flags: -macsave=1 -optimize=1 -speed */
-/* Non-matching: functionally equivalent C for [0x12e2, 0x1896) (f_12e2, f_1340),
+/* rom: 0x1340 len: 0x556 func: f_1340 flags: -macsave=1 -optimize=1 -speed */
+/* Non-matching: functionally equivalent C for [0x1340, 0x1896) (f_1340),
  * linked only by the shiftable build (splits_nonmatching.txt). Not matching coverage.
  * From research/2026-10-16-20be-tail/cmb_j_i.c. */
 struct cell {
@@ -200,25 +200,7 @@ void f_1340(unsigned char id);
 
 void f_1278(void);
 
-void f_12e2(struct field *f, unsigned char a)
-{
-	short id = f->b30e;
-	struct pos *p;
-
-	if (g_6064880 & 4) {
-		f->w314 = 160;
-		f->w316 = d_36304[id].y;
-	} else {
-		if ((g_6064880 & 2) && a) {
-			f->w314 = d_36304[id + 2].x;
-			p = &d_36304[id + 2];
-		} else {
-			p = &d_36304[id];
-			f->w314 = p->x;
-		}
-		f->w316 = p->y;
-	}
-}
+void f_12e2(struct field *f, unsigned char a);
 
 #pragma inline(set_flag)
 static void set_flag(unsigned char n, unsigned char v)
