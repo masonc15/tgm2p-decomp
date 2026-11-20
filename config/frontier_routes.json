@@ -485,12 +485,12 @@
     },
     {
       "address": "0x14f1c",
-      "state": "open-structure",
+      "state": "accepted",
       "class": "countdown-lifetime-and-global-allocation",
       "evidence": "docs/research/2026-11-19-rank-screen-match.md",
-      "observation": "Sibling source of the matched f_14d50/f_15104 plus i = i + 1 leaves 8 raw differences: #160 in r9 not r11, i and #10 in r11 not r9. g_60661a6/d_67d90 temporaries fix the rotation but schedule one literal 2 bytes early (4).",
-      "do_not_repeat": "Declaration permutations, if(0) dead lines at every boundary, fr local, pal local, loop/increment forms, k types, timer/done placement.",
-      "next_question": "Find the source form that ranks #160 ahead of i without moving the d_67d90 literal load."
+      "observation": "Exact 488 bytes in rank_tail_149b4.c (verified span 0x14bce-0x152d4). The sibling f_14d50/f_15104 source plus i = i + 1 and a labelled dead if (0) done = 160; before f_2af5e(160, 16, d_67d90) ranks #160 ahead of done and i (ROM r11/r10/r9).",
+      "do_not_repeat": "Do not move the dead line except to the two other matching spots recorded in the research note; do not count f_152d4/f_15794 context.",
+      "next_question": "f_152d4 (0x152d4-0x15794) remains on the non-matching track as rank_152d4.c."
     },
     {
       "address": "0x14d50",
@@ -573,7 +573,7 @@
     "scope": "hypotheses from tools/asm_scan.py; routing only, not an authorship proof or an exemption. See docs/research/2026-10-16-handwritten-asm-scan.md.",
     "program_sha256": "d194be16dc778cdc21fe3507b3e6253f69696a08e7d4d9bf031bbe69b45896c7",
     "controls": {
-      "negatives": 525,
+      "negatives": 526,
       "positives": 9,
       "true_positive": 9,
       "false_positive": 0,
@@ -740,13 +740,6 @@
         "end": "0x013484",
         "verdict": "shc-shaped",
         "observation": "1 functions decoded; no strong hand-written evidence. 46 bytes are pools, tables or unreached.",
-        "hand_written_functions": []
-      },
-      {
-        "start": "0x014f1c",
-        "end": "0x015104",
-        "verdict": "shc-shaped",
-        "observation": "1 functions decoded; no strong hand-written evidence. 102 bytes are pools, tables or unreached.",
         "hand_written_functions": []
       },
       {
